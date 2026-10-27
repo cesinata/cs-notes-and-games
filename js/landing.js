@@ -7,6 +7,8 @@
 import { el, clear, focusHeading } from './engine/ui.js';
 import { makeSprite } from './engine/sprites.js';
 import { isStorageAvailable } from './engine/storage.js';
+import { t } from './engine/i18n.js';
+import { languageSwitch } from './language-switch.js';
 
 // summaries: [{ region, earned, max, builtCount }], worked out by main.js.
 export function renderLanding(app, text, summaries) {
@@ -18,8 +20,8 @@ export function renderLanding(app, text, summaries) {
       heading,
       el('p', { class: 'lead' }, text.tagline)
     ),
-    isStorageAvailable() ? null : el('p', { class: 'notice' },
-      'Progress won\'t be saved on this device, because this browser is blocking storage. You can still play everything.'),
+    languageSwitch(),
+    isStorageAvailable() ? null : el('p', { class: 'notice' }, t('common.storageNotice')),
     el('section', { class: 'board landing-intro' },
       text.intro.map((p) => el('p', {}, p))
     ),

@@ -1,0 +1,106 @@
+{
+  "stars": {
+    "of": "{earned} of {max} stars"
+  },
+  "common": {
+    "backToMap": "Back to map",
+    "allSubjects": "All subjects",
+    "subjectsNav": "Subjects",
+    "language": "Language",
+    "storageNotice": "Progress won't be saved on this device, because this browser is blocking storage. You can still play everything.",
+    "youAreHere": "(you are here)"
+  },
+  "hub": {
+    "status": {
+      "open": "Open",
+      "building": "Being built",
+      "locked": "Locked"
+    },
+    "lockedReason": "Finish the core levels in {zone} to open this.",
+    "building": "Unlocked. Its levels are still being built.",
+    "stars": "{earned} of {max} stars",
+    "statusLine": "{status}. {line}",
+    "markerLabel": "{name}: {status}",
+    "finaleLocked": "Locked. Finish every core level in this region to open this.",
+    "finaleBuilding": "Being built.",
+    "reset": "Reset progress",
+    "resetAsk": "Clear all your stars in this region and lock it again? This can't be undone.",
+    "resetKeep": "Keep my progress",
+    "resetConfirm": "Yes, reset everything",
+    "mapCaption": "Map of {title}. The same places are listed below.",
+    "lockedNotice": "Locked. {reason}",
+    "buildingNotice": "This district is unlocked, but its levels are still being built. Check back after the next milestone.",
+    "core": "Core",
+    "optional": "Optional",
+    "play": "Play",
+    "playAgain": "Play again",
+    "comingSoon": "Coming soon",
+    "starsHere": "{earned} of {max} stars earned here"
+  },
+  "level": {
+    "phases": {
+      "story": "Story",
+      "learn": "Learn",
+      "play": "Play",
+      "debrief": "Debrief"
+    },
+    "progressLabel": "Level progress",
+    "hint": "Hint",
+    "hintLabel": "Hint:",
+    "notQuite": "✗ Not quite.",
+    "tryAnother": "Try another option.",
+    "thatsRight": "That's right.",
+    "correctSr": "Correct:",
+    "onTrack": "On track for",
+    "wonder": "Something to wonder about",
+    "wonderNote": "You'll be able to answer this by the end of the level.",
+    "learnButton": "Learn the idea",
+    "backToStory": "Back to the story",
+    "startPlaying": "Start playing",
+    "complete": "Level complete. You earned {stars} of 3 stars.",
+    "newBest": "A new best for this level.",
+    "stillBest": "Your best is still {stars} of 3 stars.",
+    "playAgain": "Play again",
+    "next": "Next: {id} {title}",
+    "backTo": "Back to {zone}",
+    "remember": "Remember the question from the start?",
+    "commonMistake": "Common mistake: {title}",
+    "result": "You earned {stars} of 3 stars, with {mistakes} and {hints}.",
+    "mistakes": {
+      "one": "{n} mistake",
+      "other": "{n} mistakes"
+    },
+    "hints": {
+      "one": "{n} hint",
+      "other": "{n} hints"
+    },
+    "fieldNotesRevisit": "Field Notes from this level",
+    "fieldNotesNew": "New Field Notes unlocked",
+    "fieldNotesNote": "Where this idea shows up today. They're saved in your Field Journal on the map.",
+    "readMore": "Read more",
+    "continue": "Continue"
+  },
+  "choices": {
+    "answerOptions": "Answer options",
+    "correct": " (correct)",
+    "notThis": " (not this one)"
+  },
+  "fieldNotes": {
+    "new": "New",
+    "source": "Source: "
+  },
+  "feed": {
+    "card": "Card {i} of {n}",
+    "right": "✓ Right.",
+    "wrong": "✗ Not this time.",
+    "rightSr": "Right",
+    "wrongSr": "Not this time",
+    "correctAnswer": " (correct answer)",
+    "yourPick": " (your pick)"
+  },
+  "sim": {
+    "crates": "Crates",
+    "empty": "Empty",
+    "prediction": "Your prediction: {guess}"
+  }
+}

@@ -74,3 +74,18 @@ Decisions we've made, so we stay consistent as the game grows.
   The tree, graph and table views will be added with the islands that need them.
 - Modes: **watch** (Back/Next), **predict** (guess each marked step: a hint first, then the answer),
   **count** (predict a total, then run and compare).
+
+## Languages (js/engine/i18n.js)
+- English and Bahasa Indonesia. The choice is saved on the device (`pocketAtlas.lang`); the first visit follows the browser.
+- Reader assumed: intermediate English. So technical terms stay English, and the first mention carries the Indonesian
+  meaning in brackets: "layer (lapisan)". Tone is casual (*kamu*).
+- `content/glossary.json` lists terms that always stay English. `el()` wraps them in `translate="no"` spans, so a
+  browser translator leaves them alone (this also helps people who translate the English version).
+- An Indonesian file `content/id/<same path>` is laid over the English one: objects merge by key, lists whose items
+  have an `id` merge by id, other lists are replaced whole. Missing lines fall back to English.
+- Place and level names (Town Square, Layer Cake) are story names and stay English. Topics and descriptions are translated.
+- Button and label text is in `content/ui.json`, read with `t('key')`. The content-error screen stays English
+  (it's for whoever edits the files).
+- Level files still hold a few English labels (diagram captions, tray names). They move into level content during the
+  lessons rework, and get translated with the levels.
+- Progress ids (`net:0.1`) are the same in every language, so stars carry over.

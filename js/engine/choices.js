@@ -4,10 +4,11 @@
 // and words, never colour alone.
 
 import { el, shuffle } from './ui.js';
+import { t } from './i18n.js';
 
 // options: [{ text, correct }]. onCorrect(option) and onWrong(option, button).
 export function choiceList({ options, onCorrect, onWrong, label, reducedMotion }) {
-  const list = el('ul', { class: 'choices', 'aria-label': label || 'Answer options' });
+  const list = el('ul', { class: 'choices', 'aria-label': label || t('choices.answerOptions') });
   const buttons = [];
 
   shuffle(options).forEach((option) => {
@@ -18,13 +19,13 @@ export function choiceList({ options, onCorrect, onWrong, label, reducedMotion }
       if (option.correct) {
         button.classList.add('is-correct');
         mark.textContent = '✓';
-        status.textContent = ' (correct)';
+        status.textContent = t('choices.correct');
         buttons.forEach((b) => { b.disabled = true; });
         onCorrect(option, button);
       } else {
         button.classList.add('is-wrong');
         mark.textContent = '✗';
-        status.textContent = ' (not this one)';
+        status.textContent = t('choices.notThis');
         button.disabled = true;
         wobble(button, reducedMotion);
         onWrong(option, button);

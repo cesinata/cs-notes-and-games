@@ -10,6 +10,7 @@
 
 import { el, svgEl, clear, focusHeading, announce, shuffle } from '../../engine/ui.js';
 import { choiceList, continueButton, wobble } from '../../engine/choices.js';
+import { t } from '../../engine/i18n.js';
 import { makeSprite } from '../../engine/sprites.js';
 
 // Cap colours for the customers, so each villager looks a little different.
@@ -148,7 +149,7 @@ export const layerCake = {
               tray.querySelectorAll('button').forEach((b) => { b.disabled = true; });
               ctx.step([]);
               ctx.correct(cake.done);
-              after.append(continueButton('Continue', next));
+              after.append(continueButton(t('level.continue'), next));
             } else {
               ctx.step(P.layers[cake.layers[placed]].hints);
               ctx.correct(`${nameOf(id)} is on.`);
@@ -188,7 +189,7 @@ export const layerCake = {
         choiceList({
           options: q.options,
           reducedMotion: ctx.reducedMotion,
-          onCorrect: () => { ctx.correct(q.explain); after.append(continueButton('Continue', next)); },
+          onCorrect: () => { ctx.correct(q.explain); after.append(continueButton(t('level.continue'), next)); },
           onWrong: () => ctx.mistake()
         })
       );

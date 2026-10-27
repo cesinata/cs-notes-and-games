@@ -12,7 +12,8 @@
 // Using the address means the browser's Back button works as expected.
 
 import { initStorage, setRegion } from './engine/storage.js';
-import { loadWorld, loadZone, loadRegions, loadLanding } from './engine/content.js';
+import { loadWorld, loadZone, loadRegions, loadLanding, loadUiText } from './engine/content.js';
+import { detectLang } from './engine/i18n.js';
 import { zoneStatus, zoneStars } from './engine/progress.js';
 import { runLevel } from './engine/level-flow.js';
 import { showError } from './engine/ui.js';
@@ -148,5 +149,31 @@ async function route() {
 }
 
 initStorage();
-window.addEventListener('hashchange', route);
-route();
+detectLang();
+
+// Everything loaded from content/ depends on the language, so a language change starts fresh.
+async function changeLanguage() {
+  worlds.clear();
+  zoneCache.clear();
+  regions = null;
+  try {
+    await loadUiText();
+    await route();
+  } catch (error) {
+    showError(app, error);
+  }
+}
+
+async function start() {
+  try {
+    await loadUiText();
+  } catch (error) {
+    showError(app, error);
+    return;
+  }
+  window.addEventListener('hashchange', route);
+  window.addEventListener('languagechange', changeLanguage);
+  route();
+}
+
+start();

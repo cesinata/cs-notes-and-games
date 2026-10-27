@@ -7,16 +7,14 @@
 import { el, clear, focusHeading, starRow } from './engine/ui.js';
 import { drawSprite, makeSprite, spriteSize, PALETTE } from './engine/sprites.js';
 import { zoneStatus, finaleStatus, zoneStars } from './engine/progress.js';
+import { t } from './engine/i18n.js';
+import { languageSwitch } from './language-switch.js';
 import { getLevelResult, isStorageAvailable, resetProgress } from './engine/storage.js';
 
 const MAP_W = 320;
 const MAP_H = 200;
 
-const STATUS_WORDS = {
-  open: 'Open',
-  building: 'Being built',
-  locked: 'Locked'
-};
+const statusWord = (status) => t(`hub.status.${status}`);
 
 // ---------------- Hub page ----------------
 
@@ -29,6 +27,7 @@ export function renderHub(app, world, onRefresh, notes = [], feedCard = null, re
 
   const page = el('main', { class: 'page hub-page' },
     regionNav(world, regions),
+    languageSwitch(),
     el('header', { class: 'hub-header' },
       heading,
       el('p', { class: 'lead' }, world.tagline)
@@ -51,14 +50,14 @@ export function renderHub(app, world, onRefresh, notes = [], feedCard = null, re
 
 // Links for going home and switching between subjects (regions), each with its own map and progress.
 function regionNav(world, regions) {
-  return el('nav', { class: 'region-nav', 'aria-label': 'Subjects' },
+  return el('nav', { class: 'region-nav', 'aria-label': t('common.subjectsNav') },
     el('ul', {},
-      el('li', {}, el('a', { href: '#/', class: 'region-home' }, 'All subjects')),
+      el('li', {}, el('a', { href: '#/', class: 'region-home' }, t('common.allSubjects'))),
       regions.map((r) => {
         const current = r.id === world.region.id;
         return el('li', {}, el('a', { href: `#/${r.id}/`, class: current ? 'is-current' : '', 'aria-current': current ? 'page' : null },
           makeSprite(r.sprite, 2),
-          el('span', {}, el('span', { class: 'region-name' }, r.name), el('span', { class: 'region-subject' }, r.subject))));
+          el('span', {}, el('span', { class: 'region-name' }, r.name, current ? el('span', { class: 'region-here' }, ` ${t('common.youAreHere')}`) : null), el('span', { class: 'region-subject' }, r.subject))));
       })));
 }
 
@@ -74,20 +73,19 @@ function journalCard(world, notes) {
 
 function storageNotice() {
   if (isStorageAvailable()) return null;
-  return el('p', { class: 'notice' },
-    'Progress won\'t be saved on this device, because this browser is blocking storage. You can still play everything.');
+  return el('p', { class: 'notice' }, t('common.storageNotice'));
 }
 
 function lockedReason(world, index) {
   const before = world.zones[index - 1];
-  return `Finish the core levels in ${before.name} to open this.`;
+  return t('hub.lockedReason', { zone: before.name });
 }
 
 function districtCard(zone, status, world, index) {
   const { earned, max } = zoneStars(zone);
   const statusLine = status === 'locked' ? lockedReason(world, index)
-    : status === 'building' ? 'Unlocked. Its levels are still being built.'
-      : `${earned} of ${max} stars`;
+    : status === 'building' ? t('hub.building')
+      : t('hub.stars', { earned, max });
   const icon = status === 'locked' ? makeSprite('lock', 3) : makeSprite(zone.map.sprite, 2, { r: zone.map.roof });
   const card = el('a', {
     class: `district-card is-${status}`,
@@ -97,7 +95,7 @@ function districtCard(zone, status, world, index) {
   el('span', { class: 'district-text' },
     el('span', { class: 'district-name' }, `${zone.id}. ${zone.name}`),
     el('span', { class: 'district-topic' }, zone.topic),
-    el('span', { class: 'district-status' }, `${STATUS_WORDS[status]}. ${statusLine}`)
+    el('span', { class: 'district-status' }, t('hub.statusLine', { status: statusWord(status), line: statusLine }))
   ));
   return el('li', {}, card);
 }
@@ -111,7 +109,7 @@ function finaleCard(finale, status) {
         el('span', { class: 'district-name' }, finale.name),
         el('span', { class: 'district-topic' }, finale.topic),
         el('span', { class: 'district-status' },
-          status === 'locked' ? 'Locked. Finish every core level in this region to open this.' : 'Being built.')
+          status === 'locked' ? t('hub.finaleLocked') : t('hub.finaleBuilding'))
       )));
 }
 
@@ -119,17 +117,17 @@ function resetArea(onRefresh) {
   const area = el('section', { class: 'reset-area' });
   function showAsk() {
     clear(area);
-    area.append(el('button', { class: 'btn btn-quiet', type: 'button', onclick: showConfirm }, 'Reset progress'));
+    area.append(el('button', { class: 'btn btn-quiet', type: 'button', onclick: showConfirm }, t('hub.reset')));
   }
   function showConfirm() {
     clear(area);
-    const question = el('p', {}, 'Clear all your stars in this region and lock it again? This can\'t be undone.');
-    const cancel = el('button', { class: 'btn btn-quiet', type: 'button', onclick: showAsk }, 'Keep my progress');
+    const question = el('p', {}, t('hub.resetAsk'));
+    const cancel = el('button', { class: 'btn btn-quiet', type: 'button', onclick: showAsk }, t('hub.resetKeep'));
     const confirm = el('button', {
       class: 'btn btn-danger',
       type: 'button',
       onclick: () => { resetProgress(); onRefresh(); }
-    }, 'Yes, reset everything');
+    }, t('hub.resetConfirm'));
     area.append(question, el('div', { class: 'actions' }, cancel, confirm));
     cancel.focus();
   }
@@ -151,14 +149,14 @@ function buildMap(world, statuses, finale) {
 
   return el('figure', { class: 'map' },
     el('div', { class: 'map-frame' }, canvas, el('div', { class: 'map-markers' }, markers)),
-    el('figcaption', { class: 'visually-hidden' }, `Map of ${world.title}. The same places are listed below.`)
+    el('figcaption', { class: 'visually-hidden' }, t('hub.mapCaption', { title: world.title }))
   );
 }
 
 function mapMarker(pos, number, name, status, href) {
   const left = (pos.x / MAP_W) * 100;
   const top = (pos.y / MAP_H) * 100;
-  const label = `${name}: ${STATUS_WORDS[status]}`;
+  const label = t('hub.markerLabel', { name, status: statusWord(status) });
   const tag = el('span', { class: 'marker-tag' },
     status === 'locked' ? makeSprite('lock', 2) : null,
     el('span', { class: 'marker-number' }, number),
@@ -334,13 +332,13 @@ export function renderZone(app, world, zoneIndex, zoneContent, builtIds) {
   const status = zoneStatus(world, zoneIndex);
   const heading = el('h1', {}, zone.name);
 
-  const back = el('a', { class: 'btn btn-quiet', href: world.base }, 'Back to map');
+  const back = el('a', { class: 'btn btn-quiet', href: world.base }, t('common.backToMap'));
   let body;
 
   if (status === 'locked') {
-    body = el('p', { class: 'notice' }, `Locked. ${lockedReason(world, zoneIndex)}`);
+    body = el('p', { class: 'notice' }, t('hub.lockedNotice', { reason: lockedReason(world, zoneIndex) }));
   } else if (status === 'building' || !zoneContent) {
-    body = el('p', { class: 'notice' }, 'This district is unlocked, but its levels are still being built. Check back after the next milestone.');
+    body = el('p', { class: 'notice' }, t('hub.buildingNotice'));
   } else {
     body = el('ol', { class: 'level-list' }, zone.levels.map((level) => levelCard(level, builtIds, world.base)));
   }
@@ -353,7 +351,7 @@ export function renderZone(app, world, zoneIndex, zoneContent, builtIds) {
       el('div', {},
         heading,
         el('p', { class: 'lead' }, zone.topic),
-        status === 'open' ? el('p', { class: 'zone-stars' }, `${earned} of ${max} stars earned here`) : null
+        status === 'open' ? el('p', { class: 'zone-stars' }, t('hub.starsHere', { earned, max })) : null
       )
     ),
     body
@@ -365,10 +363,10 @@ function levelCard(level, builtIds, base) {
   const built = builtIds.includes(level.id);
   const result = getLevelResult(level.id);
   const stars = result ? result.stars : 0;
-  const coreTag = level.core ? el('span', { class: 'tag' }, 'Core') : el('span', { class: 'tag tag-quiet' }, 'Optional');
+  const coreTag = level.core ? el('span', { class: 'tag' }, t('hub.core')) : el('span', { class: 'tag tag-quiet' }, t('hub.optional'));
   const action = built
-    ? el('a', { class: 'btn', href: `${base}level/${level.id}` }, result ? 'Play again' : 'Play')
-    : el('span', { class: 'coming-soon' }, 'Coming soon');
+    ? el('a', { class: 'btn', href: `${base}level/${level.id}` }, result ? t('hub.playAgain') : t('hub.play'))
+    : el('span', { class: 'coming-soon' }, t('hub.comingSoon'));
   return el('li', { class: `level-card${built ? '' : ' is-unbuilt'}` },
     el('div', { class: 'level-card-text' },
       el('h2', { class: 'level-name' }, `${level.id} ${level.title}`),

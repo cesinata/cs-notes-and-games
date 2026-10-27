@@ -6,7 +6,8 @@
 //   predict  think of your answer, flip the card, then say if you got it
 // Field Notes are mixed in as breathers. All screen text is in world.json "feed".
 
-import { el, clear, focusHeading, announce, prefersReducedMotion, shuffle } from './engine/ui.js';
+import { el, clear, focusHeading, announce, prefersReducedMotion, shuffle, setText } from './engine/ui.js';
+import { t } from './engine/i18n.js';
 import { textOf } from './engine/content.js';
 import { makeSprite } from './engine/sprites.js';
 import { buildSession, recordAnswer, finishSession, feedSummary } from './engine/feed-schedule.js';
@@ -64,7 +65,7 @@ export function renderFeed(app, world, zoneContents) {
     stage.append(counter, bar, cardSlot);
 
     function drawProgress() {
-      counter.textContent = `Card ${index + 1} of ${queue.length}`;
+      setText(counter, t('feed.card', { i: index + 1, n: queue.length }));
       clear(bar);
       queue.forEach((_, i) => bar.append(el('span', { class: i < index ? 'is-done' : i === index ? 'is-now' : '' })));
     }
@@ -111,7 +112,7 @@ export function renderFeed(app, world, zoneContents) {
         title = el('h2', {}, textOf(card.note.title));
         body = [
           el('p', {}, textOf(card.note.text)),
-          card.note.source ? el('p', { class: 'field-note-source' }, 'Source: ',
+          card.note.source ? el('p', { class: 'field-note-source' }, t('fieldNotes.source'),
             el('a', { href: card.note.source.url, target: '_blank', rel: 'noopener' }, textOf(card.note.source.title))) : null
         ];
         window.setTimeout(() => finishCard(true), 0);
@@ -150,16 +151,16 @@ export function renderFeed(app, world, zoneContents) {
               if (b.dataset.correct === 'yes') {
                 b.classList.add('is-correct');
                 b.querySelector('.choice-mark').textContent = '✓';
-                b.querySelector('.visually-hidden').textContent = ' (correct answer)';
+                b.querySelector('.visually-hidden').textContent = t('feed.correctAnswer');
               }
             });
             if (!option.correct) {
               button.classList.add('is-wrong');
               mark.textContent = '✗';
-              status.textContent = ' (your pick)';
+              status.textContent = t('feed.yourPick');
             }
-            const verdict = option.correct ? '✓ Right.' : '✗ Not this time.';
-            announce(`${option.correct ? 'Right' : 'Not this time'}. ${textOf(card.explain)}`);
+            const verdict = option.correct ? t('feed.right') : t('feed.wrong');
+            announce(`${option.correct ? t('feed.rightSr') : t('feed.wrongSr')}. ${textOf(card.explain)}`);
             finishCard(option.correct, el('div', { class: `feedback ${option.correct ? 'feedback-correct' : 'feedback-mistake'}` },
               el('strong', { class: 'feedback-label' }, verdict), ' ', textOf(card.explain),
               option.correct ? null : el('span', { class: 'feed-comeback' }, ` ${F.comesBack}`)));

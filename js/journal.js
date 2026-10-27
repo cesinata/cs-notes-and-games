@@ -3,6 +3,7 @@
 // level. Locked notes show only their title, so you can see what's waiting.
 
 import { el, clear, focusHeading } from './engine/ui.js';
+import { t } from './engine/i18n.js';
 import { makeSprite } from './engine/sprites.js';
 import { fieldNoteCard } from './engine/field-notes.js';
 
@@ -21,7 +22,7 @@ export function renderJournal(app, world, notes) {
   });
 
   app.append(el('main', { class: 'page journal-page' },
-    el('div', { class: 'zone-top' }, el('a', { class: 'btn btn-quiet', href: world.base }, 'Back to map')),
+    el('div', { class: 'zone-top' }, el('a', { class: 'btn btn-quiet', href: world.base }, t('common.backToMap'))),
     el('header', { class: 'zone-header' },
       el('span', { class: 'zone-icon' }, makeSprite('journal', 5)),
       el('div', {},

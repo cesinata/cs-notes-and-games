@@ -7,6 +7,7 @@
 
 import { el, clear, focusHeading } from '../../engine/ui.js';
 import { choiceList, continueButton } from '../../engine/choices.js';
+import { t } from '../../engine/i18n.js';
 import { makeSprite } from '../../engine/sprites.js';
 import { runStepSim, drawSimState } from '../../engine/step-sim.js';
 
@@ -118,7 +119,7 @@ export const keepersToolkit = {
           options: need.options,
           label: 'Tools',
           reducedMotion: ctx.reducedMotion,
-          onCorrect: () => { ctx.step([]); ctx.correct(need.explain); after.append(continueButton('Continue', next)); },
+          onCorrect: () => { ctx.step([]); ctx.correct(need.explain); after.append(continueButton(t('level.continue'), next)); },
           onWrong: () => ctx.mistake()
         }));
       ctx.placeFeedback(area);

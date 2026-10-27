@@ -1,0 +1,53 @@
+{
+  "tagline": "Puzzle pixel yang santai untuk belajar, atau belajar ulang, cara kerja komputer yang sebenarnya.",
+  "intro": [
+    "Pocket Atlas mengubah materi teknis yang besar menjadi tempat-tempat kecil yang bisa kamu jelajahi. Tiap materi adalah sebuah wilayah (region) di atlas, dengan peta, cerita, dan level puzzle pendek sendiri, sekitar 3 sampai 8 menit per level.",
+    "Gratis, tanpa akun, dan jalan di browser kamu. Bintang kamu hanya tersimpan di perangkat ini."
+  ],
+  "whoTitle": "Untuk siapa ini",
+  "who": [
+    "Orang yang penasaran dan belum pernah mempelajari topiknya, dan ingin cara yang ramah untuk memulai.",
+    "Mahasiswa yang pernah bertemu ide-ide ini dan ingin menyegarkannya tanpa membuka buku teks.",
+    "Siapa pun yang lebih mudah belajar lewat puzzle daripada membaca halaman."
+  ],
+  "howTitle": "Cara kerja sebuah level",
+  "howIntro": "Setiap level punya jalur singkat yang sama, jadi kamu selalu tahu langkah berikutnya.",
+  "how": [
+    {
+      "name": "Pertanyaan dari kehidupan nyata",
+      "text": "Setiap level dimulai dengan sesuatu yang mungkin pernah kamu pikirkan, misalnya kenapa undo bekerja seperti itu."
+    },
+    {
+      "name": "Cerita singkat dan ide-ide kunci",
+      "text": "Cerita kecil di wilayah itu membuka suasana, lalu beberapa poin sederhana memberimu apa yang kamu butuhkan."
+    },
+    {
+      "name": "Puzzle",
+      "text": "Kamu mencoba idenya langsung. Jawaban yang salah memberimu petunjuk, bukan timer hukuman."
+    },
+    {
+      "name": "Ulasan",
+      "text": "Kamu mendapat jawaban dari pertanyaan pembuka, satu kesalahan umum yang perlu dihindari, bintangmu, dan tautan untuk membaca lebih lanjut."
+    }
+  ],
+  "extrasTitle": "Di antara level",
+  "extras": [
+    {
+      "name": "Daily Feed",
+      "text": "Sekitar 10 kartu review singkat per hari dari level yang sudah kamu selesaikan. Kartu yang meleset akan muncul lagi lebih cepat. Ada streak, tapi tidak pernah memarahimu."
+    },
+    {
+      "name": "Field Journal",
+      "text": "Setiap level yang selesai membuka Field Notes: tempat ide itu muncul di aplikasi dan network (jaringan) yang kamu pakai hari ini."
+    }
+  ],
+  "subjectsTitle": "Pilih materi",
+  "subjectsIntro": "Tiap wilayah menyimpan progress-nya sendiri. Mulai dari mana saja.",
+  "enter": "Masuk ke {name}",
+  "progress": "{earned} dari {max} bintang di {levels} yang sudah dibuat",
+  "progressLevels": {
+    "one": "1 level",
+    "other": "{n} level"
+  },
+  "note": "Semua penjelasan, cerita, dan puzzle di sini orisinal. Tautan bacaan di akhir tiap level mengarah ke buku terbuka, spesifikasi resmi, dan sumber lain."
+}

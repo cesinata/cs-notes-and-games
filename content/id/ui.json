@@ -1,0 +1,104 @@
+{
+  "stars": {
+    "of": "{earned} dari {max} bintang"
+  },
+  "common": {
+    "backToMap": "Kembali ke peta",
+    "allSubjects": "Semua materi",
+    "subjectsNav": "Materi",
+    "language": "Bahasa",
+    "storageNotice": "Progress kamu tidak akan tersimpan di perangkat ini, karena browser memblokir penyimpanan. Kamu tetap bisa memainkan semuanya.",
+    "youAreHere": "(kamu di sini)"
+  },
+  "hub": {
+    "status": {
+      "open": "Terbuka",
+      "building": "Sedang dibangun",
+      "locked": "Terkunci"
+    },
+    "lockedReason": "Selesaikan level inti di {zone} untuk membuka ini.",
+    "building": "Sudah terbuka. Level-levelnya masih dibuat.",
+    "stars": "{earned} dari {max} bintang",
+    "finaleLocked": "Terkunci. Selesaikan semua level inti di wilayah ini untuk membukanya.",
+    "finaleBuilding": "Sedang dibangun.",
+    "reset": "Reset progress",
+    "resetAsk": "Hapus semua bintang kamu di wilayah ini dan kunci lagi? Ini tidak bisa dibatalkan.",
+    "resetKeep": "Simpan progress-ku",
+    "resetConfirm": "Ya, reset semuanya",
+    "mapCaption": "Peta {title}. Tempat-tempat yang sama tercantum di bawah.",
+    "lockedNotice": "Terkunci. {reason}",
+    "buildingNotice": "Distrik ini sudah terbuka, tapi level-levelnya masih dibuat. Cek lagi setelah tahap berikutnya selesai.",
+    "core": "Inti",
+    "optional": "Opsional",
+    "play": "Main",
+    "playAgain": "Main lagi",
+    "comingSoon": "Segera hadir",
+    "starsHere": "{earned} dari {max} bintang diraih di sini"
+  },
+  "level": {
+    "phases": {
+      "story": "Cerita",
+      "learn": "Belajar",
+      "play": "Main",
+      "debrief": "Ulasan"
+    },
+    "progressLabel": "Progres level",
+    "hint": "Petunjuk",
+    "hintLabel": "Petunjuk:",
+    "notQuite": "✗ Belum tepat.",
+    "tryAnother": "Coba pilihan lain.",
+    "thatsRight": "Betul.",
+    "correctSr": "Benar:",
+    "onTrack": "Jalur menuju",
+    "wonder": "Sesuatu untuk dipikirkan",
+    "wonderNote": "Kamu akan bisa menjawabnya di akhir level.",
+    "learnButton": "Pelajari idenya",
+    "backToStory": "Kembali ke cerita",
+    "startPlaying": "Mulai main",
+    "complete": "Level selesai. Kamu mendapat {stars} dari 3 bintang.",
+    "newBest": "Rekor baru untuk level ini.",
+    "stillBest": "Rekor terbaikmu masih {stars} dari 3 bintang.",
+    "playAgain": "Main lagi",
+    "next": "Berikutnya: {id} {title}",
+    "backTo": "Kembali ke {zone}",
+    "remember": "Ingat pertanyaan di awal tadi?",
+    "commonMistake": "Kesalahan umum: {title}",
+    "result": "Kamu mendapat {stars} dari 3 bintang, dengan {mistakes} dan {hints}.",
+    "mistakes": {
+      "one": "{n} kesalahan",
+      "other": "{n} kesalahan"
+    },
+    "hints": {
+      "one": "{n} petunjuk",
+      "other": "{n} petunjuk"
+    },
+    "fieldNotesRevisit": "Field Notes dari level ini",
+    "fieldNotesNew": "Field Notes baru terbuka",
+    "fieldNotesNote": "Tempat ide ini muncul di dunia nyata sekarang. Semuanya tersimpan di Field Journal kamu di peta.",
+    "readMore": "Baca lebih lanjut",
+    "continue": "Lanjut"
+  },
+  "choices": {
+    "answerOptions": "Pilihan jawaban",
+    "correct": " (benar)",
+    "notThis": " (bukan ini)"
+  },
+  "fieldNotes": {
+    "new": "Baru",
+    "source": "Sumber: "
+  },
+  "feed": {
+    "card": "Kartu {i} dari {n}",
+    "right": "✓ Betul.",
+    "wrong": "✗ Belum kali ini.",
+    "rightSr": "Betul",
+    "wrongSr": "Belum kali ini",
+    "correctAnswer": " (jawaban benar)",
+    "yourPick": " (pilihanmu)"
+  },
+  "sim": {
+    "crates": "Peti",
+    "empty": "Kosong",
+    "prediction": "Prediksimu: {guess}"
+  }
+}
