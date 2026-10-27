@@ -1,0 +1,7 @@
+# Private working files: never published.
+private/
+CLAUDE.md
+# Editor and system files
+.DS_Store
+Thumbs.db
+.vscode/

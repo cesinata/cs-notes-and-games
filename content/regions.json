@@ -1,0 +1,22 @@
+{
+  "regions": [
+    {
+      "id": "net",
+      "name": "Packet Valley",
+      "subject": "Internet Technologies",
+      "description": "Follow one letter across a valley and see how the internet carries it: layers, wires, frames, addresses, routes, ports, web requests and security.",
+      "sprite": "house",
+      "world": "net/world.json",
+      "dir": "net/"
+    },
+    {
+      "id": "algo",
+      "name": "Algo Archipelago",
+      "subject": "Algorithms and Complexity",
+      "description": "Island-hop through the ideas behind fast programs: how to organise data, count the cost of a method, and pick a smarter way to solve a problem.",
+      "sprite": "boat",
+      "world": "algo/world.json",
+      "dir": "algo/"
+    }
+  ]
+}
