@@ -1,0 +1,705 @@
+{
+  "zone": 0,
+  "levels": [
+    {
+      "id": "0.1",
+      "title": "Layer Cake",
+      "story": "The bakery is entering the Valley Fair, and this year the judges want a networking cake with every layer in the right place. The baker's recipe card blew away in the wind, so it's up to you.",
+      "hook": {
+        "question": "The same web page loads on home Wi-Fi, on 5G, or on a cable plugged into a laptop, and your browser is never told which one you're using. How can it not care?",
+        "answer": "Layering. Your browser works in the top layer and only uses the service of the layer below it. Wi-Fi, 5G and cables are swapped in at the bottom layers. As long as each layer keeps offering the same service upward, nothing above it needs to change."
+      },
+      "fieldNotes": [
+        {
+          "title": "Why engineers still say \"Layer 7\"",
+          "text": "TCP/IP won in practice, but OSI's layer numbers stuck. Network engineers talk about \"Layer 2 switches\", \"Layer 3 routing\" and \"Layer 7 attacks\" every day. Cloudflare's own documentation sorts its products by OSI layer number, from Layer 1 to Layer 7.",
+          "source": { "title": "Cloudflare docs: Network layers", "url": "https://developers.cloudflare.com/fundamentals/reference/network-layers/" }
+        },
+        {
+          "title": "The web is rearranging the cake",
+          "text": "HTTP/3, the newest version of the web's main protocol, doesn't run on TCP. It runs on QUIC, a newer protocol that does TCP's jobs (reliable, in-order delivery) plus encryption, sitting on top of plain UDP. The slices got reshuffled, but the layered idea still holds.",
+          "source": { "title": "RFC 9114: HTTP/3", "url": "https://www.rfc-editor.org/rfc/rfc9114" }
+        }
+      ],
+      "learn": {
+        "bullets": [
+          "Sending data across a network is a big job, so we split it into layers, stacked like a cake. Each layer does one job and relies on the layer underneath it.",
+          "Each layer offers a service to the layer above it. It talks to the same layer on the other machine (its peer) using a protocol: the agreed rules and message formats.",
+          "The OSI model has 7 layers. The TCP/IP model, which the real internet grew up with, has 4. This subject uses a 5-layer mix of the two.",
+          "Each layer has its own name for the chunk of data it handles: message, segment, packet, frame and bits.",
+          "A memory trick for OSI, from the bottom up: Pie Dough Needs To Stay Perfectly Airy."
+        ],
+        "diagramCaption": "Two machines, side by side. Layers on the same level are peers that follow the same protocol. Each layer serves the one above it."
+      },
+      "play": {
+        "layers": {
+          "physical": { "name": "Physical", "hints": ["Start at the very bottom: the layer that touches the actual cable or radio waves.", "The bottom slice is Physical."] },
+          "datalink": { "name": "Data link", "hints": ["Next comes the layer that moves frames between two machines joined by one link.", "This one is Data link."] },
+          "network": { "name": "Network", "hints": ["Now the layer that finds a route across many networks.", "This one is Network."] },
+          "transport": { "name": "Transport", "hints": ["Next: the layer that gets data to the right program, from one end to the other.", "This one is Transport."] },
+          "session": { "name": "Session", "hints": ["OSI has two thin layers above transport. The lower one manages a conversation (a session) between two apps.", "This one is Session."] },
+          "presentation": { "name": "Presentation", "hints": ["This one cares about how data looks: formats, character sets and compression.", "This one is Presentation."] },
+          "application": { "name": "Application", "hints": ["The top slice is the one that apps, like web browsers, work with directly.", "The top slice is Application."] },
+          "link": { "name": "Link", "hints": ["TCP/IP's bottom slice does the work of two OSI slices: signals and frames on one link.", "The bottom slice is Link."] },
+          "internet": { "name": "Internet", "hints": ["Next is the layer that carries packets across many networks. TCP/IP gives it a different name from OSI.", "This one is Internet."] }
+        },
+        "cakes": [
+          {
+            "id": "osi",
+            "title": "Bake the OSI cake",
+            "intro": "Seven slices, built from the bottom up. Tap the slice that goes on next.",
+            "layers": ["physical", "datalink", "network", "transport", "session", "presentation", "application"],
+            "extras": [],
+            "extraHint": "",
+            "done": "Seven layers, stacked perfectly. Pie Dough Needs To Stay Perfectly Airy!",
+            "questions": []
+          },
+          {
+            "id": "tcpip",
+            "title": "Bake the TCP/IP cake",
+            "intro": "The internet's own model has only 4 slices. One slice in the tray doesn't belong in this cake.",
+            "layers": ["link", "internet", "transport", "application"],
+            "extras": ["session"],
+            "extraHint": "TCP/IP doesn't have a separate Session slice. That job gets folded into another layer.",
+            "done": "Four slices: lean and practical.",
+            "questions": [
+              {
+                "prompt": "TCP/IP's Link slice does the work of which OSI slices?",
+                "options": [
+                  { "text": "Physical and Data link", "correct": true },
+                  { "text": "Data link only" },
+                  { "text": "Data link and Network" },
+                  { "text": "Physical only" }
+                ],
+                "hints": ["Look at where the Link slice sits: right at the bottom.", "It covers the bottom two OSI slices."],
+                "explain": "Right. TCP/IP lumps signals and frames together into one Link layer. That's one of the usual criticisms of the model.",
+                "verify": true,
+                "verifyNote": "Some books describe TCP/IP's link layer as an interface rather than a full layer. Check this matches how the subject frames it."
+              },
+              {
+                "prompt": "So where did OSI's Session and Presentation jobs go in TCP/IP?",
+                "options": [
+                  { "text": "Into the Application layer: each app handles them if it needs to", "correct": true },
+                  { "text": "Into the Transport layer" },
+                  { "text": "Nowhere: nobody does those jobs any more" },
+                  { "text": "Below the Internet layer" }
+                ],
+                "hints": ["In OSI, those two slices sat just under Application.", "Apps take care of those jobs themselves, inside the Application layer."],
+                "explain": "Yes. In TCP/IP, any session or formatting work is done by the application itself."
+              }
+            ]
+          },
+          {
+            "id": "hybrid",
+            "title": "Bake the hybrid cake",
+            "intro": "This subject uses 5 slices: OSI's bottom four, plus one on top. One slice in the tray doesn't belong.",
+            "layers": ["physical", "datalink", "network", "transport", "application"],
+            "extras": ["presentation"],
+            "extraHint": "The hybrid model leaves out OSI's two thin layers. Presentation's job goes into the top slice.",
+            "done": "Five slices. This is the model the rest of Packet Valley uses.",
+            "questions": []
+          }
+        ],
+        "compare": {
+          "title": "Three cakes, side by side",
+          "text": "Slices at the same height do roughly the same job. Notice how TCP/IP's Link slice spans two OSI slices, and how Application covers the top three.",
+          "button": "On to the orders",
+          "spans": {
+            "osi": { "physical": [1, 1], "datalink": [2, 2], "network": [3, 3], "transport": [4, 4], "session": [5, 5], "presentation": [6, 6], "application": [7, 7] },
+            "tcpip": { "link": [1, 2], "internet": [3, 3], "transport": [4, 4], "application": [5, 7] },
+            "hybrid": { "physical": [1, 1], "datalink": [2, 2], "network": [3, 3], "transport": [4, 4], "application": [5, 7] }
+          },
+          "labels": { "osi": "OSI (7)", "tcpip": "TCP/IP (4)", "hybrid": "Hybrid (5)" }
+        },
+        "orders": {
+          "title": "Customer orders",
+          "intro": "Villagers each want a slice that does one job. Serve the right slice from the hybrid cake, then add its topper: the name for the data that layer handles.",
+          "layerPrompt": "Which slice does this job?",
+          "unitPrompt": "Now the topper. What does this layer call its chunk of data?",
+          "units": { "message": "Message", "segment": "Segment", "packet": "Packet", "frame": "Frame", "bits": "Bits" },
+          "list": [
+            {
+              "customer": "Weaver Wren",
+              "request": "I need my 1s and 0s turned into signals on the wire.",
+              "layer": "physical",
+              "unit": "bits",
+              "hints": ["Signals on a wire happen at the very bottom of the cake.", "That's the Physical layer."],
+              "unitHints": ["At this layer there are no wrappers at all, just raw 1s and 0s.", "The topper is Bits."]
+            },
+            {
+              "customer": "Farmer Ollie",
+              "request": "Get my parcel to the barn next door, and tell me if it was damaged on the way.",
+              "layer": "datalink",
+              "unit": "frame",
+              "hints": ["\"Next door\" means one direct link between two machines.", "That's the Data link layer."],
+              "unitHints": ["Its chunk has a clearly marked start and end, like a picture in its border.", "The topper is Frame."]
+            },
+            {
+              "customer": "Postmaster Pim",
+              "request": "Find a route across many networks to a farm on the far side of the valley.",
+              "layer": "network",
+              "unit": "packet",
+              "hints": ["Many networks, one route between them.", "That's the Network layer."],
+              "unitHints": ["It's the thing a router passes along from road to road.", "The topper is Packet."]
+            },
+            {
+              "customer": "Baker Bea",
+              "request": "The letter reached the right house. Now hand it to the right person inside.",
+              "layer": "transport",
+              "unit": "segment",
+              "hints": ["Getting to the right machine is done. Now it needs the right program on that machine.", "That's the Transport layer."],
+              "unitHints": ["Its name means a piece cut from a longer stream.", "The topper is Segment."]
+            },
+            {
+              "customer": "Mayor Moss",
+              "request": "I just want to read my email and browse the village website.",
+              "layer": "application",
+              "unit": "message",
+              "hints": ["This is the part people actually see and use.", "That's the Application layer."],
+              "unitHints": ["It's what you'd call the contents of a letter.", "The topper is Message."]
+            }
+          ],
+          "served": "Served: {layer}, topped with {unit}.",
+          "next": "Next customer",
+          "finishButton": "See how you did"
+        }
+      },
+      "feed": [
+        {
+          "id": "0.1-f1",
+          "type": "quiz",
+          "prompt": "Which layer's job is getting data to the right program on a machine?",
+          "options": [
+            {
+              "text": "Transport",
+              "correct": true
+            },
+            {
+              "text": "Network"
+            },
+            {
+              "text": "Data link"
+            },
+            {
+              "text": "Physical"
+            }
+          ],
+          "explain": "Transport is process to process. Network only gets the data to the right machine."
+        },
+        {
+          "id": "0.1-f2",
+          "type": "predict",
+          "prompt": "TCP/IP has 4 layers and OSI has 7. Which OSI layers get squashed into TCP/IP's Application layer?",
+          "answer": "Session, Presentation and Application. In TCP/IP, apps handle those jobs themselves."
+        },
+        {
+          "id": "0.1-f3",
+          "type": "why",
+          "prompt": "Why do we split networking into layers at all?",
+          "options": [
+            {
+              "text": "You can change how one layer works without rebuilding the others, as long as its service stays the same",
+              "correct": true
+            },
+            {
+              "text": "Layers make data travel faster"
+            },
+            {
+              "text": "So every layer can read every other layer's data"
+            },
+            {
+              "text": "So we don't need protocols any more"
+            }
+          ],
+          "explain": "Layers hide details from each other. That's why Wi-Fi can be swapped for 5G without rewriting your browser."
+        },
+        {
+          "id": "0.1-f4",
+          "type": "quiz",
+          "prompt": "Two Transport layers on different machines follow the same rules and message formats. That shared set of rules is called a…",
+          "options": [
+            {
+              "text": "Protocol",
+              "correct": true
+            },
+            {
+              "text": "Service"
+            },
+            {
+              "text": "Interface"
+            },
+            {
+              "text": "Frame"
+            }
+          ],
+          "explain": "A protocol is how peer layers talk to each other. A service is what a layer offers the layer above it."
+        },
+        {
+          "id": "0.1-f5",
+          "type": "predict",
+          "prompt": "OSI from the bottom up: Pie Dough Needs To Stay Perfectly Airy. What's the 5th layer from the bottom?",
+          "answer": "Session. Physical, Data link, Network, Transport, then Session."
+        },
+        {
+          "id": "0.1-f6",
+          "type": "quiz",
+          "prompt": "What does the network layer call its chunk of data?",
+          "options": [
+            {
+              "text": "Packet",
+              "correct": true
+            },
+            {
+              "text": "Frame"
+            },
+            {
+              "text": "Segment"
+            },
+            {
+              "text": "Message"
+            }
+          ],
+          "explain": "Message (application), segment (transport), packet (network), frame (data link), bits (physical)."
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You stacked the 7 OSI layers, then found where the 4 TCP/IP layers and the 5 hybrid layers fit against them.",
+          "Each slice did one job for the slice above it. That's the point of layering: you can change how one layer works without rebuilding the whole cake, as long as the service it offers stays the same."
+        ],
+        "mistake": {
+          "title": "Mixing up network and transport",
+          "text": "The network layer gets data to the right machine (host to host). The transport layer then gets it to the right program on that machine (process to process). Think of the network layer delivering to the right farm, and the transport layer handing it to the right person on that farm."
+        }
+      },
+      "readMore": [
+        {
+          "title": "1.3 Architecture: layering, OSI and the Internet architecture",
+          "source": "Peterson & Davie, Computer Networks: A Systems Approach (CC BY 4.0)",
+          "url": "https://book.systemsapproach.org/foundation/architecture.html"
+        },
+        {
+          "title": "The reference models",
+          "source": "Bonaventure, Computer Networking: Principles, Protocols and Practice (CC BY)",
+          "url": "https://www.computer-networking.info/1st/html/intro/referencemodels.html"
+        },
+        {
+          "title": "RFC 1122: Requirements for Internet Hosts (section 1.1.3 describes the internet's layers)",
+          "source": "IETF",
+          "url": "https://www.rfc-editor.org/rfc/rfc1122",
+          "verify": true,
+          "verifyNote": "Check that section 1.1.3 is the right section number for the layer list."
+        }
+      ]
+    },
+    {
+      "id": "0.2",
+      "title": "Encapsulation Express",
+      "story": "Courier Kit has a letter for Farmer Juno on the far side of the valley. In Packet Valley, every letter goes down through the floors of the sender's house, along the road, and up through the receiver's house.",
+      "hook": {
+        "question": "On café Wi-Fi with a VPN turned on, the café can see that you're sending data, but usually not which websites you're visiting. What's hiding them?",
+        "answer": "Encapsulation, done twice. The VPN app takes your whole packet, headers and all, encrypts it, and makes it the cargo of a brand-new packet addressed to the VPN server. The café only ever sees the outer wrapper."
+      },
+      "fieldNotes": [
+        {
+          "title": "A VPN is a parcel inside a parcel",
+          "text": "Wrapping a whole packet inside another packet is called tunnelling. VPNs use it to carry your traffic, encrypted, across networks you don't trust. Big networks also use tunnels to connect their sites to each other over the public internet.",
+          "source": { "title": "Cloudflare Learning: What is tunneling?", "url": "https://www.cloudflare.com/learning/network-layer/what-is-tunneling/" }
+        },
+        {
+          "title": "One letter, 64 bytes",
+          "text": "Every wrapper costs bytes. Sending just 1 byte of data with TCP over IPv4 on Ethernet needs at least 20 bytes of TCP header, 20 bytes of IP header, and 18 bytes of Ethernet header and trailer: 59 bytes in total. Ethernet then pads short frames up to its 64-byte minimum. That's why apps try to send data in bigger chunks.",
+          "source": { "title": "RFC 9293: TCP (header format)", "url": "https://www.rfc-editor.org/rfc/rfc9293" },
+          "verify": true,
+          "verifyNote": "Check the sums: TCP 20 + IPv4 20 + 1 data + Ethernet 14 header + 4 trailer = 59; minimum Ethernet frame 64 bytes (not counting the preamble)."
+        }
+      ],
+      "learn": {
+        "bullets": [
+          "Going down the sender's stack, each layer wraps what it got from above in its own header: a label with information for the same layer on the other side.",
+          "The data link layer also adds a trailer to the end, which usually holds an error check.",
+          {
+            "text": "The physical layer adds no wrapper. It sends the whole frame as signals, one bit at a time.",
+            "verify": true,
+            "verifyNote": "True in the subject's model. Real links such as Ethernet also send a timing pattern (a preamble) before the frame; check whether to mention it."
+          },
+          "Each layer treats everything inside its wrapper as plain cargo. It never needs to read the other layers' labels.",
+          "On the other side, each layer peels off its own wrapper and passes the rest up. Last on, first off."
+        ],
+        "diagramCaption": "A fully wrapped frame. The letter sits in the middle, and the link wrapper is on the outside."
+      },
+      "play": {
+        "places": {
+          "sender": "Kit's house",
+          "router": "Router hut",
+          "receiver": "Juno's house",
+          "road": "On the road"
+        },
+        "floors": {
+          "application": "Application",
+          "transport": "Transport",
+          "network": "Network",
+          "datalink": "Data link",
+          "physical": "Physical"
+        },
+        "youAreHere": "You are here",
+        "wrappers": {
+          "message": "Kit's letter (the message)",
+          "transport": "Transport header: port numbers",
+          "network": "Network header: IP addresses",
+          "linkHeader": "Link header: MAC addresses",
+          "linkTrailer": "Link trailer: error check",
+          "bits": "The whole frame, sent as signals (bits)"
+        },
+        "continue": "Continue",
+        "steps": [
+          {
+            "place": "sender",
+            "floor": "application",
+            "prompt": "Kit hands over the letter on the Application floor. What do we call it here?",
+            "options": [
+              { "text": "Message", "correct": true },
+              { "text": "Segment" },
+              { "text": "Packet" },
+              { "text": "Frame" }
+            ],
+            "hints": ["This is the top floor, where apps work. Nothing has been wrapped yet.", "At the Application layer, the data is called a message."],
+            "success": "Right. At the top, it's just the app's message."
+          },
+          {
+            "place": "sender",
+            "floor": "transport",
+            "prompt": "Down to the Transport floor. Which wrapper goes on here?",
+            "options": [
+              { "text": "Transport header: port numbers, so the right program gets it", "correct": true },
+              { "text": "Network header: IP addresses, so the right machine gets it" },
+              { "text": "Link header: MAC addresses, for the next device on this wire" },
+              { "text": "No wrapper: this floor just passes it down" }
+            ],
+            "hints": ["This floor's job is getting data to the right program on the other machine.", "Pick the header with port numbers."],
+            "success": "Wrapped. The port number tells Juno's computer which program gets the letter.",
+            "action": "wrap:transport"
+          },
+          {
+            "place": "sender",
+            "floor": "transport",
+            "prompt": "What's the bundle called now?",
+            "options": [
+              { "text": "Segment", "correct": true },
+              { "text": "Message" },
+              { "text": "Packet" },
+              { "text": "Frame" }
+            ],
+            "hints": ["It's a piece of the transport layer's stream.", "At the Transport layer, it's called a segment."],
+            "success": "Right: a segment. (When the transport protocol is UDP, people often call it a datagram instead.)",
+            "verify": true,
+            "verifyNote": "Check the subject's naming: segment for TCP, datagram often used for UDP."
+          },
+          {
+            "place": "sender",
+            "floor": "network",
+            "prompt": "Network floor. Which wrapper goes on now?",
+            "options": [
+              { "text": "Network header: IP addresses for the sending and receiving machines", "correct": true },
+              { "text": "Another transport header, just in case" },
+              { "text": "Link header: MAC addresses, for the next device on this wire" },
+              { "text": "Application header: the letter's subject line" }
+            ],
+            "hints": ["This floor finds a route across many networks to the right machine.", "Pick the header with IP addresses."],
+            "success": "Wrapped. The IP addresses say which machine, anywhere on the internet.",
+            "action": "wrap:network"
+          },
+          {
+            "place": "sender",
+            "floor": "network",
+            "prompt": "And what's the bundle called at this floor?",
+            "options": [
+              { "text": "Packet", "correct": true },
+              { "text": "Segment" },
+              { "text": "Frame" },
+              { "text": "Bits" }
+            ],
+            "hints": ["It's the thing a router passes from road to road.", "At the Network layer, it's called a packet."],
+            "success": "Right: a packet."
+          },
+          {
+            "place": "sender",
+            "floor": "datalink",
+            "prompt": "Data link floor. Which header goes on the front?",
+            "options": [
+              { "text": "Link header: MAC addresses, for the next device on this wire", "correct": true },
+              { "text": "Network header: IP addresses" },
+              { "text": "Physical header: the colour of the cable" },
+              { "text": "Transport header: port numbers" }
+            ],
+            "hints": ["This floor only cares about reaching the next device on this one link.", "Pick the header with MAC addresses."],
+            "success": "Front label on. This one only needs to get the frame across one link.",
+            "action": "wrap:linkHeader"
+          },
+          {
+            "place": "sender",
+            "floor": "datalink",
+            "prompt": "Frames get wrapped at both ends. What goes on the back?",
+            "options": [
+              { "text": "Link trailer: an error check, so the next device can spot damage", "correct": true },
+              { "text": "Network trailer: a second copy of the IP addresses" },
+              { "text": "Transport trailer: the port numbers again" },
+              { "text": "Nothing goes on the back" }
+            ],
+            "hints": ["Only one layer adds something at the end, and it's the floor you're on.", "The trailer holds an error check."],
+            "success": "Trailer on. Now the next device can check whether anything got damaged on the way.",
+            "action": "wrap:linkTrailer"
+          },
+          {
+            "place": "sender",
+            "floor": "datalink",
+            "prompt": "What's the bundle called now?",
+            "options": [
+              { "text": "Frame", "correct": true },
+              { "text": "Packet" },
+              { "text": "Segment" },
+              { "text": "Bits" }
+            ],
+            "hints": ["It has a clearly marked start and end, like a picture in its border.", "At the Data link layer, it's called a frame."],
+            "success": "Right: a frame."
+          },
+          {
+            "place": "sender",
+            "floor": "physical",
+            "prompt": "Physical floor. What does this layer add?",
+            "options": [
+              { "text": "Nothing new: it sends the whole frame as signals, bit by bit", "correct": true },
+              { "text": "A physical header with the cable's address" },
+              { "text": "A second error-check trailer" },
+              { "text": "It removes the transport header to save space" }
+            ],
+            "hints": ["This layer doesn't read wrappers at all. It only knows about signals.", "It adds no wrapper. It just sends the frame as bits."],
+            "success": "Right. Out the door it goes, as a stream of 1s and 0s.",
+            "action": "toBits"
+          },
+          {
+            "type": "travel",
+            "to": "router",
+            "text": "The bits head down the road toward the router hut.",
+            "button": "Send it down the road"
+          },
+          {
+            "place": "router",
+            "floor": "network",
+            "prompt": "The bits reach the router hut. How far up does a plain router unwrap?",
+            "options": [
+              { "text": "Up to the network layer: it reads the IP address to pick the next road", "correct": true },
+              { "text": "Up to the transport layer: it reads the port numbers" },
+              { "text": "All the way: it opens and reads the letter" },
+              { "text": "Not at all: it just copies the bits along" }
+            ],
+            "hints": ["A router's whole job is choosing the next road toward the right machine. Which header says which machine?", "It unwraps up to the network layer, where the IP address lives."],
+            "success": "Right. The router turned the bits back into a frame, took off the link wrapper, and read the IP address. The transport header and the letter stay sealed.",
+            "action": "routerUnwrap"
+          },
+          {
+            "place": "router",
+            "floor": "datalink",
+            "prompt": "The router has picked the next road. What does it do before sending the packet on?",
+            "options": [
+              { "text": "Puts on a fresh link header and trailer for the next link", "correct": true },
+              { "text": "Changes the destination IP address to its own" },
+              { "text": "Takes off the transport header" },
+              { "text": "Sends the packet with no link wrapper" }
+            ],
+            "hints": ["The old link wrapper was only good for the last link.", "Each link needs its own link header and trailer, so the router adds new ones."],
+            "success": "New link, new link wrapper. The IP addresses inside stay the same. (The router does update a hop counter in the network header, but not the addresses.)",
+            "action": "routerRewrap"
+          },
+          {
+            "type": "travel",
+            "to": "receiver",
+            "text": "Off down the second road to Juno's house. On the Physical floor, the bits become a frame again.",
+            "button": "Send it down the road",
+            "action": "fromBits"
+          },
+          {
+            "place": "receiver",
+            "floor": "datalink",
+            "prompt": "Data link floor of Juno's house. Which wrapper comes off here?",
+            "options": [
+              { "text": "The link header and trailer", "correct": true },
+              { "text": "The network header" },
+              { "text": "The transport header" },
+              { "text": "Nothing: this floor never unwraps" }
+            ],
+            "hints": ["Last on, first off. Which wrapper is on the outside?", "The link header and trailer are the outermost wrapper."],
+            "success": "Off it comes, after a quick error check. What's left is a packet.",
+            "action": "unwrap:link"
+          },
+          {
+            "place": "receiver",
+            "floor": "network",
+            "prompt": "Network floor. Which wrapper comes off now?",
+            "options": [
+              { "text": "The network header", "correct": true },
+              { "text": "The transport header" },
+              { "text": "The letter itself" },
+              { "text": "Another link header" }
+            ],
+            "hints": ["Look at the parcel: which wrapper is on the outside now?", "The network header is now outermost."],
+            "success": "The IP address matches Juno's machine, so the header comes off. What's left is a segment.",
+            "action": "unwrap:network"
+          },
+          {
+            "place": "receiver",
+            "floor": "transport",
+            "prompt": "Transport floor. Which wrapper comes off here?",
+            "options": [
+              { "text": "The transport header, after reading the port number", "correct": true },
+              { "text": "The network header" },
+              { "text": "The link trailer" },
+              { "text": "None: Transport passes it up untouched" }
+            ],
+            "hints": ["Only one wrapper is left.", "The transport header comes off, and its port number says which program gets the letter."],
+            "success": "The port number points to Juno's mail app. Up it goes.",
+            "action": "unwrap:transport"
+          },
+          {
+            "place": "receiver",
+            "floor": "application",
+            "prompt": "Top floor. What does Juno's app receive?",
+            "options": [
+              { "text": "Kit's letter, exactly as it was sent", "correct": true },
+              { "text": "A packet with its IP addresses" },
+              { "text": "A frame with its error check" },
+              { "text": "A stream of bits" }
+            ],
+            "hints": ["Every wrapper has been peeled off now.", "Only the original message is left."],
+            "success": "Delivered! Juno reads the letter, and never saw a single wrapper."
+          }
+        ]
+      },
+      "feed": [
+        {
+          "id": "0.2-f1",
+          "type": "predict",
+          "prompt": "Going down the sender's stack, the letter gets three headers. One layer also adds a piece at the end. Which layer, and what's in it?",
+          "answer": "The data link layer adds a trailer, which usually holds an error check."
+        },
+        {
+          "id": "0.2-f2",
+          "type": "quiz",
+          "prompt": "At the receiver, which wrapper comes off first?",
+          "options": [
+            {
+              "text": "The link header and trailer",
+              "correct": true
+            },
+            {
+              "text": "The transport header"
+            },
+            {
+              "text": "The network header"
+            },
+            {
+              "text": "None: the receiver reads the letter straight away"
+            }
+          ],
+          "explain": "Last on, first off. The link wrapper went on last, so it's the outermost one."
+        },
+        {
+          "id": "0.2-f3",
+          "type": "why",
+          "prompt": "Why does a router put a new link wrapper on at every hop?",
+          "options": [
+            {
+              "text": "A link wrapper only describes one link, such as the next device's MAC address",
+              "correct": true
+            },
+            {
+              "text": "To change the destination IP address"
+            },
+            {
+              "text": "To hide the letter from the next router"
+            },
+            {
+              "text": "Because the transport header wears out"
+            }
+          ],
+          "explain": "Each link is its own short trip, so each one gets its own link header and trailer."
+        },
+        {
+          "id": "0.2-f4",
+          "type": "quiz",
+          "prompt": "A plain router reads which header to choose the next road?",
+          "options": [
+            {
+              "text": "The network header (IP addresses)",
+              "correct": true
+            },
+            {
+              "text": "The transport header (port numbers)"
+            },
+            {
+              "text": "The letter itself"
+            },
+            {
+              "text": "The link trailer (error check)"
+            }
+          ],
+          "explain": "Routers work at the network layer. They read the destination IP address and leave the inner wrappers sealed."
+        },
+        {
+          "id": "0.2-f5",
+          "type": "predict",
+          "prompt": "Your packet crosses 5 routers on its trip. Does its destination IP address change along the way? Decide before you flip.",
+          "answer": "No, unless a NAT box is involved. The IP addresses stay the same; only the link wrappers change at each hop."
+        },
+        {
+          "id": "0.2-f6",
+          "type": "quiz",
+          "prompt": "Which layer adds no wrapper at all?",
+          "options": [
+            {
+              "text": "Physical",
+              "correct": true
+            },
+            {
+              "text": "Data link"
+            },
+            {
+              "text": "Network"
+            },
+            {
+              "text": "Transport"
+            }
+          ],
+          "explain": "The physical layer just sends the whole frame as signals, bit by bit."
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You wrapped the letter on the way down (segment, then packet, then frame, then bits) and unwrapped it in the reverse order on the way up. That's encapsulation.",
+          "At the router hut, you only went up as far as the network layer, then put on a fresh link wrapper for the next road. The IP addresses inside stayed the same for the whole trip."
+        ],
+        "mistake": {
+          "title": "Thinking routers read every layer",
+          "text": "A plain router unwraps only up to the network layer. It reads the IP address, picks the next road, and puts on a new link wrapper. It never opens the transport header or the letter. (Some special boxes, such as NAT gateways, do peek at port numbers. You'll meet them in Router Ranch.)"
+        }
+      },
+      "readMore": [
+        {
+          "title": "1.3 Architecture (see 1.3.2 Encapsulation)",
+          "source": "Peterson & Davie, Computer Networks: A Systems Approach (CC BY 4.0)",
+          "url": "https://book.systemsapproach.org/foundation/architecture.html"
+        },
+        {
+          "title": "RFC 1122: Requirements for Internet Hosts (the internet's layers, from the people who define them)",
+          "source": "IETF",
+          "url": "https://www.rfc-editor.org/rfc/rfc1122"
+        },
+        {
+          "title": "Wireshark: see real headers wrapped around your own traffic",
+          "source": "Wireshark (free, open-source tool)",
+          "url": "https://www.wireshark.org"
+        }
+      ]
+    }
+  ]
+}
