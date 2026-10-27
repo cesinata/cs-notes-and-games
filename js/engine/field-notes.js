@@ -4,6 +4,7 @@
 // finishes that level with at least 1 star.
 
 import { el } from './ui.js';
+import { t } from './i18n.js';
 import { textOf } from './content.js';
 import { getLevelResult } from './storage.js';
 
@@ -15,11 +16,11 @@ export function fieldNoteCard(note, { locked = false, lockedText = '', isNew = f
       el('p', { class: 'field-note-locked' }, lockedText));
   }
   return el('article', { class: 'field-note' },
-    isNew ? el('span', { class: 'tag' }, 'New') : null,
+    isNew ? el('span', { class: 'tag' }, t('fieldNotes.new')) : null,
     el('h3', { class: 'field-note-title' }, textOf(note.title)),
     el('p', {}, textOf(note.text)),
     note.source ? el('p', { class: 'field-note-source' },
-      'Source: ', el('a', { href: note.source.url, target: '_blank', rel: 'noopener' }, textOf(note.source.title))) : null);
+      t('fieldNotes.source'), el('a', { href: note.source.url, target: '_blank', rel: 'noopener' }, textOf(note.source.title))) : null);
 }
 
 // Every note from the loaded zone files, with whether it's unlocked yet.

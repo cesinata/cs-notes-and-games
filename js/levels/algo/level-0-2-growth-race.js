@@ -9,6 +9,7 @@
 
 import { el, clear, focusHeading, shuffle } from '../../engine/ui.js';
 import { choiceList, continueButton, wobble } from '../../engine/choices.js';
+import { t } from '../../engine/i18n.js';
 import { runStepSim } from '../../engine/step-sim.js';
 
 function fill(text, values) {
@@ -137,7 +138,7 @@ export const growthRace = {
             if (placed === P.rankItems.length) {
               ctx.step([]);
               ctx.correct(P.rankDone);
-              after.append(continueButton('Continue', next));
+              after.append(continueButton(t('level.continue'), next));
             } else {
               ctx.step(hintsFor(placed));
               ctx.correct(`${item.label} is in place.`);
@@ -174,7 +175,7 @@ export const growthRace = {
         choiceList({
           options: q.options,
           reducedMotion: ctx.reducedMotion,
-          onCorrect: () => { ctx.step([]); ctx.correct(q.explain); after.append(continueButton('Continue', next)); },
+          onCorrect: () => { ctx.step([]); ctx.correct(q.explain); after.append(continueButton(t('level.continue'), next)); },
           onWrong: () => ctx.mistake()
         }));
       ctx.placeFeedback(area);

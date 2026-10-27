@@ -455,7 +455,7 @@ a.district-card:hover { background: var(--panel-alt); }
   border: 3px solid var(--frame); border-radius: 6px; padding: 0.4rem 0.8rem; background: var(--panel-alt);
 }
 .region-nav a.is-current { background: var(--panel); box-shadow: 0 4px 0 var(--frame); border-width: 3px; }
-.region-nav a.is-current .region-name::after { content: " (you are here)"; font-family: var(--font-body); font-size: 0.8rem; color: var(--text-soft); }
+.region-here { font-family: var(--font-body); font-size: 0.8rem; color: var(--text-soft); }
 .region-name { display: block; font: 600 1rem/1.2 var(--font-pixel); color: var(--pine); }
 .region-subject { display: block; font-size: 0.82rem; color: var(--text-soft); }
 
@@ -551,3 +551,14 @@ a.district-card:hover { background: var(--panel-alt); }
 @media (max-width: 30rem) {
   .subject-card { flex-direction: column; }
 }
+
+/* ---------- Language switch ---------- */
+.language-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin: 0 0 1rem; }
+.language-label { font-size: 0.9rem; color: var(--text-soft); }
+.language-button {
+  font: inherit; color: var(--text); background: var(--panel-alt); cursor: pointer;
+  border: 3px solid var(--frame); border-radius: 6px; padding: 0.3rem 0.8rem;
+}
+.language-button.is-current { background: var(--panel); box-shadow: 0 3px 0 var(--frame); font-weight: 700; }
+.language-button.is-current::before { content: "✓ "; }
+.language-button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }

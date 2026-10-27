@@ -16,15 +16,16 @@
 // Bars state:   { bars: [{ label, value }] }
 // "words" are the button labels from world.json ("sim").
 
-import { el, clear, focusHeading, announce } from './ui.js';
+import { el, clear, focusHeading, announce, setText } from './ui.js';
+import { t, getLocale } from './i18n.js';
 import { choiceList, continueButton } from './choices.js';
 
 // ---------- Views ----------
 
 function drawArray(state) {
-  const row = el('ol', { class: 'crates', 'aria-label': state.label || 'Crates' });
+  const row = el('ol', { class: 'crates', 'aria-label': state.label || t('sim.crates') });
   if (!state.items.length) {
-    return el('div', { class: 'crates-wrap' }, el('p', { class: 'crates-empty' }, state.empty || 'Empty'));
+    return el('div', { class: 'crates-wrap' }, el('p', { class: 'crates-empty' }, state.empty || t('sim.empty')));
   }
   state.items.forEach((item, i) => {
     const pointer = state.pointers && state.pointers[i];
@@ -42,7 +43,7 @@ function drawBars(state) {
     el('span', { class: 'bar-label' }, bar.label),
     el('span', { class: 'bar-track' },
       el('span', { class: 'bar-fill', style: `width:${Math.max(1, (bar.value / max) * 100)}%` })),
-    el('span', { class: 'bar-value' }, bar.value.toLocaleString('en-AU')))));
+    el('span', { class: 'bar-value' }, bar.value.toLocaleString(getLocale())))));
 }
 
 const VIEWS = { array: drawArray, bars: drawBars };
@@ -78,10 +79,10 @@ export function runStepSim({ ctx, container, script, mode = 'watch', words, onDo
     const step = steps[i];
     clear(picture);
     picture.append(draw(step.state));
-    caption.textContent = step.say || '';
+    setText(caption, step.say || '');
     const counterText = Object.entries(totals)
       .map(([name, value]) => words.counter.replace('{name}', name).replace('{value}', value)).join('. ');
-    meta.textContent = [words.stepOf.replace('{i}', i + 1).replace('{n}', steps.length), counterText].filter(Boolean).join('. ');
+    setText(meta, [words.stepOf.replace('{i}', i + 1).replace('{n}', steps.length), counterText].filter(Boolean).join('. '));
   }
 
   function finishButton() {
@@ -162,7 +163,7 @@ export function runStepSim({ ctx, container, script, mode = 'watch', words, onDo
   function startCounting(guess, right) {
     clear(panel);
     ctx.step([]);
-    panel.append(el('p', { class: 'sim-guess' }, `Your prediction: ${guess}`));
+    panel.append(el('p', { class: 'sim-guess' }, t('sim.prediction', { guess })));
     function advance() {
       if (index === steps.length - 1) {
         const actual = totals[script.countQuestion.counter] || 0;

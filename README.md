@@ -28,6 +28,18 @@ Then open http://localhost:8000 in your browser. Press Ctrl+C in the terminal to
 - `#/net/` is Packet Valley and `#/algo/` is Algo Archipelago. Each has its own map, Daily Feed (`feed`) and Field Journal (`journal`).
 - Older links without a region (like `#/zone/0` or `#/feed`) are sent to the matching page under `#/net/`.
 
+## Languages
+
+The game is in **English** and **Bahasa Indonesia**. Pick a language with the buttons at the top of the main page
+or a region's map. The choice is remembered on that device, and the first visit follows the browser's language.
+
+- Technical terms (like *network*, *data link*, *dynamic programming*) stay in English on purpose. They are listed
+  in `content/glossary.json`, and the game marks them so a browser translator can't change them.
+- In Indonesian text, an English term is followed by its Indonesian meaning the first time, like "layer (lapisan)".
+- Indonesian files live in `content/id/`, with the same names as the English ones. They only need the lines that
+  change. Anything missing shows in English. Level texts (`zone-0.json`) are not translated yet.
+- Buttons and labels are in `content/ui.json` (English) and `content/id/ui.json` (Indonesian).
+
 ## What's built so far
 
 - Main page, region maps, saved progress (stars) and a "Reset progress" button for each region
@@ -42,6 +54,8 @@ Then open http://localhost:8000 in your browser. Press Ctrl+C in the terminal to
 All the words players see live in `content/`, so you can change them without touching code:
 
 - `content/landing.json`: the main page
+- `content/ui.json`: buttons and labels. `content/glossary.json`: terms that stay in English
+- `content/id/`: the Indonesian version of any of these files
 - `content/regions.json`: the list of regions (subjects) and their descriptions
 - `content/<region>/world.json`: district names, map positions and the planned level list
 - `content/<region>/zone-0.json`: everything for that district's levels (story, hook, learn card, puzzle text, hints, debrief, Field Notes, feed cards, read more)
@@ -59,7 +73,7 @@ css/style.css         all the styles
 js/main.js            starts the game, switches between pages by web address
 js/landing.js         the main page
 js/hub.js             a region's map and district pages
-js/engine/            shared parts: level template, saving, stars, sprites, content checks
+js/engine/            shared parts: level template, saving, stars, sprites, content checks, languages (i18n.js)
 js/levels/net/        one file per Packet Valley level (index.js lists them)
 js/levels/algo/       one file per Algo Archipelago level
 content/              all player-facing text

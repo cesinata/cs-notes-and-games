@@ -1,0 +1,94 @@
+{
+  "tagline": "Berlayar antar pulau dan selesaikan masalah tiap penduduk dengan algorithm (algoritma) yang tepat.",
+  "starRules": "3 bintang: tanpa kesalahan dan tanpa petunjuk. 2 bintang: maksimal 2 kesalahan. 1 bintang: kamu berhasil menyelesaikannya.",
+  "listHeading": "Pulau",
+  "journal": {
+    "title": "Field Journal",
+    "intro": "Setiap level membuka Field Notes: tempat ide itu muncul di aplikasi dan sistem yang kamu pakai hari ini. Selesaikan sebuah level untuk membaca catatannya.",
+    "lockedText": "Selesaikan {level} untuk membaca catatan ini.",
+    "hubText": "{count} dari {total} Field Notes terkumpul"
+  },
+  "feed": {
+    "title": "Daily Feed",
+    "intro": "Kartu-kartu singkat dari pulau yang sudah kamu selesaikan. Sekitar 10 kartu, lalu selesai untuk hari ini.",
+    "hubReady": "{count} kartu siap",
+    "hubDone": "Selesai untuk hari ini. Kartu baru besok.",
+    "hubCaughtUp": "Sudah terkejar semua",
+    "hubEmpty": "Selesaikan sebuah level untuk mengisi feed kamu.",
+    "streak": "streak {days} hari",
+    "start": "Mulai feed hari ini",
+    "empty": "Feed kamu masih kosong. Selesaikan sebuah level di Lighthouse Point dan kartunya akan muncul di sini.",
+    "caughtUp": "Kartu yang sudah kamu kuasai menunggu beberapa hari sebelum muncul lagi. Jeda itulah yang membuatnya melekat di ingatan.",
+    "labels": {
+      "quiz": "Pertanyaan cepat",
+      "predict": "Tebak, lalu balik",
+      "why": "Kenapa?",
+      "note": "Field Note"
+    },
+    "flip": "Balik kartunya",
+    "selfCheck": "Apakah jawabanmu mendekati?",
+    "gotIt": "Ya, aku bisa",
+    "notYet": "Belum tepat",
+    "next": "Kartu berikutnya",
+    "swipeTip": "Di HP, kamu juga bisa geser ke kiri.",
+    "comesBack": "Kartu ini akan muncul lagi nanti supaya makin melekat.",
+    "doneTitle": "Selesai untuk hari ini",
+    "doneText": "Kamu benar {right} dari {total}. Kartu yang meleset akan segera muncul lagi. Sisanya menunggu beberapa hari supaya melekat.",
+    "doneTextPerfect": "Kamu benar semua {total}. Kartu-kartu ini akan menunggu beberapa hari sebelum muncul lagi, supaya melekat.",
+    "streakFirst": "Ini hari ke-1. Kembali besok untuk hari ke-2.",
+    "streakMore": "{days} hari berturut-turut.",
+    "backToMap": "Kembali ke peta",
+    "emptyButton": "Ke Lighthouse Point"
+  },
+  "sim": {
+    "next": "Langkah berikutnya",
+    "back": "Kembali",
+    "stepOf": "Langkah {i} dari {n}",
+    "runToEnd": "Jalankan sampai akhir",
+    "finish": "Lanjut",
+    "counted": "Kamu memprediksi {guess}. Hasilnya {actual}.",
+    "revealed": "Begini yang terjadi:",
+    "counter": "{name} sejauh ini: {value}"
+  },
+  "zones": [
+    {
+      "id": 0,
+      "topic": "Dasar-dasar: data structure (struktur data), cost (biaya), dan growth rate (laju pertumbuhan)"
+    },
+    {
+      "id": 1,
+      "topic": "Brute force dan exhaustive search (pencarian menyeluruh)"
+    },
+    {
+      "id": 2,
+      "topic": "Recursion (rekursi) dan decrease-and-conquer"
+    },
+    {
+      "id": 3,
+      "topic": "Graph: DFS, BFS, dan topological sort"
+    },
+    {
+      "id": 4,
+      "topic": "Divide-and-conquer: mergesort, quicksort, Master Theorem"
+    },
+    {
+      "id": 5,
+      "topic": "Heap, presorting, dan search tree (pohon pencarian)"
+    },
+    {
+      "id": 6,
+      "topic": "Space-time trade-off (kompromi ruang dan waktu): counting sort, Horspool, hashing"
+    },
+    {
+      "id": 7,
+      "topic": "Dynamic programming, Warshall dan Floyd"
+    },
+    {
+      "id": 8,
+      "topic": "Greedy algorithm dan P vs NP (cakupan masih perlu dikonfirmasi)"
+    }
+  ],
+  "finale": {
+    "topic": "Pilih algorithm yang tepat untuk tiap tantangan, tanpa label sebagai petunjuk."
+  }
+}

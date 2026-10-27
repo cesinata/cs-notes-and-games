@@ -1,0 +1,14 @@
+{
+  "regions": [
+    {
+      "id": "net",
+      "subject": "Internet Technologies (teknologi internet)",
+      "description": "Ikuti satu surat yang melintasi sebuah lembah dan lihat bagaimana internet membawanya: layer (lapisan), kabel, frame, address (alamat), route (rute), port, web request, dan security (keamanan)."
+    },
+    {
+      "id": "algo",
+      "subject": "Algorithms and Complexity (algoritma dan kompleksitas)",
+      "description": "Berpindah dari pulau ke pulau untuk memahami ide di balik program yang cepat: cara mengatur data (data structure), menghitung biaya sebuah metode, dan memilih cara yang lebih cerdas untuk memecahkan masalah."
+    }
+  ]
+}

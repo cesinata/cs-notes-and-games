@@ -3,6 +3,7 @@
 // reading text aloud for screen readers, shuffling, and the error screen.
 
 import { makeSprite } from './sprites.js';
+import { termNodes, t } from './i18n.js';
 
 // Make an element in one line, e.g.
 //   el('button', { class: 'btn', onclick: go }, 'Play')
@@ -17,7 +18,7 @@ export function el(tag, props = {}, ...children) {
 export function svgEl(tag, props = {}, ...children) {
   const node = document.createElementNS('http://www.w3.org/2000/svg', tag);
   applyProps(node, props);
-  appendChildren(node, children);
+  appendChildren(node, children, false); // plain text only: SVG can't hold the term spans
   return node;
 }
 
@@ -33,11 +34,20 @@ function applyProps(node, props) {
   });
 }
 
-function appendChildren(node, children) {
+// Text goes through termNodes, which keeps technical terms (see glossary.json) from being translated.
+function appendChildren(node, children, markTerms = true) {
   children.flat().forEach((child) => {
     if (child === null || child === undefined || child === false) return;
-    node.append(child instanceof Node ? child : document.createTextNode(String(child)));
+    if (child instanceof Node) node.append(child);
+    else if (markTerms) node.append(...termNodes(String(child)));
+    else node.append(document.createTextNode(String(child)));
   });
+}
+
+// Replaces what's inside a node with new text (term-marked, like el()).
+export function setText(node, text) {
+  clear(node);
+  appendChildren(node, [text]);
 }
 
 export function clear(node) {
@@ -69,7 +79,7 @@ export function starRow(earned, max = 3, size = 2) {
   for (let i = 0; i < max; i += 1) {
     row.append(makeSprite(i < earned ? 'star' : 'starEmpty', size));
   }
-  row.append(el('span', { class: 'visually-hidden' }, `${earned} of ${max} stars`));
+  row.append(el('span', { class: 'visually-hidden' }, t('stars.of', { earned, max })));
   return row;
 }
 
@@ -82,7 +92,8 @@ export function shuffle(list) {
   return copy;
 }
 
-// A gentle full-screen error, e.g. when a content file is broken.
+// A gentle full-screen error, e.g. when a content file is broken. It stays in
+// English on purpose: it's for whoever edits the files, not for players.
 export function showError(app, error) {
   clear(app);
   const problems = error.problems || [error.message || String(error)];
