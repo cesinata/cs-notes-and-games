@@ -50,7 +50,7 @@ function countScript(P) {
     return {
       items: crates.map((v, i) => ({ value: v, mark: i === best ? 'best' : (i === compare ? 'compare' : null) })),
       pointers,
-      label: 'Crates, left to right'
+      label: t('sim.cratesLtr')
     };
   };
   const steps = [{ state: pic(), say: P.countStart }];
@@ -108,7 +108,7 @@ export const growthRace = {
     const stages = [
       (next) => rank(next),
       (next) => sim(P.raceTitle, P.raceIntro, raceScript(P), 'predict', next),
-      ...P.statements.map((s, i) => (next) => question(P.tfTitle, i === 0 ? P.tfIntro : null, s, `Claim ${i + 1} of ${P.statements.length}`, next)),
+      ...P.statements.map((s, i) => (next) => question(P.tfTitle, i === 0 ? P.tfIntro : null, s, t('level.claimOf', { i: i + 1, n: P.statements.length }), next)),
       (next) => sim(P.countTitle, P.countIntro, countScript(P), 'count', next),
       (next) => question(P.countTitle, null, { prompt: P.followPrompt, options: P.followOptions, hints: P.followHints, explain: P.followExplain }, null, next)
     ];
@@ -124,10 +124,10 @@ export const growthRace = {
     function rank(next) {
       let placed = 0;
       const heading = el('h2', {}, P.rankTitle);
-      const lineUp = el('ol', { class: 'rank-line', 'aria-label': 'Boats lined up, gentlest first' });
-      const tray = el('div', { class: 'tray', role: 'group', 'aria-label': 'Boats to line up' });
+      const lineUp = el('ol', { class: 'rank-line', 'aria-label': t('rank.lineAria') });
+      const tray = el('div', { class: 'tray', role: 'group', 'aria-label': t('rank.trayAria') });
       const after = el('div', { class: 'stage-after' });
-      const hintsFor = (i) => [P.rankItems[i].hint, `Next is ${P.rankItems[i].label}.`];
+      const hintsFor = (i) => [P.rankItems[i].hint, t('rank.nextIs', { label: P.rankItems[i].label })];
       shuffle(P.rankItems).forEach((item) => {
         const button = el('button', { class: 'slice-btn rank-btn', type: 'button' }, item.label);
         button.addEventListener('click', () => {
@@ -141,7 +141,7 @@ export const growthRace = {
               after.append(continueButton(t('level.continue'), next));
             } else {
               ctx.step(hintsFor(placed));
-              ctx.correct(`${item.label} is in place.`);
+              ctx.correct(t('rank.inPlace', { label: item.label }));
             }
           } else {
             ctx.mistake();

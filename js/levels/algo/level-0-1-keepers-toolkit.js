@@ -37,7 +37,7 @@ export function buildScript(ops, W, kind) {
       pointers,
       vertical: isStack,
       empty: W.empty,
-      label: isStack ? 'Crate stack, bottom first' : 'Ferry line, front first'
+      label: isStack ? t('sim.stackLabel') : t('sim.queueLabel')
     };
   };
   const steps = [{ state: picture(), say: isStack ? W.start : W.startQueue }];
@@ -82,10 +82,10 @@ export const keepersToolkit = {
   learnDiagram(level) {
     const W = level.play.words;
     return el('div', { class: 'learn-sims' },
-      el('div', {}, el('p', { class: 'small' }, 'Stack'),
-        drawSimState('array', { items: [{ value: 3 }, { value: 7 }, { value: 1 }], pointers: { 2: W.top, 0: W.bottom }, vertical: true, label: 'A stack of three crates' })),
-      el('div', {}, el('p', { class: 'small' }, 'Queue'),
-        drawSimState('array', { items: [{ value: 'Ana' }, { value: 'Ben' }, { value: 'Cy' }], pointers: { 0: W.front, 2: W.back }, label: 'A queue of three passengers' })));
+      el('div', {}, el('p', { class: 'small' }, t('toolkit.stack')),
+        drawSimState('array', { items: [{ value: 3 }, { value: 7 }, { value: 1 }], pointers: { 2: W.top, 0: W.bottom }, vertical: true, label: t('toolkit.stackAria') })),
+      el('div', {}, el('p', { class: 'small' }, t('toolkit.queue')),
+        drawSimState('array', { items: [{ value: 'Ana' }, { value: 'Ben' }, { value: 'Cy' }], pointers: { 0: W.front, 2: W.back }, label: t('toolkit.queueAria') })));
   },
 
   play(ctx) {
@@ -109,7 +109,7 @@ export const keepersToolkit = {
       const heading = el('h2', {}, P.needsTitle);
       const after = el('div', { class: 'stage-after' });
       area.append(
-        el('p', { class: 'small' }, `Islander ${i + 1} of ${P.needs.length}`),
+        el('p', { class: 'small' }, t('level.islanderOf', { i: i + 1, n: P.needs.length })),
         heading,
         i === 0 ? el('p', {}, P.needsIntro) : null,
         el('div', { class: 'customer' },
@@ -117,7 +117,7 @@ export const keepersToolkit = {
           el('blockquote', { class: 'speech' }, el('p', { class: 'speech-name' }, need.who), el('p', {}, need.need))),
         choiceList({
           options: need.options,
-          label: 'Tools',
+          label: t('toolkit.tools'),
           reducedMotion: ctx.reducedMotion,
           onCorrect: () => { ctx.step([]); ctx.correct(need.explain); after.append(continueButton(t('level.continue'), next)); },
           onWrong: () => ctx.mistake()

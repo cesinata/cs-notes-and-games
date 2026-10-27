@@ -2,12 +2,18 @@
   "about": "Technical terms that stay in English in every language. The game marks them so a browser translator leaves them alone. Add a term here and it is protected everywhere. Plurals (adding s or es) are matched automatically.",
   "terms": [
     "network", "network layer", "transport layer", "application layer", "physical layer", "data link", "data link layer", "link layer",
-    "layer", "protocol", "packet", "frame", "header", "trailer", "payload", "encapsulation", "router", "switch", "gateway",
-    "bandwidth", "latency", "throughput", "port", "socket", "handshake", "checksum", "CRC", "firewall", "encryption",
-    "MAC", "IP", "IP address", "TCP", "UDP", "HTTP", "HTTPS", "DNS", "NAT", "VPN", "LAN", "WAN", "Wi-Fi", "Ethernet", "OSI", "TCP/IP",
-    "algorithm", "data structure", "array", "linked list", "stack", "queue", "heap", "hash table", "hash function", "hashing",
-    "graph", "tree", "binary search", "binary search tree", "recursion", "recursive", "brute force", "greedy", "divide-and-conquer",
+    "layer", "protocol", "packet", "frame", "header", "trailer", "payload", "encapsulation",
+    "router", "switch", "gateway", "bandwidth", "latency", "throughput", "port", "socket",
+    "handshake", "checksum", "CRC", "firewall", "encryption", "MAC", "IP", "IP address",
+    "TCP", "UDP", "HTTP", "HTTPS", "DNS", "NAT", "VPN", "LAN",
+    "WAN", "Wi-Fi", "Ethernet", "OSI", "TCP/IP", "algorithm", "data structure", "array",
+    "linked list", "stack", "queue", "heap", "hash table", "hash function", "hashing", "graph",
+    "tree", "binary search", "binary search tree", "recursion", "recursive", "brute force", "greedy", "divide-and-conquer",
     "dynamic programming", "mergesort", "quicksort", "Big O", "time complexity", "space complexity", "worst case", "best case",
-    "average case", "growth rate", "DFS", "BFS", "topological sort", "Master Theorem", "pivot"
+    "average case", "growth rate", "DFS", "BFS", "topological sort", "Master Theorem", "pivot", "address",
+    "route", "segment", "message", "bits", "server", "browser", "service", "push",
+    "pop", "enqueue", "dequeue", "peer", "peers", "session", "presentation", "layering",
+    "tunnelling", "ARPANET", "IPv4", "QUIC", "cost", "comparison", "stack overflow", "call stack",
+    "message queue", "undo", "hop", "decrease-and-conquer", "abstract data type"
   ]
 }

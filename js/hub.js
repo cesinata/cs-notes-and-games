@@ -33,6 +33,7 @@ export function renderHub(app, world, onRefresh, notes = [], feedCard = null, re
       el('p', { class: 'lead' }, world.tagline)
     ),
     storageNotice(),
+    funFacts(world),
     buildMap(world, statuses, finale),
     el('div', { class: 'hub-cards' }, feedCard, journalCard(world, notes)),
     el('section', { class: 'signpost', 'aria-labelledby': 'signpost-heading' },
@@ -69,6 +70,17 @@ function journalCard(world, notes) {
     el('span', { class: 'district-text' },
       el('span', { class: 'district-name' }, world.journal.title),
       el('span', { class: 'district-topic' }, line)));
+}
+
+// 3 to 5 surprising facts at the top of a region's page, to spark curiosity before the map.
+function funFacts(world) {
+  if (!world.funFacts || !world.funFacts.length) return null;
+  return el('section', { class: 'fun-facts', 'aria-labelledby': 'facts-heading' },
+    el('h2', { id: 'facts-heading' }, t('hub.didYouKnow')),
+    el('ol', { class: 'fact-list' }, world.funFacts.map((fact, i) =>
+      el('li', { class: 'fact' },
+        el('span', { class: 'fact-num' }, t('hub.factNumber', { n: i + 1 })),
+        el('p', {}, fact.text)))));
 }
 
 function storageNotice() {

@@ -52,13 +52,18 @@ async function readOne(file, { optional = false } = {}) {
 // Puts a translation on top of the English file.
 //  - Objects are merged key by key, so a translation only needs the keys it changes.
 //  - Lists whose items have an "id" are merged by id (a translated level only needs its "id" and the text).
-//  - Any other list is replaced whole, so copy the full list (and keep flags like "correct" and "verify").
+//  - A list of objects without ids (like answer options) is merged by position when the translation has the
+//    same number of items, so flags like "correct" and "verify" stay from the English file.
+//  - Any other list (plain text lines) is replaced whole, so copy the full list.
 //  - Anything the translation leaves out stays in English.
 function overlay(base, over) {
   const isObject = (v) => v && typeof v === 'object' && !Array.isArray(v);
   if (Array.isArray(base) && Array.isArray(over)) {
     const hasIds = base.some((item) => isObject(item) && item.id !== undefined);
-    if (!hasIds) return over;
+    if (!hasIds) {
+      const sameShape = over.length === base.length && base.every(isObject) && over.every(isObject);
+      return sameShape ? base.map((item, i) => overlay(item, over[i])) : over;
+    }
     return base.map((item) => {
       const match = isObject(item) ? over.find((o) => isObject(o) && o.id === item.id) : undefined;
       return match === undefined ? item : overlay(item, match);
@@ -119,6 +124,7 @@ export async function loadRegions() {
     const ids = new Set();
     data.regions.forEach((r, i) => {
       ['id', 'name', 'subject', 'description', 'sprite', 'world'].forEach((key) => needText(problems, r[key], `regions[${i}].${key}`));
+      if (r.bigFact !== undefined) needText(problems, r.bigFact, `regions[${i}].bigFact`);
       if (typeof r.dir !== 'string') problems.push(`regions[${i}].dir should be a folder name like "algo/", or "" for none.`);
       if (ids.has(r.id)) problems.push(`regions[${i}].id "${r.id}" is used twice.`);
       ids.add(r.id);
@@ -174,6 +180,10 @@ export async function loadWorld(file = 'world.json') {
         });
       }
     });
+  }
+  if (world.funFacts !== undefined) {
+    if (!Array.isArray(world.funFacts) || world.funFacts.length < 3 || world.funFacts.length > 5) problems.push('funFacts should be a list of 3 to 5 facts.');
+    else world.funFacts.forEach((fact, i) => needText(problems, fact.text, `funFacts[${i}].text`));
   }
   if (!world.finale || !world.finale.map) problems.push('finale (with a map position) is missing.');
   if (!world.feed) problems.push('feed (the Daily Feed text) is missing.');

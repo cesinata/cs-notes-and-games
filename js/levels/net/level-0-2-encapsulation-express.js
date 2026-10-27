@@ -10,6 +10,7 @@
 import { el, clear, focusHeading, announce } from '../../engine/ui.js';
 import { choiceList, continueButton } from '../../engine/choices.js';
 import { drawSprite, makeSprite } from '../../engine/sprites.js';
+import { t } from '../../engine/i18n.js';
 
 // The little scene at the top, in pixels (the canvas is scaled up to fit).
 const SCENE_W = 360;
@@ -116,7 +117,7 @@ export const encapsulationExpress = {
   learnDiagram(level) {
     const words = level.play.wrappers;
     const full = { layers: ['transport', 'network'], linkHeader: true, linkTrailer: true, bits: false };
-    return el('div', { class: 'learn-parcel', role: 'img', 'aria-label': 'Nested wrappers: the link header and trailer on the outside, then the network header, then the transport header, and the letter in the middle.' },
+    return el('div', { class: 'learn-parcel', role: 'img', 'aria-label': t('parcel.aria') },
       renderParcel(full, words, null));
   },
 
@@ -154,7 +155,7 @@ export const encapsulationExpress = {
       const list = place === 'router' ? FLOORS.router : FLOORS.house;
       floorsBox.append(
         el('h3', {}, P.places[place]),
-        el('ol', { class: 'floors', 'aria-label': `Floors of ${P.places[place]}, top to bottom` },
+        el('ol', { class: 'floors', 'aria-label': t('parcel.floorsAria', { place: P.places[place] }) },
           list.map((id) => {
             const here = id === floor;
             return el('li', { class: `floor${here ? ' is-here' : ''}`, 'aria-current': here ? 'location' : null },
@@ -217,7 +218,7 @@ export const encapsulationExpress = {
           showParcel(newest);
           ctx.step([]);
           ctx.correct(step.success);
-          after.append(continueButton(isLast ? 'See how you did' : P.continue, runStep));
+          after.append(continueButton(isLast ? t('level.seeResult') : P.continue, runStep));
         },
         onWrong: () => ctx.mistake()
       }));
@@ -237,7 +238,7 @@ export const encapsulationExpress = {
         showFloors('road');
         parcel.bits = true;
         showParcel(null);
-        announce('On the road.');
+        announce(t('parcel.onRoad'));
         const destination = step.to === 'router' ? SPOTS.router : SPOTS.receiver;
         moveCourier(destination, () => {
           if (step.action) ACTIONS[step.action](parcel);

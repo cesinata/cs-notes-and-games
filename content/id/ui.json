@@ -1,39 +1,42 @@
 {
   "stars": {
-    "of": "{earned} dari {max} bintang"
+    "of": "{earned}/{max} bintang"
   },
   "common": {
-    "backToMap": "Kembali ke peta",
+    "backToMap": "Balik ke peta",
     "allSubjects": "Semua materi",
     "subjectsNav": "Materi",
     "language": "Bahasa",
-    "storageNotice": "Progress kamu tidak akan tersimpan di perangkat ini, karena browser memblokir penyimpanan. Kamu tetap bisa memainkan semuanya.",
-    "youAreHere": "(kamu di sini)"
+    "storageNotice": "Browser-mu memblokir penyimpanan, jadi progress nggak bakal kesimpan di sini. Tapi kamu tetap bisa main semuanya.",
+    "youAreHere": "(kamu di sini)",
+    "didYouKnow": "Tahu nggak?"
   },
   "hub": {
     "status": {
       "open": "Terbuka",
-      "building": "Sedang dibangun",
+      "building": "Lagi dibuat",
       "locked": "Terkunci"
     },
-    "lockedReason": "Selesaikan level inti di {zone} untuk membuka ini.",
-    "building": "Sudah terbuka. Level-levelnya masih dibuat.",
-    "stars": "{earned} dari {max} bintang",
-    "finaleLocked": "Terkunci. Selesaikan semua level inti di wilayah ini untuk membukanya.",
-    "finaleBuilding": "Sedang dibangun.",
+    "lockedReason": "Tamatkan level inti di {zone} dulu buat buka ini.",
+    "building": "Sudah terbuka. Level-nya masih dibuat.",
+    "stars": "{earned}/{max} bintang",
+    "finaleLocked": "Terkunci. Tamatkan semua level inti di wilayah ini dulu.",
+    "finaleBuilding": "Lagi dibuat.",
     "reset": "Reset progress",
-    "resetAsk": "Hapus semua bintang kamu di wilayah ini dan kunci lagi? Ini tidak bisa dibatalkan.",
-    "resetKeep": "Simpan progress-ku",
-    "resetConfirm": "Ya, reset semuanya",
-    "mapCaption": "Peta {title}. Tempat-tempat yang sama tercantum di bawah.",
+    "resetAsk": "Hapus semua bintang di wilayah ini dan kunci lagi? Nggak bisa dibatalin.",
+    "resetKeep": "Jangan, simpan aja",
+    "resetConfirm": "Ya, reset semua",
+    "mapCaption": "Peta {title}. Tempat yang sama ada di daftar bawah.",
     "lockedNotice": "Terkunci. {reason}",
-    "buildingNotice": "Distrik ini sudah terbuka, tapi level-levelnya masih dibuat. Cek lagi setelah tahap berikutnya selesai.",
+    "buildingNotice": "Distrik ini sudah terbuka, tapi level-nya masih dibuat. Cek lagi nanti ya.",
     "core": "Inti",
     "optional": "Opsional",
     "play": "Main",
     "playAgain": "Main lagi",
     "comingSoon": "Segera hadir",
-    "starsHere": "{earned} dari {max} bintang diraih di sini"
+    "starsHere": "{earned}/{max} bintang di sini",
+    "didYouKnow": "Tahu nggak?",
+    "factNumber": "Fakta {n}"
   },
   "level": {
     "phases": {
@@ -45,25 +48,25 @@
     "progressLabel": "Progres level",
     "hint": "Petunjuk",
     "hintLabel": "Petunjuk:",
-    "notQuite": "✗ Belum tepat.",
-    "tryAnother": "Coba pilihan lain.",
-    "thatsRight": "Betul.",
+    "notQuite": "✗ Belum pas.",
+    "tryAnother": "Coba yang lain.",
+    "thatsRight": "Betul!",
     "correctSr": "Benar:",
-    "onTrack": "Jalur menuju",
-    "wonder": "Sesuatu untuk dipikirkan",
-    "wonderNote": "Kamu akan bisa menjawabnya di akhir level.",
+    "onTrack": "Menuju",
+    "wonder": "Coba pikirin dulu",
+    "wonderNote": "Jawabannya muncul di akhir level.",
     "learnButton": "Pelajari idenya",
-    "backToStory": "Kembali ke cerita",
+    "backToStory": "Balik ke cerita",
     "startPlaying": "Mulai main",
-    "complete": "Level selesai. Kamu mendapat {stars} dari 3 bintang.",
-    "newBest": "Rekor baru untuk level ini.",
-    "stillBest": "Rekor terbaikmu masih {stars} dari 3 bintang.",
+    "complete": "Level selesai! Kamu dapat {stars}/3 bintang.",
+    "newBest": "Rekor baru buat level ini.",
+    "stillBest": "Rekor terbaikmu masih {stars}/3 bintang.",
     "playAgain": "Main lagi",
-    "next": "Berikutnya: {id} {title}",
-    "backTo": "Kembali ke {zone}",
+    "next": "Lanjut: {id} {title}",
+    "backTo": "Balik ke {zone}",
     "remember": "Ingat pertanyaan di awal tadi?",
-    "commonMistake": "Kesalahan umum: {title}",
-    "result": "Kamu mendapat {stars} dari 3 bintang, dengan {mistakes} dan {hints}.",
+    "commonMistake": "Salah kaprah: {title}",
+    "result": "Kamu dapat {stars}/3 bintang, dengan {mistakes} dan {hints}.",
     "mistakes": {
       "one": "{n} kesalahan",
       "other": "{n} kesalahan"
@@ -72,11 +75,16 @@
       "one": "{n} petunjuk",
       "other": "{n} petunjuk"
     },
-    "fieldNotesRevisit": "Field Notes dari level ini",
+    "fieldNotesRevisit": "Field Notes level ini",
     "fieldNotesNew": "Field Notes baru terbuka",
-    "fieldNotesNote": "Tempat ide ini muncul di dunia nyata sekarang. Semuanya tersimpan di Field Journal kamu di peta.",
+    "fieldNotesNote": "Ini contoh ide tadi di dunia nyata. Semuanya tersimpan di Field Journal di peta.",
     "readMore": "Baca lebih lanjut",
-    "continue": "Lanjut"
+    "continue": "Lanjut",
+    "quickQuestion": "Pertanyaan cepat",
+    "orderOf": "Pesanan {i} dari {n}",
+    "islanderOf": "Penduduk {i} dari {n}",
+    "claimOf": "Klaim {i} dari {n}",
+    "seeResult": "Lihat hasilnya"
   },
   "choices": {
     "answerOptions": "Pilihan jawaban",
@@ -99,6 +107,44 @@
   "sim": {
     "crates": "Peti",
     "empty": "Kosong",
-    "prediction": "Prediksimu: {guess}"
+    "prediction": "Tebakanmu: {guess}",
+    "cratesLtr": "Peti, dari kiri ke kanan",
+    "stackLabel": "Tumpukan peti, dari bawah",
+    "queueLabel": "Antrean kapal, dari depan"
+  },
+  "diagram": {
+    "layer": "Layer {n}",
+    "machine": "Mesin {name}",
+    "protocol": "protocol",
+    "service": "service",
+    "wire": "kabel aslinya",
+    "layersAria": "Dua mesin, masing-masing punya tiga layer bertumpuk. Layer yang sejajar disambung garis putus-putus berlabel protocol. Panah menunjukkan tiap layer melayani layer di atasnya. Sebuah kabel menyambung layer paling bawah."
+  },
+  "cake": {
+    "tray": "Nampan",
+    "slicesToPlace": "Potongan yang harus ditaruh",
+    "toppers": "Topping",
+    "hybridAria": "Potongan kue hybrid, dari bawah",
+    "standAria": "{title}: {placed} dari {total} potongan sudah ditaruh, urut dari bawah",
+    "sliceOn": "{name} sudah ditaruh.",
+    "sliceIs": "Betul, {name}."
+  },
+  "parcel": {
+    "aria": "Bungkusan bersarang: link header dan trailer di paling luar, lalu network header, lalu transport header, dan surat di tengah.",
+    "floorsAria": "Lantai-lantai {place}, dari atas ke bawah",
+    "onRoad": "Di jalan."
+  },
+  "rank": {
+    "lineAria": "Perahu berbaris, dari yang paling landai",
+    "trayAria": "Perahu yang harus diurutkan",
+    "nextIs": "Berikutnya: {label}.",
+    "inPlace": "{label} sudah di tempatnya."
+  },
+  "toolkit": {
+    "stack": "Stack",
+    "queue": "Queue",
+    "tools": "Alat",
+    "stackAria": "Stack berisi tiga peti",
+    "queueAria": "Queue berisi tiga penumpang"
   }
 }

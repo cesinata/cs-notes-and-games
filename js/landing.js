@@ -63,6 +63,7 @@ function subjectCard({ region, earned, max, builtCount }, text) {
       el('h3', { id: nameId, class: 'subject-name' }, region.name),
       el('p', { class: 'subject-topic' }, region.subject),
       el('p', {}, region.description),
+      region.bigFact ? el('p', { class: 'subject-fact' }, el('strong', {}, `${t('common.didYouKnow')} `), region.bigFact) : null,
       el('p', { class: 'subject-progress' }, progress),
       el('a', { class: 'btn', href: `#/${region.id}/`, 'aria-describedby': nameId },
         text.enter.replace('{name}', region.name))

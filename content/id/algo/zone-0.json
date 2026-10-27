@@ -1,0 +1,485 @@
+{
+  "levels": [
+    {
+      "id": "0.1",
+      "story": "Gudang peralatan penjaga mercusuar berantakan, dan tiap penduduk pulau butuh cara menyimpan barang yang beda. Cocokkan tiap penduduk dengan alat yang pas, lalu bantu mereka di shift malam yang sibuk.",
+      "hook": {
+        "question": "Tekan undo tiga kali di aplikasi apa pun, dan tiga perubahan terakhirmu dibatalkan, mulai dari yang terbaru. Nggak pernah mulai dari perubahan paling lama. Gimana aplikasinya menjaga urutannya?",
+        "answer": "Aplikasinya menyimpan perubahanmu di sebuah stack. Tiap perubahan di-push ke atas, dan undo mengambil (pop) yang paling atas, jadi yang terbaru selalu keluar duluan. Last in, first out."
+      },
+      "learn": {
+        "bullets": [
+          "Data structure adalah cara mengatur data supaya pekerjaan yang paling sering kamu lakukan jadi cepat. Cara memilihnya: tanya diri sendiri, data ini paling sering diapain?",
+          "Array: item berjejer, diberi nomor mulai dari 0. Loncat ke item mana pun lewat nomornya cuma satu langkah, tapi menyelipkan item di tengah berarti menggeser semua item setelahnya.",
+          "Linked list: tiap item menunjuk ke item berikutnya. Menambah atau membuang item di tempat kamu berdiri itu cepat, tapi mencapai item ke-500 berarti melewati 499 item sebelumnya.",
+          "Stack (last in, first out): push menaruh item di atas, pop mengambil item paling atas. Bayangkan tumpukan piring.",
+          "Queue (first in, first out): enqueue masuk ke belakang antrean, dequeue melepas yang paling depan. Bayangkan antrean kapal ferry.",
+          "Stack dan queue adalah abstract data type: mereka didefinisikan dari apa yang bisa kamu lakukan, bukan dari cara membuatnya. Keduanya bisa dibangun di atas array atau linked list."
+        ],
+        "diagramCaption": "Stack cuma bisa diakses dari atas. Queue memasukkan item di belakang dan mengeluarkannya di depan."
+      },
+      "play": {
+        "needsTitle": "Siapa butuh alat yang mana?",
+        "needsIntro": "Tiap penduduk punya pekerjaan. Pilih structure yang bikin pekerjaan paling sering mereka jadi cepat.",
+        "needs": [
+          {
+            "need": "Aku mau tombol undo yang selalu membatalkan goresan kuas terakhirku dulu.",
+            "hints": [
+              "Goresan terbaru harus keluar duluan.",
+              "Last in, first out itu stack."
+            ],
+            "explain": "Stack mengembalikan item terbaru duluan: pas buat undo."
+          },
+          {
+            "need": "Siapa yang pertama masuk antrean ferry harus naik duluan.",
+            "hints": [
+              "Orang yang menunggu paling lama jalan duluan.",
+              "First in, first out itu queue."
+            ],
+            "explain": "Queue melayani item tertua duluan: adil buat antrean."
+          },
+          {
+            "need": "Aku mau loncat langsung ke catatan nomor 500 di buku pasang-surutku, berkali-kali sehari.",
+            "hints": [
+              "Pekerjaan utamanya loncat ke posisi bernomor.",
+              "Cuma satu dari ini yang bisa sampai ke posisi mana pun dalam satu langkah."
+            ],
+            "explain": "Array menemukan item bernomor mana pun dalam satu langkah, karena item-nya berjejer."
+          },
+          {
+            "need": "Di barisan konga yang panjang, aku terus menambah dan mengeluarkan penari tepat di dekat tempatku berdiri, tanpa menggeser semua orang lain.",
+            "hints": [
+              "Menyelipkan di array berarti menggeser semua yang ada setelah celahnya.",
+              "Kalau kamu sudah di tempatnya, linked list cukup menyambung ulang dua pointer."
+            ],
+            "explain": "Di linked list, menambah atau membuang di sebelah posisimu cuma mengubah beberapa sambungan."
+          },
+          {
+            "need": "Cetak dokumen sesuai urutan orang mengirimnya.",
+            "hints": [
+              "Dokumen yang dikirim pertama harus keluar pertama.",
+              "Itu first in, first out."
+            ],
+            "explain": "Print job menunggu di queue, jadi keluarnya sesuai urutan datang."
+          }
+        ],
+        "stackTitle": "Shift malam: stack peti",
+        "stackIntro": "Peti ditumpuk di dermaga saat perahu datang. Perhatikan tiap push, dan tebak peti mana yang keluar di tiap pop.",
+        "queueTitle": "Shift malam: antrean ferry",
+        "queueIntro": "Penumpang masuk antrean ferry. Perhatikan tiap orang masuk, dan tebak siapa yang naik di tiap dequeue.",
+        "words": {
+          "push": "Push {v}: masuk ke atas.",
+          "pop": "Pop: {v} keluar dari atas.",
+          "enqueue": "{v} masuk ke belakang antrean.",
+          "dequeue": "Dequeue: {v} naik dari depan.",
+          "popAsk": "Pop! Peti mana yang keluar?",
+          "dequeueAsk": "Dequeue! Siapa yang naik berikutnya?",
+          "popHints": [
+            "Stack cuma bisa diakses dari satu ujung.",
+            "Yang keluar adalah peti yang paling baru di-push, yang di atas."
+          ],
+          "dequeueHints": [
+            "Queue melayani yang paling lama menunggu.",
+            "Yaitu penumpang yang paling depan."
+          ],
+          "top": "atas",
+          "bottom": "bawah",
+          "front": "depan",
+          "back": "belakang",
+          "empty": "Kosong",
+          "start": "Dermaga masih kosong.",
+          "startQueue": "Antreannya masih kosong."
+        }
+      },
+      "feed": [
+        {
+          "id": "a0.1-f1",
+          "prompt": "Push A, push B, push C, lalu pop. Apa yang keluar?",
+          "options": [
+            {
+              "text": "C"
+            },
+            {
+              "text": "A"
+            },
+            {
+              "text": "B"
+            },
+            {
+              "text": "Nggak ada: belum bisa di-pop"
+            }
+          ],
+          "explain": "Stack mengembalikan item terbaru duluan, dan C masuk paling akhir."
+        },
+        {
+          "id": "a0.1-f2",
+          "prompt": "Enqueue A, B, C. Dequeue dua kali. Siapa yang masih menunggu?",
+          "answer": "Cuma C. A dan B masuk duluan, jadi keluar duluan."
+        },
+        {
+          "id": "a0.1-f3",
+          "prompt": "Kenapa mencapai item ke-500 lambat di linked list, tapi cepat di array?",
+          "options": [
+            {
+              "text": "Linked list cuma tahu di mana item berikutnya, jadi kamu jalan satu sambungan demi satu"
+            },
+            {
+              "text": "Linked list menyimpan item dalam urutan acak"
+            },
+            {
+              "text": "Array selalu terurut"
+            },
+            {
+              "text": "Linked list cuma muat 499 item"
+            }
+          ],
+          "explain": "Item array berjejer, jadi posisi 500 bisa dihitung langsung. List harus mengikuti 499 sambungan untuk sampai ke sana."
+        },
+        {
+          "id": "a0.1-f4",
+          "prompt": "Tombol Back di browser membawamu ke halaman yang paling baru kamu kunjungi. Kelakuannya mirip structure yang mana?",
+          "options": [
+            {
+              "text": "Stack"
+            },
+            {
+              "text": "Queue"
+            },
+            {
+              "text": "Array"
+            },
+            {
+              "text": "Linked list"
+            }
+          ],
+          "explain": "Yang terbaru duluan itu last in, first out: stack."
+        },
+        {
+          "id": "a0.1-f5",
+          "prompt": "Stack dan queue sama-sama \"abstract data type\". Apa arti \"abstract\" di sini?",
+          "answer": "Mereka didefinisikan dari operasinya (push dan pop, atau enqueue dan dequeue), bukan dari cara membuatnya. Keduanya bisa dibangun di atas array atau linked list."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Semua program jalan di atas stack",
+          "text": "Saat satu fungsi memanggil fungsi lain, komputer mem-push catatan ke call stack tentang ke mana harus kembali. Saat fungsi selesai, catatannya di-pop. Recursion yang nggak pernah berhenti terus mem-push sampai stack kehabisan tempat: itu yang disebut \"stack overflow\", error yang jadi nama situs tanya-jawab coding yang terkenal.",
+          "source": {
+            "title": "MDN Web Docs: Call stack"
+          }
+        },
+        {
+          "title": "Queue menjaga internet tetap tenang",
+          "text": "Aplikasi besar jarang mengerjakan semuanya saat kamu menekan tombol. Upload video atau kirim pesanan biasanya menaruh pekerjaan ke message queue, lalu komputer pekerja mengambil dari depan secara bergiliran. Kalau tiba-tiba ramai, queue-nya cuma memanjang sebentar, bukan seluruh aplikasi yang crash.",
+          "source": {
+            "title": "Open Data Structures (buku teks gratis)"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "Kamu mencocokkan tiap pekerjaan dengan structure yang membuatnya cepat: stack buat yang terbaru duluan, queue buat yang tertua duluan, array buat loncat ke posisi, dan linked list buat menambah dan membuang di tempat kamu berada.",
+          "Lalu kamu menjalankan stack dan queue dengan tangan sendiri, persis cara kamu menelusuri algorithm di pulau-pulau berikutnya."
+        ],
+        "mistake": {
+          "title": "Tertukar antara stack dan queue",
+          "text": "Stack melayani item terbaru duluan. Queue melayani item tertua duluan. Kalau ragu, tanya: \"apakah yang menunggu paling lama jalan duluan?\" Kalau iya, itu queue."
+        }
+      }
+    },
+    {
+      "id": "0.2",
+      "story": "Hari regatta! Tiap perahu jalan dengan rumus berbeda. Tiap kapten mengaku perahunya punya tanjakan paling landai, yang tetap murah walau lintasan makin panjang. Saatnya cari tahu siapa yang benar.",
+      "hook": {
+        "question": "Sebuah aplikasi lancar dengan 100 pengguna, lalu macet total dengan 100.000. Nggak ada yang mengubah kodenya. Apa yang berubah?",
+        "answer": "Ukuran input, n. Kalau aplikasinya melakukan sekitar n² langkah, 100 pengguna berarti 10.000 langkah, tapi 100.000 pengguna berarti 10.000.000.000 langkah: sejuta kali lebih berat untuk seribu kali lebih banyak pengguna. Growth rate yang menentukan apakah kode bertahan saat sukses."
+      },
+      "learn": {
+        "bullets": [
+          "Kita mengukur biaya sebuah algorithm dengan menghitung langkah dasar (misalnya perbandingan), ditulis sebagai fungsi dari ukuran input n.",
+          "Yang terpenting adalah seberapa cepat fungsi itu membesar saat n besar, bukan nilai pastinya untuk n kecil.",
+          "O(g) artinya \"tumbuh tidak lebih cepat dari g\" (batas atas). Ω(g) artinya \"tumbuh paling tidak secepat g\" (batas bawah). Θ(g) artinya keduanya: tumbuh dengan laju yang sama seperti g.",
+          "Faktor konstan dan suku yang lebih kecil nggak mengubah growth rate: 3n² + 5n tetap Θ(n²).",
+          "Dari yang paling landai ke paling curam: 1, log n, √n, n, n log n, n², n³, 2ⁿ, n!",
+          "Tes praktis: hitung f(n)/g(n) saat n sangat besar. Kalau menuju 0, f tumbuh lebih lambat. Kalau menetap di angka positif, lajunya sama. Kalau melesat ke tak hingga, f tumbuh lebih cepat."
+        ],
+        "diagramCaption": "Jumlah langkah yang dibutuhkan saat n membesar. Kolom 2ⁿ meledak jauh sebelum n jadi besar."
+      },
+      "play": {
+        "rankTitle": "Urutkan perahunya",
+        "rankIntro": "Tap perahu dari tanjakan paling landai (tumbuh paling lambat) sampai yang paling curam.",
+        "rankItems": [
+          {
+            "hint": "Mulai dari yang sama sekali nggak tumbuh."
+          },
+          {
+            "hint": "Berikutnya: yang cuma nambah satu langkah tiap n dua kali lipat."
+          },
+          {
+            "hint": "Berikutnya: yang tumbuh sebanding dengan n."
+          },
+          {
+            "hint": "Berikutnya: sedikit lebih curam dari n, karena ada faktor log tambahan."
+          },
+          {
+            "hint": "Berikutnya: n kali n."
+          },
+          {
+            "hint": "Terakhir: yang menggandakan diri tiap n naik satu."
+          }
+        ],
+        "rankDone": "Dari paling landai ke paling curam: 1, log n, n, n log n, n², 2ⁿ.",
+        "raceTitle": "Balapan: 100n lawan n²",
+        "raceIntro": "Perahu Kapten Ada butuh 100n langkah. Perahu Kapten Bo butuh n². Makin sedikit langkah makin bagus. Tebak siapa yang di depan di tiap penanda.",
+        "raceAsk": "Pada n = {n}, perahu siapa yang butuh langkah lebih sedikit?",
+        "raceTie": "Seri",
+        "raceHints": [
+          "Hitung dua-duanya: kalikan n dengan 100 buat Ada, dan n dengan dirinya sendiri buat Bo.",
+          "Pada n = {n}, Ada butuh {a} langkah dan Bo butuh {b}."
+        ],
+        "raceSay": "Pada n = {n}: Ada butuh {a} langkah, Bo butuh {b}.",
+        "raceStart": "Perahu berbaris. Belum ada yang jalan.",
+        "raceDone": "Bo kelihatan lebih unggul buat n kecil, tapi n² menyalip 100n mulai n = 100. Input kecil bisa menipu.",
+        "tfTitle": "Benar atau salah?",
+        "tfIntro": "Para kapten suka klaim yang berani. Pakai tes f(n)/g(n) kalau kamu ragu.",
+        "statements": [
+          {
+            "options": [
+              {
+                "text": "Benar"
+              },
+              {
+                "text": "Salah"
+              }
+            ],
+            "hints": [
+              "Bagi dengan n²: (3n² + 5n)/n² = 3 + 5/n.",
+              "Hasilnya menetap di 3, angka positif, jadi lajunya sama."
+            ],
+            "explain": "Benar. Rasionya menetap di 3, jadi bahkan Θ(n²), dan Θ berarti O juga."
+          },
+          {
+            "options": [
+              {
+                "text": "Benar"
+              },
+              {
+                "text": "Salah"
+              }
+            ],
+            "hints": [
+              "Bagi: n²/n = n.",
+              "Rasionya melesat ke tak hingga, jadi n² tumbuh lebih cepat dari n."
+            ],
+            "explain": "Salah. n² mengalahkan n, jadi n nggak bisa jadi batas atas buat n²."
+          },
+          {
+            "options": [
+              {
+                "text": "Benar"
+              },
+              {
+                "text": "Salah"
+              }
+            ],
+            "hints": [
+              "O cuma batas atas. Nggak harus ketat.",
+              "n/n² = 1/n menuju 0, jadi n tumbuh lebih lambat dari n²."
+            ],
+            "explain": "Benar. Batas atas boleh longgar: n tumbuh tidak lebih cepat dari n²."
+          },
+          {
+            "options": [
+              {
+                "text": "Benar"
+              },
+              {
+                "text": "Salah"
+              }
+            ],
+            "hints": [
+              "Mengganti basis log cuma mengalikannya dengan konstanta.",
+              "log₂ n = log₁₀ n / log₁₀ 2, jadi rasionya konstan."
+            ],
+            "explain": "Benar. Semua basis log tumbuh dengan laju yang sama."
+          },
+          {
+            "options": [
+              {
+                "text": "Benar"
+              },
+              {
+                "text": "Salah"
+              }
+            ],
+            "hints": [
+              "Ω artinya \"tumbuh paling tidak secepat\".",
+              "(n log n)/n² = (log n)/n menuju 0, jadi n log n tumbuh lebih lambat."
+            ],
+            "explain": "Salah. n log n tumbuh lebih lambat dari n², jadi n² bukan batas bawah buat n log n."
+          },
+          {
+            "options": [
+              {
+                "text": "Benar"
+              },
+              {
+                "text": "Salah"
+              }
+            ],
+            "hints": [
+              "2ⁿ⁺¹ = 2 · 2ⁿ.",
+              "Rasionya tepat 2, sebuah konstanta."
+            ],
+            "explain": "Benar. 2ⁿ⁺¹ cuma 2 kali 2ⁿ, faktor konstan."
+          }
+        ],
+        "countTitle": "Hitung: cari peti terbesar",
+        "countIntro": "Kepala pelabuhan memeriksa peti dari kiri ke kanan, sambil menyimpan yang terbesar sejauh ini. Sebelum menjalankannya, tebak berapa perbandingan yang dibutuhkan.",
+        "countPrompt": "Berapa perbandingan untuk mencari yang terbesar dari 8 peti ini?",
+        "countHints": [
+          "Peti pertama jadi \"terbesar sejauh ini\" tanpa perbandingan.",
+          "Setiap peti lainnya dibandingkan satu kali."
+        ],
+        "countSay": "Bandingkan {v} dengan yang terbesar sejauh ini ({m}).",
+        "countKeep": "{m} tetap yang terbesar.",
+        "countNew": "{v} jadi yang terbesar yang baru.",
+        "countStart": "Peti 4 jadi yang terbesar sejauh ini. Belum perlu perbandingan.",
+        "countEnd": "Selesai: peti terbesar adalah {m}.",
+        "followPrompt": "Jadi dengan n peti, berapa perbandingan yang dibutuhkan untuk mencari yang terbesar?",
+        "followOptions": [
+          {
+            "text": "n − 1, jadi Θ(n)"
+          },
+          {
+            "text": "n², jadi Θ(n²)"
+          },
+          {
+            "text": "log n, jadi Θ(log n)"
+          },
+          {
+            "text": "1, jadi Θ(1)"
+          }
+        ],
+        "followHints": [
+          "8 peti butuh 7. Tebak berapa untuk 16 peti.",
+          "Setiap peti setelah yang pertama dapat satu perbandingan."
+        ],
+        "followExplain": "n − 1 perbandingan: peti dua kali lipat, kerja dua kali lipat. Itu pertumbuhan linear, Θ(n).",
+        "words": {
+          "biggest": "terbesar sejauh ini",
+          "comparing": "dibandingkan",
+          "comparisons": "Perbandingan"
+        }
+      },
+      "feed": [
+        {
+          "id": "a0.2-f1",
+          "prompt": "Mana yang tumbuh paling cepat saat n sangat besar?",
+          "options": [
+            {
+              "text": "2ⁿ"
+            },
+            {
+              "text": "n³"
+            },
+            {
+              "text": "n log n"
+            },
+            {
+              "text": "1000n"
+            }
+          ],
+          "explain": "Eksponensial akhirnya mengalahkan semua polinomial: 2ⁿ menggandakan diri tiap n naik satu."
+        },
+        {
+          "id": "a0.2-f2",
+          "prompt": "100n lawan n²: mulai nilai n berapa n² butuh langkah paling tidak sama banyak?",
+          "answer": "Mulai n = 100. Di situ keduanya butuh 10.000 langkah. Setelah itu n² melesat jauh."
+        },
+        {
+          "id": "a0.2-f3",
+          "prompt": "Kenapa konstanta, seperti 3 di 3n², dibuang saat menyebut growth rate?",
+          "options": [
+            {
+              "text": "Konstanta nggak mengubah cara biaya tumbuh saat n besar"
+            },
+            {
+              "text": "Konstanta selalu kecil"
+            },
+            {
+              "text": "Komputer mengabaikan perkalian"
+            },
+            {
+              "text": "Biar hitungannya makin sulit"
+            }
+          ],
+          "explain": "Gandakan input dan 3n² tetap jadi empat kali lipat, sama seperti n². Konstanta tergantung mesinnya, sedangkan growth rate tergantung algorithm-nya."
+        },
+        {
+          "id": "a0.2-f4",
+          "prompt": "Benar atau salah: n ∈ O(n²).",
+          "options": [
+            {
+              "text": "Benar"
+            },
+            {
+              "text": "Salah"
+            }
+          ],
+          "explain": "Benar. O adalah batas atas, dan nggak harus ketat."
+        },
+        {
+          "id": "a0.2-f5",
+          "prompt": "Mencari yang terbesar dari 1.000 peti dengan sekali pindai: berapa perbandingan?",
+          "answer": "999. Setiap peti setelah yang pertama dapat satu perbandingan: n − 1, yaitu Θ(n)."
+        },
+        {
+          "id": "a0.2-f6",
+          "prompt": "log₂ n dan log₁₀ n: bagaimana growth rate keduanya?",
+          "options": [
+            {
+              "text": "Sama: bedanya cuma faktor konstan"
+            },
+            {
+              "text": "log₂ n tumbuh jauh lebih cepat"
+            },
+            {
+              "text": "log₁₀ n tumbuh jauh lebih cepat"
+            },
+            {
+              "text": "Nggak bisa dibandingkan"
+            }
+          ],
+          "explain": "Mengganti basis cuma mengalikan dengan konstanta, jadi semua log itu Θ(log n)."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Satu miliar item: 30 detik atau 30 tahun",
+          "text": "Misalkan komputer mengerjakan satu miliar langkah dasar per detik. Mengurutkan satu miliar item dengan metode n log n butuh sekitar 30 miliar langkah: kira-kira 30 detik. Metode n² butuh satu miliar kali satu miliar langkah: sekitar 30 tahun. Komputer sama, data sama, growth rate beda total.",
+          "source": {
+            "title": "Algorithms by Jeff Erickson (buku gratis)"
+          }
+        },
+        {
+          "title": "Papan catur beras",
+          "text": "Cerita lama: taruh 1 butir beras di kotak pertama papan catur, 2 di kotak berikutnya, 4 di berikutnya, terus digandakan. Totalnya untuk 64 kotak adalah 2⁶⁴ − 1, sekitar 18 kuintiliun butir. Itulah pertumbuhan 2ⁿ, dan sebab algorithm dengan waktu eksponensial nggak ada harapan untuk input besar.",
+          "source": {
+            "title": "Wikipedia: Wheat and chessboard problem"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "Kamu mengurutkan growth rate, melihat n² menyalip 100n, menilai klaim O, Ω, dan Θ dengan tes rasio, dan menghitung perbandingan di algorithm sungguhan.",
+          "Menghitung langkah lalu bertanya \"ini tumbuhnya gimana?\" adalah inti analisis algorithm. Setiap pulau berikutnya memakainya."
+        ],
+        "mistake": {
+          "title": "Percaya pada input kecil",
+          "text": "Di n = 10, perahu n² milik Bo kelihatan lebih bagus dari 100n milik Ada. Tapi growth rate yang menentukan pemenang saat n besar. Selalu tanya apa yang terjadi saat n membesar, bukan apa yang terjadi di satu contoh kecil."
+        }
+      }
+    }
+  ]
+}

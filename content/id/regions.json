@@ -3,12 +3,14 @@
     {
       "id": "net",
       "subject": "Internet Technologies (teknologi internet)",
-      "description": "Ikuti satu surat yang melintasi sebuah lembah dan lihat bagaimana internet membawanya: layer (lapisan), kabel, frame, address (alamat), route (rute), port, web request, dan security (keamanan)."
+      "description": "Ikuti satu surat yang menyeberangi lembah, dan lihat gimana internet membawanya: layer, kabel, frame, address, route, port, web request, sampai security.",
+      "bigFact": "Hampir semua data antarbenua lewat kabel di dasar laut, bukan satelit."
     },
     {
       "id": "algo",
       "subject": "Algorithms and Complexity (algoritma dan kompleksitas)",
-      "description": "Berpindah dari pulau ke pulau untuk memahami ide di balik program yang cepat: cara mengatur data (data structure), menghitung biaya sebuah metode, dan memilih cara yang lebih cerdas untuk memecahkan masalah."
+      "description": "Loncat dari pulau ke pulau buat paham ide di balik program yang ngebut: cara mengatur data, menghitung biaya sebuah metode, dan memilih cara yang lebih pintar.",
+      "bigFact": "Lipat selembar kertas jadi dua sebanyak 42 kali, dan tebalnya bisa sampai ke Bulan."
     }
   ]
 }
