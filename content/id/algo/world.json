@@ -1,67 +1,67 @@
 {
-  "tagline": "Berlayar antar pulau dan selesaikan masalah tiap penduduk dengan algorithm (algoritma) yang tepat.",
-  "starRules": "3 bintang: tanpa kesalahan dan tanpa petunjuk. 2 bintang: maksimal 2 kesalahan. 1 bintang: kamu berhasil menyelesaikannya.",
+  "tagline": "Berlayar antar pulau dan bantu tiap penduduk dengan algorithm yang pas.",
+  "starRules": "3 bintang: tanpa salah dan tanpa petunjuk. 2 bintang: maksimal 2 salah. 1 bintang: kamu berhasil menamatkannya.",
   "listHeading": "Pulau",
   "journal": {
     "title": "Field Journal",
-    "intro": "Setiap level membuka Field Notes: tempat ide itu muncul di aplikasi dan sistem yang kamu pakai hari ini. Selesaikan sebuah level untuk membaca catatannya.",
-    "lockedText": "Selesaikan {level} untuk membaca catatan ini.",
-    "hubText": "{count} dari {total} Field Notes terkumpul"
+    "intro": "Tiap level membuka Field Notes: contoh ide itu di aplikasi dan sistem yang kamu pakai sekarang. Tamatkan level buat baca catatannya.",
+    "lockedText": "Tamatkan {level} dulu buat baca catatan ini.",
+    "hubText": "{count}/{total} Field Notes terkumpul"
   },
   "feed": {
     "title": "Daily Feed",
-    "intro": "Kartu-kartu singkat dari pulau yang sudah kamu selesaikan. Sekitar 10 kartu, lalu selesai untuk hari ini.",
+    "intro": "Kartu singkat dari level yang sudah kamu tamatkan. Sekitar 10 kartu, lalu beres buat hari ini.",
     "hubReady": "{count} kartu siap",
-    "hubDone": "Selesai untuk hari ini. Kartu baru besok.",
-    "hubCaughtUp": "Sudah terkejar semua",
-    "hubEmpty": "Selesaikan sebuah level untuk mengisi feed kamu.",
+    "hubDone": "Beres buat hari ini. Kartu baru besok.",
+    "hubCaughtUp": "Semua sudah terkejar",
+    "hubEmpty": "Tamatkan satu level dulu buat isi feed-mu.",
     "streak": "streak {days} hari",
     "start": "Mulai feed hari ini",
-    "empty": "Feed kamu masih kosong. Selesaikan sebuah level di Lighthouse Point dan kartunya akan muncul di sini.",
-    "caughtUp": "Kartu yang sudah kamu kuasai menunggu beberapa hari sebelum muncul lagi. Jeda itulah yang membuatnya melekat di ingatan.",
+    "empty": "Feed-mu masih kosong. Tamatkan satu level di Lighthouse Point, nanti kartunya muncul di sini.",
+    "caughtUp": "Kartu yang sudah kamu kuasai istirahat beberapa hari sebelum muncul lagi. Jeda itu yang bikin ingatan awet.",
     "labels": {
-      "quiz": "Pertanyaan cepat",
-      "predict": "Tebak, lalu balik",
+      "quiz": "Kuis kilat",
+      "predict": "Tebak dulu, baru balik",
       "why": "Kenapa?",
       "note": "Field Note"
     },
-    "flip": "Balik kartunya",
-    "selfCheck": "Apakah jawabanmu mendekati?",
-    "gotIt": "Ya, aku bisa",
-    "notYet": "Belum tepat",
+    "flip": "Balik kartu",
+    "selfCheck": "Jawabanmu mendekati?",
+    "gotIt": "Iya, bisa",
+    "notYet": "Belum pas",
     "next": "Kartu berikutnya",
     "swipeTip": "Di HP, kamu juga bisa geser ke kiri.",
-    "comesBack": "Kartu ini akan muncul lagi nanti supaya makin melekat.",
-    "doneTitle": "Selesai untuk hari ini",
-    "doneText": "Kamu benar {right} dari {total}. Kartu yang meleset akan segera muncul lagi. Sisanya menunggu beberapa hari supaya melekat.",
-    "doneTextPerfect": "Kamu benar semua {total}. Kartu-kartu ini akan menunggu beberapa hari sebelum muncul lagi, supaya melekat.",
-    "streakFirst": "Ini hari ke-1. Kembali besok untuk hari ke-2.",
+    "comesBack": "Kartu ini bakal muncul lagi nanti biar makin nempel.",
+    "doneTitle": "Beres buat hari ini",
+    "doneText": "Kamu benar {right} dari {total}. Yang salah muncul lagi sebentar lagi. Sisanya istirahat beberapa hari biar nempel.",
+    "doneTextPerfect": "Benar semua, {total} dari {total}! Kartu-kartu ini istirahat beberapa hari dulu sebelum muncul lagi.",
+    "streakFirst": "Ini hari ke-1. Balik lagi besok buat hari ke-2.",
     "streakMore": "{days} hari berturut-turut.",
-    "backToMap": "Kembali ke peta",
+    "backToMap": "Balik ke peta",
     "emptyButton": "Ke Lighthouse Point"
   },
   "sim": {
     "next": "Langkah berikutnya",
-    "back": "Kembali",
+    "back": "Mundur",
     "stepOf": "Langkah {i} dari {n}",
-    "runToEnd": "Jalankan sampai akhir",
+    "runToEnd": "Jalankan sampai habis",
     "finish": "Lanjut",
-    "counted": "Kamu memprediksi {guess}. Hasilnya {actual}.",
+    "counted": "Tebakanmu {guess}. Hasilnya {actual}.",
     "revealed": "Begini yang terjadi:",
     "counter": "{name} sejauh ini: {value}"
   },
   "zones": [
     {
       "id": 0,
-      "topic": "Dasar-dasar: data structure (struktur data), cost (biaya), dan growth rate (laju pertumbuhan)"
+      "topic": "Dasar-dasar: data structure, cost, dan growth rate"
     },
     {
       "id": 1,
-      "topic": "Brute force dan exhaustive search (pencarian menyeluruh)"
+      "topic": "Brute force dan exhaustive search"
     },
     {
       "id": 2,
-      "topic": "Recursion (rekursi) dan decrease-and-conquer"
+      "topic": "Recursion dan decrease-and-conquer"
     },
     {
       "id": 3,
@@ -73,11 +73,11 @@
     },
     {
       "id": 5,
-      "topic": "Heap, presorting, dan search tree (pohon pencarian)"
+      "topic": "Heap, presorting, dan search tree"
     },
     {
       "id": 6,
-      "topic": "Space-time trade-off (kompromi ruang dan waktu): counting sort, Horspool, hashing"
+      "topic": "Space-time trade-off: counting sort, Horspool, hashing"
     },
     {
       "id": 7,
@@ -85,10 +85,27 @@
     },
     {
       "id": 8,
-      "topic": "Greedy algorithm dan P vs NP (cakupan masih perlu dikonfirmasi)"
+      "topic": "Greedy algorithm dan P vs NP (cakupan masih dicek)"
     }
   ],
   "finale": {
-    "topic": "Pilih algorithm yang tepat untuk tiap tantangan, tanpa label sebagai petunjuk."
-  }
+    "topic": "Pilih algorithm yang pas buat tiap tantangan, tanpa label sebagai petunjuk."
+  },
+  "funFacts": [
+    {
+      "text": "Lipat selembar kertas jadi dua sebanyak 42 kali, dan tebalnya bisa sampai ke Bulan. (Aslinya nggak mungkin dilipat sebanyak itu, tapi hitungannya benar.)"
+    },
+    {
+      "text": "Mencari satu nama di daftar urut berisi satu miliar nama cuma butuh sekitar 30 kali cek, asal kamu terus membelah daftarnya jadi dua."
+    },
+    {
+      "text": "Satu set kartu remi 52 yang dikocok bagus hampir pasti urutannya belum pernah ada sebelumnya. Kemungkinan urutannya sekitar 8 diikuti 67 angka nol."
+    },
+    {
+      "text": "Kurir dengan 20 titik antar punya lebih dari 60 kuadriliun rute yang mungkin. Ngecek satu-satu mustahil, makanya metode yang lebih pintar itu penting."
+    },
+    {
+      "text": "Kata \"algorithm\" berasal dari nama al-Khwarizmi, ilmuwan yang bekerja di Baghdad sekitar abad ke-9."
+    }
+  ]
 }

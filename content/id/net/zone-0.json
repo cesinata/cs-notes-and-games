@@ -1,0 +1,834 @@
+{
+  "levels": [
+    {
+      "id": "0.1",
+      "story": "Toko roti ikut Valley Fair, dan tahun ini juri minta kue jaringan dengan semua layer di tempat yang benar. Kartu resep si pembuat roti terbang kebawa angin, jadi kamu yang harus nyusun.",
+      "hook": {
+        "question": "Halaman web yang sama bisa kebuka lewat Wi-Fi rumah, 5G, atau kabel yang dicolok ke laptop, dan browser-mu nggak pernah dikasih tahu pakai yang mana. Kok bisa cuek begitu?",
+        "answer": "Gara-gara layering. Browser-mu kerja di layer paling atas dan cuma memakai layanan dari layer di bawahnya. Wi-Fi, 5G, atau kabel dipasang di layer bawah. Selama tiap layer tetap ngasih layanan yang sama ke atas, layer di atasnya nggak perlu diubah."
+      },
+      "fieldNotes": [
+        {
+          "title": "Kenapa insinyur masih bilang \"Layer 7\"",
+          "text": "Di praktiknya TCP/IP yang menang, tapi nomor layer OSI tetap dipakai. Insinyur jaringan tiap hari bilang \"Layer 2 switch\", \"Layer 3 routing\", atau \"serangan Layer 7\". Dokumentasi Cloudflare sendiri mengelompokkan produknya berdasarkan nomor layer OSI, dari Layer 1 sampai Layer 7.",
+          "source": {
+            "title": "Cloudflare docs: Network layers"
+          }
+        },
+        {
+          "title": "Web lagi ngacak ulang kuenya",
+          "text": "HTTP/3, versi terbaru protocol utama web, nggak jalan di atas TCP. Dia jalan di atas QUIC, protocol baru yang mengerjakan tugas TCP (pengiriman andal dan berurutan) plus enkripsi, di atas UDP biasa. Potongannya diacak ulang, tapi ide layering-nya tetap berlaku.",
+          "source": {
+            "title": "RFC 9114: HTTP/3"
+          }
+        }
+      ],
+      "learn": {
+        "bullets": [
+          "Ngirim data lewat jaringan itu kerjaan besar, jadi dipecah jadi layer, ditumpuk kayak kue. Tiap layer punya satu tugas dan bersandar pada layer di bawahnya.",
+          "Tiap layer menawarkan service ke layer di atasnya. Dia ngobrol dengan layer yang sama di mesin seberang (peer-nya) pakai protocol: aturan dan format pesan yang sudah disepakati.",
+          "Model OSI punya 7 layer. Model TCP/IP, yang dipakai internet sungguhan, punya 4. Materi ini memakai campuran 5 layer.",
+          "Tiap layer punya nama sendiri buat potongan data yang ia urus: message, segment, packet, frame, dan bits.",
+          "Trik hafalan OSI dari bawah ke atas (pakai kalimat Inggrisnya): Pie Dough Needs To Stay Perfectly Airy."
+        ],
+        "diagramCaption": "Dua mesin berdampingan. Layer yang sejajar adalah peer dan memakai protocol yang sama. Tiap layer melayani layer di atasnya."
+      },
+      "play": {
+        "layers": {
+          "physical": {
+            "hints": [
+              "Mulai dari paling bawah: layer yang menyentuh kabel atau gelombang radio.",
+              "Potongan paling bawah adalah Physical."
+            ]
+          },
+          "datalink": {
+            "hints": [
+              "Berikutnya layer yang memindahkan frame antara dua mesin yang tersambung satu link.",
+              "Yang ini Data link."
+            ]
+          },
+          "network": {
+            "hints": [
+              "Sekarang layer yang mencari rute melintasi banyak network.",
+              "Yang ini Network."
+            ]
+          },
+          "transport": {
+            "hints": [
+              "Berikutnya: layer yang mengantar data ke program yang tepat, dari ujung ke ujung.",
+              "Yang ini Transport."
+            ]
+          },
+          "session": {
+            "hints": [
+              "OSI punya dua layer tipis di atas transport. Yang bawah ngurus percakapan (session) antar dua aplikasi.",
+              "Yang ini Session."
+            ]
+          },
+          "presentation": {
+            "hints": [
+              "Yang ini peduli soal bentuk data: format, character set, dan kompresi.",
+              "Yang ini Presentation."
+            ]
+          },
+          "application": {
+            "hints": [
+              "Potongan paling atas adalah yang langsung dipakai aplikasi, misalnya browser.",
+              "Potongan paling atas adalah Application."
+            ]
+          },
+          "link": {
+            "hints": [
+              "Potongan bawah TCP/IP mengerjakan tugas dua potongan OSI: sinyal dan frame di satu link.",
+              "Potongan bawahnya adalah Link."
+            ]
+          },
+          "internet": {
+            "hints": [
+              "Berikutnya layer yang membawa packet melintasi banyak network. TCP/IP menamainya beda dari OSI.",
+              "Yang ini Internet."
+            ]
+          }
+        },
+        "cakes": [
+          {
+            "id": "osi",
+            "title": "Panggang kue OSI",
+            "intro": "Tujuh potongan, disusun dari bawah ke atas. Tap potongan yang naik berikutnya.",
+            "done": "Tujuh layer, tersusun pas. Pie Dough Needs To Stay Perfectly Airy!"
+          },
+          {
+            "id": "tcpip",
+            "title": "Panggang kue TCP/IP",
+            "intro": "Model asli internet cuma punya 4 potongan. Ada satu potongan di nampan yang nggak masuk kue ini.",
+            "extraHint": "TCP/IP nggak punya potongan Session sendiri. Tugasnya dilebur ke layer lain.",
+            "done": "Empat potongan: ramping dan praktis.",
+            "questions": [
+              {
+                "prompt": "Potongan Link di TCP/IP mengerjakan tugas potongan OSI yang mana?",
+                "options": [
+                  {
+                    "text": "Physical dan Data link"
+                  },
+                  {
+                    "text": "Data link saja"
+                  },
+                  {
+                    "text": "Data link dan Network"
+                  },
+                  {
+                    "text": "Physical saja"
+                  }
+                ],
+                "hints": [
+                  "Lihat posisi potongan Link: persis di bawah.",
+                  "Dia mencakup dua potongan OSI paling bawah."
+                ],
+                "explain": "Betul. TCP/IP menggabungkan sinyal dan frame jadi satu layer Link. Ini salah satu kritik yang sering muncul buat model ini."
+              },
+              {
+                "prompt": "Terus, tugas Session dan Presentation di OSI pindah ke mana di TCP/IP?",
+                "options": [
+                  {
+                    "text": "Ke layer Application: tiap aplikasi ngurus sendiri kalau perlu"
+                  },
+                  {
+                    "text": "Ke layer Transport"
+                  },
+                  {
+                    "text": "Ke mana-mana: tugas itu sudah nggak ada yang ngerjain"
+                  },
+                  {
+                    "text": "Ke bawah layer Internet"
+                  }
+                ],
+                "hints": [
+                  "Di OSI, dua potongan itu ada tepat di bawah Application.",
+                  "Aplikasi mengurus tugas itu sendiri, di dalam layer Application."
+                ],
+                "explain": "Yap. Di TCP/IP, urusan session atau format dikerjakan oleh aplikasinya sendiri."
+              }
+            ]
+          },
+          {
+            "id": "hybrid",
+            "title": "Panggang kue hybrid",
+            "intro": "Materi ini pakai 5 potongan: empat potongan bawah OSI, plus satu di atas. Ada satu potongan di nampan yang nggak cocok.",
+            "extraHint": "Model hybrid membuang dua layer tipis OSI. Tugas Presentation masuk ke potongan paling atas.",
+            "done": "Lima potongan. Ini model yang dipakai sisa Packet Valley."
+          }
+        ],
+        "compare": {
+          "title": "Tiga kue, berdampingan",
+          "text": "Potongan yang sama tinggi kerjanya kurang lebih sama. Perhatikan Link di TCP/IP mencakup dua potongan OSI, dan Application mencakup tiga potongan teratas.",
+          "button": "Lanjut ke pesanan"
+        },
+        "orders": {
+          "title": "Pesanan pelanggan",
+          "intro": "Tiap warga mau satu potongan dengan satu tugas. Sajikan potongan yang benar dari kue hybrid, lalu tambahkan topping-nya: nama untuk data yang diurus layer itu.",
+          "layerPrompt": "Potongan mana yang punya tugas ini?",
+          "unitPrompt": "Sekarang topping-nya. Layer ini menyebut potongan datanya apa?",
+          "units": {
+            "message": "Message",
+            "segment": "Segment",
+            "packet": "Packet",
+            "frame": "Frame",
+            "bits": "Bits"
+          },
+          "list": [
+            {
+              "request": "Aku butuh angka 1 dan 0 diubah jadi sinyal di kabel.",
+              "hints": [
+                "Sinyal di kabel terjadi di dasar kue.",
+                "Itu layer Physical."
+              ],
+              "unitHints": [
+                "Di layer ini nggak ada bungkus sama sekali, cuma 1 dan 0 mentah.",
+                "Topping-nya Bits."
+              ]
+            },
+            {
+              "request": "Antar paketku ke lumbung sebelah, dan kabari kalau rusak di jalan.",
+              "hints": [
+                "\"Sebelah\" artinya satu link langsung antara dua mesin.",
+                "Itu layer Data link."
+              ],
+              "unitHints": [
+                "Potongan datanya punya awal dan akhir yang jelas, kayak foto dengan bingkai.",
+                "Topping-nya Frame."
+              ]
+            },
+            {
+              "request": "Carikan rute melintasi banyak network ke peternakan di seberang lembah.",
+              "hints": [
+                "Banyak network, satu rute yang menyambung semuanya.",
+                "Itu layer Network."
+              ],
+              "unitHints": [
+                "Ini yang dioper router dari jalan ke jalan.",
+                "Topping-nya Packet."
+              ]
+            },
+            {
+              "request": "Suratnya sudah sampai di rumah yang benar. Sekarang serahkan ke orang yang tepat di dalamnya.",
+              "hints": [
+                "Mesin yang benar sudah beres. Sekarang butuh program yang benar di mesin itu.",
+                "Itu layer Transport."
+              ],
+              "unitHints": [
+                "Namanya berarti potongan dari aliran yang lebih panjang.",
+                "Topping-nya Segment."
+              ]
+            },
+            {
+              "request": "Aku cuma mau baca email dan buka website desa.",
+              "hints": [
+                "Ini bagian yang benar-benar dilihat dan dipakai orang.",
+                "Itu layer Application."
+              ],
+              "unitHints": [
+                "Ini yang kamu sebut isi surat.",
+                "Topping-nya Message."
+              ]
+            }
+          ],
+          "served": "Tersaji: {layer}, dengan topping {unit}.",
+          "next": "Pelanggan berikutnya",
+          "finishButton": "Lihat hasilnya"
+        }
+      },
+      "feed": [
+        {
+          "id": "0.1-f1",
+          "prompt": "Layer mana yang tugasnya mengantar data ke program yang tepat di sebuah mesin?",
+          "options": [
+            {
+              "text": "Transport"
+            },
+            {
+              "text": "Network"
+            },
+            {
+              "text": "Data link"
+            },
+            {
+              "text": "Physical"
+            }
+          ],
+          "explain": "Transport itu dari proses ke proses. Network cuma mengantar data sampai ke mesin yang benar."
+        },
+        {
+          "id": "0.1-f2",
+          "prompt": "TCP/IP punya 4 layer, OSI punya 7. Layer OSI mana saja yang dilebur ke layer Application di TCP/IP?",
+          "answer": "Session, Presentation, dan Application. Di TCP/IP, aplikasi mengurus tugas-tugas itu sendiri."
+        },
+        {
+          "id": "0.1-f3",
+          "prompt": "Kenapa jaringan dipecah jadi layer?",
+          "options": [
+            {
+              "text": "Satu layer bisa diubah cara kerjanya tanpa membongkar yang lain, selama service-nya tetap sama"
+            },
+            {
+              "text": "Layer bikin data jalan lebih cepat"
+            },
+            {
+              "text": "Biar tiap layer bisa baca data layer lain"
+            },
+            {
+              "text": "Biar nggak butuh protocol lagi"
+            }
+          ],
+          "explain": "Layer saling menyembunyikan detail. Makanya Wi-Fi bisa diganti 5G tanpa menulis ulang browser-mu."
+        },
+        {
+          "id": "0.1-f4",
+          "prompt": "Dua layer Transport di mesin berbeda memakai aturan dan format pesan yang sama. Kumpulan aturan bersama itu disebut…",
+          "options": [
+            {
+              "text": "Protocol"
+            },
+            {
+              "text": "Service"
+            },
+            {
+              "text": "Interface"
+            },
+            {
+              "text": "Frame"
+            }
+          ],
+          "explain": "Protocol adalah cara layer yang sejajar (peer) ngobrol. Service adalah apa yang ditawarkan sebuah layer ke layer di atasnya."
+        },
+        {
+          "id": "0.1-f5",
+          "prompt": "OSI dari bawah ke atas: Pie Dough Needs To Stay Perfectly Airy. Layer ke-5 dari bawah apa?",
+          "answer": "Session. Physical, Data link, Network, Transport, lalu Session."
+        },
+        {
+          "id": "0.1-f6",
+          "prompt": "Layer network menyebut potongan datanya apa?",
+          "options": [
+            {
+              "text": "Packet"
+            },
+            {
+              "text": "Frame"
+            },
+            {
+              "text": "Segment"
+            },
+            {
+              "text": "Message"
+            }
+          ],
+          "explain": "Message (application), segment (transport), packet (network), frame (data link), bits (physical)."
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "Kamu menumpuk 7 layer OSI, lalu mencari di mana 4 layer TCP/IP dan 5 layer hybrid cocok dibanding OSI.",
+          "Tiap potongan mengerjakan satu tugas buat potongan di atasnya. Itulah inti layering: satu layer bisa diubah tanpa membongkar seluruh kue, selama service-nya tetap sama."
+        ],
+        "mistake": {
+          "title": "Tertukar antara network dan transport",
+          "text": "Layer network mengantar data ke mesin yang benar (host ke host). Layer transport lalu mengantarnya ke program yang benar di mesin itu (proses ke proses). Bayangkan network mengantar ke peternakan yang benar, dan transport menyerahkannya ke orang yang benar di peternakan itu."
+        }
+      }
+    },
+    {
+      "id": "0.2",
+      "story": "Kurir Kit punya surat buat Petani Juno di seberang lembah. Di Packet Valley, tiap surat turun lewat lantai-lantai rumah pengirim, jalan lewat jalan raya, lalu naik lewat lantai-lantai rumah penerima.",
+      "hook": {
+        "question": "Di Wi-Fi kafe dengan VPN menyala, kafe bisa lihat kamu sedang kirim data, tapi biasanya nggak tahu website apa yang kamu buka. Apa yang menyembunyikannya?",
+        "answer": "Encapsulation, dua kali. Aplikasi VPN mengambil seluruh packet-mu, lengkap dengan header, mengenkripsinya, lalu menjadikannya isi packet baru yang alamatnya server VPN. Kafe cuma melihat bungkus paling luar."
+      },
+      "fieldNotes": [
+        {
+          "title": "VPN itu paket di dalam paket",
+          "text": "Membungkus satu packet utuh di dalam packet lain disebut tunnelling. VPN memakainya buat membawa lalu lintasmu, terenkripsi, melewati network yang nggak kamu percaya. Network besar juga memakai tunnel buat menyambung kantor-kantornya lewat internet publik.",
+          "source": {
+            "title": "Cloudflare Learning: What is tunneling?"
+          }
+        },
+        {
+          "title": "Satu huruf, 64 byte",
+          "text": "Tiap bungkus butuh byte. Ngirim cuma 1 byte data lewat TCP di IPv4 di Ethernet butuh minimal 20 byte header TCP, 20 byte header IP, dan 18 byte header plus trailer Ethernet: total 59 byte. Ethernet lalu menambah padding sampai frame-nya mencapai minimum 64 byte. Makanya aplikasi lebih suka mengirim data dalam potongan yang lebih besar.",
+          "source": {
+            "title": "RFC 9293: TCP (header format)"
+          }
+        }
+      ],
+      "learn": {
+        "bullets": [
+          "Waktu turun di tumpukan layer pengirim, tiap layer membungkus apa yang ia terima dari atas dengan header miliknya: label berisi info buat layer yang sama di seberang.",
+          "Layer data link juga menambah trailer di ujung belakang, biasanya berisi pengecekan error.",
+          {
+            "text": "Layer physical nggak menambah bungkus. Dia mengirim seluruh frame sebagai sinyal, satu bit demi satu.",
+            "verify": true,
+            "verifyNote": "True in the subject's model. Real links such as Ethernet also send a timing pattern (a preamble) before the frame; check whether to mention it."
+          },
+          "Tiap layer menganggap semua yang ada di dalam bungkusnya cuma muatan. Dia nggak perlu baca label layer lain.",
+          "Di sisi penerima, tiap layer membuka bungkusnya sendiri dan meneruskan sisanya ke atas. Yang dipasang terakhir, dibuka pertama."
+        ],
+        "diagramCaption": "Frame yang terbungkus penuh. Suratnya ada di tengah, dan bungkus link ada di paling luar."
+      },
+      "play": {
+        "places": {
+          "sender": "Rumah Kit",
+          "router": "Pondok router",
+          "receiver": "Rumah Juno",
+          "road": "Di jalan"
+        },
+        "youAreHere": "Kamu di sini",
+        "wrappers": {
+          "message": "Surat Kit (message)",
+          "transport": "Transport header: nomor port",
+          "network": "Network header: IP address",
+          "linkHeader": "Link header: MAC address",
+          "linkTrailer": "Link trailer: pengecekan error",
+          "bits": "Seluruh frame, dikirim sebagai sinyal (bits)"
+        },
+        "continue": "Lanjut",
+        "steps": [
+          {
+            "prompt": "Kit menyerahkan surat di lantai Application. Di sini namanya apa?",
+            "options": [
+              {
+                "text": "Message"
+              },
+              {
+                "text": "Segment"
+              },
+              {
+                "text": "Packet"
+              },
+              {
+                "text": "Frame"
+              }
+            ],
+            "hints": [
+              "Ini lantai paling atas, tempat aplikasi bekerja. Belum ada yang dibungkus.",
+              "Di layer Application, datanya disebut message."
+            ],
+            "success": "Betul. Di paling atas, ini cuma message dari aplikasi."
+          },
+          {
+            "prompt": "Turun ke lantai Transport. Bungkus apa yang dipasang di sini?",
+            "options": [
+              {
+                "text": "Transport header: nomor port, supaya program yang benar menerimanya"
+              },
+              {
+                "text": "Network header: IP address, supaya mesin yang benar menerimanya"
+              },
+              {
+                "text": "Link header: MAC address, buat perangkat berikutnya di kabel ini"
+              },
+              {
+                "text": "Tanpa bungkus: lantai ini cuma meneruskan ke bawah"
+              }
+            ],
+            "hints": [
+              "Tugas lantai ini: mengantar data ke program yang tepat di mesin seberang.",
+              "Pilih header yang berisi nomor port."
+            ],
+            "success": "Terbungkus. Nomor port memberi tahu komputer Juno program mana yang menerima surat."
+          },
+          {
+            "prompt": "Sekarang bungkusannya disebut apa?",
+            "options": [
+              {
+                "text": "Segment"
+              },
+              {
+                "text": "Message"
+              },
+              {
+                "text": "Packet"
+              },
+              {
+                "text": "Frame"
+              }
+            ],
+            "hints": [
+              "Ini potongan dari aliran layer transport.",
+              "Di layer Transport, namanya segment."
+            ],
+            "success": "Betul: segment. (Kalau protocol transport-nya UDP, orang sering menyebutnya datagram.)"
+          },
+          {
+            "prompt": "Lantai Network. Bungkus apa yang dipasang sekarang?",
+            "options": [
+              {
+                "text": "Network header: IP address pengirim dan penerima"
+              },
+              {
+                "text": "Transport header lagi, jaga-jaga"
+              },
+              {
+                "text": "Link header: MAC address, buat perangkat berikutnya di kabel ini"
+              },
+              {
+                "text": "Application header: subjek surat"
+              }
+            ],
+            "hints": [
+              "Lantai ini mencari rute melintasi banyak network ke mesin yang tepat.",
+              "Pilih header yang berisi IP address."
+            ],
+            "success": "Terbungkus. IP address menunjukkan mesin mana, di mana pun di internet."
+          },
+          {
+            "prompt": "Dan di lantai ini bungkusannya disebut apa?",
+            "options": [
+              {
+                "text": "Packet"
+              },
+              {
+                "text": "Segment"
+              },
+              {
+                "text": "Frame"
+              },
+              {
+                "text": "Bits"
+              }
+            ],
+            "hints": [
+              "Ini yang dioper router dari jalan ke jalan.",
+              "Di layer Network, namanya packet."
+            ],
+            "success": "Betul: packet."
+          },
+          {
+            "prompt": "Lantai Data link. Header apa yang dipasang di depan?",
+            "options": [
+              {
+                "text": "Link header: MAC address, buat perangkat berikutnya di kabel ini"
+              },
+              {
+                "text": "Network header: IP address"
+              },
+              {
+                "text": "Physical header: warna kabel"
+              },
+              {
+                "text": "Transport header: nomor port"
+              }
+            ],
+            "hints": [
+              "Lantai ini cuma peduli sampai ke perangkat berikutnya di satu link ini.",
+              "Pilih header yang berisi MAC address."
+            ],
+            "success": "Label depan terpasang. Yang ini cuma perlu membawa frame menyeberangi satu link."
+          },
+          {
+            "prompt": "Frame dibungkus di kedua ujung. Apa yang dipasang di belakang?",
+            "options": [
+              {
+                "text": "Link trailer: pengecekan error, supaya perangkat berikutnya bisa tahu kalau ada yang rusak"
+              },
+              {
+                "text": "Network trailer: salinan kedua IP address"
+              },
+              {
+                "text": "Transport trailer: nomor port lagi"
+              },
+              {
+                "text": "Nggak ada yang dipasang di belakang"
+              }
+            ],
+            "hints": [
+              "Cuma satu layer yang menambah sesuatu di ujung, dan itu lantai yang sedang kamu injak.",
+              "Trailer berisi pengecekan error."
+            ],
+            "success": "Trailer terpasang. Sekarang perangkat berikutnya bisa mengecek apakah ada yang rusak di jalan."
+          },
+          {
+            "prompt": "Sekarang bungkusannya disebut apa?",
+            "options": [
+              {
+                "text": "Frame"
+              },
+              {
+                "text": "Packet"
+              },
+              {
+                "text": "Segment"
+              },
+              {
+                "text": "Bits"
+              }
+            ],
+            "hints": [
+              "Awal dan akhirnya jelas, kayak foto dengan bingkai.",
+              "Di layer Data link, namanya frame."
+            ],
+            "success": "Betul: frame."
+          },
+          {
+            "prompt": "Lantai Physical. Apa yang ditambahkan layer ini?",
+            "options": [
+              {
+                "text": "Nggak ada: dia mengirim seluruh frame sebagai sinyal, bit demi bit"
+              },
+              {
+                "text": "Physical header berisi alamat kabel"
+              },
+              {
+                "text": "Trailer pengecekan error kedua"
+              },
+              {
+                "text": "Dia membuang transport header biar hemat tempat"
+              }
+            ],
+            "hints": [
+              "Layer ini sama sekali nggak baca bungkus. Dia cuma tahu sinyal.",
+              "Dia nggak menambah bungkus. Dia cuma mengirim frame sebagai bits."
+            ],
+            "success": "Betul. Keluar pintu sebagai aliran 1 dan 0."
+          },
+          {
+            "text": "Bits berangkat menyusuri jalan menuju pondok router.",
+            "button": "Kirim lewat jalan"
+          },
+          {
+            "prompt": "Bits sampai di pondok router. Router biasa membuka bungkus sampai layer mana?",
+            "options": [
+              {
+                "text": "Sampai layer network: dia baca IP address buat memilih jalan berikutnya"
+              },
+              {
+                "text": "Sampai layer transport: dia baca nomor port"
+              },
+              {
+                "text": "Sampai habis: dia buka dan baca suratnya"
+              },
+              {
+                "text": "Nggak sama sekali: dia cuma menyalin bits"
+              }
+            ],
+            "hints": [
+              "Tugas router cuma memilih jalan berikutnya ke mesin yang benar. Header mana yang menyebut mesinnya?",
+              "Dia membuka sampai layer network, tempat IP address berada."
+            ],
+            "success": "Betul. Router mengubah bits jadi frame lagi, membuka bungkus link, lalu membaca IP address. Transport header dan suratnya tetap tersegel."
+          },
+          {
+            "prompt": "Router sudah memilih jalan berikutnya. Apa yang dia lakukan sebelum meneruskan packet?",
+            "options": [
+              {
+                "text": "Memasang link header dan trailer baru buat link berikutnya"
+              },
+              {
+                "text": "Mengganti destination IP address jadi miliknya"
+              },
+              {
+                "text": "Membuka transport header"
+              },
+              {
+                "text": "Mengirim packet tanpa bungkus link"
+              }
+            ],
+            "hints": [
+              "Bungkus link yang lama cuma berlaku buat link tadi.",
+              "Tiap link butuh link header dan trailer sendiri, jadi router memasang yang baru."
+            ],
+            "success": "Link baru, bungkus link baru. IP address di dalamnya tetap sama. (Router memang memperbarui penghitung hop di network header, tapi bukan address-nya.)"
+          },
+          {
+            "text": "Berangkat lewat jalan kedua ke rumah Juno. Di lantai Physical, bits berubah jadi frame lagi.",
+            "button": "Kirim lewat jalan"
+          },
+          {
+            "prompt": "Lantai Data link di rumah Juno. Bungkus mana yang dibuka di sini?",
+            "options": [
+              {
+                "text": "Link header dan trailer"
+              },
+              {
+                "text": "Network header"
+              },
+              {
+                "text": "Transport header"
+              },
+              {
+                "text": "Nggak ada: lantai ini nggak pernah membuka bungkus"
+              }
+            ],
+            "hints": [
+              "Yang dipasang terakhir, dibuka pertama. Bungkus mana yang ada di luar?",
+              "Link header dan trailer adalah bungkus paling luar."
+            ],
+            "success": "Terbuka, setelah cek error singkat. Yang tersisa adalah packet."
+          },
+          {
+            "prompt": "Lantai Network. Bungkus mana yang dibuka sekarang?",
+            "options": [
+              {
+                "text": "Network header"
+              },
+              {
+                "text": "Transport header"
+              },
+              {
+                "text": "Suratnya sendiri"
+              },
+              {
+                "text": "Link header lain"
+              }
+            ],
+            "hints": [
+              "Lihat paketnya: bungkus mana yang paling luar sekarang?",
+              "Network header sekarang paling luar."
+            ],
+            "success": "IP address cocok dengan mesin Juno, jadi header-nya dibuka. Yang tersisa adalah segment."
+          },
+          {
+            "prompt": "Lantai Transport. Bungkus mana yang dibuka di sini?",
+            "options": [
+              {
+                "text": "Transport header, setelah membaca nomor port"
+              },
+              {
+                "text": "Network header"
+              },
+              {
+                "text": "Link trailer"
+              },
+              {
+                "text": "Nggak ada: Transport meneruskannya apa adanya"
+              }
+            ],
+            "hints": [
+              "Tinggal satu bungkus.",
+              "Transport header dibuka, dan nomor port-nya memberi tahu program mana yang menerima surat."
+            ],
+            "success": "Nomor port menunjuk ke aplikasi surat Juno. Naik ke atas."
+          },
+          {
+            "prompt": "Lantai paling atas. Apa yang diterima aplikasi Juno?",
+            "options": [
+              {
+                "text": "Surat Kit, persis seperti saat dikirim"
+              },
+              {
+                "text": "Packet beserta IP address-nya"
+              },
+              {
+                "text": "Frame beserta pengecekan error-nya"
+              },
+              {
+                "text": "Aliran bits"
+              }
+            ],
+            "hints": [
+              "Semua bungkus sudah terbuka.",
+              "Tinggal message aslinya."
+            ],
+            "success": "Terkirim! Juno membaca suratnya, dan nggak pernah melihat satu bungkus pun."
+          }
+        ]
+      },
+      "feed": [
+        {
+          "id": "0.2-f1",
+          "prompt": "Waktu turun di tumpukan pengirim, surat mendapat tiga header. Satu layer juga menambah potongan di ujung. Layer apa, dan isinya apa?",
+          "answer": "Layer data link menambah trailer, biasanya berisi pengecekan error."
+        },
+        {
+          "id": "0.2-f2",
+          "prompt": "Di sisi penerima, bungkus mana yang dibuka pertama?",
+          "options": [
+            {
+              "text": "Link header dan trailer"
+            },
+            {
+              "text": "Transport header"
+            },
+            {
+              "text": "Network header"
+            },
+            {
+              "text": "Nggak ada: penerima langsung baca suratnya"
+            }
+          ],
+          "explain": "Yang dipasang terakhir, dibuka pertama. Bungkus link dipasang paling akhir, jadi dia paling luar."
+        },
+        {
+          "id": "0.2-f3",
+          "prompt": "Kenapa router memasang bungkus link baru di setiap hop?",
+          "options": [
+            {
+              "text": "Bungkus link cuma menggambarkan satu link, misalnya MAC address perangkat berikutnya"
+            },
+            {
+              "text": "Buat mengganti destination IP address"
+            },
+            {
+              "text": "Buat menyembunyikan surat dari router berikutnya"
+            },
+            {
+              "text": "Karena transport header bisa aus"
+            }
+          ],
+          "explain": "Tiap link adalah perjalanan pendek sendiri, jadi tiap link dapat link header dan trailer sendiri."
+        },
+        {
+          "id": "0.2-f4",
+          "prompt": "Router biasa membaca header mana buat memilih jalan berikutnya?",
+          "options": [
+            {
+              "text": "Network header (IP address)"
+            },
+            {
+              "text": "Transport header (nomor port)"
+            },
+            {
+              "text": "Suratnya sendiri"
+            },
+            {
+              "text": "Link trailer (pengecekan error)"
+            }
+          ],
+          "explain": "Router bekerja di layer network. Dia membaca destination IP address dan membiarkan bungkus bagian dalam tetap tersegel."
+        },
+        {
+          "id": "0.2-f5",
+          "prompt": "Packet-mu melewati 5 router. Apakah destination IP address-nya berubah di jalan? Putuskan dulu sebelum membalik kartu.",
+          "answer": "Nggak, kecuali ada kotak NAT. IP address-nya tetap; yang berganti di tiap hop cuma bungkus link."
+        },
+        {
+          "id": "0.2-f6",
+          "prompt": "Layer mana yang sama sekali nggak menambah bungkus?",
+          "options": [
+            {
+              "text": "Physical"
+            },
+            {
+              "text": "Data link"
+            },
+            {
+              "text": "Network"
+            },
+            {
+              "text": "Transport"
+            }
+          ],
+          "explain": "Layer physical cuma mengirim seluruh frame sebagai sinyal, bit demi bit."
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "Kamu membungkus surat saat turun (segment, lalu packet, lalu frame, lalu bits) dan membukanya dengan urutan terbalik saat naik. Itulah encapsulation.",
+          "Di pondok router, kamu cuma naik sampai layer network, lalu memasang bungkus link baru buat jalan berikutnya. IP address di dalamnya tetap sama sepanjang perjalanan."
+        ],
+        "mistake": {
+          "title": "Mengira router membaca semua layer",
+          "text": "Router biasa cuma membuka sampai layer network. Dia baca IP address, memilih jalan berikutnya, dan memasang bungkus link baru. Dia nggak pernah membuka transport header atau suratnya. (Beberapa kotak khusus, seperti NAT gateway, memang mengintip nomor port. Kamu bakal ketemu mereka di Router Ranch.)"
+        }
+      }
+    }
+  ]
+}

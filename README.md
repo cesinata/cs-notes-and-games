@@ -37,12 +37,13 @@ or a region's map. The choice is remembered on that device, and the first visit 
   in `content/glossary.json`, and the game marks them so a browser translator can't change them.
 - In Indonesian text, an English term is followed by its Indonesian meaning the first time, like "layer (lapisan)".
 - Indonesian files live in `content/id/`, with the same names as the English ones. They only need the lines that
-  change. Anything missing shows in English. Level texts (`zone-0.json`) are not translated yet.
+  change. Anything missing shows in English. The writing style is casual (*kamu*), short, and keeps English terms.
+- Level texts are translated too (`content/id/<region>/zone-0.json`), except the titles of "Read more" links, which point to English pages.
 - Buttons and labels are in `content/ui.json` (English) and `content/id/ui.json` (Indonesian).
 
 ## What's built so far
 
-- Main page, region maps, saved progress (stars) and a "Reset progress" button for each region
+- Main page (with one big fact per subject), region maps with fun facts, saved progress (stars) and a "Reset progress" button for each region
 - Packet Valley, Town Square: **0.1 Layer Cake** and **0.2 Encapsulation Express**
 - Algo Archipelago, Lighthouse Point: **0.1 Lighthouse Keeper's Toolkit** and **0.2 Growth Race**
 - Hooks (a real-life question at the start of each level) and Field Notes, collected in the Field Journal
@@ -57,7 +58,7 @@ All the words players see live in `content/`, so you can change them without tou
 - `content/ui.json`: buttons and labels. `content/glossary.json`: terms that stay in English
 - `content/id/`: the Indonesian version of any of these files
 - `content/regions.json`: the list of regions (subjects) and their descriptions
-- `content/<region>/world.json`: district names, map positions and the planned level list
+- `content/<region>/world.json`: district names, map positions, the planned level list, and the "Did you know?" fun facts (`funFacts`, 3 to 5) shown at the top of the region page
 - `content/<region>/zone-0.json`: everything for that district's levels (story, hook, learn card, puzzle text, hints, debrief, Field Notes, feed cards, read more)
 
 `<region>` is `net` or `algo`.

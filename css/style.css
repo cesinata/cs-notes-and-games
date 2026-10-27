@@ -562,3 +562,12 @@ a.district-card:hover { background: var(--panel-alt); }
 .language-button.is-current { background: var(--panel); box-shadow: 0 3px 0 var(--frame); font-weight: 700; }
 .language-button.is-current::before { content: "✓ "; }
 .language-button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+/* ---------- Fun facts (top of a region's page) and the big fact on a subject card ---------- */
+.fun-facts { margin: 1rem 0 1.5rem; }
+.fun-facts h2 { margin-bottom: .5rem; }
+.fact-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+.fact { background: var(--hint-bg); border: 3px solid var(--frame); border-radius: 6px; padding: .75rem .9rem; }
+.fact p { margin: .25rem 0 0; }
+.fact-num { font-family: var(--font-pixel); font-weight: 700; color: var(--text-soft); font-size: .9rem; }
+.subject-fact { background: var(--hint-bg); border-left: 4px solid var(--honey-deep); padding: .5rem .75rem; margin: .5rem 0; }

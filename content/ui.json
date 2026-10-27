@@ -8,7 +8,8 @@
     "subjectsNav": "Subjects",
     "language": "Language",
     "storageNotice": "Progress won't be saved on this device, because this browser is blocking storage. You can still play everything.",
-    "youAreHere": "(you are here)"
+    "youAreHere": "(you are here)",
+    "didYouKnow": "Did you know?"
   },
   "hub": {
     "status": {
@@ -35,7 +36,9 @@
     "play": "Play",
     "playAgain": "Play again",
     "comingSoon": "Coming soon",
-    "starsHere": "{earned} of {max} stars earned here"
+    "starsHere": "{earned} of {max} stars earned here",
+    "didYouKnow": "Did you know?",
+    "factNumber": "Fact {n}"
   },
   "level": {
     "phases": {
@@ -78,7 +81,12 @@
     "fieldNotesNew": "New Field Notes unlocked",
     "fieldNotesNote": "Where this idea shows up today. They're saved in your Field Journal on the map.",
     "readMore": "Read more",
-    "continue": "Continue"
+    "continue": "Continue",
+    "quickQuestion": "Quick question",
+    "orderOf": "Order {i} of {n}",
+    "islanderOf": "Islander {i} of {n}",
+    "claimOf": "Claim {i} of {n}",
+    "seeResult": "See how you did"
   },
   "choices": {
     "answerOptions": "Answer options",
@@ -101,6 +109,44 @@
   "sim": {
     "crates": "Crates",
     "empty": "Empty",
-    "prediction": "Your prediction: {guess}"
+    "prediction": "Your prediction: {guess}",
+    "cratesLtr": "Crates, left to right",
+    "stackLabel": "Crate stack, bottom first",
+    "queueLabel": "Ferry line, front first"
+  },
+  "diagram": {
+    "layer": "Layer {n}",
+    "machine": "Machine {name}",
+    "protocol": "protocol",
+    "service": "service",
+    "wire": "the actual wire",
+    "layersAria": "Two machines, each with three stacked layers. Matching layers are joined by dashed lines labelled protocol. Arrows show each layer serving the one above. A wire joins the bottom layers."
+  },
+  "cake": {
+    "tray": "Tray",
+    "slicesToPlace": "Slices to place",
+    "toppers": "Toppers",
+    "hybridAria": "Hybrid cake slices, listed from the bottom",
+    "standAria": "{title}: {placed} of {total} slices placed, listed from the bottom",
+    "sliceOn": "{name} is on.",
+    "sliceIs": "{name} it is."
+  },
+  "parcel": {
+    "aria": "Nested wrappers: the link header and trailer on the outside, then the network header, then the transport header, and the letter in the middle.",
+    "floorsAria": "Floors of {place}, top to bottom",
+    "onRoad": "On the road."
+  },
+  "rank": {
+    "lineAria": "Boats lined up, gentlest first",
+    "trayAria": "Boats to line up",
+    "nextIs": "Next is {label}.",
+    "inPlace": "{label} is in place."
+  },
+  "toolkit": {
+    "stack": "Stack",
+    "queue": "Queue",
+    "tools": "Tools",
+    "stackAria": "A stack of three crates",
+    "queueAria": "A queue of three passengers"
   }
 }

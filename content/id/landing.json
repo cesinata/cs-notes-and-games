@@ -1,53 +1,53 @@
 {
-  "tagline": "Puzzle pixel yang santai untuk belajar, atau belajar ulang, cara kerja komputer yang sebenarnya.",
+  "tagline": "Puzzle pixel santai buat belajar, atau belajar ulang, cara kerja komputer yang sebenarnya.",
   "intro": [
-    "Pocket Atlas mengubah materi teknis yang besar menjadi tempat-tempat kecil yang bisa kamu jelajahi. Tiap materi adalah sebuah wilayah (region) di atlas, dengan peta, cerita, dan level puzzle pendek sendiri, sekitar 3 sampai 8 menit per level.",
-    "Gratis, tanpa akun, dan jalan di browser kamu. Bintang kamu hanya tersimpan di perangkat ini."
+    "Pocket Atlas mengubah materi teknis yang berat jadi tempat-tempat kecil yang bisa kamu jelajahi. Tiap materi punya peta, cerita, dan level puzzle pendek sendiri, sekitar 3 sampai 8 menit per level.",
+    "Gratis, tanpa akun, jalan langsung di browser. Bintangmu cuma tersimpan di perangkat ini."
   ],
-  "whoTitle": "Untuk siapa ini",
+  "whoTitle": "Cocok buat siapa",
   "who": [
-    "Orang yang penasaran dan belum pernah mempelajari topiknya, dan ingin cara yang ramah untuk memulai.",
-    "Mahasiswa yang pernah bertemu ide-ide ini dan ingin menyegarkannya tanpa membuka buku teks.",
-    "Siapa pun yang lebih mudah belajar lewat puzzle daripada membaca halaman."
+    "Kamu yang penasaran dan belum pernah belajar topiknya.",
+    "Mahasiswa yang pernah ketemu materi ini dan mau nyegerin ingatan tanpa buka buku tebal.",
+    "Siapa aja yang lebih gampang belajar lewat puzzle daripada baca."
   ],
-  "howTitle": "Cara kerja sebuah level",
-  "howIntro": "Setiap level punya jalur singkat yang sama, jadi kamu selalu tahu langkah berikutnya.",
+  "howTitle": "Cara main satu level",
+  "howIntro": "Tiap level punya alur singkat yang sama, jadi kamu selalu tahu langkah berikutnya.",
   "how": [
     {
-      "name": "Pertanyaan dari kehidupan nyata",
-      "text": "Setiap level dimulai dengan sesuatu yang mungkin pernah kamu pikirkan, misalnya kenapa undo bekerja seperti itu."
+      "name": "Pertanyaan sehari-hari",
+      "text": "Level dibuka dengan hal yang mungkin pernah kamu pikirin, misalnya kenapa undo bisa begitu."
     },
     {
-      "name": "Cerita singkat dan ide-ide kunci",
-      "text": "Cerita kecil di wilayah itu membuka suasana, lalu beberapa poin sederhana memberimu apa yang kamu butuhkan."
+      "name": "Cerita dan ide kunci",
+      "text": "Cerita singkat bikin kamu masuk suasana, lalu beberapa poin sederhana ngasih bekal buat main."
     },
     {
       "name": "Puzzle",
-      "text": "Kamu mencoba idenya langsung. Jawaban yang salah memberimu petunjuk, bukan timer hukuman."
+      "text": "Kamu langsung coba idenya. Salah jawab dapat petunjuk, bukan hukuman."
     },
     {
       "name": "Ulasan",
-      "text": "Kamu mendapat jawaban dari pertanyaan pembuka, satu kesalahan umum yang perlu dihindari, bintangmu, dan tautan untuk membaca lebih lanjut."
+      "text": "Kamu dapat jawaban dari pertanyaan awal, satu salah kaprah yang perlu dihindari, bintangmu, dan tautan buat baca lanjut."
     }
   ],
-  "extrasTitle": "Di antara level",
+  "extrasTitle": "Di sela-sela level",
   "extras": [
     {
       "name": "Daily Feed",
-      "text": "Sekitar 10 kartu review singkat per hari dari level yang sudah kamu selesaikan. Kartu yang meleset akan muncul lagi lebih cepat. Ada streak, tapi tidak pernah memarahimu."
+      "text": "Sekitar 10 kartu review singkat tiap hari dari level yang sudah kamu tamatkan. Kartu yang salah muncul lagi lebih cepat. Ada streak, tapi nggak pernah ngomel."
     },
     {
       "name": "Field Journal",
-      "text": "Setiap level yang selesai membuka Field Notes: tempat ide itu muncul di aplikasi dan network (jaringan) yang kamu pakai hari ini."
+      "text": "Tiap level yang tamat membuka Field Notes: contoh ide itu di aplikasi dan network (jaringan) yang kamu pakai sehari-hari."
     }
   ],
   "subjectsTitle": "Pilih materi",
-  "subjectsIntro": "Tiap wilayah menyimpan progress-nya sendiri. Mulai dari mana saja.",
+  "subjectsIntro": "Progress tiap wilayah disimpan terpisah. Mulai dari mana aja boleh.",
   "enter": "Masuk ke {name}",
-  "progress": "{earned} dari {max} bintang di {levels} yang sudah dibuat",
+  "progress": "{earned}/{max} bintang dari {levels} yang sudah jadi",
   "progressLevels": {
     "one": "1 level",
     "other": "{n} level"
   },
-  "note": "Semua penjelasan, cerita, dan puzzle di sini orisinal. Tautan bacaan di akhir tiap level mengarah ke buku terbuka, spesifikasi resmi, dan sumber lain."
+  "note": "Semua penjelasan, cerita, dan puzzle di sini orisinal. Tautan baca lanjut di akhir level mengarah ke buku terbuka, spesifikasi resmi, dan sumber lain."
 }

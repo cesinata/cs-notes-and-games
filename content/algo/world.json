@@ -1,6 +1,13 @@
 {
   "title": "Algo Archipelago",
   "tagline": "Sail between islands and solve each islander's problem with the right algorithm.",
+  "funFacts": [
+    { "text": "Fold a sheet of paper in half 42 times and it would be thick enough to reach the Moon. (You can't really fold it that many times, but the maths works.)", "verify": true, "verifyNote": "Check: 0.1 mm x 2^42 is about 440,000 km; the Moon is about 384,000 km away." },
+    { "text": "Finding one name in a sorted list of a billion names takes at most about 30 checks, if you keep cutting the list in half.", "verify": true, "verifyNote": "Check: 2^30 is about 1.07 billion." },
+    { "text": "A well-shuffled deck of 52 cards is almost certainly in an order that has never existed before. There are about 8 followed by 67 zeros possible orders.", "verify": true, "verifyNote": "52! is about 8.07 x 10^67." },
+    { "text": "A delivery driver with just 20 stops has more than 60 quadrillion possible routes. Checking every one is hopeless, which is why smarter methods matter.", "verify": true, "verifyNote": "Check: 19!/2 is about 6.1 x 10^16 routes if direction doesn't matter and the start is fixed." },
+    { "text": "The word \"algorithm\" comes from the name of al-Khwarizmi, a scholar who worked in Baghdad around the 9th century.", "verify": true, "verifyNote": "Widely stated; check spelling and period." }
+  ],
   "listHeading": "Islands",
   "mapStyle": "islands",
   "starRules": "3 stars: no mistakes and no hints. 2 stars: up to 2 mistakes. 1 star: you finished.",

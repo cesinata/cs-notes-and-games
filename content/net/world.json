@@ -1,6 +1,13 @@
 {
   "title": "Packet Valley",
   "tagline": "Carry one letter across the valley, and learn every layer of the internet on the way.",
+  "funFacts": [
+    { "text": "Almost all internet traffic between continents travels through cables lying on the seabed, not through satellites.", "verify": true, "verifyNote": "Commonly cited as 95-99% of intercontinental traffic. Check the wording is fair and pick a source to link." },
+    { "text": "The first message ever sent over the ARPANET, the internet's ancestor, was meant to be \"LOGIN\" in 1969. The system crashed after two letters, so the first message was just \"LO\".", "verify": true, "verifyNote": "A well-known story. Check the year (1969) and the two-letter detail." },
+    { "text": "A web page is chopped into small packets before it travels. Packets of the same page can take different routes and get put back in order at the end." },
+    { "text": "IPv4, the addressing system most of the internet still leans on, has only about 4.3 billion addresses. That's fewer than the number of people on Earth." },
+    { "text": "Light is fast, but not instant. Even in a perfect fibre cable, a round trip to the opposite side of the planet takes at least about 0.2 seconds.", "verify": true, "verifyNote": "Rough check: about 20,000 km each way, light in fibre about 200,000 km/s, so 40,000 / 200,000 = 0.2 s." }
+  ],
   "starRules": "3 stars: no mistakes and no hints. 2 stars: up to 2 mistakes. 1 star: you finished.",
   "journal": {
     "title": "Field Journal",

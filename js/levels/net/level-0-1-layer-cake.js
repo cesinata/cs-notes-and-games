@@ -54,17 +54,17 @@ export const layerCake = {
   // The Learn card picture: two machines, peers joined by protocols.
   learnDiagram() {
     const rows = [
-      { y: 34, label: 'Layer 3' },
-      { y: 84, label: 'Layer 2' },
-      { y: 134, label: 'Layer 1' }
+      { y: 34, label: t('diagram.layer', { n: 3 }) },
+      { y: 84, label: t('diagram.layer', { n: 2 }) },
+      { y: 134, label: t('diagram.layer', { n: 1 }) }
     ];
     const svg = svgEl('svg', {
       class: 'diagram', viewBox: '0 0 360 230', role: 'img',
-      'aria-label': 'Two machines, each with three stacked layers. Matching layers are joined by dashed lines labelled protocol. Arrows show each layer serving the one above. A wire joins the bottom layers.'
+      'aria-label': t('diagram.layersAria')
     });
     svg.append(
-      svgEl('text', { x: 80, y: 20, class: 'dia-title', 'text-anchor': 'middle' }, 'Machine A'),
-      svgEl('text', { x: 280, y: 20, class: 'dia-title', 'text-anchor': 'middle' }, 'Machine B')
+      svgEl('text', { x: 80, y: 20, class: 'dia-title', 'text-anchor': 'middle' }, t('diagram.machine', { name: 'A' })),
+      svgEl('text', { x: 280, y: 20, class: 'dia-title', 'text-anchor': 'middle' }, t('diagram.machine', { name: 'B' }))
     );
     rows.forEach((row) => {
       svg.append(
@@ -73,7 +73,7 @@ export const layerCake = {
         svgEl('text', { x: 80, y: row.y + 22, 'text-anchor': 'middle', class: 'dia-label' }, row.label),
         svgEl('text', { x: 280, y: row.y + 22, 'text-anchor': 'middle', class: 'dia-label' }, row.label),
         svgEl('line', { x1: 140, y1: row.y + 17, x2: 220, y2: row.y + 17, class: 'dia-dash' }),
-        svgEl('text', { x: 180, y: row.y + 12, 'text-anchor': 'middle', class: 'dia-small' }, 'protocol')
+        svgEl('text', { x: 180, y: row.y + 12, 'text-anchor': 'middle', class: 'dia-small' }, t('diagram.protocol'))
       );
     });
     // "service" arrows between the left stack's layers.
@@ -81,10 +81,10 @@ export const layerCake = {
       svg.append(svgEl('path', { d: `M 152 ${from} L 152 ${to + 2} M 147 ${to + 8} L 152 ${to + 2} L 157 ${to + 8}`, class: 'dia-arrow' }));
     });
     svg.append(
-      svgEl('text', { x: 6, y: 128, class: 'dia-small', transform: 'rotate(-90 6 128)', 'text-anchor': 'middle' }, 'service'),
+      svgEl('text', { x: 6, y: 128, class: 'dia-small', transform: 'rotate(-90 6 128)', 'text-anchor': 'middle' }, t('diagram.service')),
       svgEl('path', { d: 'M 14 128 L 14 82 M 10 88 L 14 82 L 18 88', class: 'dia-arrow' }),
       svgEl('path', { d: 'M 80 168 L 80 200 L 280 200 L 280 168', class: 'dia-wire' }),
-      svgEl('text', { x: 180, y: 220, 'text-anchor': 'middle', class: 'dia-small' }, 'the actual wire')
+      svgEl('text', { x: 180, y: 220, 'text-anchor': 'middle', class: 'dia-small' }, t('diagram.wire'))
     );
     return svg;
   },
@@ -121,12 +121,12 @@ export const layerCake = {
       let placed = 0;
       const heading = el('h2', {}, cake.title);
       const stand = el('ol', { class: 'cake-stand' });
-      const tray = el('div', { class: 'tray', role: 'group', 'aria-label': 'Slices to place' });
+      const tray = el('div', { class: 'tray', role: 'group', 'aria-label': t('cake.slicesToPlace') });
       const after = el('div', { class: 'stage-after' });
 
       function drawStand() {
         clear(stand);
-        stand.setAttribute('aria-label', `${cake.title}: ${placed} of ${cake.layers.length} slices placed, listed from the bottom`);
+        stand.setAttribute('aria-label', t('cake.standAria', { title: cake.title, placed, total: cake.layers.length }));
         cake.layers.forEach((id, i) => {
           if (i < placed) {
             stand.append(el('li', { class: `slice slice-${id}` }, nameOf(id)));
@@ -152,7 +152,7 @@ export const layerCake = {
               after.append(continueButton(t('level.continue'), next));
             } else {
               ctx.step(P.layers[cake.layers[placed]].hints);
-              ctx.correct(`${nameOf(id)} is on.`);
+              ctx.correct(t('cake.sliceOn', { name: nameOf(id) }));
               announce(`${nameOf(id)} placed. ${placed} of ${cake.layers.length}.`);
             }
           } else {
@@ -170,7 +170,7 @@ export const layerCake = {
         el('p', {}, cake.intro),
         el('div', { class: 'cake-builder' },
           el('div', { class: 'stand-wrap' }, stand, el('div', { class: 'cake-plate', 'aria-hidden': 'true' })),
-          el('div', { class: 'tray-wrap' }, el('p', { class: 'small' }, 'Tray'), tray)
+          el('div', { class: 'tray-wrap' }, el('p', { class: 'small' }, t('cake.tray')), tray)
         )
       );
       ctx.placeFeedback(area);
@@ -184,7 +184,7 @@ export const layerCake = {
       const heading = el('h2', {}, q.prompt);
       const after = el('div', { class: 'stage-after' });
       area.append(
-        el('p', { class: 'small' }, 'Quick question'),
+        el('p', { class: 'small' }, t('level.quickQuestion')),
         heading,
         choiceList({
           options: q.options,
@@ -231,7 +231,7 @@ export const layerCake = {
       const after = el('div', { class: 'stage-after' });
       const unitArea = el('div', { class: 'unit-area' });
 
-      const slices = el('ol', { class: 'mini-cake', 'aria-label': 'Hybrid cake slices, listed from the bottom' });
+      const slices = el('ol', { class: 'mini-cake', 'aria-label': t('cake.hybridAria') });
       const sliceButtons = [];
       hybrid.layers.forEach((id) => {
         const button = el('button', { class: `slice-btn slice-${id}`, type: 'button' }, nameOf(id));
@@ -240,7 +240,7 @@ export const layerCake = {
             button.classList.add('is-chosen');
             button.prepend(el('span', { class: 'choice-mark', 'aria-hidden': 'true' }, '✓'));
             sliceButtons.forEach((b) => { b.disabled = true; });
-            ctx.correct(`${nameOf(id)} it is.`);
+            ctx.correct(t('cake.sliceIs', { name: nameOf(id) }));
             askUnit();
           } else {
             button.disabled = true;
@@ -259,7 +259,7 @@ export const layerCake = {
         const unitOptions = Object.entries(O.units).map(([id, name]) => ({ text: name, correct: id === order.unit }));
         unitArea.append(prompt, choiceList({
           options: unitOptions,
-          label: 'Toppers',
+          label: t('cake.toppers'),
           reducedMotion: ctx.reducedMotion,
           onCorrect: () => {
             ctx.step([]);
@@ -281,7 +281,7 @@ export const layerCake = {
       );
 
       area.append(
-        el('p', { class: 'small' }, `Order ${index + 1} of ${total}`),
+        el('p', { class: 'small' }, t('level.orderOf', { i: index + 1, n: total })),
         heading,
         index === 0 ? el('p', {}, O.intro) : null,
         customer,
