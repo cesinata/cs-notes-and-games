@@ -36,7 +36,7 @@ function applyProps(node, props) {
 
 // Text goes through termNodes, which keeps technical terms (see glossary.json) from being translated.
 function appendChildren(node, children, markTerms = true) {
-  children.flat().forEach((child) => {
+  children.flat(Infinity).forEach((child) => {
     if (child === null || child === undefined || child === false) return;
     if (child instanceof Node) node.append(child);
     else if (markTerms) node.append(...termNodes(String(child)));

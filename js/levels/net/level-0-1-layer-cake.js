@@ -51,8 +51,9 @@ export const layerCake = {
     return problems;
   },
 
-  // The Learn card picture: two machines, peers joined by protocols.
-  learnDiagram() {
+  // Lesson pictures, chosen by the lesson's "diagram" name.
+  lessonDiagram(name, level) {
+    if (name === 'threeCakes') return cakesDiagram(level);
     const rows = [
       { y: 34, label: t('diagram.layer', { n: 3 }) },
       { y: 84, label: t('diagram.layer', { n: 2 }) },
@@ -297,3 +298,16 @@ export const layerCake = {
     }
   }
 };
+
+// Lesson picture: three cakes side by side. Slices at the same height do about the same job.
+function cakesDiagram(level) {
+  const { spans, labels } = level.play.compare;
+  return el('div', { class: 'cakes-compare', role: 'group', 'aria-label': t('cake.compareAria') },
+    ['osi', 'tcpip', 'hybrid'].map((id) => {
+      const slices = Object.entries(spans[id]).sort((a, b) => a[1][0] - b[1][0]);
+      return el('div', { class: 'cake-col' },
+        el('h4', {}, labels[id]),
+        el('ol', {}, slices.map(([layer, [from, to]]) =>
+          el('li', { class: to - from >= 2 ? 'tall-3' : (to - from === 1 ? 'tall-2' : '') }, level.play.layers[layer].name))));
+    }));
+}

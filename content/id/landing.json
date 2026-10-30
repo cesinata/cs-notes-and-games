@@ -1,29 +1,29 @@
 {
-  "tagline": "Puzzle pixel santai buat belajar, atau belajar ulang, cara kerja komputer yang sebenarnya.",
+  "tagline": "Puzzle pixel santai yang mengajarkan cara kerja komputer dan internet yang sebenarnya.",
   "intro": [
-    "Pocket Atlas mengubah materi teknis yang berat jadi tempat-tempat kecil yang bisa kamu jelajahi. Tiap materi punya peta, cerita, dan level puzzle pendek sendiri, sekitar 3 sampai 8 menit per level.",
-    "Gratis, tanpa akun, jalan langsung di browser. Bintangmu cuma tersimpan di perangkat ini."
+    "Courier's Atlas mengubah materi teknis yang berat jadi tempat-tempat kecil yang bisa kamu jelajahi. Tiap materi punya peta, cerita, dan level pendek sendiri, sekitar 8 sampai 10 menit per level.",
+    "Kamu jadi Kit, kurir baru. Kit mengantar surat sambil belajar cara semuanya bekerja. Gratis, tanpa akun, jalan langsung di browser. Bintangmu cuma tersimpan di perangkat ini."
   ],
   "whoTitle": "Cocok buat siapa",
   "who": [
-    "Kamu yang penasaran dan belum pernah belajar topiknya.",
-    "Mahasiswa yang pernah ketemu materi ini dan mau nyegerin ingatan tanpa buka buku tebal.",
+    "Pelajar umur 15 tahun ke atas yang penasaran cara kerja internet dan software, tanpa perlu pengalaman.",
+    "Mahasiswa yang mau mengulang materi. Tiap pelajaran punya bagian \"Go deeper\" yang opsional.",
     "Siapa aja yang lebih gampang belajar lewat puzzle daripada baca."
   ],
   "howTitle": "Cara main satu level",
-  "howIntro": "Tiap level punya alur singkat yang sama, jadi kamu selalu tahu langkah berikutnya.",
+  "howIntro": "Tiap level punya alur yang sama, jadi kamu selalu tahu langkah berikutnya.",
   "how": [
     {
-      "name": "Pertanyaan sehari-hari",
-      "text": "Level dibuka dengan hal yang mungkin pernah kamu pikirin, misalnya kenapa undo bisa begitu."
+      "name": "Momen sehari-hari",
+      "text": "Level dibuka dengan hal yang mungkin pernah kamu perhatikan, misalnya kenapa undo bisa begitu. Kamu dapat satu pertanyaan buat dipikirkan."
     },
     {
-      "name": "Cerita dan ide kunci",
-      "text": "Cerita singkat bikin kamu masuk suasana, lalu beberapa poin sederhana ngasih bekal buat main."
+      "name": "Pelajaran bercerita",
+      "text": "2 sampai 4 halaman pendek, diceritakan lewat pekerjaan Kit. Tiap istilah baru dijelaskan, tiap halaman punya gambar, dan mencantumkan sumber idenya."
     },
     {
-      "name": "Puzzle",
-      "text": "Kamu langsung coba idenya. Salah jawab dapat petunjuk, bukan hukuman."
+      "name": "Aktivitas",
+      "text": "Kamu langsung coba idenya. Salah jawab dapat petunjuk, bukan timer. Ada soal bonus yang lebih sulit, dan itu opsional."
     },
     {
       "name": "Ulasan",
@@ -49,5 +49,7 @@
     "one": "1 level",
     "other": "{n} level"
   },
-  "note": "Semua penjelasan, cerita, dan puzzle di sini orisinal. Tautan baca lanjut di akhir level mengarah ke buku terbuka, spesifikasi resmi, dan sumber lain."
+  "note": "Semua penjelasan, cerita, dan puzzle di sini orisinal. Tautan baca lanjut di akhir level mengarah ke buku terbuka, spesifikasi resmi, dan sumber lain.",
+  "continueTitle": "Lanjutkan dari terakhir",
+  "continueButton": "Lanjut: {level}"
 }

@@ -10,8 +10,8 @@ import { isStorageAvailable } from './engine/storage.js';
 import { t } from './engine/i18n.js';
 import { languageSwitch } from './language-switch.js';
 
-// summaries: [{ region, earned, max, builtCount }], worked out by main.js.
-export function renderLanding(app, text, summaries) {
+// summaries: [{ region, earned, max, builtCount }] and resume: { region, level, href } or null, worked out by main.js.
+export function renderLanding(app, text, summaries, resume) {
   clear(app);
   const heading = el('h1', { class: 'hub-title' }, text.title);
 
@@ -22,6 +22,10 @@ export function renderLanding(app, text, summaries) {
     ),
     languageSwitch(),
     isStorageAvailable() ? null : el('p', { class: 'notice' }, t('common.storageNotice')),
+    resume ? el('section', { class: 'resume-card', 'aria-labelledby': 'resume-heading' },
+      el('h2', { id: 'resume-heading' }, text.continueTitle),
+      el('p', {}, `${resume.region.name} · ${resume.level.id} ${resume.level.title}`),
+      el('a', { class: 'btn', href: resume.href }, text.continueButton.replace('{level}', `${resume.level.id} ${resume.level.title}`))) : null,
     el('section', { class: 'board landing-intro' },
       text.intro.map((p) => el('p', {}, p))
     ),

@@ -365,7 +365,8 @@
     {
       "id": 8,
       "name": "Far Horizon",
-      "topic": "Greedy algorithms and P vs NP (scope still to confirm)",
+      "topic": "Greedy algorithms and P vs NP",
+      "skipped": true,
       "file": null,
       "map": {
         "x": 286,

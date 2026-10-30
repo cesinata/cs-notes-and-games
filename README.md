@@ -1,7 +1,8 @@
-# Pocket Atlas
+# Courier's Atlas
 
-Cozy pixel puzzles for learning, or re-learning, how computers really work. Each subject is a region on
-the atlas, with its own map, story and short puzzle levels (3–8 minutes each).
+Cozy pixel puzzles that teach how computers and the internet really work, written for students about 15 and up
+(with optional "Go deeper" parts for university level). You play Kit, a new courier. Each subject is a region on
+the atlas, with its own map, story and short levels (8–10 minutes each).
 
 Two regions so far:
 
@@ -38,7 +39,7 @@ or a region's map. The choice is remembered on that device, and the first visit 
 - In Indonesian text, an English term is followed by its Indonesian meaning the first time, like "layer (lapisan)".
 - Indonesian files live in `content/id/`, with the same names as the English ones. They only need the lines that
   change. Anything missing shows in English. The writing style is casual (*kamu*), short, and keeps English terms.
-- Level texts are translated too (`content/id/<region>/zone-0.json`), except the titles of "Read more" links, which point to English pages.
+- Level texts (`zone-0.json`) are being rewritten in a new format, so for now they show in English. The Indonesian version comes back after that.
 - Buttons and labels are in `content/ui.json` (English) and `content/id/ui.json` (Indonesian).
 
 ## What's built so far
@@ -46,7 +47,8 @@ or a region's map. The choice is remembered on that device, and the first visit 
 - Main page (with one big fact per subject), region maps with fun facts, saved progress (stars) and a "Reset progress" button for each region
 - Packet Valley, Town Square: **0.1 Layer Cake** and **0.2 Encapsulation Express**
 - Algo Archipelago, Lighthouse Point: **0.1 Lighthouse Keeper's Toolkit** and **0.2 Growth Race**
-- Hooks (a real-life question at the start of each level) and Field Notes, collected in the Field Journal
+- A new level flow: an everyday moment, 2 to 4 story lessons (each with References and an optional "Go deeper"), the activities, then a debrief
+- Field Notes, collected in the Field Journal
 - Daily Feed: about 10 bite-size review cards a day from finished levels, with spaced repetition
 - Step Sim: runs an algorithm one step at a time (used by Algo Archipelago)
 
@@ -59,7 +61,7 @@ All the words players see live in `content/`, so you can change them without tou
 - `content/id/`: the Indonesian version of any of these files
 - `content/regions.json`: the list of regions (subjects) and their descriptions
 - `content/<region>/world.json`: district names, map positions, the planned level list, and the "Did you know?" fun facts (`funFacts`, 3 to 5) shown at the top of the region page
-- `content/<region>/zone-0.json`: everything for that district's levels (story, hook, learn card, puzzle text, hints, debrief, Field Notes, feed cards, read more)
+- `content/<region>/zone-0.json`: everything for that district's levels (Kit's job, everyday moment, lesson pages, puzzle text, hints, debrief, Field Notes, feed cards). The Read more list is built from the lesson pages' references
 
 `<region>` is `net` or `algo`.
 

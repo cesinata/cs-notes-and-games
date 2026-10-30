@@ -21,7 +21,15 @@ Decisions we've made, so we stay consistent as the game grows.
 ## Content
 - Level titles appear in `world.json` (the plan) and in the zone file (the built level). The zone file wins.
 - Text that needs checking: write it as `{ "text": "...", "verify": true, "verifyNote": "why" }`.
-- Every level ends with 2–3 Read more links.
+- Every level ends with a Read more list. It is built automatically from the References on its lesson pages (de-duplicated).
+
+## Level flow and content format v2
+- **Everyday moment** (a familiar scene and a question) → **Story lessons** (2 to 4 pages) → **Play** → **Debrief**.
+- A level in `zone-N.json` has: `id`, `title`, `story` (Kit's job), `everyday` (`scene`, `question`, `answer`), `lessons`, `play`, `feed`, `fieldNotes`, `debrief`.
+- A lesson page has: `id`, `title`, `text` (paragraphs, about 60 to 90 words in total), optional `terms` (words to know), `diagram` (a picture the level's file draws) or `table`, `diagramCaption`, `predict` (think first, then open), `deeper` ("Go deeper", optional, never needed for stars), and `references` (at least one, https links only).
+- **Teach, then test:** every question, Feed card and activity has `taughtOn`: the id of the lesson page that taught it. In `play`, a section can set it once for everything inside, and stages built in code use a key like `rankTaughtOn`. `js/engine/content.js` checks that each one points to a real page.
+- **Challenge:** optional bonus questions (harder, with `Go deeper` ideas). Mistakes and hints there never cost stars. Clearing it adds a small "Challenge cleared" mark.
+- Written for about age 15 to 18: every term defined when first used, no maths beyond everyday algebra on the main path.
 
 ## Level 0.2: the router hut
 - Added beyond the brief: a router stop between the two houses, so the player *does* the
@@ -35,8 +43,8 @@ Decisions we've made, so we stay consistent as the game grows.
 - Animations switch off when the device asks for reduced motion.
 - Dark mode follows the device setting.
 
-## Hooks and Field Notes
-- Each level's story card asks a **hook**: a real-life puzzle the player can't answer yet.
+## Everyday moments and Field Notes
+- Each level opens with an **everyday moment**: a familiar scene plus a question the player can't answer yet.
   The debrief answers it straight after the summary, so the curiosity pays off.
 - Each level has 2 **Field Notes**: where the idea shows up in today's apps and networks, with a source link.
   They unlock when the level is finished (1+ star) and collect in the **Field Journal** (`#/journal`).
@@ -57,7 +65,7 @@ Decisions we've made, so we stay consistent as the game grows.
 
 ## Regions (one per subject)
 - `content/regions.json` lists the regions. Each one lives under its own route: Packet Valley at `#/net/`, Algo Archipelago at `#/algo/`.
-- `#/` is the main page (Pocket Atlas): what the project is, how a level works, and a card per subject.
+- `#/` is the main page (Courier's Atlas): what the project is, how a level works, and a card per subject.
   Its words are in `content/landing.json`.
 - Old links with no region (`#/zone/0`, `#/level/0.1`, `#/feed`, `#/journal`) are redirected to `#/net/...`.
 - Each region has its own world file, content folder (`content/net/`, `content/algo/`) and level folder (`js/levels/net/`, `js/levels/algo/`).

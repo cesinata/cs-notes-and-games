@@ -1,33 +1,56 @@
 {
-  "title": "Pocket Atlas",
-  "tagline": "Cozy pixel puzzles for learning, or re-learning, how computers really work.",
+  "title": "Courier's Atlas",
+  "tagline": "Cozy pixel puzzles that teach how computers and the internet really work.",
   "intro": [
-    "Pocket Atlas turns big technical subjects into small places you can walk around. Each subject is a region on the atlas, with its own map, its own story and short puzzle levels of about 3 to 8 minutes.",
-    "It's free, it needs no account, and it runs in your browser. Your stars are saved on this device only."
+    "Courier's Atlas turns big technical subjects into small places you can walk around. Each subject is a region on the atlas, with its own map, its own story and short levels of about 8 to 10 minutes.",
+    "You play Kit, a new courier. Kit delivers letters and learns how it all works along the way. It's free, it needs no account, and it runs in your browser. Your stars are saved on this device only."
   ],
   "whoTitle": "Who it's for",
   "who": [
-    "Curious people who have never studied the subject and want a gentle way in.",
-    "Students who met these ideas once and want to refresh them without opening a textbook.",
-    "Anyone who learns better by doing a puzzle than by reading a page."
+    "Students about 15 and up who are curious how the internet and software work, with no experience needed.",
+    "University students who want to revise the ideas. Every lesson has an optional \"Go deeper\" part.",
+    "Anyone who learns better by trying a puzzle than by reading a page."
   ],
   "howTitle": "How a level works",
-  "howIntro": "Every level follows the same short path, so you always know what's next.",
+  "howIntro": "Every level follows the same path, so you always know what's next.",
   "how": [
-    { "name": "A question from real life", "text": "Each level starts with something you have probably wondered about, like why undo works the way it does." },
-    { "name": "A short story and the key ideas", "text": "A small story in the region sets the scene, then a few plain-language points give you what you need." },
-    { "name": "Puzzles", "text": "You try the idea hands-on. Wrong answers give you a hint, never a penalty timer." },
-    { "name": "Debrief", "text": "You get the answer to the opening question, a common mistake to avoid, your stars and links to read more." }
+    {
+      "name": "An everyday moment",
+      "text": "Each level starts with something you've probably noticed, like why undo works the way it does. You get a question to think about."
+    },
+    {
+      "name": "Story lessons",
+      "text": "2 to 4 short pages, told through Kit's job. Every new word is explained, each page has a picture, and each page lists where its ideas come from."
+    },
+    {
+      "name": "Activities",
+      "text": "You try the ideas hands-on. Wrong answers get a hint, never a timer. Harder bonus questions are optional."
+    },
+    {
+      "name": "Debrief",
+      "text": "You get the answer to the opening question, a common mistake to avoid, your stars and links to read more."
+    }
   ],
   "extrasTitle": "Between levels",
   "extras": [
-    { "name": "Daily Feed", "text": "About 10 bite-size review cards a day from levels you've finished. Cards you miss come back sooner. There's a streak, but it never scolds you." },
-    { "name": "Field Journal", "text": "Every finished level unlocks Field Notes: where the idea shows up in the apps and networks you use today." }
+    {
+      "name": "Daily Feed",
+      "text": "About 10 bite-size review cards a day from levels you've finished. Cards you miss come back sooner. There's a streak, but it never scolds you."
+    },
+    {
+      "name": "Field Journal",
+      "text": "Every finished level unlocks Field Notes: where the idea shows up in the apps and networks you use today."
+    }
   ],
   "subjectsTitle": "Pick a subject",
   "subjectsIntro": "Each region keeps its own progress. Start anywhere.",
   "enter": "Enter {name}",
   "progress": "{earned} of {max} stars in the {levels} built so far",
-  "progressLevels": { "one": "1 level", "other": "{n} levels" },
-  "note": "All explanations, stories and puzzles are original. The reading links at the end of each level point to open books, official specs and other sources."
+  "progressLevels": {
+    "one": "1 level",
+    "other": "{n} levels"
+  },
+  "note": "All explanations, stories and puzzles are original. The reading links at the end of each level point to open books, official specs and other sources.",
+  "continueTitle": "Continue where you left off",
+  "continueButton": "Continue: {level}"
 }

@@ -3,7 +3,8 @@
 // to find and change.
 //
 // Stars:     3 = no mistakes and no hints, 2 = up to 2 mistakes, 1 = finished.
-// Unlocking: Town Square is always open. Each later district opens once every
+// Unlocking: Town Square is always open. A district marked "skipped" in world.json is shown as
+//            "Coming later" and never blocks anything. Each later district opens once every
 //            core level in the district before it has at least 1 star.
 //            The Grand Delivery opens when all districts' core levels are done.
 
@@ -24,9 +25,10 @@ function coreDone(zone) {
     });
 }
 
-// Returns 'open', 'building' (unlocked, but no levels made yet) or 'locked'.
+// Returns 'open', 'building' (unlocked, but no levels made yet), 'locked' or 'later' (skipped for now).
 export function zoneStatus(world, zoneIndex) {
   const zone = world.zones[zoneIndex];
+  if (zone.skipped) return 'later';
   const unlocked = zoneIndex === 0 || zonesBeforeAreDone(world, zoneIndex);
   if (!unlocked) return 'locked';
   return zone.file ? 'open' : 'building';
@@ -35,6 +37,7 @@ export function zoneStatus(world, zoneIndex) {
 function zonesBeforeAreDone(world, zoneIndex) {
   for (let i = 0; i < zoneIndex; i += 1) {
     const zone = world.zones[i];
+    if (zone.skipped) continue;
     if (!zone.file || !coreDone(zone)) return false;
   }
   return true;
