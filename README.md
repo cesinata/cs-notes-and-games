@@ -50,7 +50,9 @@ or a region's map. The choice is remembered on that device, and the first visit 
 - A new level flow: an everyday moment, 2 to 4 story lessons (each with References and an optional "Go deeper"), the activities, then a debrief
 - Field Notes, collected in the Field Journal
 - Daily Feed: about 10 bite-size review cards a day from finished levels, with spaced repetition
-- Step Sim: runs an algorithm one step at a time (used by Algo Archipelago)
+- Step Sim: runs an algorithm one step at a time, as crates, bars or a graph of nodes and edges
+- Unit player: a level can be written entirely as data (an `activities` list in its content file), using the activity types choice, order, match, buckets, numeric (with an on-screen calculator) and stepsim. A test page for all of them is at `#/sample`
+- Content checker: `node tools/check-content.mjs` checks every content file (needs Node 22 or newer, no packages)
 
 ## Editing the text
 

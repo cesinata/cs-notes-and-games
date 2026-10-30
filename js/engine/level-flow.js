@@ -235,9 +235,11 @@ export function runLevel({ app, world, zoneInfo, level, module, nextLevel, onExi
     clear(stage);
     updateMeter();
     const stars = starsFor(state.mistakes, state.hints);
-    const before = getLevelResult(level.id);
+    const before = level.noSave ? null : getLevelResult(level.id);
     const cleared = state.cTotal > 0 && state.cRight === state.cTotal;
-    const { best, improved } = saveLevelResult(level.id, { stars, mistakes: state.mistakes, hints: state.hints, bonus: cleared });
+    const { best, improved } = level.noSave
+      ? { best: { stars }, improved: false } // a test page records nothing
+      : saveLevelResult(level.id, { stars, mistakes: state.mistakes, hints: state.hints, bonus: cleared });
     announce(t('level.complete', { stars }));
 
     const heading = el('h2', {}, t('level.phases.debrief'));

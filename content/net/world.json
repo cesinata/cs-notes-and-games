@@ -47,6 +47,16 @@
     "backToMap": "Back to map",
     "emptyButton": "Go to Town Square"
   },
+  "sim": {
+    "next": "Next step",
+    "back": "Back",
+    "stepOf": "Step {i} of {n}",
+    "runToEnd": "Run to the end",
+    "finish": "Continue",
+    "counted": "You predicted {guess}. It took {actual}.",
+    "revealed": "Here's what happens:",
+    "counter": "{name} so far: {value}"
+  },
   "zones": [
     {
       "id": 0,

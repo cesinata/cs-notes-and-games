@@ -9,14 +9,17 @@
 //            sim runs and counts, and compares the guess with the real number.
 //
 // A script looks like:
-//   { view: 'array' or 'bars',
+//   { view: 'array', 'bars' or 'graph',
 //     steps: [ { state, say, predict?: { prompt, options, hints }, count?: { name: 1 } } ],
 //     countQuestion?: { prompt, options, hints, counter } }
 // Array state:  { items: [{ value, mark?, tag? }], pointers: { 0: 'front' }, empty?: 'text' }
 // Bars state:   { bars: [{ label, value }] }
+// Graph state:  { nodes: [{ id, x, y, label, mark? }], edges: [{ from, to, weight?, mark? }], directed? }
+//               x is 0 to 300 and y is 0 to 180. A node mark is 'current', 'visited' or 'queued'; an edge mark
+//               is 'used' or 'skipped'. Marks are shown with shapes and words, not just colour.
 // "words" are the button labels from world.json ("sim").
 
-import { el, clear, focusHeading, announce, setText } from './ui.js';
+import { el, svgEl, clear, focusHeading, announce, setText } from './ui.js';
 import { t, getLocale } from './i18n.js';
 import { choiceList, continueButton } from './choices.js';
 
@@ -46,7 +49,49 @@ function drawBars(state) {
     el('span', { class: 'bar-value' }, bar.value.toLocaleString(getLocale())))));
 }
 
-const VIEWS = { array: drawArray, bars: drawBars };
+// ---------- Graph view: nodes and edges (for DFS, BFS, shortest paths, ...) ----------
+
+const NODE_RADIUS = 16;
+const NODE_MARKS = { current: 'sim.markCurrent', visited: 'sim.markVisited', queued: 'sim.markQueued' };
+
+function drawGraph(state) {
+  const byId = Object.fromEntries(state.nodes.map((n) => [n.id, n]));
+  const summary = state.nodes.map((n) => (n.mark ? `${n.label}: ${t(NODE_MARKS[n.mark])}` : n.label)).join('; ');
+  const svg = svgEl('svg', { class: 'graph', viewBox: '0 0 300 180', role: 'img', 'aria-label': t('sim.graphAria', { n: state.nodes.length, summary }) });
+
+  (state.edges || []).forEach((edge) => {
+    const a = byId[edge.from];
+    const b = byId[edge.to];
+    const cls = `g-edge${edge.mark ? ` is-${edge.mark}` : ''}`;
+    const length = Math.hypot(b.x - a.x, b.y - a.y) || 1;
+    const ux = (b.x - a.x) / length;
+    const uy = (b.y - a.y) / length;
+    const x2 = state.directed ? b.x - ux * (NODE_RADIUS + 2) : b.x;
+    const y2 = state.directed ? b.y - uy * (NODE_RADIUS + 2) : b.y;
+    svg.append(svgEl('line', { x1: a.x, y1: a.y, x2, y2, class: cls }));
+    if (state.directed) {
+      const px = -uy;
+      const py = ux;
+      svg.append(svgEl('path', { d: `M ${x2} ${y2} L ${x2 - ux * 9 + px * 5} ${y2 - uy * 9 + py * 5} L ${x2 - ux * 9 - px * 5} ${y2 - uy * 9 - py * 5} Z`, class: 'g-arrow' }));
+    }
+    if (edge.weight !== undefined) {
+      svg.append(svgEl('text', { x: (a.x + b.x) / 2 + 5, y: (a.y + b.y) / 2 - 5, class: 'g-weight' }, String(edge.weight)));
+    }
+  });
+
+  state.nodes.forEach((n) => {
+    const cls = `g-node${n.mark ? ` is-${n.mark}` : ''}`;
+    if (n.mark === 'current') svg.append(svgEl('circle', { cx: n.x, cy: n.y, r: NODE_RADIUS + 5, class: 'g-ring' }));
+    svg.append(
+      svgEl('circle', { cx: n.x, cy: n.y, r: NODE_RADIUS, class: cls }),
+      svgEl('text', { x: n.x, y: n.y + 5, 'text-anchor': 'middle', class: 'g-label' }, n.mark === 'visited' ? `${n.label}✓` : n.label)
+    );
+    if (n.mark) svg.append(svgEl('text', { x: n.x, y: n.y + NODE_RADIUS + 14, 'text-anchor': 'middle', class: 'g-tag' }, t(NODE_MARKS[n.mark])));
+  });
+  return el('div', { class: 'graph-wrap' }, svg, el('p', { class: 'small graph-legend' }, t('sim.legend')));
+}
+
+const VIEWS = { array: drawArray, bars: drawBars, graph: drawGraph };
 
 // Draws one picture on its own (used by Learn card diagrams).
 export function drawSimState(view, state) {

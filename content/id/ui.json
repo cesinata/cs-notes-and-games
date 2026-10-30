@@ -132,7 +132,12 @@
     "prediction": "Tebakanmu: {guess}",
     "cratesLtr": "Peti, dari kiri ke kanan",
     "stackLabel": "Tumpukan peti, dari bawah",
-    "queueLabel": "Antrean kapal, dari depan"
+    "queueLabel": "Antrean kapal, dari depan",
+    "markCurrent": "sekarang",
+    "markVisited": "dikunjungi",
+    "markQueued": "menunggu",
+    "graphAria": "Graph dengan {n} node. {summary}.",
+    "legend": "Cincin ganda = node yang sedang dikerjakan. ✓ = sudah dikunjungi. Cincin putus-putus = menunggu. Garis tebal = sambungan yang dipakai."
   },
   "diagram": {
     "layer": "Layer {n}",
@@ -174,5 +179,52 @@
     "linkedList": "Linked list: tiap item menunjuk ke item berikutnya",
     "end": "habis",
     "arrayListAria": "Array berisi empat item di slot bernomor 0 sampai 3, dan linked list berisi empat item yang sama disambung panah."
+  },
+  "unit": {
+    "activityOf": "Aktivitas {i} dari {n}",
+    "challengeOffer": "{n} soal bonus menunggu. Lebih sulit, dan nggak pernah mengurangi bintangmu."
+  },
+  "order": {
+    "lineAria": "Urutanmu, dari pertama",
+    "trayAria": "Item yang belum ditaruh",
+    "waiting": "Belum ditaruh",
+    "placed": "{item} jadi nomor {n}."
+  },
+  "match": {
+    "pickLeft": "Pilih sesuatu di kiri dulu.",
+    "pickRight": "Sekarang pilih pasangan \"{left}\" di kanan.",
+    "matched": "{left} cocok dengan {right}.",
+    "notAPair": "Bukan pasangannya.",
+    "leftAria": "Yang harus dipasangkan",
+    "rightAria": "Pasangannya",
+    "doneAria": "Pasangan yang sudah ketemu"
+  },
+  "buckets": {
+    "ask": "\"{item}\" masuk mana? ({n} dari {total})",
+    "placed": "\"{item}\" masuk {bucket}.",
+    "chooseAria": "Kelompok yang bisa dipilih"
+  },
+  "numeric": {
+    "label": "Jawabanmu",
+    "check": "Cek",
+    "notNumber": "Aku nggak bisa membaca itu sebagai angka. Coba seperti 42 atau 3.5."
+  },
+  "calc": {
+    "title": "Kalkulator",
+    "expression": "Kalkulator: ketik hitungannya",
+    "use": "Pakai hasil ini sebagai jawabanku",
+    "keys": {
+      "divide": "bagi",
+      "times": "kali",
+      "minus": "kurang",
+      "plus": "tambah",
+      "power": "pangkat",
+      "sqrt": "akar kuadrat",
+      "log2": "log basis 2",
+      "mod": "sisa bagi (mod)",
+      "equals": "sama dengan",
+      "clear": "hapus semua",
+      "back": "hapus karakter terakhir"
+    }
   }
 }

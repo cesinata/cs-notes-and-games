@@ -7,12 +7,14 @@
 //   #/net/level/0.1    a level                  #/algo/level/0.1   a level
 //   #/net/journal      the Field Journal        #/algo/journal
 //   #/net/feed         the Feed                 #/algo/feed
+//   #/sample           a hidden page that plays content/sample-unit.json (for testing activity types)
 // Older links that had no region (#/zone/0, #/level/0.1, #/feed, #/journal)
 // still work: they are sent to the same page under #/net/.
 // Using the address means the browser's Back button works as expected.
 
 import { initStorage, setRegion, getLastPlace, setLastPlace } from './engine/storage.js';
-import { loadWorld, loadZone, loadRegions, loadLanding, loadUiText } from './engine/content.js';
+import { loadWorld, loadZone, loadRegions, loadLanding, loadUiText, loadSample } from './engine/content.js';
+import { unitModule } from './engine/unit-player.js';
 import { detectLang } from './engine/i18n.js';
 import { zoneStatus, zoneStars } from './engine/progress.js';
 import { runLevel } from './engine/level-flow.js';
@@ -57,6 +59,18 @@ async function builtZoneContents(region, world) {
   return contents;
 }
 
+// Ids of the levels you can play: the ones with their own level file, plus data-driven ones
+// (a level whose content has an "activities" list).
+async function builtLevelIds(region, world) {
+  const ids = new Set(Object.keys(LEVEL_SETS[region.id]));
+  for (let i = 0; i < world.zones.length; i += 1) {
+    if (!world.zones[i].file) continue;
+    const content = await getZoneContent(region, world, i);
+    content.levels.forEach((level) => { if (level.activities) ids.add(level.id); });
+  }
+  return [...ids];
+}
+
 const LEGACY_FIRST_PARTS = ['zone', 'level', 'feed', 'journal'];
 
 // For each subject: stars earned so far and how many levels are built (for the landing page).
@@ -65,7 +79,7 @@ async function regionSummaries() {
   for (const region of regions) {
     setRegion(region.id);
     const world = await getWorld(region);
-    const builtIds = Object.keys(LEVEL_SETS[region.id]);
+    const builtIds = await builtLevelIds(region, world);
     let earned = 0;
     let max = 0;
     world.zones.forEach((zone) => {
@@ -87,7 +101,7 @@ async function resumeInfo() {
   const world = await getWorld(region);
   for (const zone of world.zones) {
     const level = zone.levels.find((l) => l.id === last.level);
-    if (level && LEVEL_SETS[region.id][level.id]) return { region, level, href: `#/${region.id}/level/${level.id}` };
+    if (level && (await builtLevelIds(region, world)).includes(level.id)) return { region, level, href: `#/${region.id}/level/${level.id}` };
   }
   return null;
 }
@@ -107,6 +121,18 @@ async function route() {
       window.scrollTo(0, 0);
       return;
     }
+    // A hidden page for trying out every activity type.
+    if (parts[0] === 'sample') {
+      const region = regions.find((r) => r.id === 'algo') || regions[0];
+      setRegion(region.id);
+      const world = await getWorld(region);
+      runLevel({
+        app, world, zoneInfo: { name: 'Sample unit' }, level: await loadSample(), module: unitModule,
+        nextLevel: null, onExit: () => go('#/'), onNext: () => {}, onReplay: () => route()
+      });
+      window.scrollTo(0, 0);
+      return;
+    }
     // Old links had no region name. They all belonged to Packet Valley.
     if (LEGACY_FIRST_PARTS.includes(parts[0])) { go(`#/net/${parts.join('/')}`); return; }
     const region = regions.find((r) => r.id === parts[0]);
@@ -115,6 +141,7 @@ async function route() {
     setRegion(region.id);
     const world = await getWorld(region);
     const levels = LEVEL_SETS[region.id];
+    const built = await builtLevelIds(region, world);
     const base = world.base;
     const page = parts.join('/');
     const zoneMatch = page.match(/^zone\/(\d+)$/);
@@ -128,12 +155,12 @@ async function route() {
       const zoneIndex = Number(zoneMatch[1]);
       if (!world.zones[zoneIndex]) { go(base); return; }
       const content = zoneStatus(world, zoneIndex) === 'open' ? await getZoneContent(region, world, zoneIndex) : null;
-      renderZone(app, world, zoneIndex, content, Object.keys(levels));
+      renderZone(app, world, zoneIndex, content, built);
     } else if (levelMatch) {
       const zoneIndex = Number(levelMatch[1]);
       const levelId = `${levelMatch[1]}.${levelMatch[2]}`;
       const zoneInfo = world.zones[zoneIndex];
-      if (!zoneInfo || zoneStatus(world, zoneIndex) !== 'open' || !levels[levelId]) {
+      if (!zoneInfo || zoneStatus(world, zoneIndex) !== 'open' || !built.includes(levelId)) {
         go(zoneInfo ? `${base}zone/${zoneIndex}` : base);
         return;
       }
@@ -141,12 +168,12 @@ async function route() {
       const level = content.levels.find((l) => l.id === levelId);
       if (!level) { go(`${base}zone/${zoneIndex}`); return; }
       const order = zoneInfo.levels.map((l) => l.id);
-      const nextId = order.slice(order.indexOf(levelId) + 1).find((id) => levels[id]);
+      const nextId = order.slice(order.indexOf(levelId) + 1).find((id) => built.includes(id));
       const nextLevel = nextId ? zoneInfo.levels.find((l) => l.id === nextId) : null;
       setLastPlace(region.id, levelId);
       runLevel({
         app, world, zoneInfo, level,
-        module: levels[levelId],
+        module: levels[levelId] || unitModule,
         nextLevel,
         onExit: () => go(`${base}zone/${zoneIndex}`),
         onNext: () => go(`${base}level/${nextId}`),
