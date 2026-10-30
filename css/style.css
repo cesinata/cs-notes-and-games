@@ -1,5 +1,5 @@
 /* style.css
-   The look of Pocket Atlas: warm wood signboards on a meadow, chunky pixel
+   The look of Courier's Atlas: warm wood signboards on a meadow, chunky pixel
    buttons, and a pixel font for headings with a very readable font for text.
    Sections: 1 colours and fonts, 2 basics, 3 buttons, 4 hub and map,
    5 district page, 6 level template, 7 Layer Cake, 8 Encapsulation Express,
@@ -173,7 +173,7 @@ h1:focus, h2:focus, h3:focus { outline: none; }
   min-width: 1.3rem; text-align: center; line-height: 1.1;
 }
 a.map-marker:hover .marker-tag { background: #FFFFFF; }
-.map-marker.is-locked .marker-tag { background: #E1E6D8; border-style: dashed; }
+.map-marker.is-locked .marker-tag, .map-marker.is-later .marker-tag { background: #E1E6D8; border-style: dashed; }
 
 .district-list {
   list-style: none; padding: 0; margin: 0;
@@ -186,7 +186,7 @@ a.map-marker:hover .marker-tag { background: #FFFFFF; }
   padding: 0.8rem 1rem;
 }
 a.district-card:hover { background: var(--panel-alt); }
-.district-card.is-locked { border-style: dashed; box-shadow: none; }
+.district-card.is-locked, .district-card.is-later { border-style: dashed; box-shadow: none; }
 .district-card.is-locked .district-name { color: var(--text-soft); }
 .district-icon { flex: 0 0 auto; width: 40px; display: flex; justify-content: center; padding-top: 0.2rem; }
 .district-text { display: flex; flex-direction: column; gap: 0.15rem; }
@@ -563,6 +563,11 @@ a.district-card:hover { background: var(--panel-alt); }
 .language-button.is-current::before { content: "✓ "; }
 .language-button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 
+/* ---------- Continue where you left off ---------- */
+.resume-card { background: var(--panel); border: 3px solid var(--frame); border-left-width: 8px; border-radius: 6px; padding: .75rem 1rem; margin: 1rem 0; }
+.resume-card h2 { margin: 0 0 .25rem; }
+.resume-card p { margin: 0 0 .6rem; }
+
 /* ---------- Fun facts (top of a region's page) and the big fact on a subject card ---------- */
 .fun-facts { margin: 1rem 0 1.5rem; }
 .fun-facts h2 { margin-bottom: .5rem; }
@@ -571,3 +576,37 @@ a.district-card:hover { background: var(--panel-alt); }
 .fact p { margin: .25rem 0 0; }
 .fact-num { font-family: var(--font-pixel); font-weight: 700; color: var(--text-soft); font-size: .9rem; }
 .subject-fact { background: var(--hint-bg); border-left: 4px solid var(--honey-deep); padding: .5rem .75rem; margin: .5rem 0; }
+
+/* ---------- Story lessons ---------- */
+.lesson-count { margin: 0 0 .25rem; color: var(--text-soft); }
+.lesson-text p { margin: 0 0 .75rem; }
+.kit-task { margin: 1rem 0; }
+.terms-box { background: var(--panel-alt); border-left: 6px solid var(--pine); border-radius: 4px; padding: .5rem 1rem; margin: 1rem 0; }
+.terms-box h3 { margin: .25rem 0; }
+.terms-box dl { margin: 0; }
+.terms-box dt { font-weight: 700; margin-top: .4rem; }
+.terms-box dd { margin: 0 0 .2rem; }
+.predict-box, .go-deeper { border: 2px dashed var(--frame); border-radius: 6px; padding: .5rem 1rem; margin: 1rem 0; background: var(--panel); }
+.predict-box { border-color: var(--honey-deep); background: var(--hint-bg); }
+.predict-box summary, .go-deeper summary { cursor: pointer; font-weight: 700; padding: .25rem 0; }
+.predict-box summary:focus-visible, .go-deeper summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.go-deeper[open], .predict-box[open] { padding-bottom: .75rem; }
+.references { margin-top: 1rem; font-size: .95rem; }
+.references h3 { margin: 0 0 .25rem; }
+.challenge-line { font-weight: 700; }
+.lesson-diagram { margin: 0; }
+.mini-table { border-collapse: collapse; width: 100%; font-size: .95rem; }
+.mini-table th, .mini-table td { border: 2px solid var(--frame); padding: .3rem .5rem; text-align: left; vertical-align: top; }
+.mini-table th { background: var(--panel-alt); }
+.cakes-compare { display: flex; gap: .5rem; align-items: flex-end; flex-wrap: wrap; }
+.cake-col { flex: 1 1 6.5rem; min-width: 6.5rem; }
+.cake-col h4 { margin: 0 0 .25rem; font-size: .9rem; text-align: center; }
+.cake-col ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column-reverse; gap: 2px; }
+.cake-col li { border: 2px solid var(--frame); background: #E5EDD3; color: #263024; padding: .15rem .3rem; font-size: .85rem; text-align: center; }
+.cake-col li.tall-2 { padding: .55rem .3rem; }
+.cake-col li.tall-3 { padding: 1rem .3rem; }
+.ds-row { display: flex; align-items: center; flex-wrap: wrap; gap: .25rem; margin: .25rem 0 .75rem; }
+.ds-cell { border: 2px solid var(--frame); background: #E5EDD3; padding: .2rem .6rem; min-width: 2.4rem; text-align: center; color: #263024; }
+.ds-cell .ds-index { color: #4E5A49; }
+.ds-index { display: block; font-size: .75rem; color: var(--text-soft); }
+.ds-arrow { font-weight: 700; }

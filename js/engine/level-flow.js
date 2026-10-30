@@ -1,6 +1,6 @@
 // level-flow.js
-// The template every level follows: Story → Learn → Play → Debrief (with stars
-// and Read more). It draws the HUD (map button, title, stars, hint button) and
+// The template every level follows: Everyday moment → Story lessons → Play → Debrief
+// (with stars and Read more). It draws the HUD (map button, title, stars, hint button) and
 // counts mistakes and hints. Each level file only has to provide the "Play" part.
 //
 // A level's play() function gets a "ctx" (context) object with these tools:
@@ -10,6 +10,7 @@
 //   ctx.mistake(note)    count a mistake and show a hint (or the note given)
 //   ctx.correct(note)    show a "that's right" message
 //   ctx.placeFeedback(x) move the message box inside element x
+//   ctx.challenge(on)    start (or stop) optional bonus questions: mistakes and hints in them never cost stars
 //   ctx.finish()         end the puzzle and go to the debrief
 //   ctx.reducedMotion    true if the player asked for less animation
 //   ctx.simWords         Step Sim button labels for this region (world.json "sim")
@@ -22,11 +23,28 @@ import { starsFor } from './progress.js';
 import { saveLevelResult, getLevelResult } from './storage.js';
 import { fieldNoteCard } from './field-notes.js';
 
-const PHASES = ['story', 'learn', 'play', 'debrief']; // the order of the phase trail
+const PHASES = ['moment', 'lessons', 'play', 'debrief']; // the order of the phase trail
+
+// A small table from the content file: { "head": ["A", "B"], "rows": [["1", "2"]] }.
+function tableElement(table) {
+  return el('div', { class: 'mini-table-wrap' },
+    el('table', { class: 'mini-table' },
+      el('thead', {}, el('tr', {}, table.head.map((h) => el('th', { scope: 'col' }, h)))),
+      el('tbody', {}, table.rows.map((row) => el('tr', {}, row.map((cell) => el('td', {}, cell)))))));
+}
+
+// One link in a References or Read more list. It opens in a new tab, and says so for screen readers.
+function referenceItem(link) {
+  return el('li', {},
+    el('a', { href: link.url, target: '_blank', rel: 'noopener' },
+      textOf(link.title), el('span', { class: 'visually-hidden' }, ` ${t('level.newTab')}`)),
+    link.source ? el('span', { class: 'source' }, textOf(link.source)) : null
+  );
+}
 
 export function runLevel({ app, world, zoneInfo, level, module, nextLevel, onExit, onNext, onReplay }) {
   clear(app);
-  const state = { mistakes: 0, hints: 0, stepHints: [], stepTries: 0, hintShown: 0, playing: false };
+  const state = { mistakes: 0, hints: 0, stepHints: [], stepTries: 0, hintShown: 0, playing: false, challenge: false, cRight: 0, cTotal: 0, cMistaken: false };
 
   // ---------- HUD ----------
   const backButton = el('button', { class: 'btn btn-quiet', type: 'button', onclick: onExit }, t('common.backToMap'));
@@ -62,7 +80,7 @@ export function runLevel({ app, world, zoneInfo, level, module, nextLevel, onExi
     clear(meter);
     if (!state.playing) return;
     const stars = starsFor(state.mistakes, state.hints);
-    meter.append(el('span', { class: 'meter-label' }, t('level.onTrack')), starRow(stars, 3, 2));
+    meter.append(el('span', { class: 'meter-label' }, state.challenge ? t('level.challengeTag') : t('level.onTrack')), state.challenge ? null : starRow(stars, 3, 2));
   }
 
   function showFeedback(kind, label, message) {
@@ -80,50 +98,72 @@ export function runLevel({ app, world, zoneInfo, level, module, nextLevel, onExi
     if (!state.stepHints.length) return;
     const index = Math.min(Math.max(state.hintShown, state.stepTries), state.stepHints.length - 1);
     state.hintShown = index + 1;
-    state.hints += 1;
+    if (!state.challenge) state.hints += 1;
     showFeedback('hint', t('level.hintLabel'), state.stepHints[index]);
     updateMeter();
   }
 
-  // ---------- Story ----------
-  function showStory() {
-    setPhase('story');
+  // ---------- Everyday moment ----------
+  function showMoment() {
+    setPhase('moment');
     clear(stage);
-    const heading = el('h2', {}, t('level.phases.story'));
+    const heading = el('h2', {}, t('level.momentTitle'));
+    const moment = level.everyday;
     stage.append(el('section', { class: 'board story-board' },
       el('div', { class: 'story-art' }, makeSprite('courier', 6)),
       el('div', { class: 'story-text' },
         heading,
-        el('p', { class: 'lead' }, textOf(level.story)),
-        level.hook ? el('aside', { class: 'hook-box' },
+        el('p', { class: 'lead' }, textOf(moment.scene)),
+        el('aside', { class: 'hook-box' },
           el('h3', {}, t('level.wonder')),
-          el('p', {}, textOf(level.hook.question)),
-          el('p', { class: 'small' }, t('level.wonderNote'))) : null,
-        el('button', { class: 'btn', type: 'button', onclick: showLearn }, t('level.learnButton'))
+          el('p', {}, textOf(moment.question)),
+          el('p', { class: 'small' }, t('level.wonderNote'))),
+        el('p', { class: 'kit-task' }, el('strong', {}, `${t('level.kitTask')}: `), textOf(level.story)),
+        el('button', { class: 'btn', type: 'button', onclick: () => showLesson(0) }, t('level.startLessons'))
       )
     ));
     focusHeading(heading);
   }
 
-  // ---------- Learn ----------
-  function showLearn() {
-    setPhase('learn');
+  // ---------- Story lessons (one idea per page) ----------
+  function showLesson(index) {
+    setPhase('lessons');
     clear(stage);
-    const heading = el('h2', {}, t('level.phases.learn'));
-    const figure = module.learnDiagram
-      ? el('figure', { class: 'learn-figure' },
-        module.learnDiagram(level),
-        el('figcaption', {}, textOf(level.learn.diagramCaption)))
+    const lesson = level.lessons[index];
+    const last = index === level.lessons.length - 1;
+    const heading = el('h2', {}, lesson.title);
+    // A page can have a picture (drawn by the level's file, chosen by name) and/or a small table (written in the content).
+    const diagram = lesson.diagram && module.lessonDiagram ? module.lessonDiagram(lesson.diagram, level) : null;
+    const figure = diagram || lesson.table
+      ? el('figure', { class: 'learn-figure' }, diagram, lesson.table ? tableElement(lesson.table) : null,
+        lesson.diagramCaption ? el('figcaption', {}, textOf(lesson.diagramCaption)) : null)
       : null;
-    stage.append(el('section', { class: 'board learn-board' },
+
+    stage.append(el('section', { class: 'board learn-board lesson-page' },
+      el('p', { class: 'small lesson-count' }, t('level.lessonOf', { i: index + 1, n: level.lessons.length })),
       heading,
       el('div', { class: 'learn-grid' },
-        el('ul', { class: 'learn-list' }, level.learn.bullets.map((b) => el('li', {}, textOf(b)))),
+        el('div', { class: 'lesson-text' }, lesson.text.map((p) => el('p', {}, textOf(p)))),
         figure
       ),
+      lesson.terms ? el('section', { class: 'terms-box', 'aria-label': t('level.termsTitle') },
+        el('h3', {}, t('level.termsTitle')),
+        el('dl', {}, lesson.terms.map((item) => [el('dt', {}, item.term), el('dd', {}, textOf(item.meaning))]))) : null,
+      lesson.predict ? el('details', { class: 'predict-box' },
+        el('summary', {}, `${t('level.predictLabel')}: ${textOf(lesson.predict.prompt)}`),
+        el('p', {}, textOf(lesson.predict.answer))) : null,
+      lesson.deeper ? el('details', { class: 'go-deeper' },
+        el('summary', {}, `${t('level.deeperLabel')}: ${textOf(lesson.deeper.title)}`),
+        el('p', { class: 'small' }, t('level.deeperNote')),
+        lesson.deeper.text.map((p) => el('p', {}, textOf(p)))) : null,
+      el('section', { class: 'references' },
+        el('h3', {}, t('level.referencesTitle')),
+        el('ul', { class: 'read-more' }, lesson.references.map((ref) => referenceItem(ref)))),
       el('div', { class: 'actions' },
-        el('button', { class: 'btn btn-quiet', type: 'button', onclick: showStory }, t('level.backToStory')),
-        el('button', { class: 'btn', type: 'button', onclick: showPlay }, t('level.startPlaying'))
+        el('button', { class: 'btn btn-quiet', type: 'button', onclick: () => (index === 0 ? showMoment() : showLesson(index - 1)) },
+          index === 0 ? t('level.backToMoment') : t('level.lessonBack')),
+        el('button', { class: 'btn', type: 'button', onclick: () => (last ? showPlay() : showLesson(index + 1)) },
+          last ? t('level.startPlaying') : t('level.lessonNext'))
       )
     ));
     focusHeading(heading);
@@ -133,7 +173,7 @@ export function runLevel({ app, world, zoneInfo, level, module, nextLevel, onExi
   function showPlay() {
     setPhase('play');
     clear(stage);
-    Object.assign(state, { mistakes: 0, hints: 0, stepHints: [], stepTries: 0, hintShown: 0, playing: true });
+    Object.assign(state, { mistakes: 0, hints: 0, stepHints: [], stepTries: 0, hintShown: 0, playing: true, challenge: false, cRight: 0, cTotal: 0, cMistaken: false });
     clear(feedback);
     feedback.className = 'feedback';
     updateMeter();
@@ -150,17 +190,27 @@ export function runLevel({ app, world, zoneInfo, level, module, nextLevel, onExi
         state.stepHints = hints.map(textOf);
         state.stepTries = 0;
         state.hintShown = 0;
+        if (hints.length) state.cMistaken = false; // a new question starts (answering calls step([]) first)
         hintButton.disabled = state.stepHints.length === 0;
       },
       mistake(note) {
-        state.mistakes += 1;
+        if (state.challenge) state.cMistaken = true;
+        else state.mistakes += 1;
         state.stepTries += 1;
         const fromHints = state.stepHints[Math.min(state.stepTries - 1, state.stepHints.length - 1)];
         showFeedback('mistake', t('level.notQuite'), note || fromHints || t('level.tryAnother'));
         updateMeter();
       },
       correct(note) {
+        if (state.challenge) {
+          state.cTotal += 1;
+          if (!state.cMistaken) state.cRight += 1;
+        }
         showFeedback('correct', correctLabel(), note || t('level.thatsRight'));
+      },
+      challenge(on) {
+        state.challenge = on;
+        updateMeter();
       },
       clearFeedback() {
         clear(feedback);
@@ -186,7 +236,8 @@ export function runLevel({ app, world, zoneInfo, level, module, nextLevel, onExi
     updateMeter();
     const stars = starsFor(state.mistakes, state.hints);
     const before = getLevelResult(level.id);
-    const { best, improved } = saveLevelResult(level.id, { stars, mistakes: state.mistakes, hints: state.hints });
+    const cleared = state.cTotal > 0 && state.cRight === state.cTotal;
+    const { best, improved } = saveLevelResult(level.id, { stars, mistakes: state.mistakes, hints: state.hints, bonus: cleared });
     announce(t('level.complete', { stars }));
 
     const heading = el('h2', {}, t('level.phases.debrief'));
@@ -205,10 +256,10 @@ export function runLevel({ app, world, zoneInfo, level, module, nextLevel, onExi
     stage.append(el('section', { class: 'board debrief-board' },
       heading,
       level.debrief.summary.map((p) => el('p', {}, textOf(p))),
-      level.hook ? el('aside', { class: 'hook-box' },
+      el('aside', { class: 'hook-box' },
         el('h3', {}, t('level.remember')),
-        el('p', { class: 'hook-question' }, textOf(level.hook.question)),
-        el('p', {}, textOf(level.hook.answer))) : null,
+        el('p', { class: 'hook-question' }, textOf(level.everyday.question)),
+        el('p', {}, textOf(level.everyday.answer))),
       el('aside', { class: 'mistake-box' },
         el('h3', {}, t('level.commonMistake', { title: textOf(level.debrief.mistake.title) })),
         el('p', {}, textOf(level.debrief.mistake.text))
@@ -218,6 +269,9 @@ export function runLevel({ app, world, zoneInfo, level, module, nextLevel, onExi
         el('p', { class: 'result-line' },
           t('level.result', { stars, mistakes: tp('level.mistakes', state.mistakes), hints: tp('level.hints', state.hints) })),
         bestLine ? el('p', { class: 'result-line' }, bestLine) : null,
+        state.cTotal > 0 ? el('p', { class: 'result-line challenge-line' },
+          cleared ? `★ ${t('level.challengeCleared')} ` : '',
+          t('level.challengeDone', { right: state.cRight, total: state.cTotal })) : null,
         el('p', { class: 'small' }, textOf(world.starRules))
       ),
       level.fieldNotes ? el('section', { class: 'debrief-notes' },
@@ -226,14 +280,11 @@ export function runLevel({ app, world, zoneInfo, level, module, nextLevel, onExi
         el('div', { class: 'field-note-grid' }, level.fieldNotes.map((note) => fieldNoteCard(note, { isNew: !before })))) : null,
       el('h3', {}, t('level.readMore')),
       el('ul', { class: 'read-more' }, level.readMore.map((link) =>
-        el('li', {},
-          el('a', { href: link.url, target: '_blank', rel: 'noopener' }, textOf(link.title)),
-          link.source ? el('span', { class: 'source' }, textOf(link.source)) : null
-        ))),
+        referenceItem(link))),
       el('div', { class: 'actions' }, buttons)
     ));
     focusHeading(heading);
   }
 
-  showStory();
+  showMoment();
 }

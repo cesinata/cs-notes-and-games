@@ -2,9 +2,10 @@
 // Algo Archipelago 0.2 Growth Race. The player:
 //   1. ranks growth rates from gentlest to steepest,
 //   2. races 100n against n² in Step Sim (Predict mode, bar view),
-//   3. judges true/false claims about O, Ω and Θ,
-//   4. counts comparisons for "find the biggest crate" in Step Sim (Count mode),
-//   5. generalises: n crates take n − 1 comparisons, so Θ(n).
+//   3. counts comparisons for "find the biggest crate" in Step Sim (Count mode),
+//   4. generalises: n crates take n − 1 comparisons.
+// Then an optional Challenge (true/false claims about O, Ω and Θ, using the ratio test).
+// Challenge mistakes and hints never cost stars (see ctx.challenge in level-flow.js).
 // All words are in content/algo/zone-0.json (level "0.2", "play").
 
 import { el, clear, focusHeading, shuffle } from '../../engine/ui.js';
@@ -83,43 +84,64 @@ export const growthRace = {
     if (!Array.isArray(play.raceBoats) || play.raceBoats.length !== 2 || play.raceBoats.some((b) => !COST[b.f])) {
       problems.push('"raceBoats" needs 2 boats, each with "f" set to "100n" or "n2".');
     }
-    (play.statements || []).forEach((s, i) => {
-      if ((s.options || []).filter((o) => o.correct).length !== 1) problems.push(`statements[${i}] needs exactly one correct option.`);
+    const claims = (play.challenge && play.challenge.statements) || [];
+    if (!claims.length) problems.push('"challenge.statements" is missing.');
+    claims.forEach((s, i) => {
+      if ((s.options || []).filter((o) => o.correct).length !== 1) problems.push(`challenge.statements[${i}] needs exactly one correct option.`);
     });
     if (!(play.countOptions || []).includes(String((play.countCrates || []).length - 1))) {
       problems.push('"countOptions" must include the right answer (number of crates minus 1).');
     }
-    if ((play.followOptions || []).filter((o) => o.correct).length !== 1) problems.push('"followOptions" needs exactly one correct option.');
+    if (!play.follow || (play.follow.options || []).filter((o) => o.correct).length !== 1) problems.push('"follow" needs exactly one correct option.');
     return problems;
   },
 
-  // Learn card: a small table of how fast each function grows.
-  learnDiagram() {
-    const rows = [[10, 100, '1,024'], [20, 400, '1,048,576'], [30, 900, '1,073,741,824']];
-    return el('div', { class: 'growth-table-wrap' },
-      el('table', { class: 'growth-table' },
-        el('thead', {}, el('tr', {}, ['n', 'n²', '2ⁿ'].map((h) => el('th', { scope: 'col' }, h)))),
-        el('tbody', {}, rows.map((r) => el('tr', {}, r.map((c) => el('td', {}, typeof c === 'number' ? fmt(c) : c)))))));
+  // Lesson pictures. (This level's lessons use tables written in the content file.)
+  lessonDiagram() {
+    return null;
   },
 
   play(ctx) {
     const P = ctx.text;
     const area = ctx.area;
-    const stages = [
+    const mainStages = [
       (next) => rank(next),
       (next) => sim(P.raceTitle, P.raceIntro, raceScript(P), 'predict', next),
-      ...P.statements.map((s, i) => (next) => question(P.tfTitle, i === 0 ? P.tfIntro : null, s, t('level.claimOf', { i: i + 1, n: P.statements.length }), next)),
       (next) => sim(P.countTitle, P.countIntro, countScript(P), 'count', next),
-      (next) => question(P.countTitle, null, { prompt: P.followPrompt, options: P.followOptions, hints: P.followHints, explain: P.followExplain }, null, next)
+      (next) => question(P.countTitle, null, P.follow, null, next)
     ];
-    let at = 0;
-    function runNext() {
-      if (at >= stages.length) { ctx.finish(); return; }
+    const claims = P.challenge.statements;
+    const challengeStages = claims.map((s, i) => (next) =>
+      question(P.challenge.title, i === 0 ? P.challenge.intro : null, s, t('level.claimOf', { i: i + 1, n: claims.length }), next));
+
+    function runStages(list, done) {
+      let at = 0;
+      function runNext() {
+        if (at >= list.length) { done(); return; }
+        ctx.clearFeedback();
+        clear(area);
+        list[at++](runNext);
+      }
+      runNext();
+    }
+    runStages(mainStages, offerChallenge);
+
+    // The optional bonus: claims about O, Ω and Θ. It never costs stars.
+    function offerChallenge() {
+      ctx.step([]);
       ctx.clearFeedback();
       clear(area);
-      stages[at++](runNext);
+      const heading = el('h2', {}, P.challenge.title);
+      area.append(
+        el('p', { class: 'small' }, t('level.challengeTag')),
+        heading,
+        el('p', {}, P.challenge.offer),
+        el('p', { class: 'small' }, t('level.challengeNote')),
+        el('div', { class: 'actions' },
+          el('button', { class: 'btn btn-quiet', type: 'button', onclick: () => ctx.finish() }, t('level.challengeSkip')),
+          el('button', { class: 'btn', type: 'button', onclick: () => { ctx.challenge(true); runStages(challengeStages, () => { ctx.challenge(false); ctx.finish(); }); } }, t('level.challengeTry'))));
+      focusHeading(heading);
     }
-    runNext();
 
     function rank(next) {
       let placed = 0;
@@ -150,7 +172,7 @@ export const growthRace = {
         });
         tray.append(button);
       });
-      area.append(heading, el('p', {}, P.rankIntro), lineUp, el('p', { class: 'small' }, 'Boats waiting'), tray);
+      area.append(heading, el('p', {}, P.rankIntro), lineUp, el('p', { class: 'small' }, t('rank.waiting')), tray);
       ctx.placeFeedback(area);
       area.append(after);
       ctx.step(hintsFor(0));

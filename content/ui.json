@@ -15,7 +15,8 @@
     "status": {
       "open": "Open",
       "building": "Being built",
-      "locked": "Locked"
+      "locked": "Locked",
+      "later": "Coming later"
     },
     "lockedReason": "Finish the core levels in {zone} to open this.",
     "building": "Unlocked. Its levels are still being built.",
@@ -38,12 +39,15 @@
     "comingSoon": "Coming soon",
     "starsHere": "{earned} of {max} stars earned here",
     "didYouKnow": "Did you know?",
-    "factNumber": "Fact {n}"
+    "factNumber": "Fact {n}",
+    "later": "Planned for a later update.",
+    "laterNotice": "This island is planned for a later update. It isn't part of the game yet.",
+    "bonus": "Challenge cleared"
   },
   "level": {
     "phases": {
-      "story": "Story",
-      "learn": "Learn",
+      "moment": "Everyday moment",
+      "lessons": "Lessons",
       "play": "Play",
       "debrief": "Debrief"
     },
@@ -56,9 +60,7 @@
     "correctSr": "Correct:",
     "onTrack": "On track for",
     "wonder": "Something to wonder about",
-    "wonderNote": "You'll be able to answer this by the end of the level.",
-    "learnButton": "Learn the idea",
-    "backToStory": "Back to the story",
+    "wonderNote": "Keep your guess in mind. The lessons give you the tools, and the debrief gives the answer.",
     "startPlaying": "Start playing",
     "complete": "Level complete. You earned {stars} of 3 stars.",
     "newBest": "A new best for this level.",
@@ -86,7 +88,27 @@
     "orderOf": "Order {i} of {n}",
     "islanderOf": "Islander {i} of {n}",
     "claimOf": "Claim {i} of {n}",
-    "seeResult": "See how you did"
+    "seeResult": "See how you did",
+    "momentTitle": "An everyday moment",
+    "kitTask": "Kit's job",
+    "startLessons": "Start the lessons",
+    "lessonOf": "Lesson page {i} of {n}",
+    "lessonBack": "Back",
+    "lessonNext": "Next page",
+    "backToMoment": "Back to the moment",
+    "termsTitle": "Words to know",
+    "predictLabel": "Think first",
+    "predictHint": "Make a guess, then open this to check.",
+    "deeperLabel": "Go deeper",
+    "deeperNote": "Optional. You don't need this for stars.",
+    "referencesTitle": "References",
+    "newTab": "(opens in a new tab)",
+    "challengeTag": "Challenge (optional)",
+    "challengeNote": "Bonus questions. They never cost you stars.",
+    "challengeTry": "Try the challenge",
+    "challengeSkip": "Skip it and finish the level",
+    "challengeDone": "Challenge: {right} of {total} right on the first try.",
+    "challengeCleared": "Challenge cleared!"
   },
   "choices": {
     "answerOptions": "Answer options",
@@ -129,7 +151,8 @@
     "hybridAria": "Hybrid cake slices, listed from the bottom",
     "standAria": "{title}: {placed} of {total} slices placed, listed from the bottom",
     "sliceOn": "{name} is on.",
-    "sliceIs": "{name} it is."
+    "sliceIs": "{name} it is.",
+    "compareAria": "Three cakes side by side: OSI with 7 slices, TCP/IP with 4 and the hybrid with 5."
   },
   "parcel": {
     "aria": "Nested wrappers: the link header and trailer on the outside, then the network header, then the transport header, and the letter in the middle.",
@@ -140,13 +163,18 @@
     "lineAria": "Boats lined up, gentlest first",
     "trayAria": "Boats to line up",
     "nextIs": "Next is {label}.",
-    "inPlace": "{label} is in place."
+    "inPlace": "{label} is in place.",
+    "waiting": "Boats waiting"
   },
   "toolkit": {
     "stack": "Stack",
     "queue": "Queue",
     "tools": "Tools",
     "stackAria": "A stack of three crates",
-    "queueAria": "A queue of three passengers"
+    "queueAria": "A queue of three passengers",
+    "array": "Array: numbered slots side by side",
+    "linkedList": "Linked list: each item points to the next",
+    "end": "end",
+    "arrayListAria": "An array of four items in numbered slots 0 to 3, and a linked list of the same four items joined by arrows."
   }
 }

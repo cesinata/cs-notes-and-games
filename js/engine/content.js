@@ -197,6 +197,72 @@ export async function loadWorld(file = 'world.json') {
   return world;
 }
 
+
+// ---- lessons and "taughtOn" (teach before you test) ----
+// Every question must point at the lesson page that taught it: "taughtOn": "page-id".
+// In "play", a section can set taughtOn once for everything inside it.
+
+function checkLessons(problems, level, where) {
+  const ids = new Set();
+  if (!needList(problems, level.lessons, `${where}.lessons`, 2)) return ids;
+  if (level.lessons.length > 4) problems.push(`${where}.lessons has more than 4 pages. Keep it to 2 to 4.`);
+  level.lessons.forEach((lesson, j) => {
+    const at = `${where}.lessons[${j}]`;
+    if (typeof lesson.id !== 'string' || !/^[a-z0-9-]+$/.test(lesson.id)) problems.push(`${at}.id should be a short code like "why-layers".`);
+    else if (ids.has(lesson.id)) problems.push(`${at}.id "${lesson.id}" is used twice.`);
+    else ids.add(lesson.id);
+    needText(problems, lesson.title, `${at}.title`);
+    if (needList(problems, lesson.text, `${at}.text`)) lesson.text.forEach((p, k) => needText(problems, p, `${at}.text[${k}]`));
+    if (lesson.terms !== undefined && needList(problems, lesson.terms, `${at}.terms`)) {
+      lesson.terms.forEach((item, k) => { needText(problems, item.term, `${at}.terms[${k}].term`); needText(problems, item.meaning, `${at}.terms[${k}].meaning`); });
+    }
+    if (lesson.table && (!Array.isArray(lesson.table.head) || !Array.isArray(lesson.table.rows) || lesson.table.rows.some((r) => !Array.isArray(r) || r.length !== lesson.table.head.length))) {
+      problems.push(`${at}.table needs "head" (column names) and "rows" (each with the same number of cells).`);
+    }
+    if (lesson.predict) { needText(problems, lesson.predict.prompt, `${at}.predict.prompt`); needText(problems, lesson.predict.answer, `${at}.predict.answer`); }
+    if (lesson.deeper) {
+      needText(problems, lesson.deeper.title, `${at}.deeper.title`);
+      if (needList(problems, lesson.deeper.text, `${at}.deeper.text`)) lesson.deeper.text.forEach((p, k) => needText(problems, p, `${at}.deeper.text[${k}]`));
+    }
+    if (needList(problems, lesson.references, `${at}.references`)) {
+      lesson.references.forEach((ref, k) => {
+        needText(problems, ref.title, `${at}.references[${k}].title`);
+        if (typeof ref.url !== 'string' || !ref.url.startsWith('https://')) problems.push(`${at}.references[${k}].url should start with https://`);
+      });
+    }
+  });
+  return ids;
+}
+
+function joinReferences(level) {
+  const seen = new Set();
+  const joined = [];
+  [...(level.lessons || []).flatMap((lesson) => lesson.references || []), ...(level.readMore || [])].forEach((ref) => {
+    if (ref && ref.url && !seen.has(ref.url)) { seen.add(ref.url); joined.push(ref); }
+  });
+  return joined;
+}
+
+function checkTaughtOn(problems, value, lessonIds, where) {
+  if (typeof value !== 'string') problems.push(`${where} needs "taughtOn": the id of the lesson page that teaches it.`);
+  else if (!lessonIds.has(value)) problems.push(`${where}.taughtOn "${value}" isn't one of this level's lesson page ids.`);
+}
+
+// Walks the "play" section. Anything with hints, or with answer options, is a question and needs a lesson page.
+function checkPlayTaughtOn(problems, node, lessonIds, where, inherited = null) {
+  if (Array.isArray(node)) { node.forEach((item, i) => checkPlayTaughtOn(problems, item, lessonIds, `${where}[${i}]`, inherited)); return; }
+  if (!node || typeof node !== 'object') return;
+  const own = typeof node.taughtOn === 'string' ? node.taughtOn : inherited;
+  if (node.taughtOn !== undefined) checkTaughtOn(problems, node.taughtOn, lessonIds, where);
+  const isQuestion = Array.isArray(node.hints) || (Array.isArray(node.options) && node.options.some((o) => o && o.correct));
+  if (isQuestion && !own) problems.push(`${where} is a question but has no "taughtOn" (set it here or on the section around it).`);
+  // Stages made in code (like "rankTaughtOn") name their lesson page with a key ending in TaughtOn.
+  Object.entries(node).forEach(([key, value]) => {
+    if (key !== 'taughtOn' && key.endsWith('TaughtOn')) checkTaughtOn(problems, value, lessonIds, `${where}.${key}`);
+    else if (key !== 'taughtOn') checkPlayTaughtOn(problems, value, lessonIds, `${where}.${key}`, own);
+  });
+}
+
 // ---- zone-N.json ----
 // levelModules lets each level check its own "play" section.
 
@@ -209,17 +275,9 @@ export async function loadZone(file, levelModules) {
       needText(problems, level.id, `${where}.id`);
       needText(problems, level.title, `${where}.title`);
       needText(problems, level.story, `${where}.story`);
-      if (!level.learn) {
-        problems.push(`${where}.learn is missing.`);
-      } else {
-        if (needList(problems, level.learn.bullets, `${where}.learn.bullets`, 3)) {
-          level.learn.bullets.forEach((b, j) => needText(problems, b, `${where}.learn.bullets[${j}]`));
-        }
-      }
-      if (level.hook) {
-        needText(problems, level.hook.question, `${where}.hook.question`);
-        needText(problems, level.hook.answer, `${where}.hook.answer`);
-      }
+      const lessonIds = checkLessons(problems, level, where);
+      if (!level.everyday) problems.push(`${where}.everyday is missing (it needs "scene", "question" and "answer").`);
+      else ['scene', 'question', 'answer'].forEach((key) => needText(problems, level.everyday[key], `${where}.everyday.${key}`));
       if (level.fieldNotes !== undefined && needList(problems, level.fieldNotes, `${where}.fieldNotes`)) {
         level.fieldNotes.forEach((note, j) => {
           needText(problems, note.title, `${where}.fieldNotes[${j}].title`);
@@ -237,6 +295,7 @@ export async function loadZone(file, levelModules) {
           else if (ids.has(card.id)) problems.push(`${at} uses the id "${card.id}" twice.`);
           ids.add(card.id);
           needText(problems, card.prompt, `${at}.prompt`);
+          checkTaughtOn(problems, card.taughtOn, lessonIds, at);
           if (card.type === 'predict') needText(problems, card.answer, `${at}.answer`);
           else if (card.type === 'quiz' || card.type === 'why') {
             if ((card.options || []).filter((o) => o.correct).length !== 1) problems.push(`${at} should have exactly one option with "correct": true.`);
@@ -254,17 +313,13 @@ export async function loadZone(file, levelModules) {
           needText(problems, level.debrief.mistake.text, `${where}.debrief.mistake.text`);
         }
       }
-      if (needList(problems, level.readMore, `${where}.readMore`, 2)) {
-        level.readMore.forEach((link, j) => {
-          needText(problems, link.title, `${where}.readMore[${j}].title`);
-          if (typeof link.url !== 'string' || !link.url.startsWith('https://')) {
-            problems.push(`${where}.readMore[${j}].url should start with https://`);
-          }
-        });
-      }
+      // "Read more" is every lesson page's references, joined and de-duplicated.
+      level.readMore = joinReferences(level);
+      if (level.readMore.length < 2) problems.push(`${where}: the lessons' references should give at least 2 different links.`);
       if (!level.play) {
         problems.push(`${where}.play is missing.`);
       } else {
+        checkPlayTaughtOn(problems, level.play, lessonIds, `${where}.play`);
         const module = levelModules[level.id];
         if (module && typeof module.validatePlay === 'function') {
           module.validatePlay(level.play).forEach((p) => problems.push(`${where}.play: ${p}`));

@@ -96,8 +96,9 @@ function lockedReason(world, index) {
 function districtCard(zone, status, world, index) {
   const { earned, max } = zoneStars(zone);
   const statusLine = status === 'locked' ? lockedReason(world, index)
-    : status === 'building' ? t('hub.building')
-      : t('hub.stars', { earned, max });
+    : status === 'later' ? t('hub.later')
+      : status === 'building' ? t('hub.building')
+        : t('hub.stars', { earned, max });
   const icon = status === 'locked' ? makeSprite('lock', 3) : makeSprite(zone.map.sprite, 2, { r: zone.map.roof });
   const card = el('a', {
     class: `district-card is-${status}`,
@@ -277,7 +278,7 @@ function drawValley(canvas, world, statuses, finale) {
 
   // Gently fade districts that are still locked (the lock icon also says so).
   world.zones.forEach((zone, i) => {
-    if (statuses[i] === 'locked') fadeAround(ctx, zone.map);
+    if (statuses[i] === 'locked' || statuses[i] === 'later') fadeAround(ctx, zone.map);
   });
   if (finale === 'locked') fadeAround(ctx, world.finale.map);
 }
@@ -327,7 +328,7 @@ function drawIslands(canvas, world, statuses, finale) {
     drawSprite(ctx, stop.sprite, stop.x - Math.floor(width / 2), stop.y - height, 1, { r: stop.roof });
   });
   drawSprite(ctx, 'boat', 8, 178, 1);
-  world.zones.forEach((zone, i) => { if (statuses[i] === 'locked') fadeAround(ctx, zone.map); });
+  world.zones.forEach((zone, i) => { if (statuses[i] === 'locked' || statuses[i] === 'later') fadeAround(ctx, zone.map); });
   if (finale === 'locked') fadeAround(ctx, world.finale.map);
 }
 
@@ -349,6 +350,8 @@ export function renderZone(app, world, zoneIndex, zoneContent, builtIds) {
 
   if (status === 'locked') {
     body = el('p', { class: 'notice' }, t('hub.lockedNotice', { reason: lockedReason(world, zoneIndex) }));
+  } else if (status === 'later') {
+    body = el('p', { class: 'notice' }, t('hub.laterNotice'));
   } else if (status === 'building' || !zoneContent) {
     body = el('p', { class: 'notice' }, t('hub.buildingNotice'));
   } else {
@@ -382,7 +385,7 @@ function levelCard(level, builtIds, base) {
   return el('li', { class: `level-card${built ? '' : ' is-unbuilt'}` },
     el('div', { class: 'level-card-text' },
       el('h2', { class: 'level-name' }, `${level.id} ${level.title}`),
-      el('p', { class: 'level-meta' }, coreTag, built ? starRow(stars, 3, 2) : null)
+      el('p', { class: 'level-meta' }, coreTag, built ? starRow(stars, 3, 2) : null, result && result.bonus ? el('span', { class: 'tag' }, `★ ${t('hub.bonus')}`) : null)
     ),
     action
   );

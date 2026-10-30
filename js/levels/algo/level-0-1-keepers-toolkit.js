@@ -79,7 +79,9 @@ export const keepersToolkit = {
     return problems;
   },
 
-  learnDiagram(level) {
+  // Lesson pictures, chosen by the lesson's "diagram" name.
+  lessonDiagram(name, level) {
+    if (name === 'arrayAndList') return arrayAndListDiagram();
     const W = level.play.words;
     return el('div', { class: 'learn-sims' },
       el('div', {}, el('p', { class: 'small' }, t('toolkit.stack')),
@@ -137,3 +139,17 @@ export const keepersToolkit = {
     }
   }
 };
+
+// Lesson picture: an array (numbered slots side by side) against a linked list (each item points to the next).
+function arrayAndListDiagram() {
+  const items = ['tide', 'moon', 'wind', 'salt'];
+  return el('div', { role: 'group', 'aria-label': t('toolkit.arrayListAria') },
+    el('p', { class: 'small' }, t('toolkit.array')),
+    el('div', { class: 'ds-row' }, items.map((item, i) =>
+      el('span', { class: 'ds-cell' }, el('span', { class: 'ds-index' }, String(i)), item))),
+    el('p', { class: 'small' }, t('toolkit.linkedList')),
+    el('div', { class: 'ds-row' }, items.map((item, i) => [
+      el('span', { class: 'ds-cell' }, item),
+      i < items.length - 1 ? el('span', { class: 'ds-arrow', 'aria-hidden': 'true' }, '→') : el('span', { class: 'ds-cell' }, t('toolkit.end'))
+    ])));
+}

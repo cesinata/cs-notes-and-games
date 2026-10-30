@@ -11,7 +11,7 @@
 // still work: they are sent to the same page under #/net/.
 // Using the address means the browser's Back button works as expected.
 
-import { initStorage, setRegion } from './engine/storage.js';
+import { initStorage, setRegion, getLastPlace, setLastPlace } from './engine/storage.js';
 import { loadWorld, loadZone, loadRegions, loadLanding, loadUiText } from './engine/content.js';
 import { detectLang } from './engine/i18n.js';
 import { zoneStatus, zoneStars } from './engine/progress.js';
@@ -79,6 +79,19 @@ async function regionSummaries() {
   return summaries;
 }
 
+// The level the player opened last, for the "Continue where you left off" button.
+async function resumeInfo() {
+  const last = getLastPlace();
+  const region = last && regions.find((r) => r.id === last.region);
+  if (!region) return null;
+  const world = await getWorld(region);
+  for (const zone of world.zones) {
+    const level = zone.levels.find((l) => l.id === last.level);
+    if (level && LEVEL_SETS[region.id][level.id]) return { region, level, href: `#/${region.id}/level/${level.id}` };
+  }
+  return null;
+}
+
 function go(hash) {
   if (location.hash === hash) route();
   else location.hash = hash;
@@ -90,7 +103,7 @@ async function route() {
     const parts = (location.hash || '#/').replace(/^#\/?/, '').split('/').filter(Boolean);
 
     if (!parts.length) {
-      renderLanding(app, await loadLanding(), await regionSummaries());
+      renderLanding(app, await loadLanding(), await regionSummaries(), await resumeInfo());
       window.scrollTo(0, 0);
       return;
     }
@@ -130,6 +143,7 @@ async function route() {
       const order = zoneInfo.levels.map((l) => l.id);
       const nextId = order.slice(order.indexOf(levelId) + 1).find((id) => levels[id]);
       const nextLevel = nextId ? zoneInfo.levels.find((l) => l.id === nextId) : null;
+      setLastPlace(region.id, levelId);
       runLevel({
         app, world, zoneInfo, level,
         module: levels[levelId],

@@ -15,7 +15,8 @@
     "status": {
       "open": "Terbuka",
       "building": "Lagi dibuat",
-      "locked": "Terkunci"
+      "locked": "Terkunci",
+      "later": "Segera hadir"
     },
     "lockedReason": "Tamatkan level inti di {zone} dulu buat buka ini.",
     "building": "Sudah terbuka. Level-nya masih dibuat.",
@@ -36,12 +37,15 @@
     "comingSoon": "Segera hadir",
     "starsHere": "{earned}/{max} bintang di sini",
     "didYouKnow": "Tahu nggak?",
-    "factNumber": "Fakta {n}"
+    "factNumber": "Fakta {n}",
+    "later": "Direncanakan untuk update berikutnya.",
+    "laterNotice": "Pulau ini direncanakan untuk update berikutnya. Belum jadi bagian game.",
+    "bonus": "Tantangan beres"
   },
   "level": {
     "phases": {
-      "story": "Cerita",
-      "learn": "Belajar",
+      "moment": "Momen sehari-hari",
+      "lessons": "Pelajaran",
       "play": "Main",
       "debrief": "Ulasan"
     },
@@ -54,9 +58,7 @@
     "correctSr": "Benar:",
     "onTrack": "Menuju",
     "wonder": "Coba pikirin dulu",
-    "wonderNote": "Jawabannya muncul di akhir level.",
-    "learnButton": "Pelajari idenya",
-    "backToStory": "Balik ke cerita",
+    "wonderNote": "Simpan tebakanmu. Pelajarannya ngasih bekal, dan ulasan ngasih jawabannya.",
     "startPlaying": "Mulai main",
     "complete": "Level selesai! Kamu dapat {stars}/3 bintang.",
     "newBest": "Rekor baru buat level ini.",
@@ -84,7 +86,27 @@
     "orderOf": "Pesanan {i} dari {n}",
     "islanderOf": "Penduduk {i} dari {n}",
     "claimOf": "Klaim {i} dari {n}",
-    "seeResult": "Lihat hasilnya"
+    "seeResult": "Lihat hasilnya",
+    "momentTitle": "Momen sehari-hari",
+    "kitTask": "Tugas Kit",
+    "startLessons": "Mulai pelajaran",
+    "lessonOf": "Halaman {i} dari {n}",
+    "lessonBack": "Balik",
+    "lessonNext": "Halaman berikutnya",
+    "backToMoment": "Balik ke momen tadi",
+    "termsTitle": "Istilah penting",
+    "predictLabel": "Pikir dulu",
+    "predictHint": "Tebak dulu, baru buka ini buat ngecek.",
+    "deeperLabel": "Go deeper",
+    "deeperNote": "Opsional. Nggak perlu buat dapat bintang.",
+    "referencesTitle": "Referensi",
+    "newTab": "(buka di tab baru)",
+    "challengeTag": "Tantangan (opsional)",
+    "challengeNote": "Soal bonus. Nggak pernah mengurangi bintangmu.",
+    "challengeTry": "Coba tantangannya",
+    "challengeSkip": "Lewati dan selesaikan level",
+    "challengeDone": "Tantangan: {right} dari {total} benar di percobaan pertama.",
+    "challengeCleared": "Tantangan beres!"
   },
   "choices": {
     "answerOptions": "Pilihan jawaban",
@@ -127,7 +149,8 @@
     "hybridAria": "Potongan kue hybrid, dari bawah",
     "standAria": "{title}: {placed} dari {total} potongan sudah ditaruh, urut dari bawah",
     "sliceOn": "{name} sudah ditaruh.",
-    "sliceIs": "Betul, {name}."
+    "sliceIs": "Betul, {name}.",
+    "compareAria": "Tiga kue berdampingan: OSI dengan 7 potongan, TCP/IP dengan 4, dan hybrid dengan 5."
   },
   "parcel": {
     "aria": "Bungkusan bersarang: link header dan trailer di paling luar, lalu network header, lalu transport header, dan surat di tengah.",
@@ -138,13 +161,18 @@
     "lineAria": "Perahu berbaris, dari yang paling landai",
     "trayAria": "Perahu yang harus diurutkan",
     "nextIs": "Berikutnya: {label}.",
-    "inPlace": "{label} sudah di tempatnya."
+    "inPlace": "{label} sudah di tempatnya.",
+    "waiting": "Perahu yang menunggu"
   },
   "toolkit": {
     "stack": "Stack",
     "queue": "Queue",
     "tools": "Alat",
     "stackAria": "Stack berisi tiga peti",
-    "queueAria": "Queue berisi tiga penumpang"
+    "queueAria": "Queue berisi tiga penumpang",
+    "array": "Array: slot bernomor yang berjejer",
+    "linkedList": "Linked list: tiap item menunjuk ke item berikutnya",
+    "end": "habis",
+    "arrayListAria": "Array berisi empat item di slot bernomor 0 sampai 3, dan linked list berisi empat item yang sama disambung panah."
   }
 }

@@ -17,12 +17,12 @@ function emptyFeed() {
 }
 
 function emptyProgress() {
-  return { version: 2, levels: {}, feeds: {} };
+  return { version: 2, levels: {}, feeds: {}, last: null };
 }
 
 // Version 1 saves had no regions: everything belonged to Packet Valley.
 function upgrade(saved) {
-  if (saved.version === 2) return { ...emptyProgress(), levels: saved.levels || {}, feeds: saved.feeds || {} };
+  if (saved.version === 2) return { ...emptyProgress(), levels: saved.levels || {}, feeds: saved.feeds || {}, last: saved.last || null };
   const upgraded = emptyProgress();
   Object.entries(saved.levels || {}).forEach(([id, result]) => { upgraded.levels[`net:${id}`] = result; });
   if (saved.feed && saved.feed.cards && saved.feed.streak) upgraded.feeds.net = saved.feed;
@@ -43,7 +43,7 @@ export function initStorage() {
     }
   } catch (error) {
     storageWorks = false;
-    console.warn('Pocket Atlas: progress will not be saved on this device.', error);
+    console.warn("Courier's Atlas: progress will not be saved on this device.", error);
   }
   return storageWorks;
 }
@@ -57,7 +57,7 @@ export function isStorageAvailable() {
   return storageWorks;
 }
 
-// Returns { stars, mistakes, hints } for a level, or null if never finished.
+// Returns { stars, mistakes, hints, bonus? } for a level, or null if never finished.
 export function getLevelResult(levelId) {
   return progress.levels[`${region}:${levelId}`] || null;
 }
@@ -67,11 +67,27 @@ export function saveLevelResult(levelId, result) {
   const key = `${region}:${levelId}`;
   const previous = progress.levels[key];
   const improved = !previous || result.stars > previous.stars;
+  const bonus = !!result.bonus || !!(previous && previous.bonus);
   if (improved) {
     progress.levels[key] = { stars: result.stars, mistakes: result.mistakes, hints: result.hints };
+    if (bonus) progress.levels[key].bonus = true;
+    writeToStorage();
+  } else if (bonus && !previous.bonus) {
+    previous.bonus = true; // the optional challenge doesn't touch stars, but we remember it
     writeToStorage();
   }
   return { best: progress.levels[key], improved };
+}
+
+// The last level the player opened, for the "Continue where you left off" button.
+// Returns { region, level } or null.
+export function getLastPlace() {
+  return progress.last || null;
+}
+
+export function setLastPlace(regionId, levelId) {
+  progress.last = { region: regionId, level: levelId };
+  writeToStorage();
 }
 
 // Daily Feed memory for the current region.
@@ -90,6 +106,7 @@ export function resetProgress() {
     if (key.startsWith(`${region}:`)) delete progress.levels[key];
   });
   delete progress.feeds[region];
+  if (progress.last && progress.last.region === region) progress.last = null;
   writeToStorage();
 }
 
@@ -98,6 +115,6 @@ function writeToStorage() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
   } catch (error) {
-    console.warn('Pocket Atlas: could not save progress.', error);
+    console.warn("Courier's Atlas: could not save progress.", error);
   }
 }

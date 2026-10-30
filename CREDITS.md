@@ -14,7 +14,7 @@ These are linked from levels, not copied.
 | Source | Licence | Used in |
 |---|---|---|
 | Peterson & Davie, *Computer Networks: A Systems Approach*, book.systemsapproach.org | CC BY 4.0 (stated in the book's GitHub repository) | 0.1, 0.2 |
-| Bonaventure, *Computer Networking: Principles, Protocols and Practice* (1st edition), computer-networking.info | CC BY (the 1st edition was released as CC BY 3.0 through the Saylor Open Textbook Challenge; **verify before adapting**) | 0.1 |
+| Bonaventure, *Computer Networking: Principles, Protocols and Practice*, computer-networking.info (home page; the old 1st-edition chapter link stopped working) | Open ebook (**verify the licence before adapting**) | 0.1 |
 | RFC 1122, Requirements for Internet Hosts, rfc-editor.org | IETF document (linked only) | 0.1, 0.2 |
 | Wireshark, wireshark.org | Free, open-source tool (linked only) | 0.2 |
 | Cloudflare docs: Network layers, developers.cloudflare.com | Linked only, not copied | 0.1 Field Note |

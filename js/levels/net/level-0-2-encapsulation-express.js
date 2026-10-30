@@ -113,8 +113,8 @@ export const encapsulationExpress = {
     return problems;
   },
 
-  // The Learn card picture: a fully wrapped frame.
-  learnDiagram(level) {
+  // Lesson picture: a fully wrapped frame (the only picture this level needs).
+  lessonDiagram(name, level) {
     const words = level.play.wrappers;
     const full = { layers: ['transport', 'network'], linkHeader: true, linkTrailer: true, bits: false };
     return el('div', { class: 'learn-parcel', role: 'img', 'aria-label': t('parcel.aria') },
