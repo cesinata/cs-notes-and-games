@@ -143,6 +143,17 @@ export async function loadWorld(file = 'world.json') {
   return world;
 }
 
+// The sample unit: a hidden test page (#/sample) that uses every activity type.
+export async function loadSample() {
+  const file = 'sample-unit.json';
+  const zone = await readJson(file);
+  const problems = validateZone(zone, {});
+  if (problems.length) throw new ContentError(file, problems);
+  const level = zone.levels[0];
+  level.noSave = true; // a test page never records stars
+  return level;
+}
+
 // ---- zone-N.json ----
 export async function loadZone(file, levelModules) {
   const zone = await readJson(file);

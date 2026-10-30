@@ -31,6 +31,20 @@ Decisions we've made, so we stay consistent as the game grows.
 - **Challenge:** optional bonus questions (harder, with `Go deeper` ideas). Mistakes and hints there never cost stars. Clearing it adds a small "Challenge cleared" mark.
 - Written for about age 15 to 18: every term defined when first used, no maths beyond everyday algebra on the main path.
 
+## Data-driven levels and activities (js/engine/unit-player.js)
+- A level can skip level code: give it an `activities` list in its content file and the unit player runs it. The four hand-built levels keep their own files.
+- Every activity has `id`, `type`, `prompt`, `hints` (exactly 2: a nudge, then a clearer one), `explain` and `taughtOn`. Add `"challenge": true` for optional bonus work (these must come last, and never cost stars).
+- Types: **choice** (`options`, one `correct`), **order** (`items` in the correct order; the game shuffles), **match** (`pairs` of `left`/`right`, 3 to 6), **buckets** (`buckets` names and `items` with a `bucket`), **numeric** (`answer`, optional `tolerance` or `tolerancePercent`, `unit`, `calculator: false` to hide the calculator) and **stepsim** (`mode`: watch, predict or count, and a `script`).
+- Order, match and buckets work by tapping or keyboard, never drag only. Right and wrong show ✓ / ✗ and words.
+- The calculator (js/engine/calc-eval.js) does + − × ÷, ^, mod, brackets, √ and log₂ without using eval. The numeric answer box accepts sums too, like `2^10 - 24`.
+- Step Sim graph view: `nodes` (`id`, `x` 0 to 300, `y` 0 to 180, `label`, `mark`: current, visited or queued) and `edges` (`from`, `to`, `weight`, `mark`: used or skipped). Marks use ring shapes, a tick and a word under the node, so colour is never the only signal.
+- `#/sample` plays `content/sample-unit.json`, a test unit with every activity type. It is not linked from the menus and records no stars.
+
+## Content checker (tools/check-content.mjs)
+- Run `node tools/check-content.mjs` (Node 22 or newer, no packages). It uses the same rules as the game (`js/engine/content-rules.js`).
+- Errors stop the game loading a file. Warnings (lesson page length, a lesson nothing tests, translations with a different list length) are worth a look. It ends with the list of `verify` items.
+- It does not check that links open. That is one batch near launch.
+
 ## Level 0.2: the router hut
 - Added beyond the brief: a router stop between the two houses, so the player *does* the
   "routers only unwrap to the network layer" idea instead of just reading it.

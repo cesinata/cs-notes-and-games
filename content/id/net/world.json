@@ -93,5 +93,15 @@
     {
       "text": "Cahaya itu cepat, tapi nggak instan. Bolak-balik ke sisi lain Bumi lewat kabel fiber butuh minimal sekitar 0,2 detik."
     }
-  ]
+  ],
+  "sim": {
+    "next": "Langkah berikutnya",
+    "back": "Mundur",
+    "stepOf": "Langkah {i} dari {n}",
+    "runToEnd": "Jalankan sampai habis",
+    "finish": "Lanjut",
+    "counted": "Tebakanmu {guess}. Hasilnya {actual}.",
+    "revealed": "Begini yang terjadi:",
+    "counter": "{name} sejauh ini: {value}"
+  }
 }

@@ -1,0 +1,806 @@
+{
+  "levels": [
+    {
+      "id": "sample",
+      "title": "Sample unit",
+      "story": "This is a test page for the game's builders. It uses every activity type once, with a pizza shop as the story, so we can check each one works on a laptop and on a phone.",
+      "everyday": {
+        "scene": "You order a pizza on your phone. A few minutes later a driver arrives with it, still hot, and they found your street without asking you for directions.",
+        "question": "How did the shop turn your order into a hot pizza at your door?",
+        "answer": "By breaking the job into steps in the right order, sorting out the toppings, working out the price, and finding a route that reaches every house. This unit practises each of those ideas."
+      },
+      "lessons": [
+        {
+          "id": "steps-order",
+          "title": "Steps come in an order",
+          "text": [
+            "A recipe is a list of steps, and the order matters. You can't slice a pizza before you bake it, and you can't bake it before you add the sauce. In computing, a list of steps that solves a problem is called an algorithm.",
+            "Kit's first job at the shop: put the steps in the right order."
+          ],
+          "terms": [
+            {
+              "term": "Algorithm",
+              "meaning": "A step-by-step method for solving a problem."
+            }
+          ],
+          "predict": {
+            "prompt": "Can you add the cheese after the pizza is baked and still get a normal pizza?",
+            "answer": "Not really. The cheese needs to melt in the oven, so it has to go on before baking."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Recipe",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Recipe"
+            }
+          ]
+        },
+        {
+          "id": "names-and-groups",
+          "title": "Names and groups",
+          "text": [
+            "Every job has its own words. A topping is food that goes on top of the pizza, the crust is the bread edge, and a slice is one piece. Knowing the words helps you read an order.",
+            "Toppings also fall into groups. Mushrooms, peppers and olives are vegetables. Ham, salami and chicken are meat. Mozzarella and cheddar are cheese."
+          ],
+          "terms": [
+            {
+              "term": "Topping",
+              "meaning": "Food that goes on top of a pizza."
+            },
+            {
+              "term": "Crust",
+              "meaning": "The bread base and edge of a pizza."
+            },
+            {
+              "term": "Slice",
+              "meaning": "One piece of a cut pizza."
+            }
+          ],
+          "table": {
+            "head": [
+              "Group",
+              "Examples"
+            ],
+            "rows": [
+              [
+                "Vegetable",
+                "mushroom, pepper, olive"
+              ],
+              [
+                "Meat",
+                "ham, salami, chicken"
+              ],
+              [
+                "Cheese",
+                "mozzarella, cheddar"
+              ]
+            ]
+          },
+          "diagramCaption": "Three groups of toppings.",
+          "references": [
+            {
+              "title": "Wikipedia: Pizza",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Pizza"
+            }
+          ]
+        },
+        {
+          "id": "sharing-maths",
+          "title": "Sharing and prices",
+          "text": [
+            "Pizza maths is everyday maths. A pizza cut into 8 slices has 8 slices, so if 3 friends eat 2 slices each, they eat 3 × 2 = 6, and 8 − 6 = 2 are left.",
+            "Prices work the same way. Three pizzas at 12 each cost 3 × 12 = 36. A discount of 10% takes off one tenth: 36 × 0.9 = 32.40. You can use the calculator for sums like these."
+          ],
+          "terms": [
+            {
+              "term": "Percent (%)",
+              "meaning": "Out of 100. 10% means 10 out of every 100, or one tenth."
+            }
+          ],
+          "deeper": {
+            "title": "Counting choices",
+            "text": [
+              "Each topping can be on or off. With 2 toppings there are 2 × 2 = 4 combinations. With 4 toppings there are 2 × 2 × 2 × 2 = 2⁴ = 16. Every extra topping doubles the number of pizzas you could order."
+            ]
+          },
+          "predict": {
+            "prompt": "A pizza has 8 slices and you eat 3. How many are left?",
+            "answer": "5, because 8 − 3 = 5."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Percentage",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Percentage"
+            }
+          ]
+        },
+        {
+          "id": "delivery-map",
+          "title": "Finding every house",
+          "text": [
+            "The driver's map is a set of houses joined by roads. Computer scientists call a map like this a graph: the houses are nodes and the roads are edges.",
+            "One good way to visit every house is nearest first. Visit the shop, add every house you can reach from it to a waiting list, then visit them in the order they joined the list. This is called breadth-first search."
+          ],
+          "terms": [
+            {
+              "term": "Graph",
+              "meaning": "Points (nodes) joined by lines (edges)."
+            },
+            {
+              "term": "Node",
+              "meaning": "One point in a graph, like a house."
+            },
+            {
+              "term": "Edge",
+              "meaning": "A line joining two nodes, like a road."
+            }
+          ],
+          "predict": {
+            "prompt": "The driver is at the shop. Which houses go on the waiting list first?",
+            "answer": "Every house with a road straight from the shop."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Breadth-first search",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Breadth-first_search"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "order-pizza",
+          "type": "order",
+          "taughtOn": "steps-order",
+          "prompt": "Put the pizza steps in order, first to last.",
+          "items": [
+            "Roll out the dough",
+            "Spread the sauce",
+            "Add the cheese",
+            "Bake in the oven",
+            "Cut into slices"
+          ],
+          "hints": [
+            "What has to exist before anything can go on top?",
+            "Sauce goes on the dough, then cheese, and it all needs to bake before slicing."
+          ],
+          "explain": "Dough, sauce, cheese, bake, slice. Each step needs the one before it."
+        },
+        {
+          "id": "match-words",
+          "type": "match",
+          "taughtOn": "names-and-groups",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Topping",
+              "right": "Food that goes on top"
+            },
+            {
+              "left": "Crust",
+              "right": "The bread base and edge"
+            },
+            {
+              "left": "Slice",
+              "right": "One piece of a cut pizza"
+            }
+          ],
+          "hints": [
+            "Think about where each part sits on the pizza.",
+            "The crust is the bread part."
+          ],
+          "explain": "Topping on top, crust is the bread, slice is one piece."
+        },
+        {
+          "id": "choice-topping",
+          "type": "choice",
+          "taughtOn": "names-and-groups",
+          "prompt": "Which of these is a meat topping?",
+          "options": [
+            {
+              "text": "Salami",
+              "correct": true
+            },
+            {
+              "text": "Mushroom"
+            },
+            {
+              "text": "Olive"
+            },
+            {
+              "text": "Mozzarella"
+            }
+          ],
+          "hints": [
+            "The lesson listed three meats.",
+            "Ham, salami and chicken are the meats."
+          ],
+          "explain": "Salami is a meat. Mushroom and olive are vegetables, and mozzarella is a cheese."
+        },
+        {
+          "id": "sort-toppings",
+          "type": "buckets",
+          "taughtOn": "names-and-groups",
+          "prompt": "Sort each topping into its group.",
+          "buckets": [
+            "Vegetable",
+            "Meat",
+            "Cheese"
+          ],
+          "items": [
+            {
+              "text": "Mushroom",
+              "bucket": "Vegetable"
+            },
+            {
+              "text": "Pepper",
+              "bucket": "Vegetable"
+            },
+            {
+              "text": "Ham",
+              "bucket": "Meat"
+            },
+            {
+              "text": "Chicken",
+              "bucket": "Meat"
+            },
+            {
+              "text": "Cheddar",
+              "bucket": "Cheese"
+            },
+            {
+              "text": "Mozzarella",
+              "bucket": "Cheese"
+            }
+          ],
+          "hints": [
+            "Check the table on the last page.",
+            "Cheddar and mozzarella are the cheeses."
+          ],
+          "explain": "Vegetables, meats and cheeses: three groups of toppings."
+        },
+        {
+          "id": "slices-left",
+          "type": "numeric",
+          "taughtOn": "sharing-maths",
+          "prompt": "A pizza has 8 slices. Three friends eat 2 slices each. How many slices are left?",
+          "answer": 2,
+          "unit": "slices",
+          "hints": [
+            "First work out how many slices they ate in total.",
+            "3 × 2 = 6 eaten, so 8 − 6 are left."
+          ],
+          "explain": "3 × 2 = 6 slices eaten, so 8 − 6 = 2 are left."
+        },
+        {
+          "id": "price-total",
+          "type": "numeric",
+          "taughtOn": "sharing-maths",
+          "prompt": "Three pizzas cost 9.50 each, and there's a 20% discount on the total. What do you pay?",
+          "answer": 22.8,
+          "tolerance": 0.01,
+          "unit": "dollars",
+          "hints": [
+            "Find the total first: 3 × 9.50.",
+            "Then take off 20%, which is the same as multiplying by 0.8."
+          ],
+          "explain": "3 × 9.50 = 28.50, and 28.50 × 0.8 = 22.80."
+        },
+        {
+          "id": "delivery-sim",
+          "type": "stepsim",
+          "mode": "predict",
+          "taughtOn": "delivery-map",
+          "prompt": "Follow the delivery driver, nearest house first.",
+          "script": {
+            "view": "graph",
+            "steps": [
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 40,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "A",
+                      "x": 130,
+                      "y": 40,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 130,
+                      "y": 140,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 230,
+                      "y": 40,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 230,
+                      "y": 140,
+                      "label": "D"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "A"
+                    },
+                    {
+                      "from": "S",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    }
+                  ]
+                },
+                "say": "The driver starts at the shop (S)."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 40,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "A",
+                      "x": 130,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "B",
+                      "x": 130,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "C",
+                      "x": 230,
+                      "y": 40,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 230,
+                      "y": 140,
+                      "label": "D"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "A",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "S",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    }
+                  ]
+                },
+                "say": "From the shop the driver can reach A and B. Both go on the waiting list.",
+                "predict": {
+                  "prompt": "Which houses can the driver reach straight from the shop?",
+                  "options": [
+                    {
+                      "text": "A and B",
+                      "correct": true
+                    },
+                    {
+                      "text": "C and D"
+                    },
+                    {
+                      "text": "Only A"
+                    },
+                    {
+                      "text": "All four houses"
+                    }
+                  ],
+                  "hints": [
+                    "Look at the roads that touch S.",
+                    "Two roads leave the shop: one to A and one to B."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 40,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "A",
+                      "x": 130,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "B",
+                      "x": 130,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "C",
+                      "x": 230,
+                      "y": 40,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 230,
+                      "y": 140,
+                      "label": "D"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "A",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "S",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    }
+                  ]
+                },
+                "say": "A is first on the waiting list, so the driver goes there."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 40,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "A",
+                      "x": 130,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 130,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "C",
+                      "x": 230,
+                      "y": 40,
+                      "label": "C",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "D",
+                      "x": 230,
+                      "y": 140,
+                      "label": "D"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "A",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "S",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    }
+                  ]
+                },
+                "say": "A is done and it opened a road to C. B has been waiting longest, so the driver goes to B next.",
+                "predict": {
+                  "prompt": "A is done. Which house does the driver visit next?",
+                  "options": [
+                    {
+                      "text": "B, because it has waited longest",
+                      "correct": true
+                    },
+                    {
+                      "text": "C, because it was found last"
+                    },
+                    {
+                      "text": "D"
+                    },
+                    {
+                      "text": "Back to the shop"
+                    }
+                  ],
+                  "hints": [
+                    "The waiting list is a line: who joined it first?",
+                    "B joined the list before C did, so B goes first."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 40,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "A",
+                      "x": 130,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 130,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 230,
+                      "y": 40,
+                      "label": "C",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "D",
+                      "x": 230,
+                      "y": 140,
+                      "label": "D",
+                      "mark": "queued"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "A",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "S",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D",
+                      "mark": "used"
+                    }
+                  ]
+                },
+                "say": "B opened a road to D. Now C is next in line."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 40,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "A",
+                      "x": 130,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 130,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 230,
+                      "y": 40,
+                      "label": "C",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D",
+                      "x": 230,
+                      "y": 140,
+                      "label": "D",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "A",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "S",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D",
+                      "mark": "used"
+                    }
+                  ]
+                },
+                "say": "Last stop: D."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 40,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "A",
+                      "x": 130,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 130,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 230,
+                      "y": 40,
+                      "label": "C",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D",
+                      "x": 230,
+                      "y": 140,
+                      "label": "D",
+                      "mark": "visited"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "A",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "S",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D",
+                      "mark": "used"
+                    }
+                  ]
+                },
+                "say": "Every house is visited, in the order S, A, B, C, D: nearest first."
+              }
+            ]
+          },
+          "hints": [],
+          "explain": "Nearest first: S, A, B, C, D."
+        },
+        {
+          "id": "topping-combos",
+          "type": "numeric",
+          "challenge": true,
+          "taughtOn": "sharing-maths",
+          "prompt": "Challenge: with 4 toppings, each either on or off, how many different pizzas can you order?",
+          "answer": 16,
+          "hints": [
+            "Each topping doubles the number of choices.",
+            "2 × 2 × 2 × 2, or 2 to the power of 4."
+          ],
+          "explain": "2⁴ = 16. Every extra topping doubles the choices."
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You put steps in order, matched words, sorted toppings, did everyday sums with the calculator, and followed a delivery driver around a graph.",
+          "That's every activity type the game can build from a content file."
+        ],
+        "mistake": {
+          "title": "Rushing the order of steps",
+          "text": "In any recipe or algorithm, each step depends on the one before it. If a step feels out of place, ask what it needs to already be done."
+        }
+      }
+    }
+  ]
+}

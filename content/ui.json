@@ -134,7 +134,12 @@
     "prediction": "Your prediction: {guess}",
     "cratesLtr": "Crates, left to right",
     "stackLabel": "Crate stack, bottom first",
-    "queueLabel": "Ferry line, front first"
+    "queueLabel": "Ferry line, front first",
+    "markCurrent": "now",
+    "markVisited": "visited",
+    "markQueued": "waiting",
+    "graphAria": "A graph with {n} nodes. {summary}.",
+    "legend": "Double ring = the node we're on now. ✓ = visited. Dashed ring = waiting. Thick line = a link we used."
   },
   "diagram": {
     "layer": "Layer {n}",
@@ -176,5 +181,52 @@
     "linkedList": "Linked list: each item points to the next",
     "end": "end",
     "arrayListAria": "An array of four items in numbered slots 0 to 3, and a linked list of the same four items joined by arrows."
+  },
+  "unit": {
+    "activityOf": "Activity {i} of {n}",
+    "challengeOffer": "{n} bonus question(s) are waiting. They're harder, and they never cost you stars."
+  },
+  "order": {
+    "lineAria": "Your order, first to last",
+    "trayAria": "Items still to place",
+    "waiting": "Still to place",
+    "placed": "{item} is number {n}."
+  },
+  "match": {
+    "pickLeft": "Pick something on the left first.",
+    "pickRight": "Now pick the match for \"{left}\" on the right.",
+    "matched": "{left} matches {right}.",
+    "notAPair": "Not a pair.",
+    "leftAria": "Things to match",
+    "rightAria": "Matches",
+    "doneAria": "Pairs found so far"
+  },
+  "buckets": {
+    "ask": "Where does \"{item}\" go? ({n} of {total})",
+    "placed": "\"{item}\" goes in {bucket}.",
+    "chooseAria": "Groups to choose from"
+  },
+  "numeric": {
+    "label": "Your answer",
+    "check": "Check",
+    "notNumber": "I couldn't read that as a number. Try something like 42 or 3.5."
+  },
+  "calc": {
+    "title": "Calculator",
+    "expression": "Calculator: type a sum",
+    "use": "Use result in my answer",
+    "keys": {
+      "divide": "divide",
+      "times": "times",
+      "minus": "minus",
+      "plus": "plus",
+      "power": "to the power of",
+      "sqrt": "square root",
+      "log2": "log base 2",
+      "mod": "remainder (mod)",
+      "equals": "equals",
+      "clear": "clear",
+      "back": "delete last character"
+    }
   }
 }
