@@ -291,7 +291,7 @@
       "id": 6,
       "name": "Market Street",
       "topic": "Application layer",
-      "file": null,
+      "file": "zone-6.json",
       "map": {
         "x": 266,
         "y": 104,
