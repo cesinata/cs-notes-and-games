@@ -1,6 +1,6 @@
 // calc-eval.js
 // A small, safe calculator for the on-screen calculator and numeric answers.
-// It understands: numbers, + - × ÷ (or * /), ^ (power), mod, brackets,
+// It understands: numbers, + - × ÷ (or * /), ^ (power), mod, brackets, the constant e,
 // sqrt(...) or √(...), and log2(...) or log₂(...). It never uses eval().
 //   evaluate('2^10 - 24')   → 1000
 //   evaluate('log2(1024)')  → 10
@@ -20,7 +20,7 @@ function tokenize(source) {
     if (/\s/.test(c)) { i += 1; continue; }
     const number = text.slice(i).match(/^(\d+\.?\d*|\.\d+)/);
     if (number) { tokens.push({ type: 'num', value: Number(number[0]) }); i += number[0].length; continue; }
-    const word = text.slice(i).match(/^(sqrt|log2|mod)/);
+    const word = text.slice(i).match(/^(sqrt|log2|mod|e)/);
     if (word) { tokens.push({ type: word[0] }); i += word[0].length; continue; }
     if ('+-*/^()'.includes(c)) { tokens.push({ type: c }); i += 1; continue; }
     throw new Error(`I don't understand "${source.slice(i, i + 1)}".`);
@@ -73,6 +73,7 @@ export function evaluate(source) {
   function primary() {
     const type = peek();
     if (type === 'num') { const v = tokens[at].value; at += 1; return v; }
+    if (type === 'e') { at += 1; return Math.E; }
     if (type === '(') { at += 1; const v = expression(); take(')'); return v; }
     if (type === 'sqrt' || type === 'log2') {
       at += 1; take('(');

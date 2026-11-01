@@ -22,6 +22,7 @@ import { makeSprite } from './sprites.js';
 import { starsFor } from './progress.js';
 import { saveLevelResult, getLevelResult } from './storage.js';
 import { fieldNoteCard } from './field-notes.js';
+import { waveElement } from './wave.js';
 
 const PHASES = ['moment', 'lessons', 'play', 'debrief']; // the order of the phase trail
 
@@ -134,8 +135,8 @@ export function runLevel({ app, world, zoneInfo, level, module, nextLevel, onExi
     const heading = el('h2', {}, lesson.title);
     // A page can have a picture (drawn by the level's file, chosen by name) and/or a small table (written in the content).
     const diagram = lesson.diagram && module.lessonDiagram ? module.lessonDiagram(lesson.diagram, level) : null;
-    const figure = diagram || lesson.table
-      ? el('figure', { class: 'learn-figure' }, diagram, lesson.table ? tableElement(lesson.table) : null,
+    const figure = diagram || lesson.table || lesson.wave
+      ? el('figure', { class: 'learn-figure' }, diagram, lesson.wave ? waveElement(lesson.wave) : null, lesson.table ? tableElement(lesson.table) : null,
         lesson.diagramCaption ? el('figcaption', {}, textOf(lesson.diagramCaption)) : null)
       : null;
 

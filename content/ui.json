@@ -226,7 +226,16 @@
       "mod": "remainder (mod)",
       "equals": "equals",
       "clear": "clear",
-      "back": "delete last character"
+      "back": "delete last character",
+      "euler": "the number e"
+    }
+  },
+  "wave": {
+    "aria": "A wave carrying the bits {bits} using {kind}.",
+    "kinds": {
+      "ask": "amplitude changes (ASK)",
+      "fsk": "frequency changes (FSK)",
+      "psk": "phase flips (PSK)"
     }
   }
 }

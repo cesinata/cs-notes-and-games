@@ -13,7 +13,7 @@ const KEYS = [
   ['4', '4'], ['5', '5'], ['6', '6'], ['×', '×', 'times'], ['log₂', 'log₂(', 'log2'],
   ['1', '1'], ['2', '2'], ['3', '3'], ['−', '−', 'minus'], ['^', '^', 'power'],
   ['0', '0'], ['.', '.'], ['(', '('], [')', ')'], ['mod', ' mod ', 'mod'],
-  ['+', '+', 'plus']
+  ['+', '+', 'plus'], ['e', 'e', 'euler']
 ];
 
 // onUse(text) is called with the result when the player presses "Use result".

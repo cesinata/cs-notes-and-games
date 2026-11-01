@@ -91,7 +91,7 @@
       "id": 1,
       "name": "Wire Woods",
       "topic": "Physical layer",
-      "file": null,
+      "file": "zone-1.json",
       "map": {
         "x": 80,
         "y": 104,
