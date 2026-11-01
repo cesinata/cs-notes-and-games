@@ -169,7 +169,7 @@
       "id": 3,
       "name": "Crowded Plaza",
       "topic": "MAC sub-layer",
-      "file": null,
+      "file": "zone-3.json",
       "map": {
         "x": 114,
         "y": 40,

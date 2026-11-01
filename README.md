@@ -46,6 +46,9 @@ or a region's map. The choice is remembered on that device, and the first visit 
 
 - Main page (with one big fact per subject), region maps with fun facts, saved progress (stars) and a "Reset progress" button for each region
 - Packet Valley, Town Square: **0.1 Layer Cake** and **0.2 Encapsulation Express**
+- Packet Valley, Wire Woods: **1.1 Delay Dash**, **1.3 Signal Studio**, **1.4 Channel Limits**
+- Packet Valley, Frame Farm: **2.1 Frame Fences**, **2.2 Bug Detectives**, **2.3 CRC Mill**, **2.5 Window Waltz**
+- Packet Valley, Crowded Plaza: **3.1 ALOHA Party**, **3.2 Listen Before You Talk**, **3.4 Hidden Hills**
 - Algo Archipelago, Lighthouse Point: **0.1 Lighthouse Keeper's Toolkit** and **0.2 Growth Race**
 - A new level flow: an everyday moment, 2 to 4 story lessons (each with References and an optional "Go deeper"), the activities, then a debrief
 - Field Notes, collected in the Field Journal
@@ -63,7 +66,7 @@ All the words players see live in `content/`, so you can change them without tou
 - `content/id/`: the Indonesian version of any of these files
 - `content/regions.json`: the list of regions (subjects) and their descriptions
 - `content/<region>/world.json`: district names, map positions, the planned level list, and the "Did you know?" fun facts (`funFacts`, 3 to 5) shown at the top of the region page
-- `content/<region>/zone-0.json`: everything for that district's levels (Kit's job, everyday moment, lesson pages, puzzle text, hints, debrief, Field Notes, feed cards). The Read more list is built from the lesson pages' references
+- `content/<region>/zone-N.json`: everything for that district's levels (Kit's job, everyday moment, lesson pages, puzzle text, hints, debrief, Field Notes, feed cards). The Read more list is built from the lesson pages' references
 
 `<region>` is `net` or `algo`.
 

@@ -14,7 +14,7 @@
 //     countQuestion?: { prompt, options, hints, counter } }
 // Array state:  { items: [{ value, mark?, tag? }], pointers: { 0: 'front' }, empty?: 'text', hideIndex?: true }
 // Bars state:   { bars: [{ label, value }] }
-// Graph state:  { nodes: [{ id, x, y, label, mark? }], edges: [{ from, to, weight?, mark? }], directed? }
+// Graph state:  { nodes: [{ id, x, y, label, mark? }], edges: [{ from, to, weight?, mark? }], directed?, legend? }
 //               x is 0 to 300 and y is 0 to 180. A node mark is 'current', 'visited' or 'queued'; an edge mark
 //               is 'used' or 'skipped'. Marks are shown with shapes and words, not just colour.
 // "words" are the button labels from world.json ("sim").
@@ -88,7 +88,7 @@ function drawGraph(state) {
     );
     if (n.mark) svg.append(svgEl('text', { x: n.x, y: n.y + NODE_RADIUS + 14, 'text-anchor': 'middle', class: 'g-tag' }, t(NODE_MARKS[n.mark])));
   });
-  return el('div', { class: 'graph-wrap' }, svg, el('p', { class: 'small graph-legend' }, t('sim.legend')));
+  return el('div', { class: 'graph-wrap' }, svg, el('p', { class: 'small graph-legend' }, state.legend || t('sim.legend')));
 }
 
 const VIEWS = { array: drawArray, bars: drawBars, graph: drawGraph };
