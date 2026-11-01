@@ -40,6 +40,9 @@ Decisions we've made, so we stay consistent as the game grows.
 - Step Sim graph view: `nodes` (`id`, `x` 0 to 300, `y` 0 to 180, `label`, `mark`: current, visited or queued) and `edges` (`from`, `to`, `weight`, `mark`: used or skipped). Marks use ring shapes, a tick and a word under the node, so colour is never the only signal.
 - `#/sample` plays `content/sample-unit.json`, a test unit with every activity type. It is not linked from the menus and records no stars.
 
+- A `choice` activity or a lesson page can show a wave picture with `wave: { bits, kind }` (kind: ask, fsk or psk). The calculator understands the constant `e`.
+- The Step Sim array view can hide its index numbers (`hideIndex`), and a graph step can carry its own `legend` text, for pictures that aren't about visiting nodes.
+
 ## Content checker (tools/check-content.mjs)
 - Run `node tools/check-content.mjs` (Node 22 or newer, no packages). It uses the same rules as the game (`js/engine/content-rules.js`).
 - Errors stop the game loading a file. Warnings (lesson page length, a lesson nothing tests, translations with a different list length) are worth a look. It ends with the list of `verify` items.
