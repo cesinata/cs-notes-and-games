@@ -252,7 +252,7 @@
       "id": 5,
       "name": "Harbour of Ports",
       "topic": "Transport layer",
-      "file": null,
+      "file": "zone-5.json",
       "map": {
         "x": 228,
         "y": 156,
