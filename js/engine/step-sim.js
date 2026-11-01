@@ -12,7 +12,7 @@
 //   { view: 'array', 'bars' or 'graph',
 //     steps: [ { state, say, predict?: { prompt, options, hints }, count?: { name: 1 } } ],
 //     countQuestion?: { prompt, options, hints, counter } }
-// Array state:  { items: [{ value, mark?, tag? }], pointers: { 0: 'front' }, empty?: 'text' }
+// Array state:  { items: [{ value, mark?, tag? }], pointers: { 0: 'front' }, empty?: 'text', hideIndex?: true }
 // Bars state:   { bars: [{ label, value }] }
 // Graph state:  { nodes: [{ id, x, y, label, mark? }], edges: [{ from, to, weight?, mark? }], directed? }
 //               x is 0 to 300 and y is 0 to 180. A node mark is 'current', 'visited' or 'queued'; an edge mark
@@ -35,7 +35,7 @@ function drawArray(state) {
     row.append(el('li', { class: `crate${item.mark ? ` is-${item.mark}` : ''}` },
       pointer ? el('span', { class: 'crate-pointer' }, `▼ ${pointer}`) : el('span', { class: 'crate-pointer', 'aria-hidden': 'true' }, ' '),
       el('span', { class: 'crate-box' }, String(item.value)),
-      el('span', { class: 'crate-index' }, item.tag || String(i))));
+      el('span', { class: 'crate-index', 'aria-hidden': state.hideIndex ? 'true' : null }, state.hideIndex ? ' ' : (item.tag || String(i)))));
   });
   return el('div', { class: `crates-wrap${state.vertical ? ' is-vertical' : ''}` }, row);
 }
