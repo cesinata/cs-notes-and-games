@@ -84,6 +84,7 @@ function checkLessons(problems, level, where) {
     if (lesson.terms !== undefined && needList(problems, lesson.terms, `${at}.terms`)) {
       lesson.terms.forEach((item, k) => { needText(problems, item.term, `${at}.terms[${k}].term`); needText(problems, item.meaning, `${at}.terms[${k}].meaning`); });
     }
+    if (lesson.wave) checkWave(problems, lesson.wave, `${at}.wave`);
     if (lesson.table && (!Array.isArray(lesson.table.head) || !Array.isArray(lesson.table.rows) || lesson.table.rows.some((r) => !Array.isArray(r) || r.length !== lesson.table.head.length))) {
       problems.push(`${at}.table needs "head" (column names) and "rows" (each with the same number of cells).`);
     }
@@ -137,6 +138,12 @@ function checkPlayTaughtOn(problems, node, lessonIds, where, inherited = null) {
 // Types: choice, order, match, buckets, numeric, stepsim. An activity with "challenge": true is
 // optional bonus work. Those must come after all the normal ones, and never cost stars.
 
+// A wave picture: { "bits": "1011", "kind": "ask" | "fsk" | "psk" }.
+function checkWave(problems, wave, where) {
+  if (!wave || typeof wave.bits !== 'string' || !/^[01]{2,8}$/.test(wave.bits)) problems.push(`${where}.bits should be 2 to 8 bits, like "1011".`);
+  if (!wave || !['ask', 'fsk', 'psk'].includes(wave.kind)) problems.push(`${where}.kind should be "ask", "fsk" or "psk".`);
+}
+
 export const ACTIVITY_TYPES = ['choice', 'order', 'match', 'buckets', 'numeric', 'stepsim'];
 export const SIM_VIEWS = ['array', 'bars', 'graph'];
 export const SIM_MODES = ['watch', 'predict', 'count'];
@@ -185,7 +192,10 @@ export function checkActivities(problems, activities, lessonIds, where) {
     if (a.type !== 'stepsim' && (!Array.isArray(a.hints) || a.hints.length !== 2)) problems.push(`${at}.hints should be exactly 2 hints: a gentle nudge, then a clearer one.`);
     else if (Array.isArray(a.hints)) a.hints.forEach((h, k) => needText(problems, h, `${at}.hints[${k}]`));
 
-    if (a.type === 'choice') exactlyOneCorrect(problems, a.options, at);
+    if (a.type === 'choice') {
+      exactlyOneCorrect(problems, a.options, at);
+      if (a.wave) checkWave(problems, a.wave, `${at}.wave`);
+    }
     if (a.type === 'order') {
       if (needList(problems, a.items, `${at}.items`, 3)) a.items.forEach((item, k) => needText(problems, item, `${at}.items[${k}]`));
       if (Array.isArray(a.items) && new Set(a.items.map((x) => String(x))).size !== a.items.length) problems.push(`${at}.items has a repeated item, so the order would be ambiguous.`);

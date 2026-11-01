@@ -657,3 +657,11 @@ a.district-card:hover { background: var(--panel-alt); }
 .g-label { font: 700 13px var(--font-body); fill: #263024; }
 .g-tag { font: 700 10px var(--font-body); fill: #263024; }
 @media (max-width: 34rem) { .match-grid { grid-template-columns: 1fr; } .calc-keys { grid-template-columns: repeat(5, 1fr); } }
+
+/* ---------- Wave picture (modulation lessons) ---------- */
+.wave-wrap { background: #D3E7F2; border: 3px solid var(--frame); border-radius: 6px; padding: .5rem; margin: .75rem 0; max-width: 34rem; }
+.wave { width: 100%; height: auto; display: block; }
+.wave-axis { stroke: #8FA6B2; stroke-width: 1; }
+.wave-line { fill: none; stroke: #263024; stroke-width: 2.5; stroke-linejoin: round; }
+.wave-sep { stroke: #4E5A49; stroke-width: 1; stroke-dasharray: 3 3; }
+.wave-bit { font: 700 16px var(--font-body); fill: #263024; }

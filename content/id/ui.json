@@ -224,7 +224,16 @@
       "mod": "sisa bagi (mod)",
       "equals": "sama dengan",
       "clear": "hapus semua",
-      "back": "hapus karakter terakhir"
+      "back": "hapus karakter terakhir",
+      "euler": "bilangan e"
+    }
+  },
+  "wave": {
+    "aria": "Gelombang yang membawa bit {bits} dengan {kind}.",
+    "kinds": {
+      "ask": "perubahan amplitudo (ASK)",
+      "fsk": "perubahan frekuensi (FSK)",
+      "psk": "pembalikan fase (PSK)"
     }
   }
 }
