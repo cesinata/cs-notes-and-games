@@ -330,7 +330,7 @@
       "id": 7,
       "name": "Castle Keep",
       "topic": "Network security",
-      "file": null,
+      "file": "zone-7.json",
       "map": {
         "x": 226,
         "y": 40,
