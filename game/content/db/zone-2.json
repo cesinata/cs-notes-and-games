@@ -1,0 +1,1776 @@
+{
+  "zone": 2,
+  "levels": [
+    {
+      "id": "2.1",
+      "title": "Ask the Librarian",
+      "story": "Odile points at the whole catalogue and says: \"Ask for exactly what you need, in words the shelves understand.\"",
+      "everyday": {
+        "scene": "At the library desk you say: \"Mystery books, newest first, just the top three.\"",
+        "question": "How would you say that to a computer?",
+        "answer": "In SQL, the language for asking a database questions. That request becomes SELECT, WHERE, ORDER BY and LIMIT."
+      },
+      "lessons": [
+        {
+          "id": "select-from",
+          "title": "SELECT and FROM",
+          "text": [
+            "SQL is the language for asking a database questions. SELECT names the columns you want, and FROM names the table: SELECT title, year FROM books; gives two columns for every row. SELECT * means every column.",
+            "The answer to a query is itself a table. Asking does not change the stored data."
+          ],
+          "table": {
+            "head": [
+              "book_id",
+              "title",
+              "genre",
+              "year",
+              "pages"
+            ],
+            "rows": [
+              [
+                "1",
+                "Tide Tables",
+                "Reference",
+                "1998",
+                "220"
+              ],
+              [
+                "2",
+                "The Lost Lantern",
+                "Mystery",
+                "2008",
+                "310"
+              ],
+              [
+                "3",
+                "Salt and Starlight",
+                "Fantasy",
+                "2015",
+                "420"
+              ],
+              [
+                "4",
+                "Quiet Harbour",
+                "Mystery",
+                "2012",
+                "280"
+              ],
+              [
+                "5",
+                "Map of Moths",
+                "Fantasy",
+                "2005",
+                "360"
+              ],
+              [
+                "6",
+                "Garden Maths",
+                "Reference",
+                "2019",
+                "190"
+              ],
+              [
+                "7",
+                "The Last Ferry",
+                "Mystery",
+                "2021",
+                "250"
+              ],
+              [
+                "8",
+                "Paper Boats",
+                "Fantasy",
+                "2001",
+                "300"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Querying a table",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/tutorial-select.html"
+            },
+            {
+              "title": "SQLBolt: interactive SQL lessons",
+              "source": "SQLBolt (linked only)",
+              "url": "https://sqlbolt.com/"
+            }
+          ]
+        },
+        {
+          "id": "where",
+          "title": "WHERE: choose the rows",
+          "text": [
+            "WHERE keeps only the rows that pass a test: SELECT title FROM books WHERE year > 2010; keeps books after 2010. Join tests with AND and OR. Text goes in single quotes, like genre = 'Mystery'.",
+            "Rows that fail are left out of the answer. The table itself is untouched."
+          ],
+          "terms": [
+            {
+              "term": "Condition",
+              "meaning": "A test that is true or false for each row."
+            }
+          ],
+          "predict": {
+            "prompt": "How many books does WHERE genre = 'Mystery' AND year > 2010 keep? Use the table on the first page.",
+            "answer": "Two: Quiet Harbour (2012) and The Last Ferry (2021)."
+          },
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Querying a table",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/tutorial-select.html"
+            },
+            {
+              "title": "SQLBolt: interactive SQL lessons",
+              "source": "SQLBolt (linked only)",
+              "url": "https://sqlbolt.com/"
+            }
+          ]
+        },
+        {
+          "id": "order-limit",
+          "title": "ORDER BY and LIMIT",
+          "text": [
+            "ORDER BY sorts the answer, smallest first unless you add DESC. LIMIT keeps only the first few rows after sorting.",
+            "SELECT title FROM books WHERE genre = 'Mystery' ORDER BY year DESC LIMIT 3; gives the three newest mysteries. Without ORDER BY, the DBMS promises no particular order."
+          ],
+          "deeper": {
+            "title": "LIMIT is not everywhere",
+            "text": [
+              {
+                "text": "PostgreSQL and SQLite use LIMIT. The SQL standard added FETCH FIRST in SQL:2008, which PostgreSQL also supports, and SQL Server uses TOP.",
+                "verify": false
+              }
+            ]
+          },
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Sorting rows",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/queries-order.html"
+            },
+            {
+              "title": "PostgreSQL documentation: LIMIT and OFFSET",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/queries-limit.html"
+            },
+            {
+              "title": "PostgreSQL documentation: SELECT (LIMIT clause)",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/sql-select.html"
+            },
+            {
+              "title": "SQLite documentation: SELECT (LIMIT clause)",
+              "source": "SQLite docs (linked, not copied)",
+              "url": "https://www.sqlite.org/lang_select.html"
+            },
+            {
+              "title": "Microsoft Learn: TOP (Transact-SQL)",
+              "source": "Microsoft docs (linked, not copied)",
+              "url": "https://learn.microsoft.com/en-us/sql/t-sql/queries/top-transact-sql?view=sql-server-ver16"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "watch-where",
+          "type": "stepsim",
+          "taughtOn": "where",
+          "mode": "predict",
+          "prompt": "Watch the DBMS test each book's year against year > 2010, and predict some rows.",
+          "explain": "WHERE tests every row on its own and keeps only the ones that pass, so the answer holds just the later books.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 1998,
+                      "mark": null
+                    },
+                    {
+                      "value": 2008,
+                      "mark": null
+                    },
+                    {
+                      "value": 2015,
+                      "mark": null
+                    },
+                    {
+                      "value": 2012,
+                      "mark": null
+                    },
+                    {
+                      "value": 2005,
+                      "mark": null
+                    },
+                    {
+                      "value": 2019,
+                      "mark": null
+                    },
+                    {
+                      "value": 2021,
+                      "mark": null
+                    },
+                    {
+                      "value": 2001,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Publication years, in table order"
+                },
+                "say": "The query is SELECT title FROM books WHERE year > 2010. The DBMS tests each row's year, one at a time, and keeps the rows that pass."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 1998,
+                      "mark": "compare"
+                    },
+                    {
+                      "value": 2008,
+                      "mark": null
+                    },
+                    {
+                      "value": 2015,
+                      "mark": null
+                    },
+                    {
+                      "value": 2012,
+                      "mark": null
+                    },
+                    {
+                      "value": 2005,
+                      "mark": null
+                    },
+                    {
+                      "value": 2019,
+                      "mark": null
+                    },
+                    {
+                      "value": 2021,
+                      "mark": null
+                    },
+                    {
+                      "value": 2001,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "0": "row"
+                  }
+                },
+                "say": "Row 1: the year is 1998. 1998 > 2010 is false, so the row is left out."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 1998,
+                      "mark": null
+                    },
+                    {
+                      "value": 2008,
+                      "mark": "compare"
+                    },
+                    {
+                      "value": 2015,
+                      "mark": null
+                    },
+                    {
+                      "value": 2012,
+                      "mark": null
+                    },
+                    {
+                      "value": 2005,
+                      "mark": null
+                    },
+                    {
+                      "value": 2019,
+                      "mark": null
+                    },
+                    {
+                      "value": 2021,
+                      "mark": null
+                    },
+                    {
+                      "value": 2001,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "1": "row"
+                  }
+                },
+                "say": "Row 2: the year is 2008. Does it pass the test year > 2010?",
+                "predict": {
+                  "prompt": "Row 2 has the year 2008. Does it pass year > 2010?",
+                  "options": [
+                    {
+                      "text": "Yes, keep it",
+                      "correct": false
+                    },
+                    {
+                      "text": "No, leave it out",
+                      "correct": true
+                    }
+                  ],
+                  "hints": [
+                    "Compare the year with 2010.",
+                    "Is 2008 bigger than 2010?"
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 1998,
+                      "mark": null
+                    },
+                    {
+                      "value": 2008,
+                      "mark": null
+                    },
+                    {
+                      "value": 2015,
+                      "mark": "compare"
+                    },
+                    {
+                      "value": 2012,
+                      "mark": null
+                    },
+                    {
+                      "value": 2005,
+                      "mark": null
+                    },
+                    {
+                      "value": 2019,
+                      "mark": null
+                    },
+                    {
+                      "value": 2021,
+                      "mark": null
+                    },
+                    {
+                      "value": 2001,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "2": "row"
+                  }
+                },
+                "say": "Row 3: the year is 2015. 2015 > 2010 is true, so the row is kept."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 1998,
+                      "mark": null
+                    },
+                    {
+                      "value": 2008,
+                      "mark": null
+                    },
+                    {
+                      "value": 2015,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 2012,
+                      "mark": "compare"
+                    },
+                    {
+                      "value": 2005,
+                      "mark": null
+                    },
+                    {
+                      "value": 2019,
+                      "mark": null
+                    },
+                    {
+                      "value": 2021,
+                      "mark": null
+                    },
+                    {
+                      "value": 2001,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "3": "row"
+                  }
+                },
+                "say": "Row 4: the year is 2012. Does it pass the test year > 2010?",
+                "predict": {
+                  "prompt": "Row 4 has the year 2012. Does it pass year > 2010?",
+                  "options": [
+                    {
+                      "text": "Yes, keep it",
+                      "correct": true
+                    },
+                    {
+                      "text": "No, leave it out",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Compare the year with 2010.",
+                    "Is 2012 bigger than 2010?"
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 1998,
+                      "mark": null
+                    },
+                    {
+                      "value": 2008,
+                      "mark": null
+                    },
+                    {
+                      "value": 2015,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 2012,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 2005,
+                      "mark": "compare"
+                    },
+                    {
+                      "value": 2019,
+                      "mark": null
+                    },
+                    {
+                      "value": 2021,
+                      "mark": null
+                    },
+                    {
+                      "value": 2001,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "4": "row"
+                  }
+                },
+                "say": "Row 5: the year is 2005. 2005 > 2010 is false, so the row is left out."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 1998,
+                      "mark": null
+                    },
+                    {
+                      "value": 2008,
+                      "mark": null
+                    },
+                    {
+                      "value": 2015,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 2012,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 2005,
+                      "mark": null
+                    },
+                    {
+                      "value": 2019,
+                      "mark": "compare"
+                    },
+                    {
+                      "value": 2021,
+                      "mark": null
+                    },
+                    {
+                      "value": 2001,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "5": "row"
+                  }
+                },
+                "say": "Row 6: the year is 2019. Does it pass the test year > 2010?",
+                "predict": {
+                  "prompt": "Row 6 has the year 2019. Does it pass year > 2010?",
+                  "options": [
+                    {
+                      "text": "Yes, keep it",
+                      "correct": true
+                    },
+                    {
+                      "text": "No, leave it out",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Compare the year with 2010.",
+                    "Is 2019 bigger than 2010?"
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 1998,
+                      "mark": null
+                    },
+                    {
+                      "value": 2008,
+                      "mark": null
+                    },
+                    {
+                      "value": 2015,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 2012,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 2005,
+                      "mark": null
+                    },
+                    {
+                      "value": 2019,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 2021,
+                      "mark": "compare"
+                    },
+                    {
+                      "value": 2001,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "6": "row"
+                  }
+                },
+                "say": "Row 7: the year is 2021. 2021 > 2010 is true, so the row is kept."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 1998,
+                      "mark": null
+                    },
+                    {
+                      "value": 2008,
+                      "mark": null
+                    },
+                    {
+                      "value": 2015,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 2012,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 2005,
+                      "mark": null
+                    },
+                    {
+                      "value": 2019,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 2021,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 2001,
+                      "mark": "compare"
+                    }
+                  ],
+                  "pointers": {
+                    "7": "row"
+                  }
+                },
+                "say": "Row 8: the year is 2001. Does it pass the test year > 2010?",
+                "predict": {
+                  "prompt": "Row 8 has the year 2001. Does it pass year > 2010?",
+                  "options": [
+                    {
+                      "text": "Yes, keep it",
+                      "correct": false
+                    },
+                    {
+                      "text": "No, leave it out",
+                      "correct": true
+                    }
+                  ],
+                  "hints": [
+                    "Compare the year with 2010.",
+                    "Is 2001 bigger than 2010?"
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 1998,
+                      "mark": null
+                    },
+                    {
+                      "value": 2008,
+                      "mark": null
+                    },
+                    {
+                      "value": 2015,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 2012,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 2005,
+                      "mark": null
+                    },
+                    {
+                      "value": 2019,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 2021,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 2001,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {}
+                },
+                "say": "Done. 4 rows pass the test, so the answer has 4 rows."
+              }
+            ]
+          }
+        },
+        {
+          "id": "query-order",
+          "type": "order",
+          "taughtOn": "order-limit",
+          "prompt": "Put the parts of this query in the order SQL needs.",
+          "items": [
+            "SELECT title, year",
+            "FROM books",
+            "WHERE genre = 'Mystery'",
+            "ORDER BY year DESC",
+            "LIMIT 3"
+          ],
+          "hints": [
+            "SELECT starts the query, and LIMIT ends it.",
+            "WHERE comes right after FROM, and sorting comes after that."
+          ],
+          "explain": "SELECT, FROM, WHERE, ORDER BY, LIMIT: pick, source, filter, sort, cut."
+        },
+        {
+          "id": "pick-query",
+          "type": "choice",
+          "taughtOn": "select-from",
+          "prompt": "Which query lists the titles of books published after 2010?",
+          "options": [
+            {
+              "text": "SELECT title FROM books WHERE year > 2010;",
+              "correct": true
+            },
+            {
+              "text": "SELECT year FROM books WHERE title > 2010;"
+            },
+            {
+              "text": "SELECT * FROM year > 2010;"
+            },
+            {
+              "text": "WHERE year > 2010 SELECT title FROM books;"
+            }
+          ],
+          "hints": [
+            "The column you want goes after SELECT, and the test after WHERE.",
+            "The title is wanted, and the year is tested."
+          ],
+          "explain": "Wanted columns after SELECT, the table after FROM, and the test after WHERE."
+        },
+        {
+          "id": "rows-or",
+          "type": "numeric",
+          "taughtOn": "where",
+          "prompt": "Using the table on the first page, how many rows does SELECT title FROM books WHERE genre = 'Reference' OR year > 2015; return?",
+          "answer": 3,
+          "unit": "rows",
+          "calculator": false,
+          "hints": [
+            "OR keeps a row if either test passes.",
+            "Reference books are 1 and 6. Books after 2015 are 6 and 7. Count the different books."
+          ],
+          "explain": "Books 1 and 6 are Reference, and books 6 and 7 are after 2015. Book 6 passes both, so 3 different rows."
+        },
+        {
+          "id": "clause-jobs",
+          "type": "match",
+          "taughtOn": "order-limit",
+          "prompt": "Match each clause to its job.",
+          "pairs": [
+            {
+              "left": "SELECT",
+              "right": "Which columns to show"
+            },
+            {
+              "left": "FROM",
+              "right": "Which table to read"
+            },
+            {
+              "left": "WHERE",
+              "right": "Which rows to keep"
+            },
+            {
+              "left": "ORDER BY",
+              "right": "How to sort the answer"
+            },
+            {
+              "left": "LIMIT",
+              "right": "The most rows to keep"
+            }
+          ],
+          "hints": [
+            "Each word says what it does.",
+            "WHERE is about rows. SELECT is about columns."
+          ],
+          "explain": "Columns, table, rows, sort, cut."
+        },
+        {
+          "id": "no-order",
+          "type": "choice",
+          "taughtOn": "order-limit",
+          "prompt": "A query has no ORDER BY. Can you rely on rows coming back in the order they were added?",
+          "options": [
+            {
+              "text": "No, the order is not promised",
+              "correct": true
+            },
+            {
+              "text": "Yes, always in the order added"
+            },
+            {
+              "text": "Yes, always in alphabetical order"
+            },
+            {
+              "text": "Only on weekdays"
+            }
+          ],
+          "hints": [
+            "What does ORDER BY exist for?",
+            "If order were guaranteed, ORDER BY would be pointless."
+          ],
+          "explain": "Without ORDER BY the DBMS may return rows in any order. Ask for the order you need.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d2.1-f1",
+          "type": "quiz",
+          "taughtOn": "select-from",
+          "prompt": "SELECT is followed by...",
+          "options": [
+            {
+              "text": "The columns you want",
+              "correct": true
+            },
+            {
+              "text": "The table"
+            },
+            {
+              "text": "The condition"
+            },
+            {
+              "text": "The sort order"
+            }
+          ],
+          "explain": "SELECT picks columns. FROM picks the table."
+        },
+        {
+          "id": "d2.1-f2",
+          "type": "quiz",
+          "taughtOn": "where",
+          "prompt": "WHERE keeps...",
+          "options": [
+            {
+              "text": "Only the rows that pass a test",
+              "correct": true
+            },
+            {
+              "text": "Only the first row"
+            },
+            {
+              "text": "Every row"
+            },
+            {
+              "text": "Only the columns named"
+            }
+          ],
+          "explain": "WHERE is a row filter."
+        },
+        {
+          "id": "d2.1-f3",
+          "type": "why",
+          "taughtOn": "order-limit",
+          "prompt": "Why add ORDER BY before LIMIT 3?",
+          "options": [
+            {
+              "text": "Otherwise \"first three\" could be any three",
+              "correct": true
+            },
+            {
+              "text": "It makes the query shorter"
+            },
+            {
+              "text": "LIMIT does not work alone"
+            },
+            {
+              "text": "It hides the rows"
+            }
+          ],
+          "explain": "LIMIT cuts after sorting."
+        },
+        {
+          "id": "d2.1-f4",
+          "type": "predict",
+          "taughtOn": "order-limit",
+          "prompt": "Write in words what ORDER BY year DESC LIMIT 1 gives.",
+          "answer": "The single newest row, by year."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Every search box",
+          "text": "WHERE keeps only the rows that pass a test, and ORDER BY sorts what is left, so a query can filter and sort a list in one go.",
+          "source": {
+            "title": "PostgreSQL docs: Table expressions (WHERE)",
+            "url": "https://www.postgresql.org/docs/current/queries-table-expressions.html"
+          },
+          "verify": false
+        },
+        {
+          "title": "The answer is a table",
+          "text": "A query's result has rows and columns too, so it can feed into the next query or be shown on screen as a grid.",
+          "source": {
+            "title": "PostgreSQL docs: Querying a table",
+            "url": "https://www.postgresql.org/docs/current/tutorial-select.html"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You asked for columns with SELECT, filtered rows with WHERE, and sorted and trimmed the answer with ORDER BY and LIMIT.",
+          "Odile reads your first query and nods. \"Specific. I like that.\""
+        ],
+        "mistake": {
+          "title": "Expecting an order you did not ask for",
+          "text": "Rows can come back in any order if you do not say. When the order matters, always add ORDER BY."
+        }
+      }
+    },
+    {
+      "id": "2.2",
+      "title": "Count and Group",
+      "story": "Odile wants totals, not long lists: how many loans, and which readers borrow the most. Kit learns to squash rows into answers.",
+      "everyday": {
+        "scene": "At month's end the librarian wants one number per genre: how many loans each genre had, not the full list of loans.",
+        "question": "How would a database produce that?",
+        "answer": "By putting rows that share a genre into groups and counting each group. In SQL that is GROUP BY with COUNT."
+      },
+      "lessons": [
+        {
+          "id": "aggregates",
+          "title": "Many rows, one answer",
+          "text": [
+            "An aggregate function squashes many rows into one value. COUNT(*) counts rows, SUM adds a column, AVG averages it, and MIN and MAX find the smallest and largest.",
+            "SELECT COUNT(*) FROM loans; returns a single row holding 9 for our loans table. Aggregates other than COUNT(*) skip empty values."
+          ],
+          "terms": [
+            {
+              "term": "Aggregate",
+              "meaning": "A function that turns many rows into one value."
+            }
+          ],
+          "predict": {
+            "prompt": "SELECT MAX(year) FROM books; returns how many rows?",
+            "answer": "One row, holding the biggest year, 2021."
+          },
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Aggregate functions",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/tutorial-agg.html"
+            },
+            {
+              "title": "PostgreSQL documentation: Aggregate functions reference",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/functions-aggregate.html"
+            }
+          ]
+        },
+        {
+          "id": "group-by",
+          "title": "GROUP BY: one answer per group",
+          "text": [
+            "GROUP BY puts rows with the same value into a group, and the aggregate runs once per group. SELECT member_id, COUNT(*) FROM loans GROUP BY member_id; gives one row for each member who has borrowed.",
+            {
+              "text": "In general, a column in SELECT must be named in GROUP BY or sit inside an aggregate.",
+              "verify": false
+            }
+          ],
+          "table": {
+            "head": [
+              "member_id",
+              "COUNT(*)"
+            ],
+            "rows": [
+              [
+                "1",
+                "3"
+              ],
+              [
+                "2",
+                "1"
+              ],
+              [
+                "3",
+                "4"
+              ],
+              [
+                "5",
+                "1"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Aggregate functions",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/tutorial-agg.html"
+            },
+            {
+              "title": "SQLBolt: interactive SQL lessons",
+              "source": "SQLBolt (linked only)",
+              "url": "https://sqlbolt.com/"
+            },
+            {
+              "title": "PostgreSQL documentation: GROUP BY and HAVING",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/queries-table-expressions.html"
+            }
+          ]
+        },
+        {
+          "id": "where-having",
+          "title": "WHERE before, HAVING after",
+          "text": [
+            "WHERE filters rows before they are grouped. HAVING filters whole groups after the counting is done. To find members with more than 2 loans you need HAVING COUNT(*) > 2, because the count only exists once groups are made.",
+            "WHERE chooses which rows go into the groups. HAVING chooses among the finished groups."
+          ],
+          "predict": {
+            "prompt": "Which clause can use COUNT(*) in its test: WHERE or HAVING?",
+            "answer": "HAVING. The counts only exist after grouping."
+          },
+          "deeper": {
+            "title": "The logical order",
+            "text": [
+              {
+                "text": "A query is processed roughly in this order: FROM, then WHERE, then GROUP BY and HAVING, then the select list. Sorting with ORDER BY comes last.",
+                "verify": false
+              }
+            ]
+          },
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Aggregate functions",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/tutorial-agg.html"
+            },
+            {
+              "title": "SQLBolt: interactive SQL lessons",
+              "source": "SQLBolt (linked only)",
+              "url": "https://sqlbolt.com/"
+            },
+            {
+              "title": "PostgreSQL documentation: Table expressions",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/queries-table-expressions.html"
+            },
+            {
+              "title": "PostgreSQL documentation: Sorting rows",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/queries-order.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "count-m3",
+          "type": "numeric",
+          "taughtOn": "group-by",
+          "prompt": "The loans table has these loan counts per member: member 1 has 3, member 2 has 1, member 3 has 4, member 5 has 1. What does SELECT COUNT(*) FROM loans WHERE member_id = 3; return?",
+          "answer": 4,
+          "unit": "loans",
+          "calculator": false,
+          "hints": [
+            "Count only the loans made by member 3.",
+            "Look at member 3's count in the list."
+          ],
+          "explain": "Member 3 made 4 loans, so COUNT(*) returns 4."
+        },
+        {
+          "id": "count-groups",
+          "type": "numeric",
+          "taughtOn": "group-by",
+          "prompt": "SELECT member_id, COUNT(*) FROM loans GROUP BY member_id; gives one row per member who has loans. Members 1, 2, 3 and 5 have loans. How many rows come back?",
+          "answer": 4,
+          "unit": "rows",
+          "calculator": false,
+          "hints": [
+            "One row per group.",
+            "Count the members who appear."
+          ],
+          "explain": "Four members have loans, so four groups and four rows."
+        },
+        {
+          "id": "count-having",
+          "type": "numeric",
+          "taughtOn": "where-having",
+          "prompt": "The loan counts are: member 1 has 3, member 2 has 1, member 3 has 4, member 5 has 1. How many rows does ... GROUP BY member_id HAVING COUNT(*) > 2; return?",
+          "answer": 2,
+          "unit": "rows",
+          "calculator": false,
+          "hints": [
+            "HAVING keeps the groups whose count passes the test.",
+            "Which counts are bigger than 2?"
+          ],
+          "explain": "Members 1 (3) and 3 (4) pass, so 2 rows."
+        },
+        {
+          "id": "where-or-having",
+          "type": "buckets",
+          "taughtOn": "where-having",
+          "prompt": "Sort each test: does it belong in WHERE or in HAVING?",
+          "buckets": [
+            "WHERE",
+            "HAVING"
+          ],
+          "items": [
+            {
+              "text": "genre = 'Mystery'",
+              "bucket": "WHERE"
+            },
+            {
+              "text": "year > 2000",
+              "bucket": "WHERE"
+            },
+            {
+              "text": "member_id = 3",
+              "bucket": "WHERE"
+            },
+            {
+              "text": "COUNT(*) > 3",
+              "bucket": "HAVING"
+            },
+            {
+              "text": "AVG(pages) > 250",
+              "bucket": "HAVING"
+            },
+            {
+              "text": "SUM(pages) < 1000",
+              "bucket": "HAVING"
+            }
+          ],
+          "hints": [
+            "Does the test use an aggregate like COUNT or AVG?",
+            "Aggregates only exist after grouping, so they go in HAVING."
+          ],
+          "explain": "Tests on single rows go in WHERE. Tests on counts, sums and averages of groups go in HAVING."
+        },
+        {
+          "id": "agg-words",
+          "type": "match",
+          "taughtOn": "aggregates",
+          "prompt": "Match each aggregate to what it returns.",
+          "pairs": [
+            {
+              "left": "COUNT(*)",
+              "right": "The number of rows"
+            },
+            {
+              "left": "SUM(pages)",
+              "right": "The total of a column"
+            },
+            {
+              "left": "AVG(pages)",
+              "right": "The mean of a column"
+            },
+            {
+              "left": "MIN(year)",
+              "right": "The smallest value"
+            },
+            {
+              "left": "MAX(year)",
+              "right": "The largest value"
+            }
+          ],
+          "hints": [
+            "The names are short for their jobs.",
+            "SUM adds up, AVG averages."
+          ],
+          "explain": "Count, total, mean, smallest and largest."
+        },
+        {
+          "id": "logical-order",
+          "type": "order",
+          "taughtOn": "where-having",
+          "prompt": "Put the steps in the order a query is worked out, in the usual teaching order.",
+          "items": [
+            "FROM: pick the table",
+            "WHERE: keep matching rows",
+            "GROUP BY: make groups",
+            "HAVING: keep matching groups",
+            "SELECT: choose columns to show",
+            "ORDER BY: sort the answer"
+          ],
+          "hints": [
+            "Rows are chosen before they are grouped.",
+            "Sorting the final answer comes last."
+          ],
+          "explain": "Pick the table, filter rows, group, filter groups, choose columns, then sort."
+        },
+        {
+          "id": "avg-mystery",
+          "type": "numeric",
+          "taughtOn": "aggregates",
+          "prompt": "The Mystery books have 310, 280 and 250 pages. What does SELECT AVG(pages) FROM books WHERE genre = 'Mystery'; return?",
+          "answer": 280,
+          "unit": "pages",
+          "calculator": false,
+          "hints": [
+            "Add the three page counts, then divide by how many there are.",
+            "310 + 280 + 250 = 840."
+          ],
+          "explain": "840 ÷ 3 = 280.",
+          "challenge": true
+        },
+        {
+          "id": "where-count",
+          "type": "choice",
+          "taughtOn": "where-having",
+          "prompt": "Why does WHERE COUNT(*) > 2 cause an error?",
+          "options": [
+            {
+              "text": "Counts are worked out after grouping, but WHERE runs before",
+              "correct": true
+            },
+            {
+              "text": "COUNT cannot be used on loans"
+            },
+            {
+              "text": "2 is not a legal number"
+            },
+            {
+              "text": "WHERE only works on text"
+            }
+          ],
+          "hints": [
+            "Think about when the groups exist.",
+            "WHERE has finished before GROUP BY starts."
+          ],
+          "explain": "Use HAVING for tests on aggregates, since they only exist once groups are formed.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d2.2-f1",
+          "type": "quiz",
+          "taughtOn": "aggregates",
+          "prompt": "COUNT(*) returns...",
+          "options": [
+            {
+              "text": "The number of rows",
+              "correct": true
+            },
+            {
+              "text": "The biggest value"
+            },
+            {
+              "text": "The sum of a column"
+            },
+            {
+              "text": "The table name"
+            }
+          ],
+          "explain": "COUNT(*) counts rows."
+        },
+        {
+          "id": "d2.2-f2",
+          "type": "quiz",
+          "taughtOn": "where-having",
+          "prompt": "To keep only groups with more than 2 rows, use...",
+          "options": [
+            {
+              "text": "HAVING COUNT(*) > 2",
+              "correct": true
+            },
+            {
+              "text": "WHERE COUNT(*) > 2"
+            },
+            {
+              "text": "ORDER BY COUNT(*) > 2"
+            },
+            {
+              "text": "LIMIT 2"
+            }
+          ],
+          "explain": "HAVING filters groups after counting."
+        },
+        {
+          "id": "d2.2-f3",
+          "type": "why",
+          "taughtOn": "group-by",
+          "prompt": "What does GROUP BY member_id do?",
+          "options": [
+            {
+              "text": "Makes one group per member, so aggregates run once per group",
+              "correct": true
+            },
+            {
+              "text": "Deletes duplicate members"
+            },
+            {
+              "text": "Sorts the members"
+            },
+            {
+              "text": "Joins two tables"
+            }
+          ],
+          "explain": "Rows with the same member_id fall into one group."
+        },
+        {
+          "id": "d2.2-f4",
+          "type": "predict",
+          "taughtOn": "where-having",
+          "prompt": "Explain the difference between WHERE and HAVING.",
+          "answer": "WHERE filters rows before grouping. HAVING filters groups after counting."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Totals per group",
+          "text": "GROUP BY combines rows that share a value into one group, so aggregates such as a count or a sum can be worked out for each group.",
+          "source": {
+            "title": "PostgreSQL docs: GROUP BY and HAVING",
+            "url": "https://www.postgresql.org/docs/current/queries-table-expressions.html"
+          },
+          "verify": false
+        },
+        {
+          "title": "Skipping empty values",
+          "text": "In SQLite, SUM and AVG ignore empty (NULL) values, while COUNT(*) counts every row in the group.",
+          "source": {
+            "title": "SQLite docs: Aggregate functions",
+            "url": "https://www.sqlite.org/lang_aggfunc.html"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You squashed many rows into one answer with aggregates, made one answer per group with GROUP BY, and filtered groups with HAVING.",
+          "Odile taps the sheet. \"Now I can see what the readers really like.\""
+        ],
+        "mistake": {
+          "title": "Using WHERE for a count",
+          "text": "A test like COUNT(*) > 2 belongs in HAVING, not WHERE, because the counts do not exist until the groups are made."
+        }
+      }
+    },
+    {
+      "id": "2.3",
+      "title": "Two Shelves at Once",
+      "story": "The loan slips hold only numbers. To read names and titles, Kit has to look at two shelves at once.",
+      "everyday": {
+        "scene": "A loan slip says \"member 3, book 7\". The desk wants a printout that reads \"Chi borrowed The Last Ferry\".",
+        "question": "How could a database build that sentence from two tables?",
+        "answer": "By joining: matching each loan's member_id to the same value in members, and its book_id to books. The matching columns are the keys you met earlier."
+      },
+      "lessons": [
+        {
+          "id": "join-on",
+          "title": "JOIN ... ON",
+          "text": [
+            "A join combines rows from two tables where a condition holds. SELECT members.name, loans.borrowed FROM loans JOIN members ON loans.member_id = members.member_id; pairs each loan with the member it points at.",
+            "When both tables have a column of the same name, put the table name in front. The ON condition is nearly always a foreign key equal to a primary key."
+          ],
+          "terms": [
+            {
+              "term": "Join",
+              "meaning": "Combining rows of two tables where a condition holds."
+            }
+          ],
+          "table": {
+            "head": [
+              "name",
+              "borrowed"
+            ],
+            "rows": [
+              [
+                "Ana",
+                "2025-03-02"
+              ],
+              [
+                "Ana",
+                "2025-03-09"
+              ],
+              [
+                "Ben",
+                "2025-03-11"
+              ],
+              [
+                "Chi",
+                "2025-03-12"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Joins between tables",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/tutorial-join.html"
+            },
+            {
+              "title": "PostgreSQL documentation: Table expressions",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/queries-table-expressions.html"
+            }
+          ]
+        },
+        {
+          "id": "inner-left",
+          "title": "Inner and left joins",
+          "text": [
+            "An inner join keeps only rows that match on both sides, so members who never borrowed vanish from it. A left outer join keeps every row from the left table, and fills the right side with empty values, called NULL, where nothing matches.",
+            "Use LEFT JOIN for \"all members, even those with no loans\"."
+          ],
+          "terms": [
+            {
+              "term": "Inner join",
+              "meaning": "Only rows that match on both sides."
+            },
+            {
+              "term": "Left join",
+              "meaning": "Every left row, matched or not."
+            },
+            {
+              "term": "NULL",
+              "meaning": "An empty value."
+            }
+          ],
+          "table": {
+            "head": [
+              "name",
+              "loan_id"
+            ],
+            "rows": [
+              [
+                "Ana",
+                "1"
+              ],
+              [
+                "Ana",
+                "2"
+              ],
+              [
+                "Ana",
+                "8"
+              ],
+              [
+                "Ben",
+                "3"
+              ],
+              [
+                "Chi",
+                "4"
+              ],
+              [
+                "Chi",
+                "5"
+              ],
+              [
+                "Chi",
+                "6"
+              ],
+              [
+                "Chi",
+                "9"
+              ],
+              [
+                "Dev",
+                "none"
+              ],
+              [
+                "Eli",
+                "7"
+              ],
+              [
+                "Fay",
+                "none"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "Six members, of whom four have borrowed. How many different members show up in an inner join of members and loans?",
+            "answer": "Four. Dev and Fay have no loans, so they drop out."
+          },
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Joins between tables",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/tutorial-join.html"
+            },
+            {
+              "title": "SQLBolt: interactive SQL lessons",
+              "source": "SQLBolt (linked only)",
+              "url": "https://sqlbolt.com/"
+            }
+          ]
+        },
+        {
+          "id": "chains",
+          "title": "Chaining joins, and a trap",
+          "text": [
+            "To show who borrowed which title, chain two joins: loans to members, then loans to books. Each JOIN has its own ON.",
+            "If two tables are listed with no matching condition, every row pairs with every row. Our 6 members and 9 loans would give 54 nonsense rows. Always check the row count looks sensible."
+          ],
+          "terms": [
+            {
+              "term": "Cross join",
+              "meaning": "Every row of one table paired with every row of another."
+            }
+          ],
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Joins between tables",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/tutorial-join.html"
+            },
+            {
+              "title": "PostgreSQL documentation: Table expressions",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/queries-table-expressions.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "rows-inner",
+          "type": "numeric",
+          "taughtOn": "join-on",
+          "prompt": "How many rows does SELECT * FROM loans JOIN members ON loans.member_id = members.member_id; return? (There are 9 loans, and each points at one real member.)",
+          "answer": 9,
+          "unit": "rows",
+          "calculator": false,
+          "hints": [
+            "Each loan matches exactly one member.",
+            "One output row per loan."
+          ],
+          "explain": "Every loan matches one member, so 9 rows."
+        },
+        {
+          "id": "rows-left",
+          "type": "numeric",
+          "taughtOn": "inner-left",
+          "prompt": "Members: 6. Loans: 9, made by 4 of those members. How many rows does SELECT * FROM members LEFT JOIN loans ON loans.member_id = members.member_id; return?",
+          "answer": 11,
+          "unit": "rows",
+          "calculator": false,
+          "hints": [
+            "Matched members appear once per loan.",
+            "Each of the two members with no loans appears once, with empty values."
+          ],
+          "explain": "9 rows for the matched loans, plus 1 each for Dev and Fay, makes 11."
+        },
+        {
+          "id": "rows-cross",
+          "type": "numeric",
+          "taughtOn": "chains",
+          "prompt": "A query lists 6 members and 9 loans with no matching condition. How many rows come back?",
+          "answer": 54,
+          "unit": "rows",
+          "calculator": false,
+          "hints": [
+            "Every member pairs with every loan.",
+            "Multiply 6 by 9."
+          ],
+          "explain": "6 × 9 = 54 rows of mostly nonsense pairs."
+        },
+        {
+          "id": "who-shows",
+          "type": "buckets",
+          "taughtOn": "inner-left",
+          "prompt": "Sort each member: do they appear in an inner join of members and loans, or only in the left join?",
+          "buckets": [
+            "Both joins",
+            "Left join only"
+          ],
+          "items": [
+            {
+              "text": "Ana (3 loans)",
+              "bucket": "Both joins"
+            },
+            {
+              "text": "Ben (1 loan)",
+              "bucket": "Both joins"
+            },
+            {
+              "text": "Chi (4 loans)",
+              "bucket": "Both joins"
+            },
+            {
+              "text": "Eli (1 loan)",
+              "bucket": "Both joins"
+            },
+            {
+              "text": "Dev (no loans)",
+              "bucket": "Left join only"
+            },
+            {
+              "text": "Fay (no loans)",
+              "bucket": "Left join only"
+            }
+          ],
+          "hints": [
+            "An inner join needs a match on both sides.",
+            "Which members have no matching loan?"
+          ],
+          "explain": "Members with loans match in both joins. Dev and Fay show up only when the left side is kept whatever happens."
+        },
+        {
+          "id": "join-query",
+          "type": "order",
+          "taughtOn": "chains",
+          "prompt": "Put the parts of this query in order.",
+          "items": [
+            "SELECT members.name, books.title",
+            "FROM loans",
+            "JOIN members ON loans.member_id = members.member_id",
+            "JOIN books ON loans.book_id = books.book_id",
+            "ORDER BY loans.borrowed"
+          ],
+          "hints": [
+            "SELECT first, then FROM, then each JOIN.",
+            "Sorting goes last."
+          ],
+          "explain": "Choose the columns, name the starting table, add each join, then sort."
+        },
+        {
+          "id": "which-on",
+          "type": "choice",
+          "taughtOn": "join-on",
+          "prompt": "Which ON condition matches each loan to the book it points at?",
+          "options": [
+            {
+              "text": "loans.book_id = books.book_id",
+              "correct": true
+            },
+            {
+              "text": "loans.loan_id = books.book_id"
+            },
+            {
+              "text": "loans.member_id = books.book_id"
+            },
+            {
+              "text": "books.title = loans.borrowed"
+            }
+          ],
+          "hints": [
+            "Match a foreign key to the primary key it points at.",
+            "Which loans column holds a book's id?"
+          ],
+          "explain": "book_id in loans is the foreign key, and book_id in books is the primary key."
+        },
+        {
+          "id": "join-words",
+          "type": "match",
+          "taughtOn": "inner-left",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Inner join",
+              "right": "Only rows with a match on both sides"
+            },
+            {
+              "left": "Left join",
+              "right": "Every left row, matched or not"
+            },
+            {
+              "left": "ON",
+              "right": "The condition that decides which rows pair up"
+            },
+            {
+              "left": "NULL",
+              "right": "An empty value where nothing matched"
+            }
+          ],
+          "hints": [
+            "A left join never drops a left row.",
+            "NULL appears where the right side has nothing."
+          ],
+          "explain": "Inner needs both sides, left keeps its left rows, ON sets the pairing, NULL marks the gaps."
+        },
+        {
+          "id": "lantern-loans",
+          "type": "numeric",
+          "taughtOn": "chains",
+          "prompt": "SELECT COUNT(*) FROM loans JOIN books ON loans.book_id = books.book_id WHERE books.title = 'The Lost Lantern'; The Lost Lantern is book 2, and loans 1, 3, 7 and 9 point at it. What number comes back?",
+          "answer": 4,
+          "unit": "loans",
+          "calculator": false,
+          "hints": [
+            "Join first, then keep only the loans of that title.",
+            "Count the loans that point at book 2."
+          ],
+          "explain": "Four loans point at book 2, so the count is 4.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d2.3-f1",
+          "type": "quiz",
+          "taughtOn": "join-on",
+          "prompt": "An ON condition usually compares...",
+          "options": [
+            {
+              "text": "A foreign key with the primary key it points at",
+              "correct": true
+            },
+            {
+              "text": "Two names"
+            },
+            {
+              "text": "Two dates"
+            },
+            {
+              "text": "A column with itself"
+            }
+          ],
+          "explain": "That is how rows from two tables find each other."
+        },
+        {
+          "id": "d2.3-f2",
+          "type": "quiz",
+          "taughtOn": "inner-left",
+          "prompt": "Which join keeps left rows with no match?",
+          "options": [
+            {
+              "text": "Left join",
+              "correct": true
+            },
+            {
+              "text": "Inner join"
+            },
+            {
+              "text": "Cross join"
+            },
+            {
+              "text": "No join does"
+            }
+          ],
+          "explain": "A left join keeps every left row and fills gaps with NULL."
+        },
+        {
+          "id": "d2.3-f3",
+          "type": "why",
+          "taughtOn": "chains",
+          "prompt": "Why is a missing matching condition dangerous?",
+          "options": [
+            {
+              "text": "Every row pairs with every row, giving a huge nonsense result",
+              "correct": true
+            },
+            {
+              "text": "It deletes the data"
+            },
+            {
+              "text": "The query will not run"
+            },
+            {
+              "text": "It sorts the rows wrongly"
+            }
+          ],
+          "explain": "6 × 9 = 54 rows from tables of 6 and 9."
+        },
+        {
+          "id": "d2.3-f4",
+          "type": "predict",
+          "taughtOn": "inner-left",
+          "prompt": "When would you pick LEFT JOIN over an inner join?",
+          "answer": "When you want every row from the left table, even those with no match, like all members including those with no loans."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Joins bring tables together",
+          "text": "A joined table is built from two other tables by matching their rows with a join condition. That is how a table of ids can be combined with another table to bring in names and titles.",
+          "source": {
+            "title": "PostgreSQL docs: Table expressions (joined tables)",
+            "url": "https://www.postgresql.org/docs/current/queries-table-expressions.html"
+          },
+          "verify": false
+        },
+        {
+          "title": "Empty means unknown",
+          "text": "A left join fills gaps with NULL. NULL means \"no value here\", which is different from zero or an empty word.",
+          "source": {
+            "title": "PostgreSQL docs: Joins between tables",
+            "url": "https://www.postgresql.org/docs/current/tutorial-join.html"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You joined tables with a key match, saw the difference between inner and left joins, and spotted why a missing condition explodes the row count.",
+          "Odile closes the last drawer. \"Two shelves, one answer. Well done, Kit.\""
+        ],
+        "mistake": {
+          "title": "Forgetting the matching condition",
+          "text": "Two tables with no matching condition pair every row with every row. When a result has far too many rows, check the ON first."
+        }
+      }
+    }
+  ]
+}

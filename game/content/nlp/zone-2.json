@@ -1,0 +1,725 @@
+{
+  "zone": 2,
+  "levels": [
+    {
+      "id": "2.1",
+      "title": "Sort the Mail",
+      "story": "A sack of customer notes lands on the bridge. Some praise the bread and some grumble about the queue. \"Sort them,\" says Wren, \"but there are hundreds.\" Kit smiles. \"Then let's teach a program to do it.\"",
+      "everyday": {
+        "scene": "Your email app files messages into Inbox and Spam without you reading them, and a shop sorts its reviews into happy and unhappy ones.",
+        "question": "How can a program sort text into groups it has never read?",
+        "answer": "It turns each text into numbers, such as word counts, and uses patterns in those numbers to pick a group. That is text classification."
+      },
+      "lessons": [
+        {
+          "id": "bag-of-words",
+          "title": "A bag of words",
+          "text": [
+            "To classify text, first turn it into numbers. The bag-of-words idea counts how many times each word appears and throws away the order. 'Owl chases fox' and 'fox chases owl' give the same bag.",
+            "The table shows counts for three short notes. Each note becomes a column of counts over the whole vocabulary. Order is lost, but counts are quick to work with and often good enough for sorting."
+          ],
+          "terms": [
+            {
+              "term": "Bag of words",
+              "meaning": "A text described only by how often each word appears."
+            },
+            {
+              "term": "Vocabulary",
+              "meaning": "All the different words across the notes."
+            }
+          ],
+          "table": {
+            "head": [
+              "Word",
+              "Note 1",
+              "Note 2",
+              "Note 3"
+            ],
+            "rows": [
+              [
+                "and",
+                "1",
+                "0",
+                "1"
+              ],
+              [
+                "bread",
+                "1",
+                "1",
+                "0"
+              ],
+              [
+                "fresh",
+                "2",
+                "0",
+                "1"
+              ],
+              [
+                "fruit",
+                "0",
+                "0",
+                "1"
+              ],
+              [
+                "jam",
+                "1",
+                "0",
+                "1"
+              ],
+              [
+                "stale",
+                "0",
+                "1",
+                "0"
+              ],
+              [
+                "the",
+                "0",
+                "1",
+                "0"
+              ],
+              [
+                "was",
+                "0",
+                "1",
+                "0"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Bag-of-words model",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Bag-of-words_model"
+            },
+            {
+              "title": "scikit-learn user guide: Feature extraction (text)",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/feature_extraction.html"
+            }
+          ]
+        },
+        {
+          "id": "tf-idf",
+          "title": "Rare words matter more",
+          "text": [
+            "Counting treats every word alike, but a rare word tells you more. A common word like 'and' says little. A scheme called tf-idf multiplies two things: how often a word appears in this note, and how rare the word is across all the notes.",
+            {
+              "text": "In one common version, tf is a word's count divided by the note's length, and idf is log base 10 of (notes divided by notes containing the word). In note 1, 'fresh' scores about 0.07. In note 2, 'stale' scores about 0.12.",
+              "verify": false
+            }
+          ],
+          "table": {
+            "head": [
+              "Word",
+              "Notes containing it (of 3)",
+              "idf (log base 10)"
+            ],
+            "rows": [
+              [
+                "and",
+                "2",
+                "0.18"
+              ],
+              [
+                "fresh",
+                "2",
+                "0.18"
+              ],
+              [
+                "stale",
+                "1",
+                "0.48"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: tf-idf",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Tf%E2%80%93idf"
+            },
+            {
+              "title": "scikit-learn user guide: Feature extraction (text)",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/feature_extraction.html"
+            }
+          ]
+        },
+        {
+          "id": "weighted-sum",
+          "title": "Scoring and checking",
+          "text": [
+            "A simple classifier gives each word a weight, adds up the weights of the words in the text, and picks a label by the sign. A positive total means praise, a negative total means complaint. Real systems learn the weights from labelled examples.",
+            "Then you check it on texts it has not seen. In our small test of 10 reviews, the weights got 8 right, which is 80 percent accuracy. One miss was a tie, where praise and complaint cancelled to 0. The other used only words with no weight."
+          ],
+          "deeper": {
+            "title": "Where the weights come from",
+            "text": [
+              {
+                "text": "Methods like naive Bayes can learn from labelled examples to classify text. Here the weights are simply given.",
+                "verify": false
+              }
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Document classification",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Document_classification"
+            },
+            {
+              "title": "NLTK book, chapter 6: Learning to Classify Text",
+              "source": "NLTK book (linked, not copied)",
+              "url": "https://www.nltk.org/book/ch06.html"
+            },
+            {
+              "title": "scikit-learn user guide: Naive Bayes",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/naive_bayes.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "fresh-count",
+          "type": "numeric",
+          "taughtOn": "bag-of-words",
+          "prompt": "In note 1 ('fresh bread and fresh jam'), how many times does 'fresh' appear?",
+          "answer": 2,
+          "calculator": false,
+          "hints": [
+            "Read the words one by one.",
+            "It is the first and the fourth word."
+          ],
+          "explain": "'Fresh' appears twice in 'fresh bread and fresh jam'."
+        },
+        {
+          "id": "order-lost",
+          "type": "choice",
+          "taughtOn": "bag-of-words",
+          "prompt": "Two notes use the same words in a different order. What does a bag of words say?",
+          "options": [
+            {
+              "text": "They look identical",
+              "correct": true
+            },
+            {
+              "text": "The second is newer"
+            },
+            {
+              "text": "The first is longer"
+            },
+            {
+              "text": "They look completely different"
+            }
+          ],
+          "hints": [
+            "A bag of words keeps counts only.",
+            "Order is not stored."
+          ],
+          "explain": "A bag of words keeps counts and drops order, so notes with the same words in any order give the same bag."
+        },
+        {
+          "id": "weights-sim",
+          "type": "stepsim",
+          "taughtOn": "weighted-sum",
+          "mode": "predict",
+          "prompt": "Add up the word weights.",
+          "explain": "Positive and negative weights pull the total up and down, and the sign of the total picks the label.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "+2",
+                      "mark": null,
+                      "tag": "great"
+                    },
+                    {
+                      "value": "+1",
+                      "mark": null,
+                      "tag": "fresh"
+                    },
+                    {
+                      "value": "0",
+                      "mark": null,
+                      "tag": "bread"
+                    },
+                    {
+                      "value": "0",
+                      "mark": null,
+                      "tag": "but"
+                    },
+                    {
+                      "value": "-2",
+                      "mark": null,
+                      "tag": "slow"
+                    },
+                    {
+                      "value": "0",
+                      "mark": null,
+                      "tag": "service"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Adding up word weights"
+                },
+                "say": "A review has come in: 'great fresh bread but slow service'. Each box shows the weight of one word. Positive weights lean towards praise, negative towards complaint, and 0 means the word does not matter."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "+2",
+                      "mark": "current",
+                      "tag": "great"
+                    },
+                    {
+                      "value": "+1",
+                      "mark": null,
+                      "tag": "fresh"
+                    },
+                    {
+                      "value": "0",
+                      "mark": null,
+                      "tag": "bread"
+                    },
+                    {
+                      "value": "0",
+                      "mark": null,
+                      "tag": "but"
+                    },
+                    {
+                      "value": "-2",
+                      "mark": null,
+                      "tag": "slow"
+                    },
+                    {
+                      "value": "0",
+                      "mark": null,
+                      "tag": "service"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "total 2"
+                  },
+                  "label": "Adding up word weights"
+                },
+                "say": "'Great' has weight +2, so the running total is 2."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "+2",
+                      "mark": "used",
+                      "tag": "great"
+                    },
+                    {
+                      "value": "+1",
+                      "mark": "current",
+                      "tag": "fresh"
+                    },
+                    {
+                      "value": "0",
+                      "mark": null,
+                      "tag": "bread"
+                    },
+                    {
+                      "value": "0",
+                      "mark": null,
+                      "tag": "but"
+                    },
+                    {
+                      "value": "-2",
+                      "mark": null,
+                      "tag": "slow"
+                    },
+                    {
+                      "value": "0",
+                      "mark": null,
+                      "tag": "service"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "total 3"
+                  },
+                  "label": "Adding up word weights"
+                },
+                "say": "'Fresh' adds +1. The running total is 3.",
+                "predict": {
+                  "prompt": "'Fresh' adds +1 to a total of 2. What is the running total now?",
+                  "options": [
+                    {
+                      "text": "3",
+                      "correct": true
+                    },
+                    {
+                      "text": "2",
+                      "correct": false
+                    },
+                    {
+                      "text": "1",
+                      "correct": false
+                    },
+                    {
+                      "text": "4",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Add 1 to 2.",
+                    "2 + 1."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "+2",
+                      "mark": "used",
+                      "tag": "great"
+                    },
+                    {
+                      "value": "+1",
+                      "mark": "used",
+                      "tag": "fresh"
+                    },
+                    {
+                      "value": "0",
+                      "mark": "used",
+                      "tag": "bread"
+                    },
+                    {
+                      "value": "0",
+                      "mark": "used",
+                      "tag": "but"
+                    },
+                    {
+                      "value": "-2",
+                      "mark": "current",
+                      "tag": "slow"
+                    },
+                    {
+                      "value": "0",
+                      "mark": null,
+                      "tag": "service"
+                    }
+                  ],
+                  "pointers": {
+                    "4": "total 1"
+                  },
+                  "label": "Adding up word weights"
+                },
+                "say": "'Bread' and 'but' have weight 0, so the total stays 3. Then 'slow' has weight -2, which pulls it down to 1.",
+                "predict": {
+                  "prompt": "'Slow' has weight -2 and the total was 3. What is the total after 'slow'?",
+                  "options": [
+                    {
+                      "text": "1",
+                      "correct": true
+                    },
+                    {
+                      "text": "5",
+                      "correct": false
+                    },
+                    {
+                      "text": "-2",
+                      "correct": false
+                    },
+                    {
+                      "text": "3",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Add -2 to 3.",
+                    "3 - 2."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "+2",
+                      "mark": "used",
+                      "tag": "great"
+                    },
+                    {
+                      "value": "+1",
+                      "mark": "used",
+                      "tag": "fresh"
+                    },
+                    {
+                      "value": "0",
+                      "mark": "used",
+                      "tag": "bread"
+                    },
+                    {
+                      "value": "0",
+                      "mark": "used",
+                      "tag": "but"
+                    },
+                    {
+                      "value": "-2",
+                      "mark": "used",
+                      "tag": "slow"
+                    },
+                    {
+                      "value": "0",
+                      "mark": "current",
+                      "tag": "service"
+                    }
+                  ],
+                  "pointers": {
+                    "5": "final 1"
+                  },
+                  "label": "Adding up word weights"
+                },
+                "say": "'Service' has weight 0. The final score is 1, which is above 0, so the review is labelled praise. The words 'slow service' did not stop it, because 'great' and 'fresh' outweighed them."
+              }
+            ]
+          }
+        },
+        {
+          "id": "tf-fresh",
+          "type": "numeric",
+          "taughtOn": "tf-idf",
+          "prompt": "In note 1, 'fresh' appears twice among 5 words. What is its tf, as a number from 0 to 1?",
+          "answer": 0.4,
+          "tolerance": 0.001,
+          "calculator": false,
+          "hints": [
+            "Divide the count by the number of words.",
+            "2 / 5."
+          ],
+          "explain": "tf is count over length: 2 / 5 = 0.4."
+        },
+        {
+          "id": "rare-word",
+          "type": "choice",
+          "taughtOn": "tf-idf",
+          "prompt": "'And' appears in 2 of the 3 notes and 'stale' in 1. Which word gets the bigger idf?",
+          "options": [
+            {
+              "text": "'Stale', because it is rarer",
+              "correct": true
+            },
+            {
+              "text": "'And', because it is more common"
+            },
+            {
+              "text": "They are the same"
+            },
+            {
+              "text": "Neither, idf only uses counts inside one note"
+            }
+          ],
+          "hints": [
+            "idf rewards words found in few notes.",
+            "Fewer notes means a bigger idf."
+          ],
+          "explain": "idf is bigger for rarer words, so 'stale' scores higher than 'and'."
+        },
+        {
+          "id": "idf-stale",
+          "type": "numeric",
+          "taughtOn": "tf-idf",
+          "prompt": "'Stale' is in 1 of the 3 notes. Using idf = log base 10 of (3 divided by 1), what is the idf to 2 places?",
+          "answer": 0.48,
+          "tolerance": 0.01,
+          "calculator": false,
+          "hints": [
+            "Work out log10 of 3.",
+            "A calculator gives 0.477."
+          ],
+          "explain": "log base 10 of 3 is about 0.48."
+        },
+        {
+          "id": "score-r2",
+          "type": "numeric",
+          "taughtOn": "weighted-sum",
+          "prompt": "Using the weights (great +2, fresh +1, lovely +2, slow -2, stale -2, cold -1), what is the total for 'stale bread and cold tea'?",
+          "answer": -3,
+          "calculator": false,
+          "hints": [
+            "Only 'stale' and 'cold' have weights.",
+            "-2 and -1."
+          ],
+          "explain": "'Stale' is -2 and 'cold' is -1. The other words are 0. The total is -3, so it is a complaint."
+        },
+        {
+          "id": "accuracy",
+          "type": "numeric",
+          "taughtOn": "weighted-sum",
+          "prompt": "The classifier got 8 of 10 test reviews right. What is its accuracy, as a percentage?",
+          "answer": 80,
+          "calculator": false,
+          "hints": [
+            "Divide right by total, then times 100.",
+            "8 / 10."
+          ],
+          "explain": "8 out of 10 is 80 percent."
+        },
+        {
+          "id": "unseen-words",
+          "type": "choice",
+          "taughtOn": "weighted-sum",
+          "prompt": "Challenge: the review 'nice warm soup' scored 0 and was missed. Why?",
+          "options": [
+            {
+              "text": "None of its words have a weight, so the total is zero",
+              "correct": true
+            },
+            {
+              "text": "The classifier cannot read three words"
+            },
+            {
+              "text": "Soup is always a complaint"
+            },
+            {
+              "text": "The weights are too large"
+            }
+          ],
+          "hints": [
+            "Check the weights table.",
+            "'Nice', 'warm' and 'soup' are not in it."
+          ],
+          "explain": "Words with no weight add nothing. A classifier only knows the words it was taught, which is why training data must cover the words that will come up.",
+          "challenge": true
+        },
+        {
+          "id": "score-r3",
+          "type": "numeric",
+          "taughtOn": "weighted-sum",
+          "prompt": "Challenge: what is the total for 'lovely fresh jam and great tea'?",
+          "answer": 5,
+          "calculator": false,
+          "hints": [
+            "Add the weights of the words that have one.",
+            "lovely +2, fresh +1, great +2."
+          ],
+          "explain": "'Lovely' is +2, 'fresh' is +1 and 'great' is +2. The total is 5, so it is praise.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m2.1-f1",
+          "type": "quiz",
+          "taughtOn": "bag-of-words",
+          "prompt": "What does a bag of words throw away?",
+          "options": [
+            {
+              "text": "The order of the words",
+              "correct": true
+            },
+            {
+              "text": "The counts"
+            },
+            {
+              "text": "The vocabulary"
+            },
+            {
+              "text": "The spelling"
+            }
+          ],
+          "explain": "It keeps how many times each word appears, not where."
+        },
+        {
+          "id": "m2.1-f2",
+          "type": "why",
+          "taughtOn": "tf-idf",
+          "prompt": "Which kind of word gets a bigger idf?",
+          "options": [
+            {
+              "text": "A rare word",
+              "correct": true
+            },
+            {
+              "text": "A common word"
+            },
+            {
+              "text": "A short word"
+            },
+            {
+              "text": "A capital word"
+            }
+          ],
+          "explain": "A word in fewer documents says more about each one."
+        },
+        {
+          "id": "m2.1-f3",
+          "type": "quiz",
+          "taughtOn": "weighted-sum",
+          "prompt": "How does a weighted-sum classifier pick a label?",
+          "options": [
+            {
+              "text": "By the sign of the total",
+              "correct": true
+            },
+            {
+              "text": "By the longest word"
+            },
+            {
+              "text": "By the first word"
+            },
+            {
+              "text": "By a coin flip"
+            }
+          ],
+          "explain": "Positive for one label, negative for the other."
+        },
+        {
+          "id": "m2.1-f4",
+          "type": "predict",
+          "taughtOn": "weighted-sum",
+          "prompt": "A classifier gets 9 of 10 test texts right. What is its accuracy?",
+          "answer": "90 percent."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Text classification",
+          "text": "Document classification is the task of assigning a document to one or more classes, such as sorting articles by subject.",
+          "source": {
+            "title": "Wikipedia: Document classification",
+            "url": "https://en.wikipedia.org/wiki/Document_classification"
+          }
+        },
+        {
+          "title": "Bags of words",
+          "text": "The bag-of-words model describes text by word counts and disregards word order, which makes it fast and often enough for simple jobs like classifying documents.",
+          "source": {
+            "title": "Wikipedia: Bag-of-words model",
+            "url": "https://en.wikipedia.org/wiki/Bag-of-words_model"
+          }
+        },
+        {
+          "title": "Rare words",
+          "text": "tf-idf weighs a word by how often it appears in a document and how rare it is across a collection of documents.",
+          "source": {
+            "title": "Wikipedia: tf-idf",
+            "url": "https://en.wikipedia.org/wiki/Tf%E2%80%93idf"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You turned notes into word counts, saw why rare words count for more, scored a review by adding word weights, and checked accuracy on texts the model had not seen.",
+          "Wren stacks the sorted notes into two baskets. \"Praise on the left. Grumbles on the right. And a few that need a human.\""
+        ],
+        "mistake": {
+          "title": "Trusting a score on words it never saw",
+          "text": "A classifier can only use words it learned about. New words add nothing, so check it on fresh texts, not just the ones it was built from."
+        }
+      }
+    }
+  ]
+}

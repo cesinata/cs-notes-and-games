@@ -1,0 +1,844 @@
+{
+  "zone": 0,
+  "levels": [
+    {
+      "id": "0.1",
+      "title": "Hello, Workshop",
+      "story": "Foreman Bram swings open the workshop door in Blueprint Borough and hands Kit a pencil. \"Before we build anything, learn how a plan becomes a running program.\"",
+      "everyday": {
+        "scene": "You hand a friend a recipe card that says: crack two eggs, whisk them, pour them in the pan. Your friend follows each line in order, and gets it wrong only if a line is unclear.",
+        "question": "How would you give a computer a recipe like that?",
+        "answer": "You write the steps in a programming language the computer can be made to understand. Java is one. A program is a recipe card for a machine, and the machine follows it exactly as written."
+      },
+      "lessons": [
+        {
+          "id": "text-to-running",
+          "title": "From text to running",
+          "text": [
+            "A Java program starts as plain text called source code, saved in a file that ends in .java. A tool called the compiler, javac, checks the text and turns it into bytecode. The Java Virtual Machine, or JVM, then runs the bytecode.",
+            "Since Java 11 there is a shortcut for small programs. The command java Hello.java compiles the file in memory and runs it straight away, so you can test an idea quickly."
+          ],
+          "terms": [
+            {
+              "term": "Source code",
+              "meaning": "The text you write, in a .java file."
+            },
+            {
+              "term": "Compiler",
+              "meaning": "The tool that checks source code and turns it into bytecode."
+            },
+            {
+              "term": "JVM",
+              "meaning": "The Java Virtual Machine, which runs bytecode."
+            }
+          ],
+          "references": [
+            {
+              "title": "JEP 330: Launch single-file source-code programs",
+              "source": "OpenJDK (linked, not copied)",
+              "url": "https://openjdk.org/jeps/330"
+            },
+            {
+              "title": "The java command (JDK 21 tool guide)",
+              "source": "Oracle JDK docs (linked, not copied)",
+              "url": "https://docs.oracle.com/en/java/javase/21/docs/specs/man/java.html"
+            }
+          ]
+        },
+        {
+          "id": "smallest-program",
+          "title": "The smallest program",
+          "text": [
+            "Here is a complete program. Everything in Java lives inside a class, here called Hello. The line starting public static void main is where the program starts. The JVM calls main and runs its statements from top to bottom.",
+            "System.out.println prints text and then moves to a new line. Text goes between double quotes. Every statement ends with a semicolon."
+          ],
+          "table": {
+            "head": [
+              "Line",
+              "Code"
+            ],
+            "rows": [
+              [
+                "1",
+                "public class Hello {"
+              ],
+              [
+                "2",
+                "    public static void main(String[] args) {"
+              ],
+              [
+                "3",
+                "        System.out.println(\"Hello, workshop\");"
+              ],
+              [
+                "4",
+                "    }"
+              ],
+              [
+                "5",
+                "}"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "What do you think this program prints when it runs?",
+            "answer": "It prints Hello, workshop on one line."
+          },
+          "references": [
+            {
+              "title": "Dev.java: Getting Started with Java",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/first-steps/first-java-code/getting-started/"
+            },
+            {
+              "title": "Java SE 21 API: PrintStream (println and print)",
+              "source": "Java SE 21 API docs (linked, not copied)",
+              "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/PrintStream.html"
+            }
+          ]
+        },
+        {
+          "id": "when-it-fails",
+          "title": "When the compiler complains",
+          "text": [
+            "The compiler is strict, and that is a help. If a semicolon is missing, it stops and names the line before anything runs. Java also cares about capital letters: System and system are different names, so the second one is an error.",
+            "Read the first error message first. One small slip often causes several messages, and fixing the first one clears the rest. print keeps the cursor on the same line, while println moves to the next line."
+          ],
+          "deeper": {
+            "title": "Why a separate compiler?",
+            "text": [
+              "Checking the whole program before it runs catches typing slips early, when they are cheap to fix. The bytecode it produces is the same on any computer that has a compatible JVM. ",
+              {
+                "text": "That is the idea behind Java's \"write once, run anywhere\" slogan."
+              }
+            ]
+          },
+          "references": [
+            {
+              "title": "Dev.java: Getting Started with Java",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/first-steps/first-java-code/getting-started/"
+            },
+            {
+              "title": "The javac command (JDK 21 tool guide)",
+              "source": "Oracle JDK docs (linked, not copied)",
+              "url": "https://docs.oracle.com/en/java/javase/21/docs/specs/man/javac.html"
+            },
+            {
+              "title": "The Java Virtual Machine Specification, Java SE 21, section 1.2",
+              "source": "Oracle Java SE specifications (linked, not copied)",
+              "url": "https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-1.html"
+            },
+            {
+              "title": "Wikipedia: Write once, run anywhere",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Write_once,_run_anywhere"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "text-to-run",
+          "type": "order",
+          "taughtOn": "text-to-running",
+          "prompt": "Put the journey from your idea to a running program in order.",
+          "items": [
+            "Write the source code in a .java file",
+            "The compiler checks it and makes bytecode",
+            "The JVM loads the bytecode",
+            "The JVM runs main and the output appears"
+          ],
+          "hints": [
+            "Your idea has to be written down before anything else can touch it.",
+            "The compiler comes before the JVM, because the JVM runs the compiler's result."
+          ],
+          "explain": "You write source code, the compiler makes bytecode, and the JVM runs it."
+        },
+        {
+          "id": "which-word",
+          "type": "match",
+          "taughtOn": "text-to-running",
+          "prompt": "Match each word to what it means.",
+          "pairs": [
+            {
+              "left": "Source code",
+              "right": "The text you write, in a .java file"
+            },
+            {
+              "left": "Compiler",
+              "right": "Checks the code and turns it into bytecode"
+            },
+            {
+              "left": "Bytecode",
+              "right": "The compiled form that the JVM runs"
+            },
+            {
+              "left": "JVM",
+              "right": "The program that runs bytecode"
+            },
+            {
+              "left": "main",
+              "right": "The method where a program starts"
+            }
+          ],
+          "hints": [
+            "Source code is what you type. Bytecode is what the compiler makes from it.",
+            "The JVM is the one that runs things. main is a method the JVM looks for."
+          ],
+          "explain": "Source code becomes bytecode through the compiler, the JVM runs the bytecode, and main is the starting point."
+        },
+        {
+          "id": "count-lines",
+          "type": "numeric",
+          "taughtOn": "when-it-fails",
+          "prompt": "A program runs these statements in order: System.out.println(\"Open\"); System.out.print(\"the \"); System.out.print(\"door\"); System.out.println(\"!\"); System.out.println(\"Done\"); How many lines of output does it print?",
+          "answer": 3,
+          "unit": "lines",
+          "calculator": false,
+          "hints": [
+            "println moves to a new line after printing. print does not.",
+            "The first println ends line 1. The two prints and the next println share line 2. The last println is line 3."
+          ],
+          "explain": "Open is line 1. The words the, door and ! are joined on line 2, because print stays on the line. Done is line 3."
+        },
+        {
+          "id": "who-does-what",
+          "type": "buckets",
+          "taughtOn": "text-to-running",
+          "prompt": "Sort each job: who does it?",
+          "buckets": [
+            "You",
+            "The compiler",
+            "The JVM"
+          ],
+          "items": [
+            {
+              "text": "Deciding what the program should do",
+              "bucket": "You"
+            },
+            {
+              "text": "Typing the source code",
+              "bucket": "You"
+            },
+            {
+              "text": "Reporting a missing semicolon",
+              "bucket": "The compiler"
+            },
+            {
+              "text": "Turning source code into bytecode",
+              "bucket": "The compiler"
+            },
+            {
+              "text": "Running the bytecode",
+              "bucket": "The JVM"
+            },
+            {
+              "text": "Printing text on screen while the program runs",
+              "bucket": "The JVM"
+            }
+          ],
+          "hints": [
+            "Checking happens before the program runs. Running happens after.",
+            "You write, the compiler checks and translates, the JVM runs."
+          ],
+          "explain": "You write the plan, the compiler checks and translates it, and the JVM does the running."
+        },
+        {
+          "id": "find-slip",
+          "type": "choice",
+          "taughtOn": "when-it-fails",
+          "prompt": "This statement is the only line in main: System.out.println(\"Hi\") What is missing, according to the compiler?",
+          "options": [
+            {
+              "text": "A semicolon at the end",
+              "correct": true
+            },
+            {
+              "text": "A pair of curly brackets"
+            },
+            {
+              "text": "A capital letter"
+            },
+            {
+              "text": "The word class"
+            }
+          ],
+          "hints": [
+            "Look at the very end of the line.",
+            "Every statement in Java must end in the same small symbol."
+          ],
+          "explain": "The compiler reports that a semicolon is expected. Every Java statement ends with one."
+        },
+        {
+          "id": "capital-trap",
+          "type": "choice",
+          "taughtOn": "when-it-fails",
+          "prompt": "A learner types system.out.println(\"Hi\"); with a small s. What happens?",
+          "options": [
+            {
+              "text": "The compiler reports an error, because system is not the same name as System",
+              "correct": true
+            },
+            {
+              "text": "It prints Hi anyway"
+            },
+            {
+              "text": "It prints system"
+            },
+            {
+              "text": "It runs but prints nothing"
+            }
+          ],
+          "hints": [
+            "Think about whether Java treats capital and small letters alike.",
+            "The compiler gives a message about a package called system."
+          ],
+          "explain": "Java is case-sensitive. The compiler cannot find a name called system, so nothing runs. The message says the package system does not exist.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d0.1-f1",
+          "type": "quiz",
+          "taughtOn": "text-to-running",
+          "prompt": "The compiler turns source code into...",
+          "options": [
+            {
+              "text": "Bytecode",
+              "correct": true
+            },
+            {
+              "text": "A picture"
+            },
+            {
+              "text": "A password"
+            },
+            {
+              "text": "Plain English"
+            }
+          ],
+          "explain": "Source code goes in, bytecode comes out."
+        },
+        {
+          "id": "d0.1-f2",
+          "type": "quiz",
+          "taughtOn": "smallest-program",
+          "prompt": "Where does a Java program start running?",
+          "options": [
+            {
+              "text": "In the main method",
+              "correct": true
+            },
+            {
+              "text": "At the last line"
+            },
+            {
+              "text": "In the compiler"
+            },
+            {
+              "text": "At the word class"
+            }
+          ],
+          "explain": "The JVM calls main and runs its statements from top to bottom."
+        },
+        {
+          "id": "d0.1-f3",
+          "type": "why",
+          "taughtOn": "when-it-fails",
+          "prompt": "Why is System different from system in Java?",
+          "options": [
+            {
+              "text": "Java is case-sensitive, so capital letters matter",
+              "correct": true
+            },
+            {
+              "text": "Capital letters are only for show"
+            },
+            {
+              "text": "System is a number"
+            },
+            {
+              "text": "system is shorter"
+            }
+          ],
+          "explain": "Java treats upper and lower case as different letters, so names must match exactly."
+        },
+        {
+          "id": "d0.1-f4",
+          "type": "predict",
+          "taughtOn": "text-to-running",
+          "prompt": "Name the three things between your idea and the output on screen.",
+          "answer": "Source code you write, bytecode the compiler makes, and the JVM that runs it."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Small programs, fast",
+          "text": "The command java Hello.java compiles a single file in memory and runs it, which suits quick experiments. Bigger projects still compile ahead of time.",
+          "source": {
+            "title": "JEP 330, OpenJDK",
+            "url": "https://openjdk.org/jeps/330"
+          }
+        },
+        {
+          "title": "One idea, many computers",
+          "text": "The Java Virtual Machine runs the same bytecode on many kinds of computer. Its specification says it does not assume any particular host hardware or operating system.",
+          "source": {
+            "title": "The Java Virtual Machine Specification, Java SE 21, chapter 1",
+            "url": "https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-1.html"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You followed a plan from source code to compiler to JVM, and read the smallest complete Java program.",
+          "Bram nods at the first printed line. \"Plans first. Walls later.\""
+        ],
+        "mistake": {
+          "title": "Forgetting the semicolon or the capital letter",
+          "text": "Most first errors are tiny: a missing semicolon, a lower-case System, a quote left open. The compiler names the line, so read the first message before changing anything."
+        }
+      }
+    },
+    {
+      "id": "0.2",
+      "title": "Labelled Boxes",
+      "story": "Bram points to a wall of boxes, each with a label and a size. \"A program keeps its facts in boxes like these. Choose the right box, or the lid will not close.\"",
+      "everyday": {
+        "scene": "On the workshop shelf there is a box labelled SCREWS. You can swap the screws for different screws, but you would never put a hammer in the box. The label says what belongs inside.",
+        "question": "How does a program keep a number or a word somewhere safe while it works?",
+        "answer": "In a variable, which is a named box. In Java each box also has a type, such as int for whole numbers, and it will only hold that kind of thing."
+      },
+      "lessons": [
+        {
+          "id": "variables",
+          "title": "A variable is a labelled box",
+          "text": [
+            "A variable is a named place to keep a value. You declare it by giving a type and a name, such as int lives = 3; The equals sign here means \"store this value\", and it does not mean \"is equal to\". You can change the value later: lives = lives - 1; takes the old value, subtracts one and stores the result.",
+            "Once a variable is declared with a type, it keeps that type for life."
+          ],
+          "terms": [
+            {
+              "term": "Variable",
+              "meaning": "A named box that holds one value."
+            },
+            {
+              "term": "Declare",
+              "meaning": "Give a variable its type and name."
+            }
+          ],
+          "table": {
+            "head": [
+              "Line",
+              "Code"
+            ],
+            "rows": [
+              [
+                "1",
+                "int lives = 3;"
+              ],
+              [
+                "2",
+                "lives = lives - 1;"
+              ],
+              [
+                "3",
+                "System.out.println(lives);"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "After these three lines run, what does the program print?",
+            "answer": "2. The box starts at 3, then becomes 3 - 1."
+          },
+          "references": [
+            {
+              "title": "Dev.java: Variables",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/constructs/basics/variables/"
+            },
+            {
+              "title": "Java Language Specification (SE 21), chapter 4: Types, Values, and Variables",
+              "source": "Java specification (linked, not copied)",
+              "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-4.html"
+            }
+          ]
+        },
+        {
+          "id": "types",
+          "title": "Picking the right box",
+          "text": [
+            "Java has several simple types. int holds whole numbers like 42. double holds numbers with a decimal point, like 3.14. boolean holds only true or false. char holds a single character in single quotes, like 'K'.",
+            "Text is different. String holds text in double quotes, like \"Kit\". Notice the capital S, because String is a class and not one of the simple types. Using the wrong box is an error: int size = 2.5; does not compile."
+          ],
+          "terms": [
+            {
+              "term": "int",
+              "meaning": "Whole numbers."
+            },
+            {
+              "term": "double",
+              "meaning": "Numbers with a decimal point."
+            },
+            {
+              "term": "boolean",
+              "meaning": "true or false."
+            },
+            {
+              "term": "String",
+              "meaning": "Text in double quotes."
+            }
+          ],
+          "references": [
+            {
+              "title": "Dev.java: Primitive Types",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/constructs/basics/primitive-types/"
+            },
+            {
+              "title": "Java Language Specification (SE 21), chapter 4: Types, Values, and Variables",
+              "source": "Java specification (linked, not copied)",
+              "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-4.html"
+            }
+          ]
+        },
+        {
+          "id": "arithmetic",
+          "title": "Maths with whole numbers",
+          "text": [
+            "Java does arithmetic with + - * and /, and % gives the remainder. Multiplication and division happen before addition and subtraction, unless brackets say otherwise.",
+            "Watch out for division. When both numbers are int, the answer is an int, and the fraction is thrown away. So 17 / 5 is 3, not 3.4, and 17 % 5 is 2. If one number is a double, as in 17 / 5.0, the answer is 3.4."
+          ],
+          "deeper": {
+            "title": "Why throw the fraction away?",
+            "text": [
+              "An int has no room for a fraction, so Java keeps only the whole part and drops the rest. It does not round. It simply cuts the fraction off."
+            ]
+          },
+          "references": [
+            {
+              "title": "Dev.java: Using Operators",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/constructs/basics/using-operators/"
+            },
+            {
+              "title": "Java Language Specification (SE 21), chapter 15: Expressions",
+              "source": "Java specification (linked, not copied)",
+              "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "pick-type",
+          "type": "buckets",
+          "taughtOn": "types",
+          "prompt": "Which type would hold each value best?",
+          "buckets": [
+            "int",
+            "double",
+            "boolean",
+            "String"
+          ],
+          "items": [
+            {
+              "text": "42",
+              "bucket": "int"
+            },
+            {
+              "text": "-7",
+              "bucket": "int"
+            },
+            {
+              "text": "3.14",
+              "bucket": "double"
+            },
+            {
+              "text": "0.5",
+              "bucket": "double"
+            },
+            {
+              "text": "true",
+              "bucket": "boolean"
+            },
+            {
+              "text": "false",
+              "bucket": "boolean"
+            },
+            {
+              "text": "\"Kit\"",
+              "bucket": "String"
+            },
+            {
+              "text": "\"7\"",
+              "bucket": "String"
+            }
+          ],
+          "hints": [
+            "Look for a decimal point, quotes, or the words true and false.",
+            "A number in double quotes is text, not a number."
+          ],
+          "explain": "Whole numbers are int, numbers with a decimal point are double, true or false is boolean, and anything in double quotes is a String, even if it looks like a number."
+        },
+        {
+          "id": "type-meaning",
+          "type": "match",
+          "taughtOn": "types",
+          "prompt": "Match each type to what it holds.",
+          "pairs": [
+            {
+              "left": "int",
+              "right": "Whole numbers"
+            },
+            {
+              "left": "double",
+              "right": "Numbers with a decimal point"
+            },
+            {
+              "left": "boolean",
+              "right": "true or false"
+            },
+            {
+              "left": "char",
+              "right": "One character, in single quotes"
+            },
+            {
+              "left": "String",
+              "right": "Text, in double quotes"
+            }
+          ],
+          "hints": [
+            "char and String both hold letters. Count how many.",
+            "boolean has only two possible values."
+          ],
+          "explain": "Each type is a box shape: int for whole numbers, double for decimals, boolean for true or false, char for one character and String for text."
+        },
+        {
+          "id": "wont-compile",
+          "type": "choice",
+          "taughtOn": "types",
+          "prompt": "Which of these declarations does not compile?",
+          "options": [
+            {
+              "text": "int size = 2.5;",
+              "correct": true
+            },
+            {
+              "text": "int count = 12;"
+            },
+            {
+              "text": "double price = 4.5;"
+            },
+            {
+              "text": "boolean open = true;"
+            }
+          ],
+          "hints": [
+            "Which line puts a number with a decimal point into a whole-number box?",
+            "int only holds whole numbers."
+          ],
+          "explain": "2.5 is a double and does not fit in an int, so the compiler refuses. It says the conversion could lose information."
+        },
+        {
+          "id": "lives-left",
+          "type": "numeric",
+          "taughtOn": "variables",
+          "prompt": "int lives = 3; lives = lives - 1; What number is lives now?",
+          "answer": 2,
+          "calculator": false,
+          "hints": [
+            "The second statement uses the old value.",
+            "3 minus 1."
+          ],
+          "explain": "lives starts at 3, then the second statement stores 3 - 1, which is 2."
+        },
+        {
+          "id": "division",
+          "type": "numeric",
+          "taughtOn": "arithmetic",
+          "prompt": "In Java, what is 17 / 5 when both numbers are int?",
+          "answer": 3,
+          "calculator": false,
+          "hints": [
+            "Both numbers are whole, so the answer is whole too.",
+            "5 goes into 17 three times, with a remainder. Only the three is kept."
+          ],
+          "explain": "17 / 5 is 3 in int arithmetic. The remainder is 2 (17 % 5), and the fraction .4 is thrown away."
+        },
+        {
+          "id": "remainder",
+          "type": "numeric",
+          "taughtOn": "arithmetic",
+          "prompt": "What is 17 % 5?",
+          "answer": 2,
+          "calculator": false,
+          "hints": [
+            "% gives what is left over after dividing.",
+            "17 = 5 x 3 + something."
+          ],
+          "explain": "5 x 3 is 15, and 17 - 15 is 2, so 17 % 5 is 2."
+        },
+        {
+          "id": "order-of-ops",
+          "type": "numeric",
+          "taughtOn": "arithmetic",
+          "prompt": "int total = 7 + 8 / 2; What does total hold?",
+          "answer": 11,
+          "calculator": false,
+          "hints": [
+            "Division happens before addition.",
+            "8 / 2 is 4, then add 7."
+          ],
+          "explain": "Division goes first, so it is 7 + 4, which is 11, not 15 / 2."
+        },
+        {
+          "id": "chain",
+          "type": "numeric",
+          "taughtOn": "variables",
+          "prompt": "int a = 9; a = a + 4; a = a * 2; What does a hold at the end?",
+          "answer": 26,
+          "calculator": false,
+          "hints": [
+            "Work one line at a time, using the newest value.",
+            "9 + 4 is 13. Then double it."
+          ],
+          "explain": "a goes from 9 to 13, then to 26.",
+          "challenge": true
+        },
+        {
+          "id": "double-trap",
+          "type": "choice",
+          "taughtOn": "arithmetic",
+          "prompt": "double d = 7 / 2; System.out.println(d); What does it print?",
+          "options": [
+            {
+              "text": "3.0",
+              "correct": true
+            },
+            {
+              "text": "3.5"
+            },
+            {
+              "text": "3"
+            },
+            {
+              "text": "4.0"
+            }
+          ],
+          "hints": [
+            "The division happens first, with two int values.",
+            "The int answer is stored in a double afterwards, so it becomes 3.0."
+          ],
+          "explain": "7 / 2 is done with whole numbers and gives 3. Then 3 is stored in a double and prints as 3.0. To keep the fraction, write 7 / 2.0.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d0.2-f1",
+          "type": "quiz",
+          "taughtOn": "types",
+          "prompt": "Which type holds the value true?",
+          "options": [
+            {
+              "text": "boolean",
+              "correct": true
+            },
+            {
+              "text": "int"
+            },
+            {
+              "text": "String"
+            },
+            {
+              "text": "double"
+            }
+          ],
+          "explain": "boolean holds only true or false."
+        },
+        {
+          "id": "d0.2-f2",
+          "type": "quiz",
+          "taughtOn": "arithmetic",
+          "prompt": "In Java, 17 / 5 with whole numbers gives...",
+          "options": [
+            {
+              "text": "3",
+              "correct": true
+            },
+            {
+              "text": "3.4"
+            },
+            {
+              "text": "2"
+            },
+            {
+              "text": "4"
+            }
+          ],
+          "explain": "Whole-number division drops the fraction."
+        },
+        {
+          "id": "d0.2-f3",
+          "type": "why",
+          "taughtOn": "types",
+          "prompt": "Why is String written with a capital S?",
+          "options": [
+            {
+              "text": "It is a class, not one of the simple types",
+              "correct": true
+            },
+            {
+              "text": "It is shouted"
+            },
+            {
+              "text": "Text is important"
+            },
+            {
+              "text": "Because it is long"
+            }
+          ],
+          "explain": "String is a class. The simple types such as int and double are all lower case."
+        },
+        {
+          "id": "d0.2-f4",
+          "type": "predict",
+          "taughtOn": "arithmetic",
+          "prompt": "What is 7 / 2.0 in Java, and why?",
+          "answer": "3.5, because one of the numbers is a double, so the fraction is kept."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Why money is rarely a double",
+          "text": "The Java tutorial says double should never be used for precise values, such as currency. Programs that handle money use other tools.",
+          "source": {
+            "title": "Dev.java: Primitive Types",
+            "url": "https://dev.java/learn/language/constructs/basics/primitive-types/"
+          }
+        },
+        {
+          "title": "Counters everywhere",
+          "text": "A variable is a named place that holds a value. In Dev.java's bicycle example, each bicycle keeps its own current speed, separate from every other bicycle's.",
+          "source": {
+            "title": "Dev.java: Variables",
+            "url": "https://dev.java/learn/language/constructs/basics/variables/"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You met variables, the simple types, and the surprise in whole-number division.",
+          "Bram stacks the last box. \"The label tells you what fits, and that saves you later.\""
+        ],
+        "mistake": {
+          "title": "Expecting 17 / 5 to be 3.4",
+          "text": "When both numbers are int, Java throws the fraction away and gives 3. Make one of them a double, like 17 / 5.0, when you want the decimals."
+        }
+      }
+    }
+  ]
+}

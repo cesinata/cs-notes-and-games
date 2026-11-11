@@ -1,0 +1,10 @@
+{
+  "id": "plan",
+  "name": "Waypoint Woods",
+  "subject": "AI Planning",
+  "description": "Walk forest trails where Kit plans each step to a goal: how a program searches for a route, writes a problem down, guesses the distance left, ignores what actions undo, and keeps only states with something new.",
+  "bigFact": "A world described by just 100 yes-or-no facts can be in up to about 10 to the power 30 different states, yet a width-1 search keeps at most 100 of them.",
+  "sprite": "tree",
+  "world": "plan/world.json",
+  "dir": "plan/"
+}

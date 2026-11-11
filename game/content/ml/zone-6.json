@@ -1,0 +1,1250 @@
+{
+  "zone": 6,
+  "levels": [
+    {
+      "id": "6.1",
+      "title": "Right and Wrong",
+      "story": "Fenn's new egg camera flags the cracked eggs on the belt. \"Ninety-seven percent right!\" the salesman beams. Fenn frowns. \"Only twenty-five eggs in five hundred are cracked. Tell me how many of those you catch.\"",
+      "everyday": {
+        "scene": "A smoke alarm that never goes off is right almost every day, since most days have no fire. It is still a terrible alarm.",
+        "question": "How do you judge whether a model is any good?",
+        "answer": "Count its different kinds of right and wrong separately. A single score like accuracy can hide the mistakes that matter."
+      },
+      "lessons": [
+        {
+          "id": "four-boxes",
+          "title": "Four kinds of answer",
+          "text": [
+            "For a yes-or-no model, each prediction falls into one of four boxes. A true positive is a flagged item that really is cracked. A false positive is flagged but fine. A false negative is a missed cracked egg. A true negative is correctly left alone.",
+            "The table is the confusion matrix for 500 eggs, where 25 were truly cracked and the camera flagged 30."
+          ],
+          "terms": [
+            {
+              "term": "False positive",
+              "meaning": "A false alarm."
+            },
+            {
+              "term": "False negative",
+              "meaning": "A miss."
+            }
+          ],
+          "table": {
+            "head": [
+              "",
+              "Truly cracked",
+              "Truly fine"
+            ],
+            "rows": [
+              [
+                "Flagged",
+                "20",
+                "10"
+              ],
+              [
+                "Not flagged",
+                "5",
+                "465"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Confusion matrix",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Confusion_matrix"
+            },
+            {
+              "title": "scikit-learn user guide: Metrics and scoring",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/model_evaluation.html"
+            }
+          ]
+        },
+        {
+          "id": "accuracy-trap",
+          "title": "The accuracy trap",
+          "text": [
+            "Accuracy is the share of all calls that were correct: (20 + 465) / 500 = 97 percent. But a lazy camera that never flags anything is right on 475 of 500 eggs, so its accuracy is 95 percent, and it catches no cracked egg at all.",
+            "When one class is rare, accuracy is misleading. You need measures that look at the rare class directly."
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Confusion matrix",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Confusion_matrix"
+            },
+            {
+              "title": "Wikipedia: Precision and recall",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Precision_and_recall"
+            }
+          ]
+        },
+        {
+          "id": "precision-recall",
+          "title": "Precision and recall",
+          "text": [
+            "Precision asks: of the eggs flagged, how many were truly cracked? Here it is 20 / 30, about 67 percent. Recall asks: of the truly cracked eggs, how many were caught? Here it is 20 / 25, or 80 percent.",
+            "They pull against each other. A camera that flags everything has perfect recall and awful precision. The F1 score blends the two into one number, 2 x precision x recall / (precision + recall), about 0.73 here. Which matters more depends on the cost of each mistake."
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Precision and recall",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Precision_and_recall"
+            },
+            {
+              "title": "scikit-learn user guide: Metrics and scoring",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/model_evaluation.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "which-box",
+          "type": "buckets",
+          "taughtOn": "four-boxes",
+          "prompt": "Which box does each case fall into?",
+          "buckets": [
+            "True positive",
+            "False positive",
+            "False negative",
+            "True negative"
+          ],
+          "items": [
+            {
+              "text": "Flagged, and the egg was cracked",
+              "bucket": "True positive"
+            },
+            {
+              "text": "Flagged, but the egg was fine",
+              "bucket": "False positive"
+            },
+            {
+              "text": "Not flagged, but the egg was cracked",
+              "bucket": "False negative"
+            },
+            {
+              "text": "Not flagged, and the egg was fine",
+              "bucket": "True negative"
+            }
+          ],
+          "hints": [
+            "Decide: was the camera right? Then, was it a flag or not?",
+            "Positive means flagged."
+          ],
+          "explain": "Positive means the model flagged it. True means the model was right. So flagged and cracked is a true positive, and a missed cracked egg is a false negative."
+        },
+        {
+          "id": "accuracy-pct",
+          "type": "numeric",
+          "taughtOn": "accuracy-trap",
+          "prompt": "The camera got 20 + 465 = 485 eggs right out of 500. What is its accuracy, as a percentage?",
+          "answer": 97,
+          "calculator": false,
+          "hints": [
+            "Correct divided by total, times 100.",
+            "485 / 500"
+          ],
+          "explain": "485 / 500 = 0.97, which is 97 percent."
+        },
+        {
+          "id": "lazy-accuracy",
+          "type": "numeric",
+          "taughtOn": "accuracy-trap",
+          "prompt": "A lazy camera never flags anything. 25 of the 500 eggs are cracked. What accuracy does it get, as a percentage?",
+          "answer": 95,
+          "calculator": false,
+          "hints": [
+            "It is right on every fine egg.",
+            "475 / 500"
+          ],
+          "explain": "It is right on the 475 fine eggs and wrong on the 25 cracked ones: 475 / 500 = 95 percent."
+        },
+        {
+          "id": "egg-sim",
+          "type": "stepsim",
+          "taughtOn": "precision-recall",
+          "mode": "predict",
+          "prompt": "Work out precision and recall from the four boxes.",
+          "explain": "Precision looks at the flags, and recall looks at the truly cracked eggs. Accuracy looks at everything and can hide a weak spot.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "20",
+                      "mark": null,
+                      "tag": "Flagged and cracked"
+                    },
+                    {
+                      "value": "10",
+                      "mark": null,
+                      "tag": "Flagged but fine"
+                    },
+                    {
+                      "value": "5",
+                      "mark": null,
+                      "tag": "Missed cracked"
+                    },
+                    {
+                      "value": "465",
+                      "mark": null,
+                      "tag": "Not flagged and fine"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "The 500 eggs in four groups"
+                },
+                "say": "The checker looked at 500 eggs. 25 were truly cracked. The camera flagged 30. The four boxes show how the 500 eggs split up."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "20",
+                      "mark": "best",
+                      "tag": "Flagged and cracked"
+                    },
+                    {
+                      "value": "10",
+                      "mark": "compare",
+                      "tag": "Flagged but fine"
+                    },
+                    {
+                      "value": "5",
+                      "mark": null,
+                      "tag": "Missed cracked"
+                    },
+                    {
+                      "value": "465",
+                      "mark": null,
+                      "tag": "Not flagged and fine"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "flagged: 30"
+                  },
+                  "label": "The 500 eggs in four groups"
+                },
+                "say": "The camera flagged 30 eggs: 20 truly cracked and 10 fine. Precision asks: of the eggs it flagged, how many were truly cracked?",
+                "predict": {
+                  "prompt": "Of the 30 flagged eggs, 20 were truly cracked. What is the precision?",
+                  "options": [
+                    {
+                      "text": "2/3, about 67 percent",
+                      "correct": true
+                    },
+                    {
+                      "text": "4/5, 80 percent",
+                      "correct": false
+                    },
+                    {
+                      "text": "20/500, 4 percent",
+                      "correct": false
+                    },
+                    {
+                      "text": "1/2, 50 percent",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Divide the correct flags by all the flags.",
+                    "20 divided by 30."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "20",
+                      "mark": "best",
+                      "tag": "Flagged and cracked"
+                    },
+                    {
+                      "value": "10",
+                      "mark": null,
+                      "tag": "Flagged but fine"
+                    },
+                    {
+                      "value": "5",
+                      "mark": "compare",
+                      "tag": "Missed cracked"
+                    },
+                    {
+                      "value": "465",
+                      "mark": null,
+                      "tag": "Not flagged and fine"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "cracked: 25"
+                  },
+                  "label": "The 500 eggs in four groups"
+                },
+                "say": "There were 25 truly cracked eggs, and the camera caught 20 of them. Recall asks: of the truly cracked eggs, how many did it catch?",
+                "predict": {
+                  "prompt": "Of the 25 truly cracked eggs, 20 were caught. What is the recall?",
+                  "options": [
+                    {
+                      "text": "4/5, 80 percent",
+                      "correct": true
+                    },
+                    {
+                      "text": "2/3, about 67 percent",
+                      "correct": false
+                    },
+                    {
+                      "text": "20/500, 4 percent",
+                      "correct": false
+                    },
+                    {
+                      "text": "5/25, 20 percent",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Divide the caught eggs by all the truly cracked eggs.",
+                    "20 divided by 25."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "20",
+                      "mark": "best",
+                      "tag": "Flagged and cracked"
+                    },
+                    {
+                      "value": "10",
+                      "mark": null,
+                      "tag": "Flagged but fine"
+                    },
+                    {
+                      "value": "5",
+                      "mark": null,
+                      "tag": "Missed cracked"
+                    },
+                    {
+                      "value": "465",
+                      "mark": "best",
+                      "tag": "Not flagged and fine"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "The 500 eggs in four groups"
+                },
+                "say": "Accuracy counts every correct call, both kinds: 20 + 465 = 485 out of 500, which is 97 percent. It sounds great, but it hides how the 5 missed eggs and 10 false alarms matter."
+              }
+            ]
+          }
+        },
+        {
+          "id": "precision-pct",
+          "type": "numeric",
+          "taughtOn": "precision-recall",
+          "prompt": "20 of the 30 flagged eggs were really cracked. What is the precision, as a percentage rounded to a whole number?",
+          "answer": 67,
+          "tolerance": 0.6,
+          "calculator": false,
+          "hints": [
+            "Correct flags divided by all flags.",
+            "20 / 30"
+          ],
+          "explain": "20 / 30 is 0.667, or about 67 percent."
+        },
+        {
+          "id": "recall-pct",
+          "type": "numeric",
+          "taughtOn": "precision-recall",
+          "prompt": "20 of the 25 cracked eggs were caught. What is the recall, as a percentage?",
+          "answer": 80,
+          "calculator": false,
+          "hints": [
+            "Caught divided by all truly cracked.",
+            "20 / 25"
+          ],
+          "explain": "20 / 25 = 0.8, which is 80 percent."
+        },
+        {
+          "id": "eval-words",
+          "type": "match",
+          "taughtOn": "four-boxes",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Precision",
+              "right": "Of the flagged, the share truly positive"
+            },
+            {
+              "left": "Recall",
+              "right": "Of the truly positive, the share flagged"
+            },
+            {
+              "left": "False negative",
+              "right": "A real case the model missed"
+            },
+            {
+              "left": "Accuracy",
+              "right": "The share of all calls that were right"
+            }
+          ],
+          "hints": [
+            "Precision looks at the flags, recall at the real cases.",
+            "A false negative is a miss."
+          ],
+          "explain": "Precision is about the flags, recall about the real cases, a false negative is a miss, and accuracy counts every correct call."
+        },
+        {
+          "id": "lazy-recall",
+          "type": "choice",
+          "taughtOn": "accuracy-trap",
+          "prompt": "What is the recall of the lazy camera that never flags anything?",
+          "options": [
+            {
+              "text": "0 percent, it catches no cracked egg",
+              "correct": true
+            },
+            {
+              "text": "95 percent"
+            },
+            {
+              "text": "100 percent"
+            },
+            {
+              "text": "50 percent"
+            }
+          ],
+          "hints": [
+            "How many cracked eggs does it flag?",
+            "It flags none, so it catches none."
+          ],
+          "explain": "It never flags anything, so it catches 0 of the 25 cracked eggs. Its recall is 0 even though its accuracy is 95 percent."
+        },
+        {
+          "id": "which-matters",
+          "type": "choice",
+          "taughtOn": "precision-recall",
+          "prompt": "A hospital test screens for a serious illness that can be treated if found. Which should it care about most?",
+          "options": [
+            {
+              "text": "Recall, so few sick people are missed",
+              "correct": true
+            },
+            {
+              "text": "Precision, so nobody is ever called sick by mistake"
+            },
+            {
+              "text": "Accuracy only"
+            },
+            {
+              "text": "Neither"
+            }
+          ],
+          "hints": [
+            "Which mistake is worse: a miss or a false alarm?",
+            "A missed illness can be much worse than a follow-up test."
+          ],
+          "explain": "When a miss is costly, recall matters most. A false alarm can be followed by another test."
+        },
+        {
+          "id": "f1-pct",
+          "type": "numeric",
+          "taughtOn": "precision-recall",
+          "prompt": "Challenge: precision is 0.667 and recall is 0.8. Use 2 x precision x recall / (precision + recall) to get the F1 score as a percentage, rounded to a whole number.",
+          "answer": 73,
+          "tolerance": 0.6,
+          "calculator": false,
+          "hints": [
+            "Top: 2 x 0.667 x 0.8 = 1.067.",
+            "Bottom: 0.667 + 0.8 = 1.467."
+          ],
+          "explain": "2 x 0.667 x 0.8 = 1.067, and 0.667 + 0.8 = 1.467. The ratio is 0.727, about 73 percent.",
+          "challenge": true
+        },
+        {
+          "id": "flag-everything",
+          "type": "choice",
+          "taughtOn": "precision-recall",
+          "prompt": "Challenge: a camera flags every single egg as cracked. Which is true?",
+          "options": [
+            {
+              "text": "Recall is 100 percent, but precision is only 5 percent",
+              "correct": true
+            },
+            {
+              "text": "Precision is 100 percent"
+            },
+            {
+              "text": "Accuracy is 100 percent"
+            },
+            {
+              "text": "Recall is 0 percent"
+            }
+          ],
+          "hints": [
+            "It catches every cracked egg. What fraction of its flags are right?",
+            "25 cracked out of 500 flagged."
+          ],
+          "explain": "It catches all 25 cracked eggs, so recall is 100 percent. But only 25 of its 500 flags are right, a precision of 5 percent.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m6.1-f1",
+          "type": "quiz",
+          "taughtOn": "four-boxes",
+          "prompt": "What is a false negative?",
+          "options": [
+            {
+              "text": "A real case the model missed",
+              "correct": true
+            },
+            {
+              "text": "A false alarm"
+            },
+            {
+              "text": "A correct flag"
+            },
+            {
+              "text": "A correct pass"
+            }
+          ],
+          "explain": "A false negative is a miss."
+        },
+        {
+          "id": "m6.1-f2",
+          "type": "quiz",
+          "taughtOn": "precision-recall",
+          "prompt": "What does recall measure?",
+          "options": [
+            {
+              "text": "Of the real positives, how many were caught",
+              "correct": true
+            },
+            {
+              "text": "Of the flagged, how many were right"
+            },
+            {
+              "text": "How many examples there are"
+            },
+            {
+              "text": "The share of correct calls"
+            }
+          ],
+          "explain": "Recall looks at the real positive cases."
+        },
+        {
+          "id": "m6.1-f3",
+          "type": "why",
+          "taughtOn": "accuracy-trap",
+          "prompt": "Why can high accuracy be misleading?",
+          "options": [
+            {
+              "text": "A rare class can be ignored and accuracy stays high",
+              "correct": true
+            },
+            {
+              "text": "Accuracy ignores the correct calls"
+            },
+            {
+              "text": "It only counts the false alarms"
+            },
+            {
+              "text": "It cannot be above 90 percent"
+            }
+          ],
+          "explain": "When one class is rare, a model can ignore it and still be mostly right."
+        },
+        {
+          "id": "m6.1-f4",
+          "type": "predict",
+          "taughtOn": "precision-recall",
+          "prompt": "A model flags 10 items and 8 are truly positive. What is the precision?",
+          "answer": "80 percent, because 8 / 10 = 0.8."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "The accuracy trap",
+          "text": "The Wikipedia page on the confusion matrix warns that accuracy gives misleading results when the classes are very unbalanced.",
+          "source": {
+            "title": "Wikipedia: Confusion matrix",
+            "url": "https://en.wikipedia.org/wiki/Confusion_matrix"
+          }
+        },
+        {
+          "title": "Two sides of a test",
+          "text": "Precision is also called positive predictive value, and recall is also called sensitivity.",
+          "source": {
+            "title": "Wikipedia: Precision and recall",
+            "url": "https://en.wikipedia.org/wiki/Precision_and_recall"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You sorted answers into four boxes, saw how a lazy model can score 95 percent accuracy, and worked out precision, recall and F1.",
+          "Fenn taps the camera. \"Right ninety-seven percent of the time. But what about the cracked ones?\""
+        ],
+        "mistake": {
+          "title": "Trusting accuracy alone",
+          "text": "When one class is rare, accuracy is dominated by the common class. Look at precision and recall for the class that matters."
+        }
+      }
+    },
+    {
+      "id": "6.2",
+      "title": "Honest Tests",
+      "story": "Fenn has tried three predictors for the harvest. One is a straight line, one is a gentle curve, and one is a wiggly line that hits every past point exactly. \"The wiggly one never misses,\" Fenn says. \"Why doesn't it feel right?\"",
+      "everyday": {
+        "scene": "A student who memorises last year's exam answers scores perfectly on that exam, then struggles on a new one with different questions.",
+        "question": "How can a model look perfect on its own data and still be bad?",
+        "answer": "It may have memorised the training examples, including their noise. Only data it has never seen shows how good it really is."
+      },
+      "lessons": [
+        {
+          "id": "fit-and-misfit",
+          "title": "Too simple, too wiggly",
+          "text": [
+            "A model that is too simple misses the real pattern. That is underfitting, and it does badly on training and new data alike. A model that is too flexible chases random noise. That is overfitting, with tiny training error and large error on new data.",
+            "The table shows lines and curves fitted to eight training points and then scored on eight new ones. The numbers are average squared error."
+          ],
+          "terms": [
+            {
+              "term": "Underfitting",
+              "meaning": "Too simple to capture the pattern."
+            },
+            {
+              "term": "Overfitting",
+              "meaning": "Fitting noise, so new data goes badly."
+            }
+          ],
+          "table": {
+            "head": [
+              "Model",
+              "Training error",
+              "Error on new data"
+            ],
+            "rows": [
+              [
+                "Straight line",
+                "2.83",
+                "2.57"
+              ],
+              [
+                "Gentle curve (degree 2)",
+                "0.32",
+                "0.29"
+              ],
+              [
+                "Wiggly curve (degree 7)",
+                "0.00",
+                "10.40"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Overfitting",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Overfitting"
+            },
+            {
+              "title": "scikit-learn user guide: Underfitting vs. overfitting",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/auto_examples/model_selection/plot_underfitting_overfitting.html"
+            }
+          ]
+        },
+        {
+          "id": "bias-and-variance",
+          "title": "Bias and variance",
+          "text": [
+            "Bias is error from wrong assumptions, such as insisting on a straight line when the truth bends. High bias leads to underfitting. Variance is error from being too sensitive to the particular training examples. High variance leads to overfitting.",
+            "Making a model more flexible lowers bias but raises variance. The aim is the middle ground, where error on new data is lowest. Here that is the gentle curve."
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Bias-variance tradeoff",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff"
+            },
+            {
+              "title": "Wikipedia: Overfitting",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Overfitting"
+            }
+          ]
+        },
+        {
+          "id": "honest-testing",
+          "title": "Testing honestly",
+          "text": [
+            "Keep a test set locked away and use it once, at the end. To choose between models, use a separate validation set, or cross-validation.",
+            "In 5-fold cross-validation the data is cut into 5 equal folds. Each fold takes a turn as the test fold while the model trains on the other four, and the five scores are averaged. With 20 examples, each round trains on 16 and tests on 4."
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Cross-validation (statistics)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Cross-validation_(statistics)"
+            },
+            {
+              "title": "scikit-learn user guide: Cross-validation",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/cross_validation.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "which-underfit",
+          "type": "choice",
+          "taughtOn": "fit-and-misfit",
+          "prompt": "Which model in the table is underfitting?",
+          "options": [
+            {
+              "text": "The straight line, with high error on both training and new data",
+              "correct": true
+            },
+            {
+              "text": "The wiggly curve"
+            },
+            {
+              "text": "The gentle curve"
+            },
+            {
+              "text": "None of them"
+            }
+          ],
+          "hints": [
+            "Underfitting means bad on both.",
+            "Look for large numbers in both columns."
+          ],
+          "explain": "The straight line has errors of 2.83 and 2.57, which are high on both. It is too simple for this data."
+        },
+        {
+          "id": "which-overfit",
+          "type": "choice",
+          "taughtOn": "fit-and-misfit",
+          "prompt": "Which model is overfitting?",
+          "options": [
+            {
+              "text": "The wiggly curve, with 0.00 training error but 10.40 on new data",
+              "correct": true
+            },
+            {
+              "text": "The straight line"
+            },
+            {
+              "text": "The gentle curve"
+            },
+            {
+              "text": "All of them"
+            }
+          ],
+          "hints": [
+            "Overfitting means great on training and poor on new data.",
+            "Look for a big gap between the two columns."
+          ],
+          "explain": "The degree-7 curve passes through every training point, so its training error is 0.00, but it swings wildly between them, giving 10.40 on new data."
+        },
+        {
+          "id": "best-model",
+          "type": "choice",
+          "taughtOn": "bias-and-variance",
+          "prompt": "Which model should you pick, going by error on new data?",
+          "options": [
+            {
+              "text": "The gentle curve, with 0.29",
+              "correct": true
+            },
+            {
+              "text": "The wiggly curve, because its training error is 0.00"
+            },
+            {
+              "text": "The straight line"
+            },
+            {
+              "text": "Any, they are all the same"
+            }
+          ],
+          "hints": [
+            "Pick the lowest error on data the model has not seen.",
+            "Compare the last column."
+          ],
+          "explain": "The gentle curve has the lowest error on new data, 0.29. The training error alone is no guide."
+        },
+        {
+          "id": "bias-or-variance",
+          "type": "buckets",
+          "taughtOn": "bias-and-variance",
+          "prompt": "Is each description about high bias or high variance?",
+          "buckets": [
+            "High bias",
+            "High variance"
+          ],
+          "items": [
+            {
+              "text": "Insists on a straight line when the data curves",
+              "bucket": "High bias"
+            },
+            {
+              "text": "Changes a lot if a few training examples change",
+              "bucket": "High variance"
+            },
+            {
+              "text": "Underfits",
+              "bucket": "High bias"
+            },
+            {
+              "text": "Overfits",
+              "bucket": "High variance"
+            },
+            {
+              "text": "Memorises noise",
+              "bucket": "High variance"
+            }
+          ],
+          "hints": [
+            "Bias is about wrong assumptions, variance about sensitivity.",
+            "Underfitting goes with bias and overfitting with variance."
+          ],
+          "explain": "High bias leads to underfitting. High variance leads to overfitting."
+        },
+        {
+          "id": "fold-sim",
+          "type": "stepsim",
+          "taughtOn": "honest-testing",
+          "mode": "predict",
+          "prompt": "Walk through five-fold cross-validation.",
+          "explain": "Each example is tested exactly once, and the model never trains on the fold it is tested on.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "4",
+                      "mark": "best",
+                      "tag": "train"
+                    },
+                    {
+                      "value": "4",
+                      "mark": "best",
+                      "tag": "train"
+                    },
+                    {
+                      "value": "4",
+                      "mark": "best",
+                      "tag": "train"
+                    },
+                    {
+                      "value": "4",
+                      "mark": "best",
+                      "tag": "train"
+                    },
+                    {
+                      "value": "4",
+                      "mark": "best",
+                      "tag": "train"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Five folds of four examples"
+                },
+                "say": "Twenty examples are split into five equal folds of 4. Each round, one fold is held back for testing and the other four are used for training."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "4",
+                      "mark": "current",
+                      "tag": "test"
+                    },
+                    {
+                      "value": "4",
+                      "mark": "best",
+                      "tag": "train"
+                    },
+                    {
+                      "value": "4",
+                      "mark": "best",
+                      "tag": "train"
+                    },
+                    {
+                      "value": "4",
+                      "mark": "best",
+                      "tag": "train"
+                    },
+                    {
+                      "value": "4",
+                      "mark": "best",
+                      "tag": "train"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "test"
+                  },
+                  "label": "Five folds of four examples"
+                },
+                "say": "Round 1: fold 1 is the test fold. The model trains on the other four folds.",
+                "predict": {
+                  "prompt": "In round 1, how many examples does the model train on?",
+                  "options": [
+                    {
+                      "text": "16",
+                      "correct": true
+                    },
+                    {
+                      "text": "4",
+                      "correct": false
+                    },
+                    {
+                      "text": "20",
+                      "correct": false
+                    },
+                    {
+                      "text": "5",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Four folds of 4 are used for training.",
+                    "4 x 4 = 16."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "4",
+                      "mark": "best",
+                      "tag": "train"
+                    },
+                    {
+                      "value": "4",
+                      "mark": "best",
+                      "tag": "train"
+                    },
+                    {
+                      "value": "4",
+                      "mark": "current",
+                      "tag": "test"
+                    },
+                    {
+                      "value": "4",
+                      "mark": "best",
+                      "tag": "train"
+                    },
+                    {
+                      "value": "4",
+                      "mark": "best",
+                      "tag": "train"
+                    }
+                  ],
+                  "pointers": {
+                    "2": "test"
+                  },
+                  "label": "Five folds of four examples"
+                },
+                "say": "Round 3: fold 3 is the test fold. Each fold takes a turn, so every example is tested exactly once.",
+                "predict": {
+                  "prompt": "Over all 5 rounds, how many times is each example used for testing?",
+                  "options": [
+                    {
+                      "text": "Once",
+                      "correct": true
+                    },
+                    {
+                      "text": "Five times",
+                      "correct": false
+                    },
+                    {
+                      "text": "Never",
+                      "correct": false
+                    },
+                    {
+                      "text": "Twice",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Each fold is the test fold in exactly one round.",
+                    "Once."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "4",
+                      "mark": "best",
+                      "tag": "train"
+                    },
+                    {
+                      "value": "4",
+                      "mark": "best",
+                      "tag": "train"
+                    },
+                    {
+                      "value": "4",
+                      "mark": "best",
+                      "tag": "train"
+                    },
+                    {
+                      "value": "4",
+                      "mark": "best",
+                      "tag": "train"
+                    },
+                    {
+                      "value": "4",
+                      "mark": "current",
+                      "tag": "test"
+                    }
+                  ],
+                  "pointers": {
+                    "4": "test"
+                  },
+                  "label": "Five folds of four examples"
+                },
+                "say": "After round 5 you have five test scores, one per fold. Their average is the cross-validation score: an estimate that uses all the data and tests on unseen examples every time."
+              }
+            ]
+          }
+        },
+        {
+          "id": "train-size",
+          "type": "numeric",
+          "taughtOn": "honest-testing",
+          "prompt": "20 examples are split into 5 equal folds. In one round, how many are used to train?",
+          "answer": 16,
+          "calculator": false,
+          "hints": [
+            "Four folds train, one tests.",
+            "4 folds x 4 examples."
+          ],
+          "explain": "Each fold has 4 examples. Four folds train, so 4 x 4 = 16."
+        },
+        {
+          "id": "fold-count",
+          "type": "numeric",
+          "taughtOn": "honest-testing",
+          "prompt": "In 5-fold cross-validation, how many times is a model trained?",
+          "answer": 5,
+          "calculator": false,
+          "hints": [
+            "One round for each fold.",
+            "Each fold takes a turn as the test fold."
+          ],
+          "explain": "A fresh model is trained once per fold, so 5 times."
+        },
+        {
+          "id": "honest-steps",
+          "type": "order",
+          "taughtOn": "honest-testing",
+          "prompt": "Put these steps in an honest order.",
+          "items": [
+            "Set aside a test set and do not touch it",
+            "Compare models using cross-validation on the rest",
+            "Pick the best model",
+            "Score it once on the test set"
+          ],
+          "hints": [
+            "The test set is set aside first.",
+            "The test set is used last, once."
+          ],
+          "explain": "Lock the test set away, compare models on the rest, choose one, and test it once at the end."
+        },
+        {
+          "id": "model-words",
+          "type": "match",
+          "taughtOn": "fit-and-misfit",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Underfitting",
+              "right": "Too simple to capture the pattern"
+            },
+            {
+              "left": "Overfitting",
+              "right": "Fits the noise in the training data"
+            },
+            {
+              "left": "Fold",
+              "right": "One slice of the data in cross-validation"
+            },
+            {
+              "left": "Test set",
+              "right": "Data kept aside for one final score"
+            }
+          ],
+          "hints": [
+            "Underfitting is too simple, overfitting too flexible.",
+            "A fold is one slice."
+          ],
+          "explain": "Underfitting is too simple, overfitting fits noise, a fold is one slice of the data, and the test set is for one final score."
+        },
+        {
+          "id": "test-twice",
+          "type": "choice",
+          "taughtOn": "honest-testing",
+          "prompt": "Challenge: you try twenty models, keep the one with the best score on the test set, and report that score. What is wrong?",
+          "options": [
+            {
+              "text": "The test set helped choose the model, so the score is too hopeful",
+              "correct": true
+            },
+            {
+              "text": "Nothing, that is the right way"
+            },
+            {
+              "text": "Twenty is too few models"
+            },
+            {
+              "text": "The test set is too small to use at all"
+            }
+          ],
+          "hints": [
+            "Did the test set influence your choice?",
+            "After choosing by it, it is no longer unseen."
+          ],
+          "explain": "Choosing by the test set leaks it into the decision. Use a validation set or cross-validation to choose, and the test set once at the end.",
+          "challenge": true
+        },
+        {
+          "id": "error-gap",
+          "type": "numeric",
+          "taughtOn": "fit-and-misfit",
+          "prompt": "Challenge: for the wiggly curve, how much larger is the error on new data than the training error? (Use 10.40 and 0.00.)",
+          "answer": 10.4,
+          "tolerance": 0.01,
+          "calculator": false,
+          "hints": [
+            "Subtract the training error from the new-data error.",
+            "10.40 - 0.00"
+          ],
+          "explain": "10.40 - 0.00 = 10.40. A big gap is the sign of overfitting.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m6.2-f1",
+          "type": "quiz",
+          "taughtOn": "fit-and-misfit",
+          "prompt": "What is overfitting?",
+          "options": [
+            {
+              "text": "Fitting noise, so new data goes badly",
+              "correct": true
+            },
+            {
+              "text": "Being too simple"
+            },
+            {
+              "text": "Having no training data"
+            },
+            {
+              "text": "Using too few folds"
+            }
+          ],
+          "explain": "An overfit model matches the training data too closely."
+        },
+        {
+          "id": "m6.2-f2",
+          "type": "quiz",
+          "taughtOn": "bias-and-variance",
+          "prompt": "High bias goes with which problem?",
+          "options": [
+            {
+              "text": "Underfitting",
+              "correct": true
+            },
+            {
+              "text": "Overfitting"
+            },
+            {
+              "text": "Perfect fit"
+            },
+            {
+              "text": "Too many folds"
+            }
+          ],
+          "explain": "High bias means wrong assumptions, so the model is too simple."
+        },
+        {
+          "id": "m6.2-f3",
+          "type": "why",
+          "taughtOn": "honest-testing",
+          "prompt": "Why not choose a model using the test set?",
+          "options": [
+            {
+              "text": "It stops being unseen data, so the final score is too hopeful",
+              "correct": true
+            },
+            {
+              "text": "Test sets are always tiny"
+            },
+            {
+              "text": "It makes training slower"
+            },
+            {
+              "text": "It removes the labels"
+            }
+          ],
+          "explain": "Choosing by it lets the test set influence the model."
+        },
+        {
+          "id": "m6.2-f4",
+          "type": "predict",
+          "taughtOn": "honest-testing",
+          "prompt": "With 100 examples and 10 folds, how many examples are in each test fold?",
+          "answer": "10, because 100 / 10 = 10."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Bias and variance",
+          "text": "The bias-variance tradeoff describes two sources of error that prevent a model from generalising beyond its training set: bias from wrong assumptions and variance from sensitivity to small changes in the training data.",
+          "source": {
+            "title": "Wikipedia: Bias-variance tradeoff",
+            "url": "https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff"
+          }
+        },
+        {
+          "title": "Cross-validation in code",
+          "text": "scikit-learn explains k-fold cross-validation: the model is trained on k-1 folds and tested on the remaining one, and the reported score is the average over the k rounds.",
+          "source": {
+            "title": "scikit-learn: Cross-validation",
+            "url": "https://scikit-learn.org/stable/modules/cross_validation.html"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You saw how a perfect fit to the training data can fail on new data, learned bias and variance, and walked through cross-validation to test honestly.",
+          "Fenn picks the gentle curve. \"Not perfect on the old harvests, but fair on the new.\""
+        ],
+        "mistake": {
+          "title": "Judging a model by its training score",
+          "text": "A model's score on the data it learned from is not a promise about new data. Always test on examples it has not seen."
+        }
+      }
+    }
+  ]
+}

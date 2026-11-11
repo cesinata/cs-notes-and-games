@@ -1,0 +1,3143 @@
+{
+  "zone": 2,
+  "levels": [
+    {
+      "id": "2.1",
+      "title": "Guess the Tide",
+      "story": "Tide Clerk Toby keeps a long sorted chart of tide heights. Visitors ask whether a certain height ever happened, and Toby can answer in a few glances.",
+      "everyday": {
+        "scene": "I am thinking of a number from 1 to 100. You may ask yes-or-no questions like \"is it more than 50?\".",
+        "question": "How many questions do you need, at most?",
+        "answer": "Seven. Each answer cuts the choices in half: 100, 50, 25, 13, 7, 4, 2, 1. That is exactly how binary search works."
+      },
+      "lessons": [
+        {
+          "id": "shrink",
+          "title": "Solve a smaller copy",
+          "text": [
+            "Recursion means solving a problem by solving a smaller copy of the same problem. A recursive method needs two parts: a base case, which is small enough to answer directly, and a step that shrinks the problem and calls the method again.",
+            "Example: the sum of 1 to n is n plus the sum of 1 to n − 1. The base case is that the sum up to 0 is 0. Each call is smaller than the one before, so the chain must end at the base case."
+          ],
+          "terms": [
+            {
+              "term": "Recursion",
+              "meaning": "A method that calls itself on a smaller problem."
+            },
+            {
+              "term": "Base case",
+              "meaning": "A problem so small it is answered directly."
+            }
+          ],
+          "table": {
+            "head": [
+              "Call",
+              "Answer"
+            ],
+            "rows": [
+              [
+                "sum(0)",
+                "0"
+              ],
+              [
+                "sum(1)",
+                "1 + sum(0) = 1"
+              ],
+              [
+                "sum(2)",
+                "2 + sum(1) = 3"
+              ],
+              [
+                "sum(4)",
+                "4 + sum(3) = 10"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "What does a recursive method return when it reaches the base case?",
+            "answer": "A direct answer, with no more calls."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Recursion (computer science)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Recursion_(computer_science)"
+            },
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 1: Recursion",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/01-recursion.pdf"
+            }
+          ]
+        },
+        {
+          "id": "halve",
+          "title": "Throw away half",
+          "text": [
+            "Binary search finds a value in a sorted list. Look at the middle item. If it is the one you want, stop. If it is too small, the answer can only be in the right half. If it is too big, only in the left half. Throw the other half away and repeat.",
+            "This only works because the list is sorted. Without order, one look tells you nothing about the rest. The list shrinks by half each time, so it is a 'decrease by a factor' method."
+          ],
+          "terms": [
+            {
+              "term": "Binary search",
+              "meaning": "Find a value in a sorted list by repeatedly checking the middle."
+            }
+          ],
+          "predict": {
+            "prompt": "A sorted list has 15 items, and the middle is too small. How many items remain to search?",
+            "answer": "At most 7: everything to the right of the middle."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Binary search algorithm",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Binary_search_algorithm"
+            },
+            {
+              "title": "Khan Academy: Binary search",
+              "source": "Khan Academy (linked only)",
+              "url": "https://www.khanacademy.org/computing/computer-science/algorithms/binary-search/a/binary-search"
+            }
+          ]
+        },
+        {
+          "id": "halvings",
+          "title": "How many halvings?",
+          "text": [
+            "Each check halves the list, so the number of checks is how many times you can halve n before reaching 1, plus one. That is floor(log₂ n) + 1. For 1,000 items it is 10. For a million it is 20. For a billion it is 30.",
+            "Compare with scanning from the left: a billion checks in the worst case. Doubling the list adds only one more check. That is what 'logarithmic growth' feels like: almost flat."
+          ],
+          "table": {
+            "head": [
+              "Items",
+              "Most checks"
+            ],
+            "rows": [
+              [
+                "15",
+                "4"
+              ],
+              [
+                "1,000",
+                "10"
+              ],
+              [
+                "1,000,000",
+                "20"
+              ],
+              [
+                "1,000,000,000",
+                "30"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "If you double the list, how many more checks does binary search need at most?",
+            "answer": "Just one more."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Binary search algorithm",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Binary_search_algorithm"
+            },
+            {
+              "title": "Wikipedia: Time complexity",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Time_complexity"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "watch-bs",
+          "type": "stepsim",
+          "taughtOn": "halve",
+          "mode": "predict",
+          "prompt": "Watch binary search look for 58 among 15 sorted heights, and predict each decision.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 3,
+                      "mark": null
+                    },
+                    {
+                      "value": 8,
+                      "mark": null
+                    },
+                    {
+                      "value": 12,
+                      "mark": null
+                    },
+                    {
+                      "value": 19,
+                      "mark": null
+                    },
+                    {
+                      "value": 24,
+                      "mark": null
+                    },
+                    {
+                      "value": 31,
+                      "mark": null
+                    },
+                    {
+                      "value": 37,
+                      "mark": null
+                    },
+                    {
+                      "value": 42,
+                      "mark": null
+                    },
+                    {
+                      "value": 50,
+                      "mark": null
+                    },
+                    {
+                      "value": 58,
+                      "mark": null
+                    },
+                    {
+                      "value": 63,
+                      "mark": null
+                    },
+                    {
+                      "value": 71,
+                      "mark": null
+                    },
+                    {
+                      "value": 77,
+                      "mark": null
+                    },
+                    {
+                      "value": 85,
+                      "mark": null
+                    },
+                    {
+                      "value": 92,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "0": "lo",
+                    "14": "hi"
+                  },
+                  "label": "Tide heights, sorted"
+                },
+                "say": "Kit wants to know if the height 58 is on the chart. The heights are sorted, so one check can throw away half of them."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 3,
+                      "mark": null
+                    },
+                    {
+                      "value": 8,
+                      "mark": null
+                    },
+                    {
+                      "value": 12,
+                      "mark": null
+                    },
+                    {
+                      "value": 19,
+                      "mark": null
+                    },
+                    {
+                      "value": 24,
+                      "mark": null
+                    },
+                    {
+                      "value": 31,
+                      "mark": null
+                    },
+                    {
+                      "value": 37,
+                      "mark": null
+                    },
+                    {
+                      "value": 42,
+                      "mark": "compare"
+                    },
+                    {
+                      "value": 50,
+                      "mark": null
+                    },
+                    {
+                      "value": 58,
+                      "mark": null
+                    },
+                    {
+                      "value": 63,
+                      "mark": null
+                    },
+                    {
+                      "value": 71,
+                      "mark": null
+                    },
+                    {
+                      "value": 77,
+                      "mark": null
+                    },
+                    {
+                      "value": 85,
+                      "mark": null
+                    },
+                    {
+                      "value": 92,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "0": "lo",
+                    "7": "mid",
+                    "14": "hi"
+                  }
+                },
+                "say": "Check 1: the middle height is 42, which is smaller than 58. Throw away the left half."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 3,
+                      "mark": null
+                    },
+                    {
+                      "value": 8,
+                      "mark": null
+                    },
+                    {
+                      "value": 12,
+                      "mark": null
+                    },
+                    {
+                      "value": 19,
+                      "mark": null
+                    },
+                    {
+                      "value": 24,
+                      "mark": null
+                    },
+                    {
+                      "value": 31,
+                      "mark": null
+                    },
+                    {
+                      "value": 37,
+                      "mark": null
+                    },
+                    {
+                      "value": 42,
+                      "mark": null
+                    },
+                    {
+                      "value": 50,
+                      "mark": null
+                    },
+                    {
+                      "value": 58,
+                      "mark": null
+                    },
+                    {
+                      "value": 63,
+                      "mark": null
+                    },
+                    {
+                      "value": 71,
+                      "mark": "compare"
+                    },
+                    {
+                      "value": 77,
+                      "mark": null
+                    },
+                    {
+                      "value": 85,
+                      "mark": null
+                    },
+                    {
+                      "value": 92,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "8": "lo",
+                    "11": "mid",
+                    "14": "hi"
+                  }
+                },
+                "say": "Check 2: the middle height is 71, which is bigger than 58. Throw away the right half.",
+                "predict": {
+                  "prompt": "Check 2: the middle of the remaining heights is 71. We want 58. What happens?",
+                  "options": [
+                    {
+                      "text": "Keep only the left half",
+                      "correct": true
+                    },
+                    {
+                      "text": "Keep only the right half"
+                    },
+                    {
+                      "text": "It is the one we want"
+                    }
+                  ],
+                  "hints": [
+                    "Compare the middle value with the one we want.",
+                    "71 is more than 58, so 58 is on the left."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 3,
+                      "mark": null
+                    },
+                    {
+                      "value": 8,
+                      "mark": null
+                    },
+                    {
+                      "value": 12,
+                      "mark": null
+                    },
+                    {
+                      "value": 19,
+                      "mark": null
+                    },
+                    {
+                      "value": 24,
+                      "mark": null
+                    },
+                    {
+                      "value": 31,
+                      "mark": null
+                    },
+                    {
+                      "value": 37,
+                      "mark": null
+                    },
+                    {
+                      "value": 42,
+                      "mark": null
+                    },
+                    {
+                      "value": 50,
+                      "mark": null
+                    },
+                    {
+                      "value": 58,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 63,
+                      "mark": null
+                    },
+                    {
+                      "value": 71,
+                      "mark": null
+                    },
+                    {
+                      "value": 77,
+                      "mark": null
+                    },
+                    {
+                      "value": 85,
+                      "mark": null
+                    },
+                    {
+                      "value": 92,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "8": "lo",
+                    "9": "mid",
+                    "10": "hi"
+                  }
+                },
+                "say": "The middle height is 58. That is the one. Found in 3 checks.",
+                "predict": {
+                  "prompt": "Check 3: the middle of the remaining heights is 58. We want 58. What happens?",
+                  "options": [
+                    {
+                      "text": "It is the one we want",
+                      "correct": true
+                    },
+                    {
+                      "text": "Keep only the right half"
+                    },
+                    {
+                      "text": "Keep only the left half"
+                    }
+                  ],
+                  "hints": [
+                    "Compare the middle value with the one we want.",
+                    "They are equal."
+                  ]
+                }
+              }
+            ]
+          },
+          "explain": "Watch binary search look for 58 among 15 sorted heights, and predict each decision."
+        },
+        {
+          "id": "checks-1000",
+          "type": "numeric",
+          "taughtOn": "halvings",
+          "prompt": "What is the most checks binary search needs on 1,000 sorted items?",
+          "answer": 10,
+          "unit": "checks",
+          "hints": [
+            "Count how many times you can halve 1,000 before reaching 1.",
+            "1,000 → 500 → 250 → 125 → 62 → 31 → 15 → 7 → 3 → 1."
+          ],
+          "explain": "Halving 1,000 down to 1 takes 9 steps, so 9 + 1 = 10 checks at most."
+        },
+        {
+          "id": "checks-million",
+          "type": "numeric",
+          "taughtOn": "halvings",
+          "prompt": "And on 1,000,000 sorted items?",
+          "answer": 20,
+          "unit": "checks",
+          "hints": [
+            "Each doubling of the list adds one check.",
+            "2²⁰ is about a million."
+          ],
+          "explain": "2²⁰ = 1,048,576, so a million items need 20 checks at most."
+        },
+        {
+          "id": "sorted-needed",
+          "type": "choice",
+          "taughtOn": "halve",
+          "prompt": "Why must the list be sorted for binary search to work?",
+          "options": [
+            {
+              "text": "Only then does one middle check tell you which half to throw away",
+              "correct": true
+            },
+            {
+              "text": "It makes the computer faster"
+            },
+            {
+              "text": "Binary search sorts it as it goes"
+            },
+            {
+              "text": "Otherwise the middle item cannot be read"
+            }
+          ],
+          "hints": [
+            "What does a check of the middle tell you in an unsorted list?",
+            "Nothing about the other items."
+          ],
+          "explain": "Order is what lets you discard half the list after one comparison."
+        },
+        {
+          "id": "sum-5",
+          "type": "numeric",
+          "taughtOn": "shrink",
+          "prompt": "A recursive method has sum(0) = 0 and sum(n) = n + sum(n − 1). What does sum(5) return?",
+          "answer": 15,
+          "unit": "",
+          "hints": [
+            "sum(5) = 5 + sum(4).",
+            "Add 5 + 4 + 3 + 2 + 1 + 0."
+          ],
+          "explain": "5 + 4 + 3 + 2 + 1 + 0 = 15."
+        },
+        {
+          "id": "bs-order",
+          "type": "order",
+          "taughtOn": "halve",
+          "prompt": "Put binary search in order.",
+          "items": [
+            "Look at the middle item of the remaining range",
+            "If it is the one wanted, stop",
+            "If it is too small, keep only the right half",
+            "If it is too big, keep only the left half",
+            "Repeat on the smaller range"
+          ],
+          "hints": [
+            "The stop check comes right after looking.",
+            "Discarding half happens only if you have not found it."
+          ],
+          "explain": "Look, check for a match, discard half, repeat."
+        },
+        {
+          "id": "checks-billion",
+          "type": "numeric",
+          "taughtOn": "halvings",
+          "prompt": "Challenge: most checks needed on 1,000,000,000 sorted items?",
+          "answer": 30,
+          "unit": "checks",
+          "hints": [
+            "2³⁰ is a little more than a billion.",
+            "floor(log₂ n) + 1."
+          ],
+          "explain": "2³⁰ = 1,073,741,824, so 30 checks.",
+          "challenge": true
+        },
+        {
+          "id": "base-case",
+          "type": "choice",
+          "taughtOn": "shrink",
+          "prompt": "Challenge: what goes wrong with sum(n) = n + sum(n − 1) if there is no base case?",
+          "options": [
+            {
+              "text": "The calls never stop, because the problem never reaches a smallest case",
+              "correct": true
+            },
+            {
+              "text": "It returns 0"
+            },
+            {
+              "text": "It returns n"
+            },
+            {
+              "text": "It runs only once"
+            }
+          ],
+          "hints": [
+            "What stops the chain of calls?",
+            "Nothing does, unless a base case answers directly."
+          ],
+          "explain": "Without a base case the method calls itself forever, until the computer runs out of room.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "a2.1-f1",
+          "type": "quiz",
+          "taughtOn": "halve",
+          "prompt": "Binary search needs the list to be...",
+          "options": [
+            {
+              "text": "Sorted",
+              "correct": true
+            },
+            {
+              "text": "Short"
+            },
+            {
+              "text": "Made of numbers only"
+            },
+            {
+              "text": "Stored backwards"
+            }
+          ],
+          "explain": "Sorted order lets one check discard half."
+        },
+        {
+          "id": "a2.1-f2",
+          "type": "quiz",
+          "taughtOn": "halvings",
+          "prompt": "Most checks for binary search on 1,000 items?",
+          "options": [
+            {
+              "text": "10",
+              "correct": true
+            },
+            {
+              "text": "1,000"
+            },
+            {
+              "text": "500"
+            },
+            {
+              "text": "100"
+            }
+          ],
+          "explain": "About log₂ 1,000, plus one: 10."
+        },
+        {
+          "id": "a2.1-f3",
+          "type": "predict",
+          "taughtOn": "shrink",
+          "prompt": "Name the two parts every recursive method needs.",
+          "answer": "A base case that answers directly, and a step that calls the method on a smaller problem."
+        },
+        {
+          "id": "a2.1-f4",
+          "type": "why",
+          "taughtOn": "halvings",
+          "prompt": "Doubling a list adds only one check to binary search because...",
+          "options": [
+            {
+              "text": "One more halving brings the doubled list back to the old size",
+              "correct": true
+            },
+            {
+              "text": "The list stays the same size"
+            },
+            {
+              "text": "Binary search reads two items at once"
+            },
+            {
+              "text": "Sorted lists are stored twice"
+            }
+          ],
+          "explain": "One extra check halves the doubled list back down."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Looking things up in sorted data",
+          "text": "Whenever data is kept in sorted order, a program can find an item by halving instead of scanning. Some libraries include a ready-made version, such as Python's bisect module, which keeps a list in sorted order and finds positions by bisection.",
+          "source": {
+            "title": "Python documentation: bisect",
+            "url": "https://docs.python.org/3/library/bisect.html"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You met recursion with a base case, watched binary search discard half the chart at each look, and saw that a billion items take only about 30 checks.",
+          "Toby nods. \"Sorted data is a gift: keep it sorted and every question is cheap.\""
+        ],
+        "mistake": {
+          "title": "Using binary search on an unsorted list",
+          "text": "Binary search gives wrong answers on unsorted data, because discarding half assumes order. Sort first, or use a different method."
+        }
+      }
+    },
+    {
+      "id": "2.2",
+      "title": "Power Shell",
+      "story": "Painter Pia has found a magic shell that triples every time she taps it. She needs 3 to a very big power, and does not want to tap a thousand times.",
+      "everyday": {
+        "scene": "You need to fold a sheet in half 20 times to see how thick it gets. Folding 20 times is 20 jobs. But suppose you wanted 2²⁰ copies: do you really need 19 multiplications?",
+        "question": "Can you reach a power with fewer multiplications than the exponent?",
+        "answer": "Yes. By squaring, you reach 2²⁰ in 5 multiplications. The big idea: use the answer for half the size, and square it."
+      },
+      "lessons": [
+        {
+          "id": "naive-power",
+          "title": "The slow way",
+          "text": [
+            "To compute aⁿ the simple way, multiply a by itself n − 1 times. This is a decrease-by-one method: aⁿ = a × aⁿ⁻¹. It is correct and clear, but needs n − 1 multiplications, so a million-power needs nearly a million steps.",
+            "With big numbers, each multiplication is itself slow. A method with far fewer multiplications is worth a lot, and a good idea is waiting in the shell."
+          ],
+          "table": {
+            "head": [
+              "Exponent n",
+              "Plain multiplications (n − 1)"
+            ],
+            "rows": [
+              [
+                "13",
+                "12"
+              ],
+              [
+                "20",
+                "19"
+              ],
+              [
+                "1,000",
+                "999"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "How many multiplications does the plain method need for a¹⁰⁰?",
+            "answer": "99."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Exponentiation by squaring",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Exponentiation_by_squaring"
+            },
+            {
+              "title": "Wikipedia: Decrease and conquer",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Decrease_and_conquer"
+            }
+          ]
+        },
+        {
+          "id": "squaring",
+          "title": "Square the half",
+          "text": [
+            "If the exponent n is even, aⁿ = (aⁿ/²)². So find aⁿ/² (one smaller problem, half the size), then square it with one multiplication. If n is odd, aⁿ = a × aⁿ⁻¹, and then n − 1 is even, so it halves next.",
+            "The base case is a¹ = a. For 3¹³, the exponents go 13, 12, 6, 3, 2, 1. That is 5 multiplications in total, against 12 for the plain method."
+          ],
+          "table": {
+            "head": [
+              "Call",
+              "Rule",
+              "Multiplications"
+            ],
+            "rows": [
+              [
+                "3^13",
+                "3 × (one smaller)",
+                "1"
+              ],
+              [
+                "3^12",
+                "square the half",
+                "1"
+              ],
+              [
+                "3^6",
+                "square the half",
+                "1"
+              ],
+              [
+                "3^3",
+                "3 × (one smaller)",
+                "1"
+              ],
+              [
+                "3^2",
+                "square the half",
+                "1"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "What is a⁸ if you know a⁴?",
+            "answer": "a⁸ = (a⁴)². One multiplication."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Exponentiation by squaring",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Exponentiation_by_squaring"
+            },
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 1: Recursion",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/01-recursion.pdf"
+            }
+          ]
+        },
+        {
+          "id": "log-power",
+          "title": "Counting the multiplications",
+          "text": [
+            "Every exponent halves at least every second step, so the number of calls is about 2 × log₂ n at most. For n = 1,000 the fast method needs 14 multiplications, not 999. For n = 1,000,000 it needs 25.",
+            "The plain method grows in step with n. Squaring grows in step with the number of digits of n, which barely moves. In decrease-and-conquer language, this is a decrease-by-half method, like binary search."
+          ],
+          "table": {
+            "head": [
+              "Exponent n",
+              "Plain",
+              "Squaring"
+            ],
+            "rows": [
+              [
+                "13",
+                "12",
+                "5"
+              ],
+              [
+                "1,000",
+                "999",
+                "14"
+              ],
+              [
+                "1,000,000",
+                "999,999",
+                "25"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "Is the speed of the squaring method closer to n or to the number of digits of n?",
+            "answer": "The number of digits of n. The exponent is halved at each step."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Exponentiation by squaring",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Exponentiation_by_squaring"
+            },
+            {
+              "title": "Wikipedia: Time complexity",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Time_complexity"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "watch-pow",
+          "type": "stepsim",
+          "taughtOn": "squaring",
+          "mode": "predict",
+          "prompt": "Watch 3¹³ get computed by squaring. Predict the answers as they come back.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "3^13",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Calls waiting",
+                  "hideIndex": true
+                },
+                "say": "Kit wants 3¹³. The recursive plan: if the exponent is even, square the answer for half of it. If odd, multiply by 3 once and use the exponent one smaller."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "3^13",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^12",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Calls waiting",
+                  "hideIndex": true
+                },
+                "say": "3^13 needs 3^12 (odd: one exponent less). A new call waits."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "3^13",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^12",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^6",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Calls waiting",
+                  "hideIndex": true
+                },
+                "say": "3^12 needs 3^6 (even: half the exponent). A new call waits."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "3^13",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^12",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^6",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^3",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Calls waiting",
+                  "hideIndex": true
+                },
+                "say": "3^6 needs 3^3 (even: half the exponent). A new call waits."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "3^13",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^12",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^6",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^3",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^2",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Calls waiting",
+                  "hideIndex": true
+                },
+                "say": "3^3 needs 3^2 (odd: one exponent less). A new call waits."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "3^13",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^12",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^6",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^3",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^2",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^1",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Calls waiting",
+                  "hideIndex": true
+                },
+                "say": "3^2 needs 3^1 (even: half the exponent). A new call waits."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "3^13",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^12",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^6",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^3",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^2",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^1 = 3",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Calls, answers arriving",
+                  "hideIndex": true
+                },
+                "say": "3^1 is the base case: the answer is 3."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "3^13",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^12",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^6",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^3",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^2 = 9",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Calls, answers arriving",
+                  "hideIndex": true
+                },
+                "say": "3^2 = 3^1 squared = 9.",
+                "predict": {
+                  "prompt": "Answers coming back: 3^1 = 3. What is 3^2?",
+                  "options": [
+                    {
+                      "text": "9",
+                      "correct": true
+                    },
+                    {
+                      "text": "6"
+                    },
+                    {
+                      "text": "10"
+                    },
+                    {
+                      "text": "12"
+                    }
+                  ],
+                  "hints": [
+                    "The exponent is even: square the previous answer.",
+                    "3 × 3."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "3^13",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^12",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^6",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^3 = 27",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Calls, answers arriving",
+                  "hideIndex": true
+                },
+                "say": "3^3 = 3 × 3^2 = 27.",
+                "predict": {
+                  "prompt": "Answers coming back: 3^2 = 9. What is 3^3?",
+                  "options": [
+                    {
+                      "text": "27",
+                      "correct": true
+                    },
+                    {
+                      "text": "18"
+                    },
+                    {
+                      "text": "12"
+                    },
+                    {
+                      "text": "82"
+                    }
+                  ],
+                  "hints": [
+                    "The exponent is odd: multiply by 3 once.",
+                    "3 × 9."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "3^13",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^12",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^6 = 729",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Calls, answers arriving",
+                  "hideIndex": true
+                },
+                "say": "3^6 = 3^3 squared = 729.",
+                "predict": {
+                  "prompt": "Answers coming back: 3^3 = 27. What is 3^6?",
+                  "options": [
+                    {
+                      "text": "729",
+                      "correct": true
+                    },
+                    {
+                      "text": "54"
+                    },
+                    {
+                      "text": "30"
+                    },
+                    {
+                      "text": "730"
+                    }
+                  ],
+                  "hints": [
+                    "The exponent is even: square the previous answer.",
+                    "27 × 27."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "3^13",
+                      "mark": null
+                    },
+                    {
+                      "value": "3^12 = 531,441",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Calls, answers arriving",
+                  "hideIndex": true
+                },
+                "say": "3^12 = 3^6 squared = 531,441.",
+                "predict": {
+                  "prompt": "Answers coming back: 3^6 = 729. What is 3^12?",
+                  "options": [
+                    {
+                      "text": "531,441",
+                      "correct": true
+                    },
+                    {
+                      "text": "1,458"
+                    },
+                    {
+                      "text": "732"
+                    },
+                    {
+                      "text": "531,442"
+                    }
+                  ],
+                  "hints": [
+                    "The exponent is even: square the previous answer.",
+                    "729 × 729."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "3^13 = 1,594,323",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Calls, answers arriving",
+                  "hideIndex": true
+                },
+                "say": "3^13 = 3 × 3^12 = 1,594,323.",
+                "predict": {
+                  "prompt": "Answers coming back: 3^12 = 531,441. What is 3^13?",
+                  "options": [
+                    {
+                      "text": "1,594,323",
+                      "correct": true
+                    },
+                    {
+                      "text": "1,062,882"
+                    },
+                    {
+                      "text": "531,444"
+                    },
+                    {
+                      "text": "282,429,536,482"
+                    }
+                  ],
+                  "hints": [
+                    "The exponent is odd: multiply by 3 once.",
+                    "3 × 531,441."
+                  ]
+                }
+              }
+            ]
+          },
+          "explain": "Watch 3¹³ get computed by squaring. Predict the answers as they come back."
+        },
+        {
+          "id": "mults-13",
+          "type": "numeric",
+          "taughtOn": "squaring",
+          "prompt": "How many multiplications does the squaring method use for 3¹³?",
+          "answer": 5,
+          "unit": "multiplications",
+          "hints": [
+            "Count the calls other than the base case. Each one does one multiplication.",
+            "The exponents are 13, 12, 6, 3, 2, 1."
+          ],
+          "explain": "One multiplication in each of the 5 calls above the base case: 5."
+        },
+        {
+          "id": "mults-1000",
+          "type": "numeric",
+          "taughtOn": "log-power",
+          "prompt": "How many multiplications does the squaring method use for a¹⁰⁰⁰?",
+          "answer": 14,
+          "unit": "multiplications",
+          "hints": [
+            "Follow the exponent: 1000 even, 500 even, 250 even, 125 odd, 124 even...",
+            "Count the odd steps and the even steps."
+          ],
+          "explain": "The exponents go 1000, 500, 250, 125, 124, 62, 31, 30, 15, 14, 7, 6, 3, 2, 1: 14 steps that each multiply once."
+        },
+        {
+          "id": "even-rule",
+          "type": "choice",
+          "taughtOn": "squaring",
+          "prompt": "To compute a¹⁶ when you know a⁸, you...",
+          "options": [
+            {
+              "text": "Square a⁸",
+              "correct": true
+            },
+            {
+              "text": "Multiply a⁸ by 2"
+            },
+            {
+              "text": "Add a⁸ and a⁸"
+            },
+            {
+              "text": "Multiply a⁸ by a"
+            }
+          ],
+          "hints": [
+            "Think about the exponents: 8 + 8.",
+            "a⁸ × a⁸ = a¹⁶, which is a⁸ squared."
+          ],
+          "explain": "Squaring doubles the exponent: (a⁸)² = a¹⁶."
+        },
+        {
+          "id": "pow-order",
+          "type": "order",
+          "taughtOn": "squaring",
+          "prompt": "The exponents visited when computing 3¹³ are:",
+          "items": [
+            "13",
+            "12",
+            "6",
+            "3",
+            "2",
+            "1"
+          ],
+          "hints": [
+            "An odd exponent goes to the number one smaller.",
+            "An even exponent goes to half of it."
+          ],
+          "explain": "From 13 (odd) to 12, then half to 6, half to 3, odd to 2, half to 1."
+        },
+        {
+          "id": "mults-million",
+          "type": "numeric",
+          "taughtOn": "log-power",
+          "prompt": "Challenge: how many multiplications does the squaring method use for a¹⁰⁰⁰⁰⁰⁰?",
+          "answer": 25,
+          "unit": "multiplications",
+          "hints": [
+            "Roughly twice the number of halvings of a million, at most.",
+            "Halving a million down to 1 takes 19 steps."
+          ],
+          "explain": "It takes 19 halvings plus a multiplication for each odd step: 25.",
+          "challenge": true
+        },
+        {
+          "id": "three-13",
+          "type": "numeric",
+          "taughtOn": "squaring",
+          "prompt": "Challenge: what is 3¹³?",
+          "answer": 1594323,
+          "unit": "",
+          "hints": [
+            "3⁶ = 729.",
+            "3⁶ squared times 3."
+          ],
+          "explain": "3¹³ = 1,594,323.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "a2.2-f1",
+          "type": "quiz",
+          "taughtOn": "squaring",
+          "prompt": "a¹⁰ equals...",
+          "options": [
+            {
+              "text": "(a⁵) squared",
+              "correct": true
+            },
+            {
+              "text": "a⁵ times 2"
+            },
+            {
+              "text": "a × a⁹ only"
+            },
+            {
+              "text": "a⁵ plus a⁵"
+            }
+          ],
+          "explain": "An even exponent halves: a¹⁰ = (a⁵)²."
+        },
+        {
+          "id": "a2.2-f2",
+          "type": "quiz",
+          "taughtOn": "naive-power",
+          "prompt": "Plain multiplications for a²⁰?",
+          "options": [
+            {
+              "text": "19",
+              "correct": true
+            },
+            {
+              "text": "20"
+            },
+            {
+              "text": "10"
+            },
+            {
+              "text": "5"
+            }
+          ],
+          "explain": "n − 1 = 19."
+        },
+        {
+          "id": "a2.2-f3",
+          "type": "predict",
+          "taughtOn": "squaring",
+          "prompt": "What do you do when the exponent is odd?",
+          "answer": "Multiply by a once, then use the exponent one smaller (which is even)."
+        },
+        {
+          "id": "a2.2-f4",
+          "type": "why",
+          "taughtOn": "log-power",
+          "prompt": "Squaring needs far fewer multiplications because...",
+          "options": [
+            {
+              "text": "The exponent roughly halves at each step",
+              "correct": true
+            },
+            {
+              "text": "It skips big numbers"
+            },
+            {
+              "text": "It uses smaller bases"
+            },
+            {
+              "text": "It never multiplies"
+            }
+          ],
+          "explain": "Halving the exponent is the whole saving."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Powers in secure messaging",
+          "text": "Public-key cryptography, including RSA and Diffie–Hellman, depends on modular exponentiation: raising big numbers to big powers and keeping only the remainder. It stays efficient even for very large numbers, and squaring methods like this one are a standard way to do it.",
+          "source": {
+            "title": "Wikipedia: Modular exponentiation",
+            "url": "https://en.wikipedia.org/wiki/Modular_exponentiation"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You computed 3¹³ by squaring in 5 multiplications instead of 12, and saw the saving grow as the exponent gets large.",
+          "Pia taps the shell once and grins. \"The trick was to ask what half the job looks like.\" Halving appears again and again in fast methods."
+        ],
+        "mistake": {
+          "title": "Squaring when the exponent is odd",
+          "text": "Squaring only works when you halve an even exponent. For an odd one, multiply by a first to make the exponent even."
+        }
+      }
+    },
+    {
+      "id": "2.3",
+      "title": "Recipe Order",
+      "story": "Baker Bea has a cake to make, and some jobs must happen before others: no baking before mixing, and no cooling before baking. Kit has to find an order that respects all of it.",
+      "everyday": {
+        "scene": "You are getting ready for a trip: pack the bag, but the bag cannot be packed until the washing is dry, and the washing cannot be dried until it is washed.",
+        "question": "How do you find an order of jobs that never breaks a \"before\" rule?",
+        "answer": "Do any job that is waiting for nothing, cross it off, and look again. That simple loop is called a topological sort."
+      },
+      "lessons": [
+        {
+          "id": "before-rules",
+          "title": "Jobs with \"before\" rules",
+          "text": [
+            "Some jobs depend on others. We draw each job as a dot and each rule 'A must come before B' as an arrow from A to B. A picture with arrows like this is a directed graph, and here it shows prerequisites.",
+            "A valid order puts every job after all jobs that have an arrow into it. Usually there are several valid orders. Our recipe has 8 of them, and any one is fine to follow."
+          ],
+          "terms": [
+            {
+              "term": "Directed graph",
+              "meaning": "Dots joined by arrows that point one way."
+            },
+            {
+              "term": "Prerequisite",
+              "meaning": "A job that must be finished first."
+            }
+          ],
+          "predict": {
+            "prompt": "Jobs A, B, C with arrows A → B and B → C. How many valid orders are there?",
+            "answer": "One: A, B, C."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Topological sorting",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Topological_sorting"
+            },
+            {
+              "title": "Wikipedia: Graph (discrete mathematics)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"
+            }
+          ]
+        },
+        {
+          "id": "remove-ready",
+          "title": "Remove what is ready",
+          "text": [
+            "The method is decrease by one. Find a job with no unfinished prerequisite. Put it next in the order, then cross it off. That makes the problem one job smaller. Repeat until nothing is left.",
+            "Every time, at least one job must be ready, unless there is a cycle. A cycle means jobs wait for each other in a ring, as in 'pack after dry, dry after pack', and then no order exists at all."
+          ],
+          "terms": [
+            {
+              "term": "Topological sort",
+              "meaning": "Putting jobs in an order that respects every \"before\" rule."
+            },
+            {
+              "term": "Cycle",
+              "meaning": "A ring of jobs that each wait for the next."
+            }
+          ],
+          "predict": {
+            "prompt": "At some point, jobs are left but none is ready. What does that tell you?",
+            "answer": "There is a cycle, so no valid order exists."
+          },
+          "deeper": {
+            "title": "Another way",
+            "text": [
+              "A depth-first search can also build a valid order. You will see depth-first search on the Bridge Isles."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Topological sorting",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Topological_sorting"
+            },
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 6: Depth-First Search",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/06-dfs.pdf"
+            }
+          ]
+        },
+        {
+          "id": "many-orders",
+          "title": "Many answers, one rule",
+          "text": [
+            "The answer is rarely unique. In our recipe, Flour and Eggs can go in either order, and Oven can go at many points. All 8 orders work, and none is the best unless there are extra rules like time.",
+            "Topological sorting is how build tools decide which files to compile first, and how course planners order subjects. The arrows are the only input. The method finds an order, and warns when none can exist."
+          ],
+          "predict": {
+            "prompt": "Two jobs are both ready. Does it matter which you do first?",
+            "answer": "No. Either choice leaves a valid order, since neither waits for the other."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Topological sorting",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Topological_sorting"
+            },
+            {
+              "title": "Wikipedia: Graph (discrete mathematics)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "watch-topo",
+          "type": "stepsim",
+          "taughtOn": "remove-ready",
+          "mode": "predict",
+          "prompt": "Watch Kit pick ready jobs one at a time. Predict which job can go next.",
+          "script": {
+            "view": "graph",
+            "steps": [
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "Flour",
+                      "x": 40,
+                      "y": 40,
+                      "label": "Flour",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "Eggs",
+                      "x": 40,
+                      "y": 110,
+                      "label": "Eggs",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "Mix",
+                      "x": 130,
+                      "y": 75,
+                      "label": "Mix"
+                    },
+                    {
+                      "id": "Oven",
+                      "x": 130,
+                      "y": 140,
+                      "label": "Oven",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "Bake",
+                      "x": 220,
+                      "y": 100,
+                      "label": "Bake"
+                    },
+                    {
+                      "id": "Cool",
+                      "x": 270,
+                      "y": 55,
+                      "label": "Cool"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "Flour",
+                      "to": "Mix"
+                    },
+                    {
+                      "from": "Eggs",
+                      "to": "Mix"
+                    },
+                    {
+                      "from": "Mix",
+                      "to": "Bake"
+                    },
+                    {
+                      "from": "Oven",
+                      "to": "Bake"
+                    },
+                    {
+                      "from": "Bake",
+                      "to": "Cool"
+                    }
+                  ],
+                  "directed": true,
+                  "legend": "An arrow means \"must come first\". A done task is ticked. A queued task has nothing left waiting for it, so it is ready."
+                },
+                "say": "Six jobs, and some must come before others. The rule: pick any job with nothing left waiting for it, do it, and cross it off. Ready now: Flour, Eggs, Oven."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "Flour",
+                      "x": 40,
+                      "y": 40,
+                      "label": "Flour",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Eggs",
+                      "x": 40,
+                      "y": 110,
+                      "label": "Eggs",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "Mix",
+                      "x": 130,
+                      "y": 75,
+                      "label": "Mix"
+                    },
+                    {
+                      "id": "Oven",
+                      "x": 130,
+                      "y": 140,
+                      "label": "Oven",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "Bake",
+                      "x": 220,
+                      "y": 100,
+                      "label": "Bake"
+                    },
+                    {
+                      "id": "Cool",
+                      "x": 270,
+                      "y": 55,
+                      "label": "Cool"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "Flour",
+                      "to": "Mix"
+                    },
+                    {
+                      "from": "Eggs",
+                      "to": "Mix"
+                    },
+                    {
+                      "from": "Mix",
+                      "to": "Bake"
+                    },
+                    {
+                      "from": "Oven",
+                      "to": "Bake"
+                    },
+                    {
+                      "from": "Bake",
+                      "to": "Cool"
+                    }
+                  ],
+                  "directed": true,
+                  "legend": "An arrow means \"must come first\". A done task is ticked. A queued task has nothing left waiting for it, so it is ready."
+                },
+                "say": "Do Flour. Ready next: Eggs, Oven.",
+                "predict": {
+                  "prompt": "Which job can Kit do next? Only one of these has nothing waiting for it.",
+                  "options": [
+                    {
+                      "text": "Flour",
+                      "correct": true
+                    },
+                    {
+                      "text": "Mix"
+                    },
+                    {
+                      "text": "Bake"
+                    },
+                    {
+                      "text": "Cool"
+                    }
+                  ],
+                  "hints": [
+                    "Look at the arrows pointing into each job.",
+                    "A job is ready only if every job with an arrow into it is already ticked."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "Flour",
+                      "x": 40,
+                      "y": 40,
+                      "label": "Flour",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Eggs",
+                      "x": 40,
+                      "y": 110,
+                      "label": "Eggs",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Mix",
+                      "x": 130,
+                      "y": 75,
+                      "label": "Mix",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "Oven",
+                      "x": 130,
+                      "y": 140,
+                      "label": "Oven",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "Bake",
+                      "x": 220,
+                      "y": 100,
+                      "label": "Bake"
+                    },
+                    {
+                      "id": "Cool",
+                      "x": 270,
+                      "y": 55,
+                      "label": "Cool"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "Flour",
+                      "to": "Mix"
+                    },
+                    {
+                      "from": "Eggs",
+                      "to": "Mix"
+                    },
+                    {
+                      "from": "Mix",
+                      "to": "Bake"
+                    },
+                    {
+                      "from": "Oven",
+                      "to": "Bake"
+                    },
+                    {
+                      "from": "Bake",
+                      "to": "Cool"
+                    }
+                  ],
+                  "directed": true,
+                  "legend": "An arrow means \"must come first\". A done task is ticked. A queued task has nothing left waiting for it, so it is ready."
+                },
+                "say": "Do Eggs. Ready next: Mix, Oven.",
+                "predict": {
+                  "prompt": "Which job can Kit do next? Only one of these has nothing waiting for it.",
+                  "options": [
+                    {
+                      "text": "Eggs",
+                      "correct": true
+                    },
+                    {
+                      "text": "Mix"
+                    },
+                    {
+                      "text": "Bake"
+                    },
+                    {
+                      "text": "Cool"
+                    }
+                  ],
+                  "hints": [
+                    "Look at the arrows pointing into each job.",
+                    "A job is ready only if every job with an arrow into it is already ticked."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "Flour",
+                      "x": 40,
+                      "y": 40,
+                      "label": "Flour",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Eggs",
+                      "x": 40,
+                      "y": 110,
+                      "label": "Eggs",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Mix",
+                      "x": 130,
+                      "y": 75,
+                      "label": "Mix",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Oven",
+                      "x": 130,
+                      "y": 140,
+                      "label": "Oven",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "Bake",
+                      "x": 220,
+                      "y": 100,
+                      "label": "Bake"
+                    },
+                    {
+                      "id": "Cool",
+                      "x": 270,
+                      "y": 55,
+                      "label": "Cool"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "Flour",
+                      "to": "Mix"
+                    },
+                    {
+                      "from": "Eggs",
+                      "to": "Mix"
+                    },
+                    {
+                      "from": "Mix",
+                      "to": "Bake"
+                    },
+                    {
+                      "from": "Oven",
+                      "to": "Bake"
+                    },
+                    {
+                      "from": "Bake",
+                      "to": "Cool"
+                    }
+                  ],
+                  "directed": true,
+                  "legend": "An arrow means \"must come first\". A done task is ticked. A queued task has nothing left waiting for it, so it is ready."
+                },
+                "say": "Do Mix. Ready next: Oven.",
+                "predict": {
+                  "prompt": "Which job can Kit do next? Only one of these has nothing waiting for it.",
+                  "options": [
+                    {
+                      "text": "Mix",
+                      "correct": true
+                    },
+                    {
+                      "text": "Bake"
+                    },
+                    {
+                      "text": "Cool"
+                    }
+                  ],
+                  "hints": [
+                    "Look at the arrows pointing into each job.",
+                    "A job is ready only if every job with an arrow into it is already ticked."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "Flour",
+                      "x": 40,
+                      "y": 40,
+                      "label": "Flour",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Eggs",
+                      "x": 40,
+                      "y": 110,
+                      "label": "Eggs",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Mix",
+                      "x": 130,
+                      "y": 75,
+                      "label": "Mix",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Oven",
+                      "x": 130,
+                      "y": 140,
+                      "label": "Oven",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Bake",
+                      "x": 220,
+                      "y": 100,
+                      "label": "Bake",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "Cool",
+                      "x": 270,
+                      "y": 55,
+                      "label": "Cool"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "Flour",
+                      "to": "Mix"
+                    },
+                    {
+                      "from": "Eggs",
+                      "to": "Mix"
+                    },
+                    {
+                      "from": "Mix",
+                      "to": "Bake"
+                    },
+                    {
+                      "from": "Oven",
+                      "to": "Bake"
+                    },
+                    {
+                      "from": "Bake",
+                      "to": "Cool"
+                    }
+                  ],
+                  "directed": true,
+                  "legend": "An arrow means \"must come first\". A done task is ticked. A queued task has nothing left waiting for it, so it is ready."
+                },
+                "say": "Do Oven. Ready next: Bake.",
+                "predict": {
+                  "prompt": "Which job can Kit do next? Only one of these has nothing waiting for it.",
+                  "options": [
+                    {
+                      "text": "Oven",
+                      "correct": true
+                    },
+                    {
+                      "text": "Bake"
+                    },
+                    {
+                      "text": "Cool"
+                    }
+                  ],
+                  "hints": [
+                    "Look at the arrows pointing into each job.",
+                    "A job is ready only if every job with an arrow into it is already ticked."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "Flour",
+                      "x": 40,
+                      "y": 40,
+                      "label": "Flour",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Eggs",
+                      "x": 40,
+                      "y": 110,
+                      "label": "Eggs",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Mix",
+                      "x": 130,
+                      "y": 75,
+                      "label": "Mix",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Oven",
+                      "x": 130,
+                      "y": 140,
+                      "label": "Oven",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Bake",
+                      "x": 220,
+                      "y": 100,
+                      "label": "Bake",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Cool",
+                      "x": 270,
+                      "y": 55,
+                      "label": "Cool",
+                      "mark": "queued"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "Flour",
+                      "to": "Mix"
+                    },
+                    {
+                      "from": "Eggs",
+                      "to": "Mix"
+                    },
+                    {
+                      "from": "Mix",
+                      "to": "Bake"
+                    },
+                    {
+                      "from": "Oven",
+                      "to": "Bake"
+                    },
+                    {
+                      "from": "Bake",
+                      "to": "Cool"
+                    }
+                  ],
+                  "directed": true,
+                  "legend": "An arrow means \"must come first\". A done task is ticked. A queued task has nothing left waiting for it, so it is ready."
+                },
+                "say": "Do Bake. Ready next: Cool."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "Flour",
+                      "x": 40,
+                      "y": 40,
+                      "label": "Flour",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Eggs",
+                      "x": 40,
+                      "y": 110,
+                      "label": "Eggs",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Mix",
+                      "x": 130,
+                      "y": 75,
+                      "label": "Mix",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Oven",
+                      "x": 130,
+                      "y": 140,
+                      "label": "Oven",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Bake",
+                      "x": 220,
+                      "y": 100,
+                      "label": "Bake",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Cool",
+                      "x": 270,
+                      "y": 55,
+                      "label": "Cool",
+                      "mark": "visited"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "Flour",
+                      "to": "Mix"
+                    },
+                    {
+                      "from": "Eggs",
+                      "to": "Mix"
+                    },
+                    {
+                      "from": "Mix",
+                      "to": "Bake"
+                    },
+                    {
+                      "from": "Oven",
+                      "to": "Bake"
+                    },
+                    {
+                      "from": "Bake",
+                      "to": "Cool"
+                    }
+                  ],
+                  "directed": true,
+                  "legend": "An arrow means \"must come first\". A done task is ticked. A queued task has nothing left waiting for it, so it is ready."
+                },
+                "say": "Do Cool. All done."
+              }
+            ]
+          },
+          "explain": "Watch Kit pick ready jobs one at a time. Predict which job can go next."
+        },
+        {
+          "id": "valid-order",
+          "type": "choice",
+          "taughtOn": "before-rules",
+          "prompt": "Which of these orders respects every rule (Flour and Eggs before Mix, Mix and Oven before Bake, Bake before Cool)?",
+          "options": [
+            {
+              "text": "Flour, Eggs, Mix, Oven, Bake, Cool",
+              "correct": true
+            },
+            {
+              "text": "Cool, Bake, Oven, Mix, Eggs, Flour"
+            },
+            {
+              "text": "Bake, Flour, Eggs, Mix, Oven, Cool"
+            },
+            {
+              "text": "Cool, Flour, Eggs, Mix, Oven, Bake"
+            }
+          ],
+          "hints": [
+            "Check each order against the arrows, one rule at a time.",
+            "Bake must come after both Mix and Oven, and Cool must come last."
+          ],
+          "explain": "Flour, Eggs, Mix, Oven, Bake, Cool puts every job after its prerequisites."
+        },
+        {
+          "id": "valid-count",
+          "type": "numeric",
+          "taughtOn": "many-orders",
+          "prompt": "How many different valid orders does the recipe have?",
+          "answer": 8,
+          "unit": "orders",
+          "hints": [
+            "Flour and Eggs can swap. Oven can go in several places before Bake.",
+            "List the orders carefully, or count the ways to place Oven among Flour, Eggs and Mix."
+          ],
+          "explain": "A script counted all 720 ways to arrange the six jobs and kept those that respect every rule: 8."
+        },
+        {
+          "id": "cycle",
+          "type": "choice",
+          "taughtOn": "remove-ready",
+          "prompt": "Jobs X, Y and Z have arrows X → Y, Y → Z and Z → X. What does the method find?",
+          "options": [
+            {
+              "text": "No job is ever ready, so no valid order exists",
+              "correct": true
+            },
+            {
+              "text": "X, Y, Z"
+            },
+            {
+              "text": "Z, Y, X"
+            },
+            {
+              "text": "Any order works"
+            }
+          ],
+          "hints": [
+            "Is there a job with nothing waiting for it?",
+            "Each job waits for another one."
+          ],
+          "explain": "A ring of jobs that each wait for the next can never start, so the method gets stuck at once."
+        },
+        {
+          "id": "topo-order",
+          "type": "order",
+          "taughtOn": "remove-ready",
+          "prompt": "Put the topological sort method in order.",
+          "items": [
+            "Find a job with no unfinished prerequisite",
+            "Add it to the end of the order",
+            "Cross it off the graph",
+            "Look again for a ready job",
+            "Stop when every job is crossed off"
+          ],
+          "hints": [
+            "You must find a job before you can add it.",
+            "Crossing off comes before looking again."
+          ],
+          "explain": "Find, add, cross off, look again, repeat."
+        },
+        {
+          "id": "diamond",
+          "type": "numeric",
+          "taughtOn": "many-orders",
+          "prompt": "Challenge: Start must come before Left and Right, and both must come before End. How many valid orders are there?",
+          "answer": 2,
+          "unit": "orders",
+          "hints": [
+            "Start is first and End is last. What is left?",
+            "Left and Right can go in either order."
+          ],
+          "explain": "Start, then Left and Right in either order, then End: 2 orders.",
+          "challenge": true
+        },
+        {
+          "id": "what-for",
+          "type": "choice",
+          "taughtOn": "many-orders",
+          "prompt": "Challenge: which real job fits topological sorting best?",
+          "options": [
+            {
+              "text": "Deciding which source files to build first when some depend on others",
+              "correct": true
+            },
+            {
+              "text": "Finding the shortest road between two towns"
+            },
+            {
+              "text": "Searching a sorted list"
+            },
+            {
+              "text": "Counting the pairs of friends"
+            }
+          ],
+          "hints": [
+            "The input is a set of \"must come before\" rules.",
+            "Which job has dependencies between its parts?"
+          ],
+          "explain": "Build tools order files by their dependencies, which is exactly this problem.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "a2.3-f1",
+          "type": "quiz",
+          "taughtOn": "remove-ready",
+          "prompt": "A job is \"ready\" when...",
+          "options": [
+            {
+              "text": "Every job that must come before it is done",
+              "correct": true
+            },
+            {
+              "text": "It is the biggest job"
+            },
+            {
+              "text": "It has the most arrows"
+            },
+            {
+              "text": "It comes first alphabetically"
+            }
+          ],
+          "explain": "Ready means nothing is waiting for it."
+        },
+        {
+          "id": "a2.3-f2",
+          "type": "quiz",
+          "taughtOn": "remove-ready",
+          "prompt": "Jobs are left but none is ready. This means...",
+          "options": [
+            {
+              "text": "There is a cycle",
+              "correct": true
+            },
+            {
+              "text": "The order is finished"
+            },
+            {
+              "text": "The graph is empty"
+            },
+            {
+              "text": "You must restart"
+            }
+          ],
+          "explain": "A ring of waiting jobs has no valid order."
+        },
+        {
+          "id": "a2.3-f3",
+          "type": "predict",
+          "taughtOn": "many-orders",
+          "prompt": "Is a valid order of jobs usually unique?",
+          "answer": "No. Jobs with no rule between them can swap, so there are often many valid orders."
+        },
+        {
+          "id": "a2.3-f4",
+          "type": "why",
+          "taughtOn": "before-rules",
+          "prompt": "Why draw jobs and rules as arrows?",
+          "options": [
+            {
+              "text": "Each arrow says one job must come before another",
+              "correct": true
+            },
+            {
+              "text": "Arrows show how long a job takes"
+            },
+            {
+              "text": "Arrows show who does each job"
+            },
+            {
+              "text": "Arrows make jobs faster"
+            }
+          ],
+          "explain": "The arrows hold all the rules."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Build tools and course plans",
+          "text": "Software build tools work out an order in which to compile files so that each file is built after the files it needs. The same idea orders subjects when some are prerequisites for others.",
+          "source": {
+            "title": "Wikipedia: Topological sorting",
+            "url": "https://en.wikipedia.org/wiki/Topological_sorting"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You turned \"before\" rules into arrows, repeatedly removed ready jobs, and found that a cycle means no order exists.",
+          "Bea ties her apron. \"Flour, eggs, mix, oven, bake, cool.\" The cake is on its way, and the recipe card is back in order."
+        ],
+        "mistake": {
+          "title": "Starting with any job",
+          "text": "You cannot start with a job that still has unfinished prerequisites. Start with a job nothing is waiting for."
+        }
+      }
+    },
+    {
+      "id": "2.4",
+      "title": "The Partition Pier",
+      "story": "Dock Clerk Dot has to find the middle crate by weight without sorting the whole pile. She uses a pivot crate, and only works on the side that matters.",
+      "everyday": {
+        "scene": "In a shuffled queue of 101 people you need to find the median height. Sorting everyone takes a lot of lining up.",
+        "question": "Is there a way to find the middle person without lining everyone up?",
+        "answer": "Yes. Pick someone, split everyone into shorter and taller, and then look only at the side that holds the middle. That trick is called quickselect."
+      },
+      "lessons": [
+        {
+          "id": "partition",
+          "title": "Split around a pivot",
+          "text": [
+            "Partitioning picks one crate, the pivot, and rearranges the row so smaller crates sit on its left and bigger ones on its right. The pivot then sits in its final sorted place, even though the rest are not sorted.",
+            "The version here uses the last crate as the pivot. It walks along the row, and every crate smaller than the pivot is swapped into a growing left part. For 31, 12, 45, 8, 27, 19, 36, the pivot 36 ends at position 5. It takes 6 comparisons, one for each other crate."
+          ],
+          "terms": [
+            {
+              "term": "Pivot",
+              "meaning": "The crate that the others are compared with."
+            },
+            {
+              "term": "Partition",
+              "meaning": "Rearrange so smaller ones are left of the pivot and bigger ones right."
+            }
+          ],
+          "predict": {
+            "prompt": "A row of 9 crates is partitioned. How many comparisons with the pivot?",
+            "answer": "8. Every other crate is compared once."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Quickselect",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Quickselect"
+            },
+            {
+              "title": "Wikipedia: Quicksort",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Quicksort"
+            }
+          ]
+        },
+        {
+          "id": "select",
+          "title": "Keep only one side",
+          "text": [
+            "To find the 4th smallest crate, partition, and look at where the pivot lands. If the pivot lands at position 3 (counting from 0), it is the answer. If it lands too far right, the answer is on the left. If too far left, the answer is on the right. Throw away the other side.",
+            "This is decrease and conquer with a variable decrease: the amount thrown away depends on where the pivot lands. Unlike sorting, you only continue with one side."
+          ],
+          "terms": [
+            {
+              "term": "Quickselect",
+              "meaning": "Find the kth smallest item by partitioning and keeping only the side that holds it."
+            }
+          ],
+          "predict": {
+            "prompt": "The pivot lands at position 2, and you want the item at position 5. Which side do you keep?",
+            "answer": "The right side. Position 5 is beyond the pivot."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Quickselect",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Quickselect"
+            },
+            {
+              "title": "Wikipedia: Decrease and conquer",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Decrease_and_conquer"
+            }
+          ]
+        },
+        {
+          "id": "cost-select",
+          "title": "What it costs",
+          "text": [
+            "On a lucky split, each round halves the row, so the work is n + n/2 + n/4 + ... which adds up to about 2n comparisons. That is about as good as scanning the row once or twice, and far less than sorting.",
+            "On a very unlucky split, such as always picking the largest crate, each round throws away just one crate, and the total is about n × (n − 1) ÷ 2 comparisons. Choosing the pivot well, for example at random, makes bad luck rare."
+          ],
+          "predict": {
+            "prompt": "Why might a very bad pivot choice make quickselect slow?",
+            "answer": "It throws away only one crate each round, so there are almost n rounds."
+          },
+          "deeper": {
+            "title": "The guaranteed method",
+            "text": [
+              "There is a more complicated way to choose the pivot that guarantees work proportional to n in the worst case. It is rarely used in practice because the simple random method is faster on average."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Quickselect",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Quickselect"
+            },
+            {
+              "title": "Wikipedia: Time complexity",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Time_complexity"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "watch-partition",
+          "type": "stepsim",
+          "taughtOn": "partition",
+          "mode": "predict",
+          "prompt": "Watch the row 31, 12, 45, 8, 27, 19, 36 get partitioned around 36. Predict each decision.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 31,
+                      "mark": null
+                    },
+                    {
+                      "value": 12,
+                      "mark": null
+                    },
+                    {
+                      "value": 45,
+                      "mark": null
+                    },
+                    {
+                      "value": 8,
+                      "mark": null
+                    },
+                    {
+                      "value": 27,
+                      "mark": null
+                    },
+                    {
+                      "value": 19,
+                      "mark": null
+                    },
+                    {
+                      "value": 36,
+                      "mark": "best"
+                    }
+                  ],
+                  "pointers": {
+                    "6": "pivot"
+                  }
+                },
+                "say": "Partition around the last crate, the pivot 36. Walk j along the row. Crates smaller than 36 get swapped into the left part."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 31,
+                      "mark": "compare"
+                    },
+                    {
+                      "value": 12,
+                      "mark": null
+                    },
+                    {
+                      "value": 45,
+                      "mark": null
+                    },
+                    {
+                      "value": 8,
+                      "mark": null
+                    },
+                    {
+                      "value": 27,
+                      "mark": null
+                    },
+                    {
+                      "value": 19,
+                      "mark": null
+                    },
+                    {
+                      "value": 36,
+                      "mark": "best"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "j, i",
+                    "6": "pivot"
+                  }
+                },
+                "say": "31 is smaller than 36, so it goes to the left part (swap into place).",
+                "predict": {
+                  "prompt": "Crate 31: smaller than the pivot 36?",
+                  "options": [
+                    {
+                      "text": "Yes: it joins the left part",
+                      "correct": true
+                    },
+                    {
+                      "text": "No: it stays in the right part"
+                    }
+                  ],
+                  "hints": [
+                    "Compare 31 with 36.",
+                    "31 is less than 36."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 31,
+                      "mark": null
+                    },
+                    {
+                      "value": 12,
+                      "mark": "compare"
+                    },
+                    {
+                      "value": 45,
+                      "mark": null
+                    },
+                    {
+                      "value": 8,
+                      "mark": null
+                    },
+                    {
+                      "value": 27,
+                      "mark": null
+                    },
+                    {
+                      "value": 19,
+                      "mark": null
+                    },
+                    {
+                      "value": 36,
+                      "mark": "best"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "j, i",
+                    "6": "pivot"
+                  }
+                },
+                "say": "12 is smaller than 36, so it goes to the left part (swap into place).",
+                "predict": {
+                  "prompt": "Crate 12: smaller than the pivot 36?",
+                  "options": [
+                    {
+                      "text": "Yes: it joins the left part",
+                      "correct": true
+                    },
+                    {
+                      "text": "No: it stays in the right part"
+                    }
+                  ],
+                  "hints": [
+                    "Compare 12 with 36.",
+                    "12 is less than 36."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 31,
+                      "mark": null
+                    },
+                    {
+                      "value": 12,
+                      "mark": null
+                    },
+                    {
+                      "value": 45,
+                      "mark": "compare"
+                    },
+                    {
+                      "value": 8,
+                      "mark": null
+                    },
+                    {
+                      "value": 27,
+                      "mark": null
+                    },
+                    {
+                      "value": 19,
+                      "mark": null
+                    },
+                    {
+                      "value": 36,
+                      "mark": "best"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "i",
+                    "2": "j",
+                    "6": "pivot"
+                  }
+                },
+                "say": "45 is not smaller than 36, so it stays in the right part.",
+                "predict": {
+                  "prompt": "Crate 45: smaller than the pivot 36?",
+                  "options": [
+                    {
+                      "text": "No: it stays in the right part",
+                      "correct": true
+                    },
+                    {
+                      "text": "Yes: it joins the left part"
+                    }
+                  ],
+                  "hints": [
+                    "Compare 45 with 36.",
+                    "45 is more than 36."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 31,
+                      "mark": null
+                    },
+                    {
+                      "value": 12,
+                      "mark": null
+                    },
+                    {
+                      "value": 8,
+                      "mark": null
+                    },
+                    {
+                      "value": 45,
+                      "mark": "compare"
+                    },
+                    {
+                      "value": 27,
+                      "mark": null
+                    },
+                    {
+                      "value": 19,
+                      "mark": null
+                    },
+                    {
+                      "value": 36,
+                      "mark": "best"
+                    }
+                  ],
+                  "pointers": {
+                    "2": "i",
+                    "3": "j",
+                    "6": "pivot"
+                  }
+                },
+                "say": "8 is smaller than 36, so it goes to the left part (swap into place).",
+                "predict": {
+                  "prompt": "Crate 8: smaller than the pivot 36?",
+                  "options": [
+                    {
+                      "text": "Yes: it joins the left part",
+                      "correct": true
+                    },
+                    {
+                      "text": "No: it stays in the right part"
+                    }
+                  ],
+                  "hints": [
+                    "Compare 8 with 36.",
+                    "8 is less than 36."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 31,
+                      "mark": null
+                    },
+                    {
+                      "value": 12,
+                      "mark": null
+                    },
+                    {
+                      "value": 8,
+                      "mark": null
+                    },
+                    {
+                      "value": 27,
+                      "mark": null
+                    },
+                    {
+                      "value": 45,
+                      "mark": "compare"
+                    },
+                    {
+                      "value": 19,
+                      "mark": null
+                    },
+                    {
+                      "value": 36,
+                      "mark": "best"
+                    }
+                  ],
+                  "pointers": {
+                    "3": "i",
+                    "4": "j",
+                    "6": "pivot"
+                  }
+                },
+                "say": "27 is smaller than 36, so it goes to the left part (swap into place).",
+                "predict": {
+                  "prompt": "Crate 27: smaller than the pivot 36?",
+                  "options": [
+                    {
+                      "text": "Yes: it joins the left part",
+                      "correct": true
+                    },
+                    {
+                      "text": "No: it stays in the right part"
+                    }
+                  ],
+                  "hints": [
+                    "Compare 27 with 36.",
+                    "27 is less than 36."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 31,
+                      "mark": null
+                    },
+                    {
+                      "value": 12,
+                      "mark": null
+                    },
+                    {
+                      "value": 8,
+                      "mark": null
+                    },
+                    {
+                      "value": 27,
+                      "mark": null
+                    },
+                    {
+                      "value": 19,
+                      "mark": null
+                    },
+                    {
+                      "value": 45,
+                      "mark": "compare"
+                    },
+                    {
+                      "value": 36,
+                      "mark": "best"
+                    }
+                  ],
+                  "pointers": {
+                    "4": "i",
+                    "5": "j",
+                    "6": "pivot"
+                  }
+                },
+                "say": "19 is smaller than 36, so it goes to the left part (swap into place).",
+                "predict": {
+                  "prompt": "Crate 19: smaller than the pivot 36?",
+                  "options": [
+                    {
+                      "text": "Yes: it joins the left part",
+                      "correct": true
+                    },
+                    {
+                      "text": "No: it stays in the right part"
+                    }
+                  ],
+                  "hints": [
+                    "Compare 19 with 36.",
+                    "19 is less than 36."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 31,
+                      "mark": null
+                    },
+                    {
+                      "value": 12,
+                      "mark": null
+                    },
+                    {
+                      "value": 8,
+                      "mark": null
+                    },
+                    {
+                      "value": 27,
+                      "mark": null
+                    },
+                    {
+                      "value": 19,
+                      "mark": null
+                    },
+                    {
+                      "value": 36,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 45,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "5": "pivot"
+                  }
+                },
+                "say": "Last, swap the pivot into the gap. 36 now sits at position 5, its final place in the sorted row: smaller crates on its left, bigger on its right."
+              }
+            ]
+          },
+          "explain": "Watch the row 31, 12, 45, 8, 27, 19, 36 get partitioned around 36. Predict each decision."
+        },
+        {
+          "id": "pivot-pos",
+          "type": "numeric",
+          "taughtOn": "partition",
+          "prompt": "After partitioning 31, 12, 45, 8, 27, 19, 36 around the last crate (36), at which position (counting from 0) does the pivot end up?",
+          "answer": 5,
+          "unit": "",
+          "hints": [
+            "Count how many crates are smaller than the pivot.",
+            "31, 12, 8, 27, 19 are smaller."
+          ],
+          "explain": "5 crates are smaller than 36, so it lands at position 5."
+        },
+        {
+          "id": "part-cmps",
+          "type": "numeric",
+          "taughtOn": "partition",
+          "prompt": "How many comparisons does one partition of 7 crates use?",
+          "answer": 6,
+          "unit": "comparisons",
+          "hints": [
+            "Each crate other than the pivot is compared once.",
+            "7 − 1."
+          ],
+          "explain": "7 crates minus the pivot: 6."
+        },
+        {
+          "id": "which-side",
+          "type": "choice",
+          "taughtOn": "select",
+          "prompt": "You want the 4th smallest crate, which is at position 3 (counting from 0). The pivot landed at position 5. Which side do you keep?",
+          "options": [
+            {
+              "text": "The left side",
+              "correct": true
+            },
+            {
+              "text": "The right side"
+            },
+            {
+              "text": "Both sides"
+            },
+            {
+              "text": "Neither: the pivot is the answer"
+            }
+          ],
+          "hints": [
+            "Compare the wanted position with the pivot position.",
+            "The wanted position 3 is smaller than 5."
+          ],
+          "explain": "Position 3 is before the pivot, so keep that side only."
+        },
+        {
+          "id": "kth",
+          "type": "numeric",
+          "taughtOn": "select",
+          "prompt": "What is the 4th smallest crate in 31, 12, 45, 8, 27, 19, 36?",
+          "answer": 27,
+          "unit": "",
+          "hints": [
+            "Sorted, the row is 8, 12, 19 and so on.",
+            "Count to the 4th."
+          ],
+          "explain": "Sorted: 8, 12, 19, 27, 31, 36, 45. The 4th is 27. Quickselect finds it in 4 rounds, with 11 comparisons."
+        },
+        {
+          "id": "worst-select",
+          "type": "numeric",
+          "taughtOn": "cost-select",
+          "prompt": "Challenge: in the worst case, every partition throws away only the pivot. How many comparisons does quickselect then use on 10 crates?",
+          "answer": 45,
+          "unit": "comparisons",
+          "hints": [
+            "The first round uses 9, the next 8, and so on.",
+            "9 + 8 + ... + 1 = 10 × 9 ÷ 2."
+          ],
+          "explain": "Each round compares everything except the pivot: 9 + 8 + ... + 1 = 45.",
+          "challenge": true
+        },
+        {
+          "id": "vs-sort",
+          "type": "choice",
+          "taughtOn": "cost-select",
+          "prompt": "Challenge: why is quickselect cheaper than sorting everything just to find the median?",
+          "options": [
+            {
+              "text": "It works on only one side after each partition",
+              "correct": true
+            },
+            {
+              "text": "It uses a better pivot every time"
+            },
+            {
+              "text": "It never compares crates"
+            },
+            {
+              "text": "It leaves the crates unsorted at the end, so the problem does not need solving"
+            }
+          ],
+          "hints": [
+            "What happens to the other side after a partition?",
+            "It is thrown away and never looked at again."
+          ],
+          "explain": "Sorting must handle both sides every time. Quickselect keeps one.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "a2.4-f1",
+          "type": "quiz",
+          "taughtOn": "partition",
+          "prompt": "After partitioning, the pivot is...",
+          "options": [
+            {
+              "text": "In its final sorted position",
+              "correct": true
+            },
+            {
+              "text": "Always at the left end"
+            },
+            {
+              "text": "Always in the middle"
+            },
+            {
+              "text": "Removed from the row"
+            }
+          ],
+          "explain": "Smaller on its left, bigger on its right: that is its final place."
+        },
+        {
+          "id": "a2.4-f2",
+          "type": "quiz",
+          "taughtOn": "partition",
+          "prompt": "Comparisons for one partition of 12 crates?",
+          "options": [
+            {
+              "text": "11",
+              "correct": true
+            },
+            {
+              "text": "12"
+            },
+            {
+              "text": "6"
+            },
+            {
+              "text": "66"
+            }
+          ],
+          "explain": "Every crate but the pivot is compared once."
+        },
+        {
+          "id": "a2.4-f3",
+          "type": "predict",
+          "taughtOn": "select",
+          "prompt": "After partitioning, how does quickselect decide which side to keep?",
+          "answer": "It compares the wanted position with the pivot position, and keeps the side holding it."
+        },
+        {
+          "id": "a2.4-f4",
+          "type": "why",
+          "taughtOn": "cost-select",
+          "prompt": "A bad pivot makes quickselect slow because...",
+          "options": [
+            {
+              "text": "Only a crate or two is discarded each round",
+              "correct": true
+            },
+            {
+              "text": "It cannot compare crates"
+            },
+            {
+              "text": "It sorts both sides"
+            },
+            {
+              "text": "It stops too early"
+            }
+          ],
+          "explain": "Little is thrown away, so there are many rounds."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Medians in the real world",
+          "text": "Finding a median, such as the typical response time, is an everyday job in data analysis. Selection algorithms such as quickselect find the k-th smallest value, the median included, in linear time on average, which beats sorting everything first.",
+          "source": {
+            "title": "Wikipedia: Selection algorithm",
+            "url": "https://en.wikipedia.org/wiki/Selection_algorithm"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You partitioned a row around a pivot, saw that the pivot lands in its final place, and used that to throw away a whole side when looking for the 4th smallest.",
+          "Dot hands over the middle crate. \"No full sort needed.\" The same partition idea powers quicksort, which you will meet on Split Rock."
+        ],
+        "mistake": {
+          "title": "Thinking the left and right sides are sorted",
+          "text": "Partition only guarantees that smaller crates are on the left and bigger ones on the right. Inside each side, the order is still mixed."
+        }
+      }
+    }
+  ]
+}

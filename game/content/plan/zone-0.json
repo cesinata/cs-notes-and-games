@@ -1,0 +1,633 @@
+{
+  "zone": 0,
+  "levels": [
+    {
+      "id": "0.1",
+      "title": "Find the Steps",
+      "story": "Ranger Rowan hands Kit a lantern with no oil and points up the hill. \"Light it before dark,\" says Rowan. \"There are a dozen things you could do first, and only a few orders that work.\" Kit sits on a stump and starts a list.",
+      "everyday": {
+        "scene": "A phone's walking directions say 'turn left, then take the second right, then cross at the lights'. Somebody, or something, worked out those moves in order before you took a single step.",
+        "question": "What does it mean to make a plan?",
+        "answer": "To plan is to choose a list of actions, in the right order, that takes you from where you are to where you want to be, before you act."
+      },
+      "lessons": [
+        {
+          "id": "start-goal-actions",
+          "title": "Start, goal and actions",
+          "text": [
+            "A planning problem has three parts. The initial state says how the world is now. The goal says what must be true at the end. The actions are the moves you are allowed, and each one changes the world a little.",
+            "A plan is a list of actions which, started from the initial state, ends in a state where the goal is true. Kit's lantern is empty, the oil is in the shed, and the goal is a lit lantern."
+          ],
+          "terms": [
+            {
+              "term": "Initial state",
+              "meaning": "How the world is at the start."
+            },
+            {
+              "term": "Goal",
+              "meaning": "What must be true when the plan is finished."
+            },
+            {
+              "term": "Action",
+              "meaning": "One allowed move that changes the world."
+            },
+            {
+              "term": "Plan",
+              "meaning": "A list of actions that gets you from the start to the goal."
+            }
+          ],
+          "table": {
+            "head": [
+              "Part",
+              "In Kit's lantern problem"
+            ],
+            "rows": [
+              [
+                "Initial state",
+                "Kit in the cabin, oil in the shed, lantern empty"
+              ],
+              [
+                "Goal",
+                "Lantern lit"
+              ],
+              [
+                "Actions",
+                "Walk, pick up, pour, light"
+              ],
+              [
+                "Plan",
+                "Walk to the shed, pick up the oil, walk back, pour it in, light it"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Automated planning and scheduling",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Automated_planning_and_scheduling"
+            },
+            {
+              "title": "Wikipedia: STRIPS",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Stanford_Research_Institute_Problem_Solver"
+            }
+          ]
+        },
+        {
+          "id": "order-matters",
+          "title": "Order matters",
+          "text": [
+            "Each action only works when its conditions hold. Kit cannot pour oil before fetching it, and cannot light a dry lantern. So a plan is a sequence, not a pile of actions.",
+            "The number of possible orders grows fast. Three chores can be done in 6 orders, five chores in 120, and ten chores in 3,628,800. Most orders fail somewhere, so a program needs a clever way to search rather than trying every order."
+          ],
+          "predict": {
+            "prompt": "How many different orders can 4 chores be done in?",
+            "answer": "24, because 4 x 3 x 2 x 1 = 24."
+          },
+          "deeper": {
+            "title": "Counting orders",
+            "text": [
+              "For n different chores the number of orders is n x (n - 1) x ... x 2 x 1, written n!. That is the number of ways to line them up."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Automated planning and scheduling",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Automated_planning_and_scheduling"
+            }
+          ]
+        },
+        {
+          "id": "friendly-assumptions",
+          "title": "What a planner assumes",
+          "text": [
+            "The simplest kind of planning is called classical planning. It makes friendly assumptions: you know exactly where you start, every action has one predictable result, actions take no time and happen one at a time, and there is a single agent.",
+            "Real life bends these rules. A match can fail to light, or a neighbour can move the can. Planners start with the simple case because its ideas carry over to harder ones."
+          ],
+          "deeper": {
+            "title": "Beyond classical",
+            "text": [
+              "Other kinds of planning allow actions that might fail, a world you can only partly see, actions that take time, or several agents. This game stays with classical planning."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Automated planning and scheduling",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Automated_planning_and_scheduling"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "lantern-order",
+          "type": "order",
+          "taughtOn": "order-matters",
+          "prompt": "Put Kit's plan in order. A match burns out in seconds, so it is struck last.",
+          "items": [
+            "Walk to the shed",
+            "Pick up the oil can",
+            "Walk back to the cabin",
+            "Pour the oil into the lantern",
+            "Strike a match and light the lantern"
+          ],
+          "hints": [
+            "The lantern is in the cabin, and the oil is in the shed.",
+            "The match is struck last."
+          ],
+          "explain": "Kit fetches the oil first, brings it to the lantern, pours it in and only then lights it. Each step sets up the next."
+        },
+        {
+          "id": "planning-terms",
+          "type": "match",
+          "taughtOn": "start-goal-actions",
+          "prompt": "Match each planning word to its meaning.",
+          "pairs": [
+            {
+              "left": "Initial state",
+              "right": "How the world is right now"
+            },
+            {
+              "left": "Goal",
+              "right": "What must be true at the end"
+            },
+            {
+              "left": "Action",
+              "right": "One allowed move that changes the world"
+            },
+            {
+              "left": "Plan",
+              "right": "A list of actions from start to goal"
+            }
+          ],
+          "hints": [
+            "A plan is built out of actions.",
+            "The goal is what the plan is for."
+          ],
+          "explain": "The initial state is where you are, the goal is where you want to be, actions are the moves, and a plan is the list of moves."
+        },
+        {
+          "id": "orders-four",
+          "type": "numeric",
+          "taughtOn": "order-matters",
+          "prompt": "How many different orders can 4 different chores be done in?",
+          "answer": 24,
+          "calculator": false,
+          "hints": [
+            "Pick the first chore in 4 ways, then the next in 3 ways, and so on.",
+            "4 x 3 x 2 x 1."
+          ],
+          "explain": "4 x 3 x 2 x 1 = 24 orders."
+        },
+        {
+          "id": "lantern-sim",
+          "type": "stepsim",
+          "taughtOn": "order-matters",
+          "mode": "predict",
+          "prompt": "Watch Kit's plan change the world one action at a time.",
+          "explain": "Each action needs certain things to be true and then changes a few of them. After five actions in the right order, the lantern is lit.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "cabin",
+                      "mark": null,
+                      "tag": "Kit"
+                    },
+                    {
+                      "value": "in the shed",
+                      "mark": null,
+                      "tag": "Oil can"
+                    },
+                    {
+                      "value": "empty",
+                      "mark": null,
+                      "tag": "Lantern (in the cabin)"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Kit's lantern problem"
+                },
+                "say": "The start: Kit is in the cabin, the oil can is in the shed, and the lantern in the cabin is empty. The goal: a lit lantern."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "shed",
+                      "mark": "current",
+                      "tag": "Kit"
+                    },
+                    {
+                      "value": "in the shed",
+                      "mark": null,
+                      "tag": "Oil can"
+                    },
+                    {
+                      "value": "empty",
+                      "mark": null,
+                      "tag": "Lantern (in the cabin)"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "action 1"
+                  },
+                  "label": "Kit's lantern problem"
+                },
+                "say": "Action 1: walk to the shed. Kit's place changes. Nothing else does."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "shed",
+                      "mark": null,
+                      "tag": "Kit"
+                    },
+                    {
+                      "value": "in Kit's hand",
+                      "mark": "current",
+                      "tag": "Oil can"
+                    },
+                    {
+                      "value": "empty",
+                      "mark": null,
+                      "tag": "Lantern (in the cabin)"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "action 2"
+                  },
+                  "label": "Kit's lantern problem"
+                },
+                "say": "Action 2: pick up the oil can. This works because Kit is in the same place as the can.",
+                "predict": {
+                  "prompt": "Kit is in the shed holding the oil. Could Kit fill the lantern right now?",
+                  "options": [
+                    {
+                      "text": "No, the lantern is in the cabin and Kit is not",
+                      "correct": true
+                    },
+                    {
+                      "text": "Yes, Kit has the oil",
+                      "correct": false
+                    },
+                    {
+                      "text": "Yes, any place will do",
+                      "correct": false
+                    },
+                    {
+                      "text": "No, the oil can is empty",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "An action only works when its conditions are true.",
+                    "Pouring needs Kit and the lantern in the same place."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "cabin",
+                      "mark": "current",
+                      "tag": "Kit"
+                    },
+                    {
+                      "value": "in Kit's hand",
+                      "mark": null,
+                      "tag": "Oil can"
+                    },
+                    {
+                      "value": "empty",
+                      "mark": null,
+                      "tag": "Lantern (in the cabin)"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "action 3"
+                  },
+                  "label": "Kit's lantern problem"
+                },
+                "say": "Action 3: walk back to the cabin, carrying the oil."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "cabin",
+                      "mark": null,
+                      "tag": "Kit"
+                    },
+                    {
+                      "value": "used up",
+                      "mark": "current",
+                      "tag": "Oil can"
+                    },
+                    {
+                      "value": "full",
+                      "mark": "current",
+                      "tag": "Lantern (in the cabin)"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "action 4",
+                    "2": "action 4"
+                  },
+                  "label": "Kit's lantern problem"
+                },
+                "say": "Action 4: pour the oil into the lantern. Two things change at once: the can is used up and the lantern is full."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "cabin",
+                      "mark": null,
+                      "tag": "Kit"
+                    },
+                    {
+                      "value": "used up",
+                      "mark": null,
+                      "tag": "Oil can"
+                    },
+                    {
+                      "value": "lit",
+                      "mark": "best",
+                      "tag": "Lantern (in the cabin)"
+                    }
+                  ],
+                  "pointers": {
+                    "2": "goal"
+                  },
+                  "label": "Kit's lantern problem"
+                },
+                "say": "Action 5: strike a match and light the lantern. The goal is true. These five actions, in this order, are a plan.",
+                "predict": {
+                  "prompt": "Could Kit light the lantern (action 5) before pouring in the oil (action 4) and still reach the goal?",
+                  "options": [
+                    {
+                      "text": "No: a dry lantern will not light, so the oil must go in first",
+                      "correct": true
+                    },
+                    {
+                      "text": "Yes, the order never matters",
+                      "correct": false
+                    },
+                    {
+                      "text": "Yes, if Kit strikes two matches",
+                      "correct": false
+                    },
+                    {
+                      "text": "No, because the shed is closed",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Think about what the lantern needs before it can burn.",
+                    "An action's conditions must already be true."
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "orders-five",
+          "type": "numeric",
+          "taughtOn": "order-matters",
+          "prompt": "How many different orders can 5 different chores be done in?",
+          "answer": 120,
+          "calculator": false,
+          "hints": [
+            "It is 5 x 4 x 3 x 2 x 1.",
+            "4 chores gave 24. Multiply by 5."
+          ],
+          "explain": "5 x 24 = 120 orders."
+        },
+        {
+          "id": "classical-rules",
+          "type": "buckets",
+          "taughtOn": "friendly-assumptions",
+          "prompt": "Is each statement true or false for classical planning?",
+          "buckets": [
+            "True",
+            "False"
+          ],
+          "items": [
+            {
+              "text": "The starting state is fully known",
+              "bucket": "True"
+            },
+            {
+              "text": "An action can fail at random",
+              "bucket": "False"
+            },
+            {
+              "text": "Two actions can happen at the exact same moment",
+              "bucket": "False"
+            },
+            {
+              "text": "There is a single agent",
+              "bucket": "True"
+            },
+            {
+              "text": "Each action has one predictable result",
+              "bucket": "True"
+            }
+          ],
+          "hints": [
+            "Classical planning is the simple case.",
+            "Randomness and teamwork are left out."
+          ],
+          "explain": "Classical planning assumes a known start, predictable actions, one action at a time and one agent."
+        },
+        {
+          "id": "not-a-pile",
+          "type": "choice",
+          "taughtOn": "order-matters",
+          "prompt": "Why is a plan a sequence and not just a set of actions?",
+          "options": [
+            {
+              "text": "Each action needs conditions that earlier actions create",
+              "correct": true
+            },
+            {
+              "text": "Computers can only read lists"
+            },
+            {
+              "text": "Every action takes the same time"
+            },
+            {
+              "text": "Plans must be short"
+            }
+          ],
+          "hints": [
+            "Think about pouring oil before fetching it.",
+            "Actions depend on what earlier actions did."
+          ],
+          "explain": "Pouring needs the oil in Kit's hand, and fetching puts it there. Swap them and the plan breaks."
+        },
+        {
+          "id": "orders-ten",
+          "type": "numeric",
+          "taughtOn": "order-matters",
+          "prompt": "Challenge: how many different orders can 10 different chores be done in?",
+          "answer": 3628800,
+          "calculator": false,
+          "hints": [
+            "Multiply 10 x 9 x 8 and keep going down to 1.",
+            "5 chores gave 120. Keep going."
+          ],
+          "explain": "10 x 9 x 8 x 7 x 6 x 5 x 4 x 3 x 2 x 1 = 3,628,800. Far too many to try one by one.",
+          "challenge": true
+        },
+        {
+          "id": "broken-rule",
+          "type": "choice",
+          "taughtOn": "friendly-assumptions",
+          "prompt": "Challenge: a gust of wind blows out Kit's match half the time. Which classical assumption does that break?",
+          "options": [
+            {
+              "text": "Each action has one predictable result",
+              "correct": true
+            },
+            {
+              "text": "The starting state is fully known"
+            },
+            {
+              "text": "There is a single agent"
+            },
+            {
+              "text": "Actions happen one at a time"
+            }
+          ],
+          "hints": [
+            "The match is the action. What happens when it is used?",
+            "The result is no longer certain."
+          ],
+          "explain": "Classical planning needs every action to have one sure outcome. A match that sometimes fails does not.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m0.1-f1",
+          "type": "quiz",
+          "taughtOn": "start-goal-actions",
+          "prompt": "What is a plan?",
+          "options": [
+            {
+              "text": "A list of actions that leads from the start to the goal",
+              "correct": true
+            },
+            {
+              "text": "A picture of the goal"
+            },
+            {
+              "text": "The world at the start"
+            },
+            {
+              "text": "One single action"
+            }
+          ],
+          "explain": "Actions in order, from start to goal."
+        },
+        {
+          "id": "m0.1-f2",
+          "type": "why",
+          "taughtOn": "order-matters",
+          "prompt": "Why does the order of actions matter?",
+          "options": [
+            {
+              "text": "Later actions need what earlier ones set up",
+              "correct": true
+            },
+            {
+              "text": "Order never matters"
+            },
+            {
+              "text": "Computers like lists"
+            },
+            {
+              "text": "Actions are numbered"
+            }
+          ],
+          "explain": "Pouring needs the oil first."
+        },
+        {
+          "id": "m0.1-f3",
+          "type": "quiz",
+          "taughtOn": "friendly-assumptions",
+          "prompt": "Which is a classical planning assumption?",
+          "options": [
+            {
+              "text": "Every action has one predictable result",
+              "correct": true
+            },
+            {
+              "text": "Actions may fail at random"
+            },
+            {
+              "text": "Many agents act at once"
+            },
+            {
+              "text": "The start is unknown"
+            }
+          ],
+          "explain": "Classical planning is the simple, predictable case."
+        },
+        {
+          "id": "m0.1-f4",
+          "type": "predict",
+          "taughtOn": "order-matters",
+          "prompt": "How many orders can 3 chores be done in?",
+          "answer": "6, because 3 x 2 x 1 = 6."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Planning problems",
+          "text": "Given a description of the starting situation, the goal, and the available actions, the planning problem is to find a plan that reaches the goal.",
+          "source": {
+            "title": "Wikipedia: Automated planning and scheduling",
+            "url": "https://en.wikipedia.org/wiki/Automated_planning_and_scheduling"
+          }
+        },
+        {
+          "title": "Classical planning",
+          "text": "The simplest planning problem has one known starting state, actions with no duration and predictable results, one action at a time, and a single agent.",
+          "source": {
+            "title": "Wikipedia: Automated planning and scheduling",
+            "url": "https://en.wikipedia.org/wiki/Automated_planning_and_scheduling"
+          }
+        },
+        {
+          "title": "Route directions",
+          "text": "In classical planning, a plan is a sequence of actions, because it is known in advance which actions will be needed. A list of turns to reach a place is a plan in that sense.",
+          "source": {
+            "title": "Wikipedia: Automated planning and scheduling",
+            "url": "https://en.wikipedia.org/wiki/Automated_planning_and_scheduling"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You met the three parts of a planning problem, saw that order matters, counted how fast the orders grow, and learned the friendly rules of classical planning.",
+          "Rowan holds up the lit lantern. \"Five steps, in order.\" Kit tucks the list into the notebook. \"Next: how to find the list when I do not know it.\""
+        ],
+        "mistake": {
+          "title": "Thinking order does not matter",
+          "text": "Actions depend on one another. Doing them in the wrong order means a condition is false when you need it, so the plan breaks."
+        }
+      }
+    }
+  ]
+}

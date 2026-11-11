@@ -1,0 +1,263 @@
+{
+  "title": "Learning Fields",
+  "tagline": "Help Farmer Fenn's farm learn from samples: how a computer finds patterns in examples, makes predictions, and checks honestly that they work.",
+  "funFacts": [
+    {
+      "text": "The term machine learning was coined in 1959 by Arthur Samuel, who worked at IBM on computer game-playing."
+    },
+    {
+      "text": "The k-nearest neighbours method was first developed by Evelyn Fix and Joseph Hodges in 1951."
+    },
+    {
+      "text": "A support vector machine only needs the points on the edge of its margin to make predictions. The other points could move and nothing would change."
+    },
+    {
+      "text": "A checker that never flags anything can still score 95 percent accuracy, if only 1 item in 20 is a problem. It also catches none of them."
+    }
+  ],
+  "listHeading": "Fields",
+  "mapStyle": "islands",
+  "starRules": "3 stars: no mistakes and no hints. 2 stars: up to 2 mistakes. 1 star: you finished.",
+  "journal": {
+    "title": "Field Journal",
+    "intro": "Every level unlocks Field Notes: where the idea shows up in the apps and systems you use today. Finish a level to read its notes.",
+    "lockedText": "Finish {level} to read this note.",
+    "hubText": "{count} of {total} Field Notes collected"
+  },
+  "feed": {
+    "title": "Daily Feed",
+    "intro": "Bite-size cards from the fields you've finished. About 10 cards, then you're done for today.",
+    "hubReady": "{count} cards ready",
+    "hubDone": "Done for today. More cards tomorrow.",
+    "hubCaughtUp": "All caught up",
+    "hubEmpty": "Finish a level to fill your feed.",
+    "streak": "{days}-day streak",
+    "start": "Start today's feed",
+    "empty": "Your feed is empty for now. Finish a level at the Seed Shed and its cards will show up here.",
+    "caughtUp": "Cards you know well wait a few days before coming back. That gap is what makes them stick.",
+    "labels": {
+      "quiz": "Quick question",
+      "predict": "Predict, then flip",
+      "why": "Why?",
+      "note": "Field Note"
+    },
+    "flip": "Flip the card",
+    "selfCheck": "Was your answer close?",
+    "gotIt": "Yes, I got it",
+    "notYet": "Not quite",
+    "next": "Next card",
+    "swipeTip": "On a phone, you can also swipe left.",
+    "comesBack": "This card will come back later so it sticks.",
+    "doneTitle": "Done for today",
+    "doneText": "You got {right} of {total} right. Cards you missed will come back soon. The rest will wait a few days, so they stick.",
+    "doneTextPerfect": "You got all {total} right. These cards will now wait a few days before coming back, so they stick.",
+    "streakFirst": "That's day 1. Come back tomorrow for day 2.",
+    "streakMore": "{days} days in a row.",
+    "backToMap": "Back to map",
+    "emptyButton": "Go to the Seed Shed"
+  },
+  "sim": {
+    "next": "Next step",
+    "back": "Back",
+    "stepOf": "Step {i} of {n}",
+    "runToEnd": "Run to the end",
+    "finish": "Continue",
+    "counted": "You predicted {guess}. It took {actual}.",
+    "revealed": "Here's what happens:",
+    "counter": "{name} so far: {value}"
+  },
+  "zones": [
+    {
+      "id": 0,
+      "name": "Seed Shed",
+      "topic": "What machine learning is, and how data is laid out",
+      "file": "zone-0.json",
+      "map": {
+        "x": 36,
+        "y": 150,
+        "sprite": "house",
+        "roof": "#B5523B"
+      },
+      "levels": [
+        {
+          "id": "0.1",
+          "title": "Sorting Seeds",
+          "core": true
+        },
+        {
+          "id": "0.2",
+          "title": "Labels and Features",
+          "core": true
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "Neighbour Fence",
+      "topic": "k-nearest neighbours",
+      "file": "zone-1.json",
+      "map": {
+        "x": 92,
+        "y": 112,
+        "sprite": "house",
+        "roof": "#C9802F"
+      },
+      "levels": [
+        {
+          "id": "1.1",
+          "title": "Ask Your Neighbours",
+          "core": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Question Orchard",
+      "topic": "Decision trees",
+      "file": "zone-2.json",
+      "map": {
+        "x": 56,
+        "y": 62,
+        "sprite": "house",
+        "roof": "#3E7039"
+      },
+      "levels": [
+        {
+          "id": "2.1",
+          "title": "Twenty Questions",
+          "core": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Odds Meadow",
+      "topic": "Probability and naive Bayes",
+      "file": "zone-3.json",
+      "map": {
+        "x": 132,
+        "y": 44,
+        "sprite": "house",
+        "roof": "#9C6B3F"
+      },
+      "levels": [
+        {
+          "id": "3.1",
+          "title": "Odds and Evens",
+          "core": true
+        },
+        {
+          "id": "3.2",
+          "title": "Count the Clues",
+          "core": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Straight Furrow",
+      "topic": "Linear and logistic regression",
+      "file": "zone-4.json",
+      "map": {
+        "x": 164,
+        "y": 104,
+        "sprite": "house",
+        "roof": "#3D6B95"
+      },
+      "levels": [
+        {
+          "id": "4.1",
+          "title": "Best Fit Line",
+          "core": true
+        },
+        {
+          "id": "4.2",
+          "title": "Yes or No",
+          "core": false
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Margin Road",
+      "topic": "Support vector machines and kernels",
+      "file": "zone-5.json",
+      "map": {
+        "x": 116,
+        "y": 162,
+        "sprite": "house",
+        "roof": "#7D5A9E"
+      },
+      "levels": [
+        {
+          "id": "5.1",
+          "title": "Widest Road",
+          "core": true
+        },
+        {
+          "id": "5.2",
+          "title": "Bend the Map",
+          "core": false
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Test Barn",
+      "topic": "Judging a model honestly",
+      "file": "zone-6.json",
+      "map": {
+        "x": 214,
+        "y": 152,
+        "sprite": "house",
+        "roof": "#B5523B"
+      },
+      "levels": [
+        {
+          "id": "6.1",
+          "title": "Right and Wrong",
+          "core": true
+        },
+        {
+          "id": "6.2",
+          "title": "Honest Tests",
+          "core": false
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Far Fields",
+      "topic": "Perceptrons, neural networks, ensembles and fairness",
+      "file": null,
+      "map": {
+        "x": 240,
+        "y": 70,
+        "sprite": "house",
+        "roof": "#5E9A4B"
+      },
+      "levels": [
+        {
+          "id": "7.1",
+          "title": "Teach a Neuron",
+          "core": true
+        },
+        {
+          "id": "7.2",
+          "title": "Many Trees Vote",
+          "core": false
+        }
+      ]
+    }
+  ],
+  "finale": {
+    "name": "The Harvest Show",
+    "topic": "Pick the right method for each farm problem, with no labels to help",
+    "map": {
+      "x": 280,
+      "y": 118,
+      "sprite": "tower",
+      "roof": "#F2B84B"
+    }
+  }
+}

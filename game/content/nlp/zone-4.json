@@ -1,0 +1,645 @@
+{
+  "zone": 4,
+  "levels": [
+    {
+      "id": "4.1",
+      "title": "Remember the Last Word",
+      "story": "Wren reads a long note aloud and Kit has to answer a question about its first line. By the end, the beginning is hazy. \"You read a word at a time and carried a summary,\" says Wren. \"A program can do that too. The trouble is how long the summary lasts.\"",
+      "everyday": {
+        "scene": "When you read a sentence, you do not look at all the words at once. You read one at a time and keep a feel for what came before.",
+        "question": "How could a program read a sentence one word at a time and still remember the start?",
+        "answer": "It keeps a running summary, called a hidden state, and updates it with each new word. This is the idea behind a recurrent neural network."
+      },
+      "lessons": [
+        {
+          "id": "reading-with-a-state",
+          "title": "A running summary",
+          "text": [
+            "A recurrent neural network, or RNN, reads a sequence one step at a time. It keeps a hidden state, a form of memory, updated at each step from the new word and the old state.",
+            "The same learned step is used at every position, so the network can read a sentence of any length. That repeating is where the name recurrent comes from."
+          ],
+          "terms": [
+            {
+              "term": "Hidden state",
+              "meaning": "The network's running summary of what it has read so far."
+            },
+            {
+              "term": "Time step",
+              "meaning": "One word, or one position, in the sequence."
+            }
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Recurrent neural network",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Recurrent_neural_network"
+            },
+            {
+              "title": "The Unreasonable Effectiveness of Recurrent Neural Networks",
+              "source": "Blog post (linked, not copied)",
+              "url": "https://karpathy.github.io/2015/05/21/rnn-effectiveness/"
+            }
+          ]
+        },
+        {
+          "id": "fading-memory",
+          "title": "Memory that fades",
+          "text": [
+            "Here is a toy version. At each step, the new memory is half the old memory plus the new word's signal. A signal of 1 on the first word becomes 1, then 0.5, 0.25, 0.125 and 0.0625 as four zeros follow.",
+            {
+              "text": "Real networks learn their own numbers, but a plain RNN has a similar problem. Traditional RNNs suffer from the vanishing gradient problem, which limits their ability to learn long-range dependencies, so linking words far apart is hard.",
+              "verify": false
+            }
+          ],
+          "table": {
+            "head": [
+              "After word",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5"
+            ],
+            "rows": [
+              [
+                "Memory",
+                "1",
+                "0.5",
+                "0.25",
+                "0.125",
+                "0.0625"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Recurrent neural network",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Recurrent_neural_network"
+            },
+            {
+              "title": "Understanding LSTM Networks (colah's blog)",
+              "source": "Blog post (linked, not copied)",
+              "url": "https://colah.github.io/posts/2015-08-Understanding-LSTMs/"
+            }
+          ]
+        },
+        {
+          "id": "keeping-longer",
+          "title": "Remembering longer",
+          "text": [
+            "In 'the keys that Wren left on the old table by the window were lost', the verb 'were' depends on 'keys', which is 11 words earlier. A plain RNN may have lost the clue by then.",
+            "The long short-term memory network, or LSTM, from 1997, adds gates that decide what to keep and what to forget. It was designed to ease the vanishing gradient problem. It still reads one word at a time."
+          ],
+          "deeper": {
+            "title": "Reading in order",
+            "text": [
+              "Because an RNN must finish one word before starting the next, it cannot read all the words at once, which makes training slower on long texts."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Long short-term memory",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Long_short-term_memory"
+            },
+            {
+              "title": "Understanding LSTM Networks (colah's blog)",
+              "source": "Blog post (linked, not copied)",
+              "url": "https://colah.github.io/posts/2015-08-Understanding-LSTMs/"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "memory-2",
+          "type": "numeric",
+          "taughtOn": "fading-memory",
+          "prompt": "In the toy memory, word 1 sets the memory to 1. Word 2 carries 0. What is the memory after word 2?",
+          "answer": 0.5,
+          "tolerance": 0.001,
+          "calculator": false,
+          "hints": [
+            "Halve the old memory and add the new signal.",
+            "0.5 x 1 + 0."
+          ],
+          "explain": "0.5 x 1 + 0 = 0.5."
+        },
+        {
+          "id": "memory-sim",
+          "type": "stepsim",
+          "taughtOn": "fading-memory",
+          "mode": "predict",
+          "prompt": "Watch the memory fade.",
+          "explain": "Each step halves the memory, so the first word's signal shrinks to almost nothing by word 5.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "after word 1"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "after word 2"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "after word 3"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "after word 4"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "after word 5"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Memory after each word"
+                },
+                "say": "A toy memory reads five words. After each word its memory number becomes half the old number plus the new word's signal. Word 1 carries a signal of 1 and words 2 to 5 carry 0. Each box will show the memory after that word."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "1",
+                      "mark": "current",
+                      "tag": "after word 1"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "after word 2"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "after word 3"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "after word 4"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "after word 5"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "word 1"
+                  },
+                  "label": "Memory after each word"
+                },
+                "say": "After word 1, the memory is 0.5 x 0 + 1 = 1. The first word is fully remembered."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "1",
+                      "mark": null,
+                      "tag": "after word 1"
+                    },
+                    {
+                      "value": "0.5",
+                      "mark": "current",
+                      "tag": "after word 2"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "after word 3"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "after word 4"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "after word 5"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "word 2"
+                  },
+                  "label": "Memory after each word"
+                },
+                "say": "After word 2, the memory is 0.5 x 1 + 0 = 0.5. Half of the first word's signal has faded.",
+                "predict": {
+                  "prompt": "The memory is 1 and word 2 carries 0. What is the memory after word 2?",
+                  "options": [
+                    {
+                      "text": "0.5",
+                      "correct": true
+                    },
+                    {
+                      "text": "1",
+                      "correct": false
+                    },
+                    {
+                      "text": "0",
+                      "correct": false
+                    },
+                    {
+                      "text": "0.25",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Halve the old memory, then add the new signal.",
+                    "0.5 x 1 + 0."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "1",
+                      "mark": null,
+                      "tag": "after word 1"
+                    },
+                    {
+                      "value": "0.5",
+                      "mark": null,
+                      "tag": "after word 2"
+                    },
+                    {
+                      "value": "0.25",
+                      "mark": "current",
+                      "tag": "after word 3"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "after word 4"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "after word 5"
+                    }
+                  ],
+                  "pointers": {
+                    "2": "word 3"
+                  },
+                  "label": "Memory after each word"
+                },
+                "say": "After word 3, the memory is 0.25. Each step halves it again.",
+                "predict": {
+                  "prompt": "The memory is 0.5 and word 3 carries 0. What is it after word 3?",
+                  "options": [
+                    {
+                      "text": "0.25",
+                      "correct": true
+                    },
+                    {
+                      "text": "0.5",
+                      "correct": false
+                    },
+                    {
+                      "text": "0",
+                      "correct": false
+                    },
+                    {
+                      "text": "0.125",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Halve 0.5.",
+                    "0.5 x 0.5."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "1",
+                      "mark": null,
+                      "tag": "after word 1"
+                    },
+                    {
+                      "value": "0.5",
+                      "mark": null,
+                      "tag": "after word 2"
+                    },
+                    {
+                      "value": "0.25",
+                      "mark": null,
+                      "tag": "after word 3"
+                    },
+                    {
+                      "value": "0.125",
+                      "mark": null,
+                      "tag": "after word 4"
+                    },
+                    {
+                      "value": "0.0625",
+                      "mark": "current",
+                      "tag": "after word 5"
+                    }
+                  ],
+                  "pointers": {
+                    "4": "word 5"
+                  },
+                  "label": "Memory after each word"
+                },
+                "say": "By word 5 the memory is 0.0625. The first word's signal has nearly vanished, and longer sentences would shrink it further. That fading is why plain recurrent networks struggle to link words that are far apart."
+              }
+            ]
+          }
+        },
+        {
+          "id": "memory-5",
+          "type": "numeric",
+          "taughtOn": "fading-memory",
+          "prompt": "The memory halves at every step once the signal stops. What is it after word 5?",
+          "answer": 0.0625,
+          "tolerance": 0.001,
+          "calculator": false,
+          "hints": [
+            "Halve it three more times from 0.5.",
+            "0.5, 0.25, 0.125, 0.0625."
+          ],
+          "explain": "After word 2 it is 0.5, then 0.25, 0.125 and 0.0625."
+        },
+        {
+          "id": "why-recurrent",
+          "type": "choice",
+          "taughtOn": "reading-with-a-state",
+          "prompt": "Why is it called a recurrent network?",
+          "options": [
+            {
+              "text": "The same step repeats along the sequence, passing the state on",
+              "correct": true
+            },
+            {
+              "text": "It repeats the same word"
+            },
+            {
+              "text": "It reads the sentence backwards"
+            },
+            {
+              "text": "It recurs once a day"
+            }
+          ],
+          "hints": [
+            "Think about what happens at every word.",
+            "The state from one step feeds the next."
+          ],
+          "explain": "The same step is reused at each position, and its hidden state is fed into the next step."
+        },
+        {
+          "id": "rnn-facts",
+          "type": "buckets",
+          "taughtOn": "reading-with-a-state",
+          "prompt": "Is each statement about plain RNNs true or false?",
+          "buckets": [
+            "True",
+            "False"
+          ],
+          "items": [
+            {
+              "text": "It passes a hidden state from one step to the next",
+              "bucket": "True"
+            },
+            {
+              "text": "It reads every word of a sentence at the same instant",
+              "bucket": "False"
+            },
+            {
+              "text": "It reuses the same learned step at each position",
+              "bucket": "True"
+            },
+            {
+              "text": "It finds links between far-apart words easy",
+              "bucket": "False"
+            },
+            {
+              "text": "An LSTM adds gates to help it keep information",
+              "bucket": "True"
+            }
+          ],
+          "hints": [
+            "Think about reading one word at a time.",
+            "Far-apart links are the hard part."
+          ],
+          "explain": "An RNN carries a hidden state and reuses its step. It reads in order and finds far links hard. An LSTM adds gates to help."
+        },
+        {
+          "id": "gap",
+          "type": "numeric",
+          "taughtOn": "keeping-longer",
+          "prompt": "In 'the keys that Wren left on the old table by the window were lost', how many words from 'keys' to 'were'? (Count 'were' but not 'keys'.)",
+          "answer": 11,
+          "calculator": false,
+          "hints": [
+            "Count the words after 'keys' up to 'were'.",
+            "that, wren, left, on, the, old, table, by, the, window, were."
+          ],
+          "explain": "There are 11 words after 'keys' up to and including 'were'."
+        },
+        {
+          "id": "rnn-words",
+          "type": "match",
+          "taughtOn": "reading-with-a-state",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Hidden state",
+              "right": "The running summary of what was read"
+            },
+            {
+              "left": "Time step",
+              "right": "One position in the sequence"
+            },
+            {
+              "left": "Gate",
+              "right": "A control that decides what to keep or forget"
+            },
+            {
+              "left": "LSTM",
+              "right": "An RNN with gates to hold information longer"
+            }
+          ],
+          "hints": [
+            "A gate opens or closes.",
+            "LSTM stands for long short-term memory."
+          ],
+          "explain": "The hidden state is the summary, a time step is one position, a gate controls keeping and forgetting, and an LSTM is an RNN with gates."
+        },
+        {
+          "id": "were-or-was",
+          "type": "choice",
+          "taughtOn": "keeping-longer",
+          "prompt": "Challenge: 'The keys that Wren left on the old table by the window ___ lost.' Which word fits, and what must the network remember?",
+          "options": [
+            {
+              "text": "'Were', because 'keys' is plural",
+              "correct": true
+            },
+            {
+              "text": "'Was', because 'window' is singular"
+            },
+            {
+              "text": "'Was', because 'table' is singular"
+            },
+            {
+              "text": "Either one fits equally well"
+            }
+          ],
+          "hints": [
+            "Which noun is the verb about?",
+            "The subject is 'keys'."
+          ],
+          "explain": "The subject is 'keys', which is plural, so 'were' is right. The nearby nouns are singular, so the network must keep hold of 'keys'.",
+          "challenge": true
+        },
+        {
+          "id": "fade-11",
+          "type": "numeric",
+          "taughtOn": "fading-memory",
+          "prompt": "Challenge: in the toy memory, how much of a first word's signal is left after 11 more words with a signal of 0? Give it to 4 places.",
+          "answer": 0.0005,
+          "tolerance": 0.0001,
+          "calculator": false,
+          "hints": [
+            "Halve it 11 times: 0.5 to the power of 11.",
+            "It is about 0.0005."
+          ],
+          "explain": "0.5 to the power of 11 is about 0.0005, almost nothing. The toy shows why far-apart links are hard.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m4.1-f1",
+          "type": "quiz",
+          "taughtOn": "reading-with-a-state",
+          "prompt": "What is a hidden state in an RNN?",
+          "options": [
+            {
+              "text": "A running summary of what has been read",
+              "correct": true
+            },
+            {
+              "text": "A secret password"
+            },
+            {
+              "text": "The final answer"
+            },
+            {
+              "text": "The first word"
+            }
+          ],
+          "explain": "It is updated at every step."
+        },
+        {
+          "id": "m4.1-f2",
+          "type": "why",
+          "taughtOn": "fading-memory",
+          "prompt": "What is the weak spot of a plain RNN?",
+          "options": [
+            {
+              "text": "Linking words that are far apart",
+              "correct": true
+            },
+            {
+              "text": "Reading short words"
+            },
+            {
+              "text": "Counting letters"
+            },
+            {
+              "text": "Using capital letters"
+            }
+          ],
+          "explain": "Early information tends to fade."
+        },
+        {
+          "id": "m4.1-f3",
+          "type": "quiz",
+          "taughtOn": "keeping-longer",
+          "prompt": "What does an LSTM add?",
+          "options": [
+            {
+              "text": "Gates that decide what to keep or forget",
+              "correct": true
+            },
+            {
+              "text": "A bigger vocabulary"
+            },
+            {
+              "text": "A dictionary"
+            },
+            {
+              "text": "A faster computer"
+            }
+          ],
+          "explain": "It was designed to ease the vanishing gradient problem."
+        },
+        {
+          "id": "m4.1-f4",
+          "type": "predict",
+          "taughtOn": "fading-memory",
+          "prompt": "In the toy memory, the signal is 1, and it halves every step. What is it after 3 steps?",
+          "answer": "0.125, since 1 halved three times is 0.125."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Recurrent networks",
+          "text": "An RNN's recurrent unit keeps a hidden state, a form of memory, which is updated at each step from the current input and the previous hidden state.",
+          "source": {
+            "title": "Wikipedia: Recurrent neural network",
+            "url": "https://en.wikipedia.org/wiki/Recurrent_neural_network"
+          }
+        },
+        {
+          "title": "LSTMs",
+          "text": "Long short-term memory networks were published in 1997 and are a type of RNN aimed at easing the vanishing gradient problem.",
+          "source": {
+            "title": "Wikipedia: Long short-term memory",
+            "url": "https://en.wikipedia.org/wiki/Long_short-term_memory"
+          }
+        },
+        {
+          "title": "Text from RNNs",
+          "text": "RNNs have been trained to write text one character at a time, learning to copy the style of the text they were given.",
+          "source": {
+            "title": "The Unreasonable Effectiveness of Recurrent Neural Networks",
+            "url": "https://karpathy.github.io/2015/05/21/rnn-effectiveness/"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You saw a recurrent network read one word at a time with a hidden state, watched a toy memory fade over a few steps, and learned why LSTMs add gates.",
+          "Wren sets down the long note. \"You kept the start for a while. A gate might have kept it longer.\""
+        ],
+        "mistake": {
+          "title": "Thinking memory lasts forever",
+          "text": "A hidden state is a small summary updated at every step. Old information fades unless the network has a way, like gates, to hold on to it."
+        }
+      }
+    }
+  ]
+}

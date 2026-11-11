@@ -1,0 +1,2419 @@
+{
+  "zone": 2,
+  "levels": [
+    {
+      "id": "2.1",
+      "title": "Climbing the Tree",
+      "story": "On Index Quay, Clerk Cobb holds up a thick book. \"This lists every crate in the harbour in order of number. To find crate 50,000 I do not read from page one. I jump to the right place in three or four moves.\"",
+      "everyday": {
+        "scene": "A big book has an index at the back. You look up a word, the index tells you the page numbers, and you jump straight there instead of reading every page.",
+        "question": "How can a database find one row among millions without reading them all?",
+        "answer": "It keeps an index. The most common kind, a B+ tree, is a short, wide tree of pages. A few steps down the tree lead to the row."
+      },
+      "lessons": [
+        {
+          "id": "tree-idea",
+          "title": "A tree of pages",
+          "text": [
+            "An index is a separate structure that maps key values to where the rows live, like the index at the back of a book. The most common kind is the B+ tree.",
+            "In a B+ tree the internal nodes hold only guide keys. All the entries sit in the leaves at the bottom, and the leaves are linked in order. Each node has very many children, so the tree is short and wide."
+          ],
+          "terms": [
+            {
+              "term": "Index",
+              "meaning": "A structure that maps key values to where rows live."
+            },
+            {
+              "term": "Leaf",
+              "meaning": "A bottom node that holds the entries."
+            },
+            {
+              "term": "Fan-out",
+              "meaning": "How many children a node can have."
+            }
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: B+ tree",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/B%2B_tree"
+            },
+            {
+              "title": "PostgreSQL documentation: Index Types",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/indexes-types.html"
+            }
+          ]
+        },
+        {
+          "id": "short-and-wide",
+          "title": "Short and wide",
+          "text": [
+            "A lookup reads one node for each level on the way down. If each node can point to 100 children, one step down from the root reaches 100 nodes, two steps reach 10,000, and three steps reach 1,000,000. A huge table needs only a handful of page reads to find one row.",
+            {
+              "text": "The most efficient B+ tree is sized to the storage system's block size, so in a database a node usually fills about one block (page).",
+              "verify": false
+            }
+          ],
+          "table": {
+            "head": [
+              "Steps down",
+              "Nodes reachable (fan-out 100)"
+            ],
+            "rows": [
+              [
+                "1",
+                "100"
+              ],
+              [
+                "2",
+                "10,000"
+              ],
+              [
+                "3",
+                "1,000,000"
+              ],
+              [
+                "4",
+                "100,000,000"
+              ]
+            ]
+          },
+          "deeper": {
+            "title": "Real trees are a little taller",
+            "text": [
+              {
+                "text": "In real trees, nodes are not always full: a B+ tree only keeps each node above a minimum number of keys, so the tree can be a little taller than this neat arithmetic says. The idea holds: a few levels cover a very large table.",
+                "verify": false
+              }
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: B+ tree",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/B%2B_tree"
+            },
+            {
+              "title": "PostgreSQL documentation: Database Page Layout",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/storage-page-layout.html"
+            }
+          ]
+        },
+        {
+          "id": "search-and-range",
+          "title": "Searching and ranges",
+          "text": [
+            "To search, start at the root, compare the key with the guide keys, follow the matching child, and repeat until you reach a leaf. For a range, find the first key, then walk along the linked leaves instead of climbing back up.",
+            "Because the keys are kept in order, PostgreSQL's B-tree handles =, <, <=, >= and >, and can also hand back data in sorted order."
+          ],
+          "table": {
+            "head": [
+              "Node",
+              "Holds"
+            ],
+            "rows": [
+              [
+                "R (root)",
+                "guide keys 30 and 60"
+              ],
+              [
+                "A (leaf)",
+                "10, 20"
+              ],
+              [
+                "B (leaf)",
+                "30, 40, 50"
+              ],
+              [
+                "C (leaf)",
+                "60, 70, 80"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: B+ tree",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/B%2B_tree"
+            },
+            {
+              "title": "PostgreSQL documentation: Index Types",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/indexes-types.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "bt-sim",
+          "type": "stepsim",
+          "taughtOn": "search-and-range",
+          "mode": "predict",
+          "prompt": "Search the small tree for one key, then for a range.",
+          "explain": "A single key takes a path from root to leaf. A range finds its first key, then follows the leaf links.",
+          "script": {
+            "view": "graph",
+            "steps": [
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "R",
+                      "x": 150,
+                      "y": 30,
+                      "label": "R",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "A",
+                      "x": 60,
+                      "y": 120,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 150,
+                      "y": 120,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 240,
+                      "y": 120,
+                      "label": "C"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "R",
+                      "to": "A"
+                    },
+                    {
+                      "from": "R",
+                      "to": "B"
+                    },
+                    {
+                      "from": "R",
+                      "to": "C"
+                    },
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C"
+                    }
+                  ],
+                  "legend": "R is the root. A, B and C are leaves. The sideways lines are leaf links. now = where we are. visited = read already."
+                },
+                "say": "A tiny B+ tree. The root R holds guide keys 30 and 60: keys below 30 are in leaf A, keys 30 to 59 are in leaf B, and keys 60 and up are in leaf C. We search for the key 50, starting at R.",
+                "predict": {
+                  "prompt": "50 is not below 30, and not 60 or more. Which leaf is next?",
+                  "options": [
+                    {
+                      "text": "Leaf B",
+                      "correct": true
+                    },
+                    {
+                      "text": "Leaf A",
+                      "correct": false
+                    },
+                    {
+                      "text": "Leaf C",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Check which range 50 falls in.",
+                    "Leaf B covers 30 to 59."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "R",
+                      "x": 150,
+                      "y": 30,
+                      "label": "R",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "A",
+                      "x": 60,
+                      "y": 120,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 150,
+                      "y": 120,
+                      "label": "B",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "C",
+                      "x": 240,
+                      "y": 120,
+                      "label": "C"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "R",
+                      "to": "A"
+                    },
+                    {
+                      "from": "R",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "R",
+                      "to": "C"
+                    },
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C"
+                    }
+                  ],
+                  "legend": "R is the root. A, B and C are leaves. The sideways lines are leaf links. now = where we are. visited = read already."
+                },
+                "say": "We are in leaf B, which holds 30, 40 and 50. The key 50 is here. That took 2 node reads: the root and one leaf."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "R",
+                      "x": 150,
+                      "y": 30,
+                      "label": "R",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "A",
+                      "x": 60,
+                      "y": 120,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 150,
+                      "y": 120,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 240,
+                      "y": 120,
+                      "label": "C"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "R",
+                      "to": "A"
+                    },
+                    {
+                      "from": "R",
+                      "to": "B"
+                    },
+                    {
+                      "from": "R",
+                      "to": "C"
+                    },
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C"
+                    }
+                  ],
+                  "legend": "R is the root. A, B and C are leaves. The sideways lines are leaf links. now = where we are. visited = read already."
+                },
+                "say": "A new question: all keys from 40 to 70. At the root, 40 falls in the 30 to 59 range, so we head for leaf B."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "R",
+                      "x": 150,
+                      "y": 30,
+                      "label": "R",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "A",
+                      "x": 60,
+                      "y": 120,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 150,
+                      "y": 120,
+                      "label": "B",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "C",
+                      "x": 240,
+                      "y": 120,
+                      "label": "C"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "R",
+                      "to": "A"
+                    },
+                    {
+                      "from": "R",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "R",
+                      "to": "C"
+                    },
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C"
+                    }
+                  ],
+                  "legend": "R is the root. A, B and C are leaves. The sideways lines are leaf links. now = where we are. visited = read already."
+                },
+                "say": "Leaf B gives 40 and 50. We have not passed 70 yet, so we may need more keys from the next leaf.",
+                "predict": {
+                  "prompt": "The leaf has run out of keys but 70 has not been passed. What is the cheapest next move?",
+                  "options": [
+                    {
+                      "text": "Follow the leaf link to leaf C",
+                      "correct": true
+                    },
+                    {
+                      "text": "Climb back to the root and search again",
+                      "correct": false
+                    },
+                    {
+                      "text": "Stop here",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "The leaves are linked in order.",
+                    "Going back to the root costs extra reads."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "R",
+                      "x": 150,
+                      "y": 30,
+                      "label": "R",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "A",
+                      "x": 60,
+                      "y": 120,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 150,
+                      "y": 120,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 240,
+                      "y": 120,
+                      "label": "C",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "R",
+                      "to": "A"
+                    },
+                    {
+                      "from": "R",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "R",
+                      "to": "C"
+                    },
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "R is the root. A, B and C are leaves. The sideways lines are leaf links. now = where we are. visited = read already."
+                },
+                "say": "Leaf C gives 60 and 70. The next key is 80, which is past 70, so we stop. The answer is 40, 50, 60, 70 and it took 3 node reads."
+              }
+            ]
+          }
+        },
+        {
+          "id": "steps-million",
+          "type": "numeric",
+          "taughtOn": "short-and-wide",
+          "prompt": "Each node points to 100 children. How many steps down from the root reach 1,000,000 nodes?",
+          "answer": 3,
+          "calculator": false,
+          "hints": [
+            "One step reaches 100, two reach 10,000.",
+            "Count how many times you multiply 100 to get to 1,000,000."
+          ],
+          "explain": "100 x 100 x 100 = 1,000,000, so 3 steps."
+        },
+        {
+          "id": "steps-hundred-million",
+          "type": "numeric",
+          "taughtOn": "short-and-wide",
+          "prompt": "Each node points to 100 children. How many steps down reach 100,000,000 nodes?",
+          "answer": 4,
+          "calculator": false,
+          "hints": [
+            "Three steps reach 1,000,000.",
+            "One more multiplication by 100 reaches 100,000,000."
+          ],
+          "explain": "100 x 100 x 100 x 100 = 100,000,000, so 4 steps. A hundred times more data costs just one more step."
+        },
+        {
+          "id": "steps-ten",
+          "type": "numeric",
+          "taughtOn": "short-and-wide",
+          "prompt": "Each node points to only 10 children. How many steps down reach 100,000 nodes?",
+          "answer": 5,
+          "calculator": false,
+          "hints": [
+            "Each step multiplies by 10.",
+            "10 x 10 x 10 x 10 x 10."
+          ],
+          "explain": "10 to the power 5 is 100,000, so 5 steps. A narrower tree has to be taller."
+        },
+        {
+          "id": "btree-helps",
+          "type": "buckets",
+          "taughtOn": "search-and-range",
+          "prompt": "Can a B+ tree index on the column in question help with each search?",
+          "buckets": [
+            "Can help",
+            "Cannot help"
+          ],
+          "items": [
+            {
+              "text": "id = 42",
+              "bucket": "Can help"
+            },
+            {
+              "text": "id BETWEEN 10 AND 20",
+              "bucket": "Can help"
+            },
+            {
+              "text": "id < 100",
+              "bucket": "Can help"
+            },
+            {
+              "text": "ORDER BY id",
+              "bucket": "Can help"
+            },
+            {
+              "text": "name LIKE '%son' (ends with son)",
+              "bucket": "Cannot help"
+            },
+            {
+              "text": "name LIKE '%ar%' (has ar in the middle)",
+              "bucket": "Cannot help"
+            }
+          ],
+          "hints": [
+            "A B+ tree keeps keys in order.",
+            "A word that starts anywhere gives no place to begin in the order."
+          ],
+          "explain": "B-trees handle equality, ranges and sorted output. A pattern that starts with a wildcard has no starting point in the order."
+        },
+        {
+          "id": "search-steps",
+          "type": "order",
+          "taughtOn": "search-and-range",
+          "prompt": "Put the steps of a B+ tree search in order.",
+          "items": [
+            "Start at the root",
+            "Compare the key with the guide keys",
+            "Follow the child the key belongs to",
+            "Repeat until you reach a leaf",
+            "Look for the key in the leaf"
+          ],
+          "hints": [
+            "You begin at the top.",
+            "You only look inside the leaf at the end."
+          ],
+          "explain": "Start at the root, compare, follow a child, repeat down to a leaf, then look inside the leaf."
+        },
+        {
+          "id": "tree-words",
+          "type": "match",
+          "taughtOn": "tree-idea",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Root",
+              "right": "The top node, where every search starts"
+            },
+            {
+              "left": "Leaf",
+              "right": "A bottom node that holds the entries"
+            },
+            {
+              "left": "Fan-out",
+              "right": "How many children a node can have"
+            },
+            {
+              "left": "Leaf link",
+              "right": "A pointer from one leaf to the next"
+            },
+            {
+              "left": "Index",
+              "right": "A structure that maps keys to rows"
+            }
+          ],
+          "hints": [
+            "The root is at the top and leaves are at the bottom.",
+            "Fan-out counts children."
+          ],
+          "explain": "The root starts a search, leaves hold entries, fan-out counts children, leaf links join leaves, and the index maps keys to rows."
+        },
+        {
+          "id": "why-wide",
+          "type": "choice",
+          "taughtOn": "short-and-wide",
+          "prompt": "Why do database B+ trees have many children per node?",
+          "options": [
+            {
+              "text": "It keeps the tree short, so few pages are read",
+              "correct": true
+            },
+            {
+              "text": "It saves disk space for the root"
+            },
+            {
+              "text": "It makes the keys random"
+            },
+            {
+              "text": "It lets the tree skip the leaves"
+            }
+          ],
+          "hints": [
+            "Re-read the table of steps down.",
+            "More children per node means fewer levels."
+          ],
+          "explain": "A wide node covers many children, so few levels cover a huge table, and each level costs one page read."
+        },
+        {
+          "id": "why-linked",
+          "type": "choice",
+          "taughtOn": "search-and-range",
+          "prompt": "Why are the leaves linked to each other?",
+          "options": [
+            {
+              "text": "A range can be read by walking along the leaves",
+              "correct": true
+            },
+            {
+              "text": "So the root can be deleted"
+            },
+            {
+              "text": "So keys are stored twice"
+            },
+            {
+              "text": "So searches go backwards"
+            }
+          ],
+          "hints": [
+            "Think of the range 40 to 70.",
+            "After one leaf, the next one is a sideways step."
+          ],
+          "explain": "With linked leaves, a range scan does not climb back to the root between leaves."
+        },
+        {
+          "id": "leaves-read",
+          "type": "numeric",
+          "taughtOn": "search-and-range",
+          "prompt": "Challenge: using the tiny tree, a range search asks for keys from 5 to 65. How many leaves are read?",
+          "answer": 3,
+          "calculator": false,
+          "hints": [
+            "The first key is found in leaf A. Walk along the links until a key goes past 65.",
+            "Leaf C holds 60, 70 and 80. Is 60 in the range?"
+          ],
+          "explain": "Leaf A (10, 20), leaf B (30, 40, 50) and leaf C (60, then 70 is too big) are read, so 3.",
+          "challenge": true
+        },
+        {
+          "id": "which-leaf",
+          "type": "choice",
+          "taughtOn": "search-and-range",
+          "prompt": "Challenge: in the tiny tree, which leaf would the key 25 live in?",
+          "options": [
+            {
+              "text": "Leaf A, because 25 is below 30",
+              "correct": true
+            },
+            {
+              "text": "Leaf B"
+            },
+            {
+              "text": "Leaf C"
+            },
+            {
+              "text": "The root"
+            }
+          ],
+          "hints": [
+            "Check the guide keys 30 and 60.",
+            "25 is below 30."
+          ],
+          "explain": "Keys below 30 live in leaf A. The root holds only guide keys.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d2.1-f1",
+          "type": "quiz",
+          "taughtOn": "tree-idea",
+          "prompt": "Where do the entries of a B+ tree live?",
+          "options": [
+            {
+              "text": "In the leaves",
+              "correct": true
+            },
+            {
+              "text": "In the root only"
+            },
+            {
+              "text": "In every node equally"
+            },
+            {
+              "text": "In a separate file of guide keys"
+            }
+          ],
+          "explain": "Internal nodes hold guide keys. The entries sit in the leaves."
+        },
+        {
+          "id": "d2.1-f2",
+          "type": "quiz",
+          "taughtOn": "short-and-wide",
+          "prompt": "If each node has 100 children, how many steps down reach 10,000 nodes?",
+          "options": [
+            {
+              "text": "2",
+              "correct": true
+            },
+            {
+              "text": "1"
+            },
+            {
+              "text": "3"
+            },
+            {
+              "text": "100"
+            }
+          ],
+          "explain": "100 x 100 is 10,000."
+        },
+        {
+          "id": "d2.1-f3",
+          "type": "why",
+          "taughtOn": "search-and-range",
+          "prompt": "Why do range searches follow the leaf links?",
+          "options": [
+            {
+              "text": "They avoid climbing back to the root",
+              "correct": true
+            },
+            {
+              "text": "They skip the keys"
+            },
+            {
+              "text": "They sort the table"
+            },
+            {
+              "text": "They delete old keys"
+            }
+          ],
+          "explain": "The leaves are in order, so the next ones are one step away."
+        },
+        {
+          "id": "d2.1-f4",
+          "type": "predict",
+          "taughtOn": "search-and-range",
+          "prompt": "Can a B+ tree index help with ORDER BY id?",
+          "answer": "Yes. The keys are kept in order, so the index can hand rows back in sorted order. That is not always faster than a scan and sort."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Which questions a B-tree can answer",
+          "text": "PostgreSQL's B-tree index can handle equality and range comparisons (<, <=, =, >=, >) and can also return data in sorted order.",
+          "source": {
+            "title": "PostgreSQL: Index Types",
+            "url": "https://www.postgresql.org/docs/current/indexes-types.html"
+          }
+        },
+        {
+          "title": "High fan-out",
+          "text": "A B+ tree has a very high fan-out, which keeps the number of disk reads for a lookup small.",
+          "source": {
+            "title": "Wikipedia: B+ tree",
+            "url": "https://en.wikipedia.org/wiki/B%2B_tree"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You walked down a B+ tree to find one key, followed leaf links for a range, and saw why a wide tree needs only a few page reads.",
+          "Cobb shuts the book. \"Few steps down, then sideways along the shelf.\""
+        ],
+        "mistake": {
+          "title": "Thinking a tree is searched from page one",
+          "text": "A B+ tree is never read from the start. A lookup walks root to leaf, one page per level, and a range follows the linked leaves."
+        }
+      }
+    },
+    {
+      "id": "2.2",
+      "title": "Pigeonholes",
+      "story": "Cobb gestures at a wall of small labelled boxes. \"For a number I know exactly, a pigeonhole is fastest: the number tells me which box. For 'all the red crates that are also big', I keep a strip of tick marks for each colour and size and lay the strips on top of each other.\"",
+      "everyday": {
+        "scene": "A hotel front desk has a wall of key hooks, one for each room number. Hand over a room number and the clerk reaches straight for the hook. There is no way to ask the wall for \"every room from 12 to 20\" except by checking hooks one by one.",
+        "question": "What kind of search suits a wall of hooks, and what kind does not?",
+        "answer": "Exact matches suit it very well. Ranges and ordering do not, because nearby numbers are not stored next to each other."
+      },
+      "lessons": [
+        {
+          "id": "hash-hole",
+          "title": "Straight to the hole",
+          "text": [
+            "A hash index runs a key through a hash function that gives a bucket number, then goes straight to that bucket. Our toy rule is bucket = key mod 7. Two keys can land in the same bucket, which is a collision, so the bucket is checked key by key.",
+            "PostgreSQL's hash indexes store a 32-bit hash code of the value, so they can only handle simple equality comparisons (=)."
+          ],
+          "terms": [
+            {
+              "term": "Hash function",
+              "meaning": "A rule that turns a key into a bucket number."
+            },
+            {
+              "term": "Collision",
+              "meaning": "Two keys landing in the same bucket."
+            }
+          ],
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Index Types",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/indexes-types.html"
+            },
+            {
+              "title": "Wikipedia: Bitmap index",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Bitmap_index"
+            }
+          ]
+        },
+        {
+          "id": "bitmap-strips",
+          "title": "Strips of bits",
+          "text": [
+            "A bitmap index keeps one strip of bits for each value in a column. Bit n is 1 if row n has that value. To answer \"red AND big\", lay the two strips on top of each other and keep the places where both bits are 1.",
+            "Bitmap indexes have traditionally worked best for columns with few different values, such as yes or no."
+          ],
+          "terms": [
+            {
+              "term": "Low cardinality",
+              "meaning": "A column with few different values, such as yes or no."
+            }
+          ],
+          "table": {
+            "head": [
+              "Strip",
+              "Bits for rows 1 to 8"
+            ],
+            "rows": [
+              [
+                "red",
+                "10110101"
+              ],
+              [
+                "big",
+                "11010110"
+              ],
+              [
+                "red AND big",
+                "10010100"
+              ],
+              [
+                "red OR big",
+                "11110111"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Bitmap index",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Bitmap_index"
+            },
+            {
+              "title": "PostgreSQL documentation: Combining Multiple Indexes",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/indexes-bitmap-scans.html"
+            }
+          ]
+        },
+        {
+          "id": "which-index",
+          "title": "Choosing an index",
+          "text": [
+            "No index wins everywhere. A B+ tree handles equality, ranges and sorting. A hash index handles equality only. A bitmap index suits columns with few values and combining several filters.",
+            "PostgreSQL can also combine indexes while it runs a query: it scans each index, builds a bitmap in memory, then ANDs or ORs the bitmaps together before visiting the rows."
+          ],
+          "table": {
+            "head": [
+              "Index",
+              "Good at"
+            ],
+            "rows": [
+              [
+                "B+ tree",
+                "equality, ranges, sorted order"
+              ],
+              [
+                "Hash",
+                "equality only"
+              ],
+              [
+                "Bitmap",
+                "few values, combining filters"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Index Types",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/indexes-types.html"
+            },
+            {
+              "title": "PostgreSQL documentation: Combining Multiple Indexes",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/indexes-bitmap-scans.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "hash-sim",
+          "type": "stepsim",
+          "taughtOn": "hash-hole",
+          "mode": "predict",
+          "prompt": "Insert five keys into seven buckets with the rule key mod 7.",
+          "explain": "The hash rule picks the bucket straight away. Two keys can share a bucket, and then a lookup compares keys inside it.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Seven hash buckets, numbered 0 to 6"
+                },
+                "say": "Seven buckets, all empty. The numbers under the boxes, 0 to 6, are the bucket numbers. The toy hash function is key mod 7, the remainder after dividing by 7. We will insert five keys."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "12",
+                      "mark": "best"
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "5": "key 12"
+                  },
+                  "label": "Seven hash buckets, numbered 0 to 6"
+                },
+                "say": "Key 12: 12 mod 7 is 5, so it goes in bucket 5.",
+                "predict": {
+                  "prompt": "The key 12 arrives. Which bucket does 12 mod 7 pick?",
+                  "options": [
+                    {
+                      "text": "Bucket 5",
+                      "correct": true
+                    },
+                    {
+                      "text": "Bucket 1",
+                      "correct": false
+                    },
+                    {
+                      "text": "Bucket 2",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Divide 12 by 7 and keep the remainder.",
+                    "7 + 5 = 12."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "12, 19",
+                      "mark": "best"
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "5": "key 19"
+                  },
+                  "label": "Seven hash buckets, numbered 0 to 6"
+                },
+                "say": "Key 19: 19 mod 7 is 5, so it goes in bucket 5. That bucket already held a key, so two keys now share it: a collision.",
+                "predict": {
+                  "prompt": "The key 19 arrives. Bucket 5 already holds 12. Where does 19 go?",
+                  "options": [
+                    {
+                      "text": "Bucket 5, next to 12",
+                      "correct": true
+                    },
+                    {
+                      "text": "Bucket 6, to avoid a clash",
+                      "correct": false
+                    },
+                    {
+                      "text": "Bucket 0",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "19 mod 7 is 5, because 14 + 5 = 19.",
+                    "The hash function decides the bucket, not what is already there."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "8",
+                      "mark": "best"
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "12, 19",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "1": "key 8"
+                  },
+                  "label": "Seven hash buckets, numbered 0 to 6"
+                },
+                "say": "Key 8: 8 mod 7 is 1, so it goes in bucket 1."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "8",
+                      "mark": null
+                    },
+                    {
+                      "value": "30",
+                      "mark": "best"
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "12, 19",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "2": "key 30"
+                  },
+                  "label": "Seven hash buckets, numbered 0 to 6"
+                },
+                "say": "Key 30: 30 mod 7 is 2, so it goes in bucket 2."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "8",
+                      "mark": null
+                    },
+                    {
+                      "value": "30",
+                      "mark": null
+                    },
+                    {
+                      "value": "24",
+                      "mark": "best"
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "12, 19",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "3": "key 24"
+                  },
+                  "label": "Seven hash buckets, numbered 0 to 6"
+                },
+                "say": "Key 24: 24 mod 7 is 3, so it goes in bucket 3."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "8",
+                      "mark": null
+                    },
+                    {
+                      "value": "30",
+                      "mark": null
+                    },
+                    {
+                      "value": "24",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "12, 19",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Seven hash buckets, numbered 0 to 6"
+                },
+                "say": "Five keys are placed. A lookup for 19 runs the hash again, goes to bucket 5, and compares 19 against the keys there: 12 and 19."
+              }
+            ]
+          }
+        },
+        {
+          "id": "bucket-of",
+          "type": "numeric",
+          "taughtOn": "hash-hole",
+          "prompt": "With seven buckets and the rule key mod 7, which bucket does the key 1,234 go to?",
+          "answer": 2,
+          "calculator": false,
+          "hints": [
+            "Find the remainder when 1,234 is divided by 7.",
+            "7 x 176 = 1,232."
+          ],
+          "explain": "1,234 = 7 x 176 + 2, so the remainder is 2 and the key goes to bucket 2."
+        },
+        {
+          "id": "bitmap-and",
+          "type": "numeric",
+          "taughtOn": "bitmap-strips",
+          "prompt": "Two strips for rows 1 to 8: red is 10110101 and big is 11010110. How many rows are red AND big?",
+          "answer": 3,
+          "calculator": false,
+          "hints": [
+            "Keep the places where both strips have a 1.",
+            "Compare the strips bit by bit."
+          ],
+          "explain": "Both strips have a 1 at rows 1, 4 and 6. The AND strip is 10010100, so 3 rows."
+        },
+        {
+          "id": "hash-steps",
+          "type": "order",
+          "taughtOn": "hash-hole",
+          "prompt": "Put the steps of a hash index lookup in order.",
+          "items": [
+            "Run the key through the hash function",
+            "Go to the bucket it names",
+            "Compare the key with each entry in the bucket",
+            "Return the location of the matching row"
+          ],
+          "hints": [
+            "The hash function runs before the bucket is chosen.",
+            "Comparing keys happens inside the bucket."
+          ],
+          "explain": "Hash the key, go to the bucket, compare the keys in it, and return the matching row's location."
+        },
+        {
+          "id": "hash-help",
+          "type": "buckets",
+          "taughtOn": "which-index",
+          "prompt": "Can a hash index help with each search, or only a B+ tree?",
+          "buckets": [
+            "A hash index can help",
+            "Only a B+ tree can help"
+          ],
+          "items": [
+            {
+              "text": "id = 77",
+              "bucket": "A hash index can help"
+            },
+            {
+              "text": "session_token = 'abc123'",
+              "bucket": "A hash index can help"
+            },
+            {
+              "text": "id > 77",
+              "bucket": "Only a B+ tree can help"
+            },
+            {
+              "text": "ORDER BY id",
+              "bucket": "Only a B+ tree can help"
+            },
+            {
+              "text": "id BETWEEN 5 AND 9",
+              "bucket": "Only a B+ tree can help"
+            }
+          ],
+          "hints": [
+            "A hash index only handles equality (=).",
+            "Ranges and sorting need keys kept in order."
+          ],
+          "explain": "A hash index can only answer exact matches. Ranges and sorted output need the order that a B+ tree keeps."
+        },
+        {
+          "id": "index-words",
+          "type": "match",
+          "taughtOn": "hash-hole",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Hash function",
+              "right": "Turns a key into a bucket number"
+            },
+            {
+              "left": "Collision",
+              "right": "Two keys in the same bucket"
+            },
+            {
+              "left": "Bitmap",
+              "right": "One bit per row for a value"
+            },
+            {
+              "left": "Low cardinality",
+              "right": "Few different values in a column"
+            },
+            {
+              "left": "Equality",
+              "right": "A match using ="
+            }
+          ],
+          "hints": [
+            "Collision means a clash.",
+            "Cardinality is about how many different values."
+          ],
+          "explain": "A hash function picks a bucket, a collision shares one, a bitmap has a bit per row, low cardinality means few values, and equality is ="
+        },
+        {
+          "id": "why-no-range",
+          "type": "choice",
+          "taughtOn": "hash-hole",
+          "prompt": "Why can a hash index not answer id > 77?",
+          "options": [
+            {
+              "text": "Hashing scatters neighbouring keys into unrelated buckets, so order is lost",
+              "correct": true
+            },
+            {
+              "text": "The index is too small"
+            },
+            {
+              "text": "Hash codes are always negative"
+            },
+            {
+              "text": "It can, but it is slower"
+            }
+          ],
+          "hints": [
+            "Where do 77 and 78 go with key mod 7?",
+            "Neighbours land in different buckets."
+          ],
+          "explain": "A hash function spreads keys out, so keys close in value are not stored near each other. It only suits exact matches."
+        },
+        {
+          "id": "bitmap-column",
+          "type": "choice",
+          "taughtOn": "bitmap-strips",
+          "prompt": "Which column suits a bitmap index best?",
+          "options": [
+            {
+              "text": "A yes or no column, such as is_fragile",
+              "correct": true
+            },
+            {
+              "text": "A unique ID for every row"
+            },
+            {
+              "text": "A timestamp to the second"
+            },
+            {
+              "text": "A full street address"
+            }
+          ],
+          "hints": [
+            "A bitmap needs a strip for every different value.",
+            "Fewer values mean fewer strips."
+          ],
+          "explain": "Bitmap indexes work well for columns with few distinct values, such as yes or no."
+        },
+        {
+          "id": "collide-count",
+          "type": "numeric",
+          "taughtOn": "hash-hole",
+          "prompt": "Challenge: the keys 8, 15, 22, 9, 16 and 30 go into seven buckets with the rule key mod 7. How many buckets hold more than one key?",
+          "answer": 2,
+          "calculator": false,
+          "hints": [
+            "Work out each key's remainder when divided by 7.",
+            "8, 15 and 22 all leave 1."
+          ],
+          "explain": "8, 15 and 22 all go to bucket 1, and 9, 16 and 30 all go to bucket 2. Two buckets hold several keys.",
+          "challenge": true
+        },
+        {
+          "id": "bitmap-or",
+          "type": "numeric",
+          "taughtOn": "bitmap-strips",
+          "prompt": "Challenge: with red 10110101 and big 11010110, how many rows are red OR big?",
+          "answer": 7,
+          "calculator": false,
+          "hints": [
+            "OR keeps a place if either strip has a 1.",
+            "Only row 5 has a 0 in both strips."
+          ],
+          "explain": "The OR strip is 11110111. Only row 5 is neither red nor big, so 7 rows match.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d2.2-f1",
+          "type": "quiz",
+          "taughtOn": "hash-hole",
+          "prompt": "What can a PostgreSQL hash index handle?",
+          "options": [
+            {
+              "text": "Equality comparisons only",
+              "correct": true
+            },
+            {
+              "text": "Ranges and sorting"
+            },
+            {
+              "text": "Pattern matches"
+            },
+            {
+              "text": "Joins between tables"
+            }
+          ],
+          "explain": "A hash index stores hash codes, so only = can use it."
+        },
+        {
+          "id": "d2.2-f2",
+          "type": "quiz",
+          "taughtOn": "hash-hole",
+          "prompt": "What do we call two keys that hash to the same bucket?",
+          "options": [
+            {
+              "text": "A collision",
+              "correct": true
+            },
+            {
+              "text": "A fan-out"
+            },
+            {
+              "text": "A page"
+            },
+            {
+              "text": "A cost"
+            }
+          ],
+          "explain": "A collision is when two keys land in the same bucket."
+        },
+        {
+          "id": "d2.2-f3",
+          "type": "why",
+          "taughtOn": "bitmap-strips",
+          "prompt": "What does AND do on two bitmap strips?",
+          "options": [
+            {
+              "text": "Keeps the rows where both strips have a 1",
+              "correct": true
+            },
+            {
+              "text": "Adds the strips together"
+            },
+            {
+              "text": "Keeps rows with a 1 in either strip"
+            },
+            {
+              "text": "Deletes the strips"
+            }
+          ],
+          "explain": "AND keeps only the places where both bits are 1."
+        },
+        {
+          "id": "d2.2-f4",
+          "type": "predict",
+          "taughtOn": "hash-hole",
+          "prompt": "With the rule key mod 7, which bucket does the key 15 go to?",
+          "answer": "Bucket 1. 15 divided by 7 is 2, remainder 1."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Equality only",
+          "text": "PostgreSQL's hash indexes can only handle simple equality comparisons, because they store a hash code rather than the value in order.",
+          "source": {
+            "title": "PostgreSQL: Index Types",
+            "url": "https://www.postgresql.org/docs/current/indexes-types.html"
+          }
+        },
+        {
+          "title": "Combining indexes",
+          "text": "PostgreSQL can combine several indexes for one query by building a bitmap in memory for each, then ANDing or ORing them.",
+          "source": {
+            "title": "PostgreSQL: Combining Multiple Indexes",
+            "url": "https://www.postgresql.org/docs/current/indexes-bitmap-scans.html"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You sent keys into hash buckets, saw collisions, laid bitmap strips on top of each other with AND and OR, and matched each index to the questions it answers.",
+          "Cobb taps the wall of boxes. \"Exact number: pigeonhole. Range: tree. Few values: strips.\""
+        ],
+        "mistake": {
+          "title": "Using a hash index for ranges",
+          "text": "A hash index scatters keys, so it can only answer exact matches. For a range or a sort, use a B+ tree."
+        }
+      }
+    },
+    {
+      "id": "2.3",
+      "title": "Pins on a Map",
+      "story": "At the chart house, Dock Master Dara spreads a map covered in pins. \"A customer on Quay 3 wants every depot within two blocks. I could measure from the customer to every single pin. Or I could ask the map room to hand me only the pins near that square.\"",
+      "everyday": {
+        "scene": "A map app shows \"cafes near me\". Millions of cafes exist, but the app only needs the few in the little square around you.",
+        "question": "How can an app find the nearby cafes without measuring the distance to every cafe in the world?",
+        "answer": "It keeps a spatial index that groups nearby places. It looks only at the groups that overlap the area you care about, then measures the few candidates."
+      },
+      "lessons": [
+        {
+          "id": "two-numbers",
+          "title": "Two numbers at once",
+          "text": [
+            "A B+ tree sorts by one value. A place needs two coordinates, so sorting by one alone does not keep neighbours together. An R-tree groups nearby objects and stores each group's minimum bounding rectangle.",
+            "If a search area does not overlap a rectangle, nothing inside that group can match, so the whole branch is skipped. A search only visits the rectangles that overlap the area you ask about."
+          ],
+          "terms": [
+            {
+              "term": "Bounding rectangle",
+              "meaning": "The smallest rectangle that holds a group of objects."
+            },
+            {
+              "term": "R-tree",
+              "meaning": "A tree that groups nearby objects by rectangles."
+            }
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: R-tree",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/R-tree"
+            },
+            {
+              "title": "PostgreSQL documentation: Index Types",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/indexes-types.html"
+            }
+          ]
+        },
+        {
+          "id": "box-then-check",
+          "title": "Box first, check second",
+          "text": [
+            "To find pins within 2 blocks, the index first fetches the pins inside the square box around you, which is cheap. The box corners are further than 2 blocks away, so each candidate then gets an exact distance check.",
+            "The exact check uses Pythagoras: distance squared is east squared plus north squared. A pin 2 blocks east and 1 north is 4 + 1 = 5 away squared, which is more than 4, so it is outside."
+          ],
+          "predict": {
+            "prompt": "The index returns 9 candidates for a query. Checking all 18 pins would need 18 distance checks. How many exact checks does the index leave?",
+            "answer": "9 exact checks, because only the candidates in the box are measured."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: R-tree",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/R-tree"
+            },
+            {
+              "title": "PostgreSQL documentation: Index Types",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/indexes-types.html"
+            }
+          ]
+        },
+        {
+          "id": "closest-few",
+          "title": "The closest few",
+          "text": [
+            "Some questions ask for the nearest few places, such as the three depots closest to a point. PostgreSQL's GiST indexes can speed up \"nearest-neighbour\" searches, for example ORDER BY location <-> point '(3,2)' LIMIT 3, where <-> is the distance between points.",
+            "Whether an index can help depends on the operator class being used. A nearest-neighbour search asks for the closest few items, not for everything inside an area."
+          ],
+          "deeper": {
+            "title": "Points with many coordinates",
+            "text": [
+              {
+                "text": "The same \"find the nearest\" idea works on points with many coordinates. The pgvector extension adds exact and approximate nearest-neighbour search over such vectors to PostgreSQL.",
+                "verify": false
+              }
+            ]
+          },
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Index Types",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/indexes-types.html"
+            },
+            {
+              "title": "Wikipedia: R-tree",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/R-tree"
+            },
+            {
+              "title": "pgvector: open-source vector similarity search for Postgres (README)",
+              "source": "pgvector README (linked, not copied)",
+              "url": "https://github.com/pgvector/pgvector"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "map-sim",
+          "type": "stepsim",
+          "taughtOn": "box-then-check",
+          "mode": "predict",
+          "prompt": "Watch the index narrow 18 pins down to the ones near you.",
+          "explain": "The index finds a box of candidates cheaply, and the exact distance check settles which ones really qualify.",
+          "script": {
+            "view": "graph",
+            "steps": [
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "H",
+                      "x": 128,
+                      "y": 90,
+                      "label": "You",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "A",
+                      "x": 92,
+                      "y": 56,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 164,
+                      "y": 124,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 128,
+                      "y": 56,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 164,
+                      "y": 90,
+                      "label": "D"
+                    },
+                    {
+                      "id": "E",
+                      "x": 92,
+                      "y": 124,
+                      "label": "E"
+                    },
+                    {
+                      "id": "F",
+                      "x": 92,
+                      "y": 90,
+                      "label": "F"
+                    },
+                    {
+                      "id": "G",
+                      "x": 56,
+                      "y": 56,
+                      "label": "G"
+                    },
+                    {
+                      "id": "I",
+                      "x": 200,
+                      "y": 124,
+                      "label": "I"
+                    },
+                    {
+                      "id": "J",
+                      "x": 200,
+                      "y": 22,
+                      "label": "J"
+                    },
+                    {
+                      "id": "K",
+                      "x": 20,
+                      "y": 22,
+                      "label": "K"
+                    },
+                    {
+                      "id": "L",
+                      "x": 20,
+                      "y": 124,
+                      "label": "L"
+                    },
+                    {
+                      "id": "M",
+                      "x": 236,
+                      "y": 56,
+                      "label": "M"
+                    },
+                    {
+                      "id": "N",
+                      "x": 236,
+                      "y": 158,
+                      "label": "N"
+                    },
+                    {
+                      "id": "O",
+                      "x": 272,
+                      "y": 22,
+                      "label": "O"
+                    },
+                    {
+                      "id": "P",
+                      "x": 272,
+                      "y": 90,
+                      "label": "P"
+                    },
+                    {
+                      "id": "Q",
+                      "x": 272,
+                      "y": 158,
+                      "label": "Q"
+                    },
+                    {
+                      "id": "R",
+                      "x": 20,
+                      "y": 56,
+                      "label": "R"
+                    },
+                    {
+                      "id": "S",
+                      "x": 236,
+                      "y": 90,
+                      "label": "S"
+                    }
+                  ],
+                  "edges": [],
+                  "legend": "now = You. waiting = a pin inside the box, not yet checked. visited = a pin that passed the exact distance check."
+                },
+                "say": "A map with 18 pins and you standing at the middle. The question: which pins are within 2 blocks of you? Checking all 18 would mean 18 distance checks."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "H",
+                      "x": 128,
+                      "y": 90,
+                      "label": "You",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "A",
+                      "x": 92,
+                      "y": 56,
+                      "label": "A",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "B",
+                      "x": 164,
+                      "y": 124,
+                      "label": "B",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "C",
+                      "x": 128,
+                      "y": 56,
+                      "label": "C",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "D",
+                      "x": 164,
+                      "y": 90,
+                      "label": "D",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "E",
+                      "x": 92,
+                      "y": 124,
+                      "label": "E",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "F",
+                      "x": 92,
+                      "y": 90,
+                      "label": "F",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "G",
+                      "x": 56,
+                      "y": 56,
+                      "label": "G",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "I",
+                      "x": 200,
+                      "y": 124,
+                      "label": "I",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "J",
+                      "x": 200,
+                      "y": 22,
+                      "label": "J",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "K",
+                      "x": 20,
+                      "y": 22,
+                      "label": "K"
+                    },
+                    {
+                      "id": "L",
+                      "x": 20,
+                      "y": 124,
+                      "label": "L"
+                    },
+                    {
+                      "id": "M",
+                      "x": 236,
+                      "y": 56,
+                      "label": "M"
+                    },
+                    {
+                      "id": "N",
+                      "x": 236,
+                      "y": 158,
+                      "label": "N"
+                    },
+                    {
+                      "id": "O",
+                      "x": 272,
+                      "y": 22,
+                      "label": "O"
+                    },
+                    {
+                      "id": "P",
+                      "x": 272,
+                      "y": 90,
+                      "label": "P"
+                    },
+                    {
+                      "id": "Q",
+                      "x": 272,
+                      "y": 158,
+                      "label": "Q"
+                    },
+                    {
+                      "id": "R",
+                      "x": 20,
+                      "y": 56,
+                      "label": "R"
+                    },
+                    {
+                      "id": "S",
+                      "x": 236,
+                      "y": 90,
+                      "label": "S"
+                    }
+                  ],
+                  "edges": [],
+                  "legend": "now = You. waiting = a pin inside the box, not yet checked. visited = a pin that passed the exact distance check."
+                },
+                "say": "The spatial index first finds the pins inside the square box that reaches 2 blocks each way from you. Nine pins are in the box. The other nine are never looked at.",
+                "predict": {
+                  "prompt": "Are all nine pins in the box definitely within 2 blocks of you?",
+                  "options": [
+                    {
+                      "text": "No, a pin near a corner of the box can be further than 2 blocks",
+                      "correct": true
+                    },
+                    {
+                      "text": "Yes, the box and the circle are the same",
+                      "correct": false
+                    },
+                    {
+                      "text": "Nobody can tell",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Think of the corner of a square compared with the edge of a circle.",
+                    "The corner of the box is further than 2 blocks away."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "H",
+                      "x": 128,
+                      "y": 90,
+                      "label": "You",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "A",
+                      "x": 92,
+                      "y": 56,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 164,
+                      "y": 124,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 128,
+                      "y": 56,
+                      "label": "C",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D",
+                      "x": 164,
+                      "y": 90,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 92,
+                      "y": 124,
+                      "label": "E",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "F",
+                      "x": 92,
+                      "y": 90,
+                      "label": "F",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "G",
+                      "x": 56,
+                      "y": 56,
+                      "label": "G",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "I",
+                      "x": 200,
+                      "y": 124,
+                      "label": "I",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "J",
+                      "x": 200,
+                      "y": 22,
+                      "label": "J",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "K",
+                      "x": 20,
+                      "y": 22,
+                      "label": "K"
+                    },
+                    {
+                      "id": "L",
+                      "x": 20,
+                      "y": 124,
+                      "label": "L"
+                    },
+                    {
+                      "id": "M",
+                      "x": 236,
+                      "y": 56,
+                      "label": "M"
+                    },
+                    {
+                      "id": "N",
+                      "x": 236,
+                      "y": 158,
+                      "label": "N"
+                    },
+                    {
+                      "id": "O",
+                      "x": 272,
+                      "y": 22,
+                      "label": "O"
+                    },
+                    {
+                      "id": "P",
+                      "x": 272,
+                      "y": 90,
+                      "label": "P"
+                    },
+                    {
+                      "id": "Q",
+                      "x": 272,
+                      "y": 158,
+                      "label": "Q"
+                    },
+                    {
+                      "id": "R",
+                      "x": 20,
+                      "y": 56,
+                      "label": "R"
+                    },
+                    {
+                      "id": "S",
+                      "x": 236,
+                      "y": 90,
+                      "label": "S"
+                    }
+                  ],
+                  "edges": [],
+                  "legend": "now = You. waiting = a pin inside the box, not yet checked. visited = a pin that passed the exact distance check."
+                },
+                "say": "Now each candidate gets an exact distance check. Six pass and are marked visited. Three were in the box but too far, so they are thrown away.",
+                "predict": {
+                  "prompt": "Which pins did the index let us skip without any distance check?",
+                  "options": [
+                    {
+                      "text": "The nine outside the box",
+                      "correct": true
+                    },
+                    {
+                      "text": "The nine inside the box",
+                      "correct": false
+                    },
+                    {
+                      "text": "None of them",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "The box is the cheap first filter.",
+                    "Pins outside the box cannot be within 2 blocks."
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "checks-saved",
+          "type": "numeric",
+          "taughtOn": "box-then-check",
+          "prompt": "A query would need 18 exact distance checks without an index. The spatial index finds 9 candidates in the box. How many checks does it save?",
+          "answer": 9,
+          "calculator": false,
+          "hints": [
+            "Only the candidates need an exact check.",
+            "18 minus 9."
+          ],
+          "explain": "Without the index, 18 checks. With it, 9. That saves 9."
+        },
+        {
+          "id": "thrown-away",
+          "type": "numeric",
+          "taughtOn": "box-then-check",
+          "prompt": "The index returns 9 candidates in the box, and the exact check keeps 6 of them. How many candidates are thrown away?",
+          "answer": 3,
+          "calculator": false,
+          "hints": [
+            "Candidates that fail the exact check are discarded.",
+            "9 minus 6."
+          ],
+          "explain": "3 pins were in the box but too far, so 3 are thrown away."
+        },
+        {
+          "id": "dist-squared",
+          "type": "numeric",
+          "taughtOn": "box-then-check",
+          "prompt": "A pin is 2 blocks east and 1 block north of you. What is its distance squared (east squared plus north squared)?",
+          "answer": 5,
+          "calculator": false,
+          "hints": [
+            "Square each number, then add.",
+            "2 x 2 is 4, and 1 x 1 is 1."
+          ],
+          "explain": "4 + 1 = 5. That is more than 2 squared (4), so the pin is outside a 2-block circle."
+        },
+        {
+          "id": "which-index-geo",
+          "type": "buckets",
+          "taughtOn": "two-numbers",
+          "prompt": "Is each search best helped by a B+ tree or by a spatial index?",
+          "buckets": [
+            "B+ tree",
+            "Spatial index"
+          ],
+          "items": [
+            {
+              "text": "Orders placed between two dates",
+              "bucket": "B+ tree"
+            },
+            {
+              "text": "Cafes within 500 metres of me",
+              "bucket": "Spatial index"
+            },
+            {
+              "text": "Customers with IDs 1,000 to 2,000",
+              "bucket": "B+ tree"
+            },
+            {
+              "text": "The five nearest bus stops",
+              "bucket": "Spatial index"
+            },
+            {
+              "text": "Everything inside this park's outline",
+              "bucket": "Spatial index"
+            },
+            {
+              "text": "Names in alphabetical order",
+              "bucket": "B+ tree"
+            }
+          ],
+          "hints": [
+            "A spatial index is for places and areas.",
+            "One sortable value means a B+ tree."
+          ],
+          "explain": "One sortable value suits a B+ tree. Places, areas and distance suit a spatial index."
+        },
+        {
+          "id": "box-steps",
+          "type": "order",
+          "taughtOn": "box-then-check",
+          "prompt": "Put the steps of a nearby-pins search in order.",
+          "items": [
+            "Draw a box around the query point",
+            "Fetch the pins inside the box using the index",
+            "Work out the real distance of each one",
+            "Keep only the pins within the distance"
+          ],
+          "hints": [
+            "The cheap filter comes first.",
+            "The real distance is only worked out for candidates."
+          ],
+          "explain": "Box, candidates, exact distance, then keep the ones close enough."
+        },
+        {
+          "id": "map-words",
+          "type": "match",
+          "taughtOn": "two-numbers",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Bounding rectangle",
+              "right": "The smallest rectangle that holds a group of objects"
+            },
+            {
+              "left": "Candidate",
+              "right": "A pin in the box that still needs the exact check"
+            },
+            {
+              "left": "Nearest-neighbour search",
+              "right": "Finding the closest few items to a point"
+            },
+            {
+              "left": "R-tree",
+              "right": "A tree that groups nearby objects by rectangles"
+            },
+            {
+              "left": "Exact check",
+              "right": "Working out the real distance"
+            }
+          ],
+          "hints": [
+            "A candidate has not been confirmed yet.",
+            "Nearest-neighbour is about the closest few."
+          ],
+          "explain": "A bounding rectangle holds a group, a candidate waits for the exact check, nearest-neighbour finds the closest few, and the R-tree groups by rectangles."
+        },
+        {
+          "id": "why-not-box-alone",
+          "type": "choice",
+          "taughtOn": "box-then-check",
+          "prompt": "Why is the box check not enough on its own?",
+          "options": [
+            {
+              "text": "Pins near the box's corners can be inside it yet further than the distance",
+              "correct": true
+            },
+            {
+              "text": "The box is always too small"
+            },
+            {
+              "text": "Boxes cannot be drawn on a map"
+            },
+            {
+              "text": "The box includes pins from other cities"
+            }
+          ],
+          "hints": [
+            "Compare a square with a circle.",
+            "The corner of a square is further from the centre than its edge."
+          ],
+          "explain": "The box is only a quick filter. Its corners reach beyond the circle, so an exact check is still needed."
+        },
+        {
+          "id": "why-rectangles",
+          "type": "choice",
+          "taughtOn": "two-numbers",
+          "prompt": "Why does an R-tree keep a bounding rectangle for each group?",
+          "options": [
+            {
+              "text": "To skip whole groups whose rectangle misses the search area",
+              "correct": true
+            },
+            {
+              "text": "To sort the pins by name"
+            },
+            {
+              "text": "To store the pins twice"
+            },
+            {
+              "text": "To shrink the map"
+            }
+          ],
+          "hints": [
+            "What can you say about the pins inside a rectangle that the search area misses?",
+            "None of them can match."
+          ],
+          "explain": "If the search area misses a group's rectangle, nothing inside it can match, so the group is skipped.",
+          "challenge": true
+        },
+        {
+          "id": "radius-one",
+          "type": "numeric",
+          "taughtOn": "box-then-check",
+          "prompt": "Challenge: a second query asks for pins within 1 block (a pin exactly 1 block away counts). The box around you now holds 6 candidates. How many pins pass the exact check?",
+          "answer": 3,
+          "calculator": false,
+          "hints": [
+            "A pin passes if its distance squared is 1 or less.",
+            "Only pins directly up, down, left or right of you are 1 block away."
+          ],
+          "explain": "3 pins sit exactly one block from you (the ones directly above, below or beside), so 3 pass. The other 3 candidates sit on diagonals, a distance squared of 2.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d2.3-f1",
+          "type": "quiz",
+          "taughtOn": "two-numbers",
+          "prompt": "What does an R-tree store for each group of nearby objects?",
+          "options": [
+            {
+              "text": "A bounding rectangle",
+              "correct": true
+            },
+            {
+              "text": "A single sorted key"
+            },
+            {
+              "text": "A hash code"
+            },
+            {
+              "text": "A password"
+            }
+          ],
+          "explain": "The rectangle lets a search skip groups that it cannot overlap."
+        },
+        {
+          "id": "d2.3-f2",
+          "type": "quiz",
+          "taughtOn": "box-then-check",
+          "prompt": "After the index returns the pins in the box, what comes next?",
+          "options": [
+            {
+              "text": "An exact distance check on each candidate",
+              "correct": true
+            },
+            {
+              "text": "Nothing, the box is exact"
+            },
+            {
+              "text": "A full table scan"
+            },
+            {
+              "text": "Dropping the index"
+            }
+          ],
+          "explain": "The box has corners further than the radius, so the exact check is still needed."
+        },
+        {
+          "id": "d2.3-f3",
+          "type": "why",
+          "taughtOn": "closest-few",
+          "prompt": "What kind of search finds the closest few items to a point?",
+          "options": [
+            {
+              "text": "Nearest-neighbour search",
+              "correct": true
+            },
+            {
+              "text": "Range search"
+            },
+            {
+              "text": "Equality search"
+            },
+            {
+              "text": "Hash search"
+            }
+          ],
+          "explain": "Nearest-neighbour search asks for the closest items."
+        },
+        {
+          "id": "d2.3-f4",
+          "type": "predict",
+          "taughtOn": "box-then-check",
+          "prompt": "A pin is 3 blocks east and 0 blocks north of you. Is it within 2 blocks?",
+          "answer": "No. Its distance squared is 9, which is more than 4 (2 squared)."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Nearest places",
+          "text": "PostgreSQL's GiST indexes can speed up \"nearest-neighbour\" searches that sort places by distance and keep the first few.",
+          "source": {
+            "title": "PostgreSQL: Index Types",
+            "url": "https://www.postgresql.org/docs/current/indexes-types.html"
+          }
+        },
+        {
+          "title": "Skipping most of the tree",
+          "text": "An R-tree uses bounding boxes to decide whether to search inside a subtree, so most nodes are never read during a search.",
+          "source": {
+            "title": "Wikipedia: R-tree",
+            "url": "https://en.wikipedia.org/wiki/R-tree"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You used a box to cut 18 pins down to 9 candidates, then an exact distance check to keep 6, and matched questions to the index that suits them.",
+          "Dara folds the map. \"Box first, ruler second.\""
+        ],
+        "mistake": {
+          "title": "Trusting the box as the final answer",
+          "text": "The box is a cheap first filter. Its corners are further away than its edges, so every candidate still needs an exact distance check."
+        }
+      }
+    }
+  ]
+}

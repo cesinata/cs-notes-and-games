@@ -1,0 +1,794 @@
+{
+  "zone": 3,
+  "levels": [
+    {
+      "id": "3.1",
+      "title": "Good Guess, Bad Guess",
+      "story": "Rowan sets a stopwatch on a stump. \"Run the delivery twice,\" says Rowan. \"Once with no guess, once with a guess. Watch how many states you look at.\" Kit scribbles a number after each run.",
+      "everyday": {
+        "scene": "A sat-nav does not try every road. It picks roads that seem to head towards your destination, using a rough estimate of how far is left.",
+        "question": "How can a planner tell which state is closer to the goal when there is no map?",
+        "answer": "It works out a rough estimate from the facts, such as counting the goal facts that are not yet true, and explores the states with the lowest estimate first."
+      },
+      "lessons": [
+        {
+          "id": "a-quick-estimate",
+          "title": "A quick estimate",
+          "text": [
+            "A heuristic is a quick estimate of how far a state is from the goal. A search uses it to try the promising states first. It trades some certainty for speed.",
+            "On a map you can measure distance with a ruler. A planning state is only a set of facts, so the estimate has to be worked out from those facts alone."
+          ],
+          "terms": [
+            {
+              "term": "Heuristic",
+              "meaning": "A quick estimate used to guide a search."
+            }
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Heuristic (computer science)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Heuristic_(computer_science)"
+            },
+            {
+              "title": "Wikipedia: Automated planning and scheduling",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Automated_planning_and_scheduling"
+            }
+          ]
+        },
+        {
+          "id": "counting-unmet-goals",
+          "title": "Counting unmet goals",
+          "text": [
+            "One simple estimate works on any STRIPS problem: count the goal facts that are not yet true. At the start of Kit's delivery both goals are missing, so h is 2. After 'drop p at Dock' only 'q at Cabin' is missing, so h is 1.",
+            "In one test run, with ties settled by the order the actions are listed, plain breadth-first search looked at 37 states. A* with this guess looked at 23, and both found the 8-action plan."
+          ],
+          "table": {
+            "head": [
+              "After step",
+              "Goal count h",
+              "Actions really left"
+            ],
+            "rows": [
+              [
+                "0: start",
+                "2",
+                "8"
+              ],
+              [
+                "1: pick p",
+                "2",
+                "7"
+              ],
+              [
+                "2: move",
+                "2",
+                "6"
+              ],
+              [
+                "3: move",
+                "2",
+                "5"
+              ],
+              [
+                "4: drop p",
+                "1",
+                "4"
+              ],
+              [
+                "5: pick q",
+                "1",
+                "3"
+              ],
+              [
+                "6: move",
+                "1",
+                "2"
+              ],
+              [
+                "7: move",
+                "1",
+                "1"
+              ],
+              [
+                "8: drop q",
+                "0",
+                "0"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Heuristic (computer science)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Heuristic_(computer_science)"
+            },
+            {
+              "title": "Wikipedia: A* search algorithm",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/A*_search_algorithm"
+            }
+          ]
+        },
+        {
+          "id": "weak-strong-bold",
+          "title": "Weak, strong, or too bold",
+          "text": [
+            "A guess of 0 gives no help. A guess close to the true cost helps a lot. A guess that is too high can send A* the wrong way. Goal counting is a safe low guess in Kit's world, because each action adds at most one goal fact.",
+            "It would overestimate if one action could make two goals true at once. Imagine a 'drop both parcels' action. With two goals missing the count says 2, yet only 1 action is left."
+          ],
+          "deeper": {
+            "title": "Better guesses",
+            "text": [
+              "Counting goals is crude because it ignores how hard each goal is to reach. The next level builds a guess that follows what it would actually take."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Admissible heuristic",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Admissible_heuristic"
+            },
+            {
+              "title": "Wikipedia: Heuristic (computer science)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Heuristic_(computer_science)"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "h-start",
+          "type": "numeric",
+          "taughtOn": "counting-unmet-goals",
+          "prompt": "What is the goal count h at the start of Kit's delivery?",
+          "answer": 2,
+          "calculator": false,
+          "hints": [
+            "Count the goal facts that are not true yet.",
+            "Both 'p at Dock' and 'q at Cabin' are missing."
+          ],
+          "explain": "Both goal facts are missing, so h = 2."
+        },
+        {
+          "id": "h-sim",
+          "type": "stepsim",
+          "taughtOn": "counting-unmet-goals",
+          "mode": "predict",
+          "prompt": "Watch the goal count change along Kit's plan.",
+          "explain": "The goal count only drops when a goal fact becomes true. It stays at or below the actions really left, so it is an admissible guess here.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "h = 2",
+                      "mark": "current",
+                      "tag": "8 left"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Goal count h along Kit's plan"
+                },
+                "say": "The start. Both goal facts, 'p at Dock' and 'q at Cabin', are missing, so the goal count is h = 2. The label under each box says how many actions are really left."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "8 left"
+                    },
+                    {
+                      "value": "h = 2",
+                      "mark": "current",
+                      "tag": "7 left"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Goal count h along Kit's plan"
+                },
+                "say": "After 'pick p at Cabin' the missing goal facts are: p at Dock, q at Cabin. So h = 2, while 7 actions are really left."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "8 left"
+                    },
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "7 left"
+                    },
+                    {
+                      "value": "h = 2",
+                      "mark": "current",
+                      "tag": "6 left"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Goal count h along Kit's plan"
+                },
+                "say": "After 'move Cabin to Bridge' the missing goal facts are: p at Dock, q at Cabin. So h = 2, while 6 actions are really left."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "8 left"
+                    },
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "7 left"
+                    },
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "6 left"
+                    },
+                    {
+                      "value": "h = 2",
+                      "mark": "current",
+                      "tag": "5 left"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Goal count h along Kit's plan"
+                },
+                "say": "After 'move Bridge to Dock' the missing goal facts are: p at Dock, q at Cabin. So h = 2, while 5 actions are really left."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "8 left"
+                    },
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "7 left"
+                    },
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "6 left"
+                    },
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "5 left"
+                    },
+                    {
+                      "value": "h = 1",
+                      "mark": "current",
+                      "tag": "4 left"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Goal count h along Kit's plan"
+                },
+                "say": "After 'drop p at Dock' the missing goal facts are: q at Cabin. So h = 1, while 4 actions are really left.",
+                "predict": {
+                  "prompt": "Kit has just dropped p at the Dock. How many goal facts are still missing, so what is h?",
+                  "options": [
+                    {
+                      "text": "1, only 'q at Cabin' is missing",
+                      "correct": true
+                    },
+                    {
+                      "text": "2",
+                      "correct": false
+                    },
+                    {
+                      "text": "0",
+                      "correct": false
+                    },
+                    {
+                      "text": "4, the number of actions left",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Which goal facts are true now?",
+                    "'p at Dock' is true. 'q at Cabin' is not."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "8 left"
+                    },
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "7 left"
+                    },
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "6 left"
+                    },
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "5 left"
+                    },
+                    {
+                      "value": "h = 1",
+                      "mark": null,
+                      "tag": "4 left"
+                    },
+                    {
+                      "value": "h = 1",
+                      "mark": "current",
+                      "tag": "3 left"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Goal count h along Kit's plan"
+                },
+                "say": "After 'pick q at Dock' the missing goal facts are: q at Cabin. So h = 1, while 3 actions are really left."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "8 left"
+                    },
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "7 left"
+                    },
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "6 left"
+                    },
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "5 left"
+                    },
+                    {
+                      "value": "h = 1",
+                      "mark": null,
+                      "tag": "4 left"
+                    },
+                    {
+                      "value": "h = 1",
+                      "mark": null,
+                      "tag": "3 left"
+                    },
+                    {
+                      "value": "h = 1",
+                      "mark": "current",
+                      "tag": "2 left"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Goal count h along Kit's plan"
+                },
+                "say": "After 'move Dock to Bridge' the missing goal facts are: q at Cabin. So h = 1, while 2 actions are really left."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "8 left"
+                    },
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "7 left"
+                    },
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "6 left"
+                    },
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "5 left"
+                    },
+                    {
+                      "value": "h = 1",
+                      "mark": null,
+                      "tag": "4 left"
+                    },
+                    {
+                      "value": "h = 1",
+                      "mark": null,
+                      "tag": "3 left"
+                    },
+                    {
+                      "value": "h = 1",
+                      "mark": null,
+                      "tag": "2 left"
+                    },
+                    {
+                      "value": "h = 1",
+                      "mark": "current",
+                      "tag": "1 left"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Goal count h along Kit's plan"
+                },
+                "say": "After 'move Bridge to Cabin' the missing goal facts are: q at Cabin. So h = 1, while 1 action is really left."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "8 left"
+                    },
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "7 left"
+                    },
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "6 left"
+                    },
+                    {
+                      "value": "h = 2",
+                      "mark": null,
+                      "tag": "5 left"
+                    },
+                    {
+                      "value": "h = 1",
+                      "mark": null,
+                      "tag": "4 left"
+                    },
+                    {
+                      "value": "h = 1",
+                      "mark": null,
+                      "tag": "3 left"
+                    },
+                    {
+                      "value": "h = 1",
+                      "mark": null,
+                      "tag": "2 left"
+                    },
+                    {
+                      "value": "h = 1",
+                      "mark": null,
+                      "tag": "1 left"
+                    },
+                    {
+                      "value": "h = 0",
+                      "mark": "current",
+                      "tag": "0 left"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Goal count h along Kit's plan"
+                },
+                "say": "After 'drop q at Cabin' the missing goal facts are: none. So h = 0, while 0 actions are really left."
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-after-drop",
+          "type": "numeric",
+          "taughtOn": "counting-unmet-goals",
+          "prompt": "After 'drop p at Dock', what is h?",
+          "answer": 1,
+          "calculator": false,
+          "hints": [
+            "Which goal facts are missing now?",
+            "Only 'q at Cabin'."
+          ],
+          "explain": "'p at Dock' is true, 'q at Cabin' is not, so h = 1."
+        },
+        {
+          "id": "no-ruler",
+          "type": "choice",
+          "taughtOn": "a-quick-estimate",
+          "prompt": "Why can Kit not measure the distance to the goal with a ruler in a planning problem?",
+          "options": [
+            {
+              "text": "A state is a set of facts, not a point on a map",
+              "correct": true
+            },
+            {
+              "text": "Planning problems have no goal"
+            },
+            {
+              "text": "Rulers are not accurate enough"
+            },
+            {
+              "text": "Distances are always zero"
+            }
+          ],
+          "hints": [
+            "Think about what a state is made of.",
+            "There are no coordinates in a set of facts."
+          ],
+          "explain": "A state is a set of facts, so any estimate has to come from the facts themselves."
+        },
+        {
+          "id": "heuristic-words",
+          "type": "match",
+          "taughtOn": "weak-strong-bold",
+          "prompt": "Match each heuristic idea to its description.",
+          "pairs": [
+            {
+              "left": "Guess of 0 everywhere",
+              "right": "No help to the search"
+            },
+            {
+              "left": "Goal count",
+              "right": "Counts goal facts not yet true"
+            },
+            {
+              "left": "Overestimate",
+              "right": "Higher than the real cost, can mislead A*"
+            },
+            {
+              "left": "Admissible",
+              "right": "Never higher than the real cost"
+            }
+          ],
+          "hints": [
+            "One of these is a safe guess.",
+            "One of these is a danger."
+          ],
+          "explain": "A zero guess does not help, goal count is one real guess, an overestimate can mislead, and admissible guesses never go too high."
+        },
+        {
+          "id": "safe-or-risky",
+          "type": "buckets",
+          "taughtOn": "weak-strong-bold",
+          "prompt": "Is each guess safe (never too high) or risky (may be too high)?",
+          "buckets": [
+            "Safe",
+            "Risky"
+          ],
+          "items": [
+            {
+              "text": "The exact number of actions left",
+              "bucket": "Safe"
+            },
+            {
+              "text": "A guess of 0 for every state",
+              "bucket": "Safe"
+            },
+            {
+              "text": "Goal count when one action can finish two goals at once",
+              "bucket": "Risky"
+            },
+            {
+              "text": "A guess of 50 when every plan has 8 actions or fewer",
+              "bucket": "Risky"
+            }
+          ],
+          "hints": [
+            "Safe means never above the real cost.",
+            "50 is far above 8."
+          ],
+          "explain": "Exact and zero guesses never go too high. Goal count with a two-goals-at-once action, or a huge number, can."
+        },
+        {
+          "id": "h-other-state",
+          "type": "numeric",
+          "taughtOn": "counting-unmet-goals",
+          "prompt": "Kit is at the Dock, and both p and q are at the Dock. The goal is p at Dock and q at Cabin. What is h?",
+          "answer": 1,
+          "calculator": false,
+          "hints": [
+            "Which goal fact is already true?",
+            "'p at Dock' is true."
+          ],
+          "explain": "'p at Dock' is true and 'q at Cabin' is not, so h = 1."
+        },
+        {
+          "id": "best-guess",
+          "type": "choice",
+          "taughtOn": "weak-strong-bold",
+          "prompt": "Which guess helps the search most?",
+          "options": [
+            {
+              "text": "One close to the true remaining cost without going above it",
+              "correct": true
+            },
+            {
+              "text": "Always 0"
+            },
+            {
+              "text": "Always a huge number"
+            },
+            {
+              "text": "A random number"
+            }
+          ],
+          "hints": [
+            "A good guess tells the search which states are closer.",
+            "Going above the true cost can mislead A*."
+          ],
+          "explain": "A guess near the truth steers A* well, and staying at or below it keeps the answer a cheapest plan."
+        },
+        {
+          "id": "underestimate",
+          "type": "numeric",
+          "taughtOn": "weak-strong-bold",
+          "prompt": "Challenge: in the state with Kit, p and q all at the Dock, h is 1 but the true shortest plan to the goal has 4 actions. By how much does h underestimate?",
+          "answer": 3,
+          "calculator": false,
+          "hints": [
+            "Subtract h from the true plan length.",
+            "4 - 1."
+          ],
+          "explain": "The true plan needs 4 actions and h is 1, so h is 3 too low. That is safe, but not very informative.",
+          "challenge": true
+        },
+        {
+          "id": "drop-both",
+          "type": "choice",
+          "taughtOn": "weak-strong-bold",
+          "prompt": "Challenge: a 'drop both parcels' action could finish both goals at once. With both goals missing, goal count says 2. What does that do?",
+          "options": [
+            {
+              "text": "It overestimates: only 1 action is left",
+              "correct": true
+            },
+            {
+              "text": "It is exactly right"
+            },
+            {
+              "text": "It underestimates"
+            },
+            {
+              "text": "It is admissible"
+            }
+          ],
+          "hints": [
+            "Compare 2 with the actions really left.",
+            "A guess above the real cost is an overestimate."
+          ],
+          "explain": "One action is enough, but the count says 2, so the guess is too high.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m3.1-f1",
+          "type": "quiz",
+          "taughtOn": "a-quick-estimate",
+          "prompt": "What is a heuristic?",
+          "options": [
+            {
+              "text": "A quick estimate used to guide a search",
+              "correct": true
+            },
+            {
+              "text": "A perfect answer"
+            },
+            {
+              "text": "A kind of plan"
+            },
+            {
+              "text": "A list of actions"
+            }
+          ],
+          "explain": "It trades some certainty for speed."
+        },
+        {
+          "id": "m3.1-f2",
+          "type": "why",
+          "taughtOn": "counting-unmet-goals",
+          "prompt": "What does the goal-count guess measure?",
+          "options": [
+            {
+              "text": "How many goal facts are not yet true",
+              "correct": true
+            },
+            {
+              "text": "The plan's cost"
+            },
+            {
+              "text": "The number of actions"
+            },
+            {
+              "text": "The number of states"
+            }
+          ],
+          "explain": "It works on any STRIPS problem."
+        },
+        {
+          "id": "m3.1-f3",
+          "type": "quiz",
+          "taughtOn": "weak-strong-bold",
+          "prompt": "Which guess can mislead A*?",
+          "options": [
+            {
+              "text": "One that overestimates the true cost",
+              "correct": true
+            },
+            {
+              "text": "One that is too low"
+            },
+            {
+              "text": "One that is exactly right"
+            },
+            {
+              "text": "One of 0"
+            }
+          ],
+          "explain": "Too-high guesses can hide the best route."
+        },
+        {
+          "id": "m3.1-f4",
+          "type": "predict",
+          "taughtOn": "counting-unmet-goals",
+          "prompt": "Goal count when one of two goals is already true?",
+          "answer": "1."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Heuristics",
+          "text": "A heuristic trades optimality, completeness, accuracy or precision for speed. A heuristic function ranks the choices in a search at each branching step.",
+          "source": {
+            "title": "Wikipedia: Heuristic (computer science)",
+            "url": "https://en.wikipedia.org/wiki/Heuristic_(computer_science)"
+          }
+        },
+        {
+          "title": "Admissible guesses",
+          "text": "A heuristic is admissible if it never overestimates the cost of reaching the goal.",
+          "source": {
+            "title": "Wikipedia: Admissible heuristic",
+            "url": "https://en.wikipedia.org/wiki/Admissible_heuristic"
+          }
+        },
+        {
+          "title": "Forward search with heuristics",
+          "text": "Classical planning can be done by forward state-space search, possibly improved with heuristics.",
+          "source": {
+            "title": "Wikipedia: Automated planning and scheduling",
+            "url": "https://en.wikipedia.org/wiki/Automated_planning_and_scheduling"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You met heuristics, used the goal count as a guess, saw it stay at or below the true remaining cost, and learned why a guess that is too high can mislead A*.",
+          "Rowan checks the stopwatch. \"Twenty-three, against thirty-seven.\" Kit grins. \"A rough guess already helps. A cleverer one might help more.\""
+        ],
+        "mistake": {
+          "title": "Trusting an overestimate",
+          "text": "A guess that is higher than the true cost can make A* skip the best plan. Staying at or below the truth keeps the answer a cheapest one."
+        }
+      }
+    }
+  ]
+}

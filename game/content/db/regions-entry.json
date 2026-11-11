@@ -1,0 +1,10 @@
+{
+  "id": "db",
+  "name": "Ledger Library",
+  "subject": "Databases",
+  "description": "Work the front desk of a grand library: how data is stored in tables, how keys link them, how to keep them tidy, and how SQL asks them questions.",
+  "bigFact": "Join a table of 1,000 members to a table of 1,000 loans with no matching rule and you get a million rows of nonsense.",
+  "sprite": "castle",
+  "world": "db/world.json",
+  "dir": "db/"
+}

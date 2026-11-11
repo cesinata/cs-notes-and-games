@@ -1,0 +1,1306 @@
+{
+  "zone": 4,
+  "levels": [
+    {
+      "id": "4.1",
+      "title": "Best Fit Line",
+      "story": "Fenn is staking tomato plants in a straight row. \"More water, more tomatoes,\" Fenn says, \"but how many more for each extra litre? If I could draw one straight line through my notes, I could read off a guess for any amount of water.\"",
+      "everyday": {
+        "scene": "A taxi app tells you the fare before you set off. The fare is roughly a starting charge plus a price per kilometre, so a straight line connects the distance to the cost.",
+        "question": "How can a computer predict a number, such as a price or a weight, from other numbers?",
+        "answer": "It can fit a straight line to past examples and read the prediction off the line. That is linear regression."
+      },
+      "lessons": [
+        {
+          "id": "line-through-points",
+          "title": "A line that predicts a number",
+          "text": [
+            "A line has two settings: the slope, how much y goes up for each step in x, and the intercept, where it crosses when x is zero. The prediction is y = slope x + intercept.",
+            "Regression predicts a number, such as kilograms of tomatoes. That differs from classification, which predicts a label such as Plum or Apricot. The table shows five plants: litres a week and kilograms of tomatoes."
+          ],
+          "terms": [
+            {
+              "term": "Slope",
+              "meaning": "How much the prediction rises for one more step in x."
+            },
+            {
+              "term": "Intercept",
+              "meaning": "The prediction when x is zero."
+            }
+          ],
+          "table": {
+            "head": [
+              "Water (litres a week)",
+              "Tomatoes (kg)"
+            ],
+            "rows": [
+              [
+                "1",
+                "1.8"
+              ],
+              [
+                "2",
+                "3.1"
+              ],
+              [
+                "3",
+                "3.9"
+              ],
+              [
+                "4",
+                "5.2"
+              ],
+              [
+                "5",
+                "5.9"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Linear regression",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Linear_regression"
+            },
+            {
+              "title": "scikit-learn user guide: Linear Models",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/linear_model.html"
+            }
+          ]
+        },
+        {
+          "id": "least-squares",
+          "title": "Least squares",
+          "text": [
+            "A residual is the actual value minus the line's prediction. Squaring each residual stops over and under from cancelling, and makes big misses count extra. The best line has the smallest sum of squared residuals. That is called least squares.",
+            "The table scores three candidate lines on the five plants. The smaller the sum, the better the fit."
+          ],
+          "table": {
+            "head": [
+              "Line",
+              "Sum of squared residuals"
+            ],
+            "rows": [
+              [
+                "A: y = 0.5x + 2",
+                "4.06"
+              ],
+              [
+                "B: y = 1.5x - 0.5",
+                "2.31"
+              ],
+              [
+                "C: y = x + 1",
+                "0.11"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "Which of the three lines fits best?",
+            "answer": "Line C, y = x + 1, because its sum, 0.11, is the smallest."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Ordinary least squares",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Ordinary_least_squares"
+            },
+            {
+              "title": "Wikipedia: Linear regression",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Linear_regression"
+            }
+          ]
+        },
+        {
+          "id": "use-and-limits",
+          "title": "Using and misusing a line",
+          "text": [
+            "The least-squares line for these plants has slope 1.03 and intercept 0.89. Its sum of squared residuals is about 0.10, a hair better than line C. At 6 litres it predicts 1.03 x 6 + 0.89 = 7.07 kg.",
+            "Be careful past the edge of your data. Nobody watered a plant with 6 litres, so that prediction is a guess about a place you have never looked. A straight line also cannot bend, so it fits curved patterns badly."
+          ],
+          "references": [
+            {
+              "title": "scikit-learn user guide: Linear Models",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/linear_model.html"
+            },
+            {
+              "title": "Wikipedia: Linear regression",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Linear_regression"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "predict-three",
+          "type": "numeric",
+          "taughtOn": "line-through-points",
+          "prompt": "Line C is y = x + 1. How many kilograms does it predict for 3 litres?",
+          "answer": 4,
+          "calculator": false,
+          "hints": [
+            "Put 3 in for x.",
+            "3 + 1"
+          ],
+          "explain": "Put x = 3 into y = x + 1 and you get 4."
+        },
+        {
+          "id": "residual-sim",
+          "type": "stepsim",
+          "taughtOn": "least-squares",
+          "mode": "predict",
+          "prompt": "Follow the residuals of the line y = x + 1.",
+          "explain": "Residuals are the gaps between the real values and the line. Squared and added, they give a score for how well the line fits: 0.11 here.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "1.8",
+                      "mark": null,
+                      "tag": "x = 1"
+                    },
+                    {
+                      "value": "3.1",
+                      "mark": null,
+                      "tag": "x = 2"
+                    },
+                    {
+                      "value": "3.9",
+                      "mark": null,
+                      "tag": "x = 3"
+                    },
+                    {
+                      "value": "5.2",
+                      "mark": null,
+                      "tag": "x = 4"
+                    },
+                    {
+                      "value": "5.9",
+                      "mark": null,
+                      "tag": "x = 5"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Plants: kilograms, with litres below"
+                },
+                "say": "Five plants. The tag under each box is the litres of water a week, and the number is the kilograms of tomatoes. Try the line y = x + 1: kilograms predicted equal litres plus one."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "1.8",
+                      "mark": null,
+                      "tag": "line says 2"
+                    },
+                    {
+                      "value": "3.1",
+                      "mark": null,
+                      "tag": "line says 3"
+                    },
+                    {
+                      "value": "3.9",
+                      "mark": null,
+                      "tag": "line says 4"
+                    },
+                    {
+                      "value": "5.2",
+                      "mark": null,
+                      "tag": "line says 5"
+                    },
+                    {
+                      "value": "5.9",
+                      "mark": null,
+                      "tag": "line says 6"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Plants: kilograms, with litres below"
+                },
+                "say": "Here is what the line predicts for each plant: x + 1.",
+                "predict": {
+                  "prompt": "The line y = x + 1 is used for the plant with x = 3. How many kilograms does it predict?",
+                  "options": [
+                    {
+                      "text": "4",
+                      "correct": true
+                    },
+                    {
+                      "text": "3",
+                      "correct": false
+                    },
+                    {
+                      "text": "3.9",
+                      "correct": false
+                    },
+                    {
+                      "text": "5",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Put 3 in for x: 3 + 1.",
+                    "The actual value was 3.9, but the line says something else."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "1.8",
+                      "mark": "compare",
+                      "tag": "miss -0.2"
+                    },
+                    {
+                      "value": "3.1",
+                      "mark": null,
+                      "tag": "miss +0.1"
+                    },
+                    {
+                      "value": "3.9",
+                      "mark": null,
+                      "tag": "miss -0.1"
+                    },
+                    {
+                      "value": "5.2",
+                      "mark": "compare",
+                      "tag": "miss +0.2"
+                    },
+                    {
+                      "value": "5.9",
+                      "mark": null,
+                      "tag": "miss -0.1"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Plants: kilograms, with litres below"
+                },
+                "say": "The gap between the real value and the line's value is the residual: actual minus predicted. Plant 1 is 0.2 under and plant 4 is 0.2 over.",
+                "predict": {
+                  "prompt": "For x = 4, the actual value is 5.2 and the line says 5. What is the residual (actual minus predicted)?",
+                  "options": [
+                    {
+                      "text": "+0.2",
+                      "correct": true
+                    },
+                    {
+                      "text": "-0.2",
+                      "correct": false
+                    },
+                    {
+                      "text": "+5",
+                      "correct": false
+                    },
+                    {
+                      "text": "0",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Subtract 5 from 5.2.",
+                    "A positive residual means the plant gave more than the line says."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "1.8",
+                      "mark": null,
+                      "tag": "0.04"
+                    },
+                    {
+                      "value": "3.1",
+                      "mark": null,
+                      "tag": "0.01"
+                    },
+                    {
+                      "value": "3.9",
+                      "mark": null,
+                      "tag": "0.01"
+                    },
+                    {
+                      "value": "5.2",
+                      "mark": null,
+                      "tag": "0.04"
+                    },
+                    {
+                      "value": "5.9",
+                      "mark": null,
+                      "tag": "0.01"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Plants: kilograms, with litres below"
+                },
+                "say": "Square each residual so that over and under do not cancel: 0.04, 0.01, 0.01, 0.04, 0.01. Their sum is 0.11. A better line has a smaller sum.",
+                "predict": {
+                  "prompt": "What is the sum of the squared residuals: 0.04 + 0.01 + 0.01 + 0.04 + 0.01?",
+                  "options": [
+                    {
+                      "text": "0.11",
+                      "correct": true
+                    },
+                    {
+                      "text": "0.1",
+                      "correct": false
+                    },
+                    {
+                      "text": "0.2",
+                      "correct": false
+                    },
+                    {
+                      "text": "0.01",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Add the five numbers.",
+                    "Four of them are tiny, and one pair is 0.04 each."
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "one-residual",
+          "type": "numeric",
+          "taughtOn": "least-squares",
+          "prompt": "For 5 litres the actual yield was 5.9 kg, and line C predicts 6. What is the residual (actual minus predicted)?",
+          "answer": -0.1,
+          "tolerance": 0.001,
+          "calculator": false,
+          "hints": [
+            "Subtract the prediction from the actual value.",
+            "5.9 - 6"
+          ],
+          "explain": "5.9 - 6 = -0.1. The negative sign means the plant gave a little less than the line says."
+        },
+        {
+          "id": "best-line",
+          "type": "choice",
+          "taughtOn": "least-squares",
+          "prompt": "Which candidate line fits the five plants best?",
+          "options": [
+            {
+              "text": "C: y = x + 1",
+              "correct": true
+            },
+            {
+              "text": "A: y = 0.5x + 2"
+            },
+            {
+              "text": "B: y = 1.5x - 0.5"
+            },
+            {
+              "text": "They fit equally well"
+            }
+          ],
+          "hints": [
+            "Compare the sums of squared residuals.",
+            "The smallest sum wins."
+          ],
+          "explain": "Line C has the smallest sum, 0.11. Line A has 4.06 and line B has 2.31."
+        },
+        {
+          "id": "regression-or-class",
+          "type": "buckets",
+          "taughtOn": "line-through-points",
+          "prompt": "Does each task predict a number (regression) or a label (classification)?",
+          "buckets": [
+            "Regression",
+            "Classification"
+          ],
+          "items": [
+            {
+              "text": "Predict the kilograms of tomatoes from litres of water",
+              "bucket": "Regression"
+            },
+            {
+              "text": "Decide if an email is junk or not",
+              "bucket": "Classification"
+            },
+            {
+              "text": "Predict tomorrow's temperature",
+              "bucket": "Regression"
+            },
+            {
+              "text": "Say whether a fruit is a plum or an apricot",
+              "bucket": "Classification"
+            },
+            {
+              "text": "Predict a house's selling price",
+              "bucket": "Regression"
+            }
+          ],
+          "hints": [
+            "Is the answer a quantity or a name?",
+            "Numbers on a scale are regression. Named groups are classification."
+          ],
+          "explain": "Regression predicts a number. Classification picks a label."
+        },
+        {
+          "id": "line-words",
+          "type": "match",
+          "taughtOn": "line-through-points",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Slope",
+              "right": "How much the prediction rises per step in x"
+            },
+            {
+              "left": "Intercept",
+              "right": "The prediction when x is zero"
+            },
+            {
+              "left": "Residual",
+              "right": "Actual value minus predicted value"
+            },
+            {
+              "left": "Least squares",
+              "right": "Choosing the line with the smallest sum of squared residuals"
+            }
+          ],
+          "hints": [
+            "The slope is about change, the intercept is about the start.",
+            "A residual is for one example."
+          ],
+          "explain": "Slope is the rise per step, intercept the starting value, residual the miss for one example, and least squares the rule for picking the line."
+        },
+        {
+          "id": "predict-six",
+          "type": "numeric",
+          "taughtOn": "use-and-limits",
+          "prompt": "The least-squares line is y = 1.03x + 0.89. What does it predict for 6 litres? (Round to two decimals.)",
+          "answer": 7.07,
+          "tolerance": 0.005,
+          "calculator": false,
+          "hints": [
+            "Multiply 1.03 by 6, then add 0.89.",
+            "6.18 + 0.89"
+          ],
+          "explain": "1.03 x 6 = 6.18, and 6.18 + 0.89 = 7.07 kg."
+        },
+        {
+          "id": "why-square",
+          "type": "choice",
+          "taughtOn": "least-squares",
+          "prompt": "Why square the residuals before adding them?",
+          "options": [
+            {
+              "text": "So over and under do not cancel, and big misses count more",
+              "correct": true
+            },
+            {
+              "text": "To make the numbers smaller"
+            },
+            {
+              "text": "To turn them into labels"
+            },
+            {
+              "text": "To make the slope bigger"
+            }
+          ],
+          "hints": [
+            "What happens if you add +0.2 and -0.2?",
+            "Squares are never negative."
+          ],
+          "explain": "Without squaring, +0.2 and -0.2 add to zero and hide the misses. Squares are never negative, and a big miss counts extra."
+        },
+        {
+          "id": "extrapolate",
+          "type": "choice",
+          "taughtOn": "use-and-limits",
+          "prompt": "Why be wary of a prediction at 6 litres when plants were only watered with 1 to 5 litres?",
+          "options": [
+            {
+              "text": "The line may not hold where there is no data",
+              "correct": true
+            },
+            {
+              "text": "Because 6 is not a whole number"
+            },
+            {
+              "text": "Because lines cannot go up"
+            },
+            {
+              "text": "Because residuals are always negative"
+            }
+          ],
+          "hints": [
+            "Has anyone watered a plant with 6 litres?",
+            "A line only describes the range it was fitted on."
+          ],
+          "explain": "Outside the range of your data, you are guessing. Too much water might even hurt the plant."
+        },
+        {
+          "id": "square-one",
+          "type": "numeric",
+          "taughtOn": "least-squares",
+          "prompt": "Challenge: line A is y = 0.5x + 2. For 4 litres the actual yield was 5.2 kg. What is the squared residual? (Round to two decimals.)",
+          "answer": 1.44,
+          "tolerance": 0.005,
+          "calculator": false,
+          "hints": [
+            "First find the prediction: 0.5 x 4 + 2 = 4.",
+            "The residual is 5.2 - 4 = 1.2. Now square it."
+          ],
+          "explain": "Line A predicts 4. The residual is 5.2 - 4 = 1.2, and 1.2 squared is 1.44.",
+          "challenge": true
+        },
+        {
+          "id": "curve-problem",
+          "type": "choice",
+          "taughtOn": "use-and-limits",
+          "prompt": "Challenge: yields rise with water up to 4 litres, then fall as roots rot. What is the problem with a straight line?",
+          "options": [
+            {
+              "text": "A line cannot bend down, so it will misfit the pattern",
+              "correct": true
+            },
+            {
+              "text": "Lines can only predict labels"
+            },
+            {
+              "text": "The residuals would all be zero"
+            },
+            {
+              "text": "There is no slope"
+            }
+          ],
+          "hints": [
+            "Draw the up-then-down shape.",
+            "A line only goes one way."
+          ],
+          "explain": "A straight line keeps rising or keeps falling. A pattern that rises then falls needs a more flexible model.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m4.1-f1",
+          "type": "quiz",
+          "taughtOn": "least-squares",
+          "prompt": "What is a residual?",
+          "options": [
+            {
+              "text": "The actual value minus the predicted value",
+              "correct": true
+            },
+            {
+              "text": "The slope"
+            },
+            {
+              "text": "The label"
+            },
+            {
+              "text": "The intercept"
+            }
+          ],
+          "explain": "A residual is the miss for one example."
+        },
+        {
+          "id": "m4.1-f2",
+          "type": "quiz",
+          "taughtOn": "least-squares",
+          "prompt": "What does least squares minimise?",
+          "options": [
+            {
+              "text": "The sum of squared residuals",
+              "correct": true
+            },
+            {
+              "text": "The slope"
+            },
+            {
+              "text": "The number of examples"
+            },
+            {
+              "text": "The intercept"
+            }
+          ],
+          "explain": "The best line has the smallest sum of squared residuals."
+        },
+        {
+          "id": "m4.1-f3",
+          "type": "why",
+          "taughtOn": "use-and-limits",
+          "prompt": "Why is predicting beyond your data risky?",
+          "options": [
+            {
+              "text": "The pattern may change where you have no examples",
+              "correct": true
+            },
+            {
+              "text": "Lines stop working at 6"
+            },
+            {
+              "text": "Residuals become labels"
+            },
+            {
+              "text": "The slope turns negative"
+            }
+          ],
+          "explain": "A fitted line only describes the range it was fitted on."
+        },
+        {
+          "id": "m4.1-f4",
+          "type": "predict",
+          "taughtOn": "line-through-points",
+          "prompt": "A line is y = 2x + 1. What does it predict at x = 5?",
+          "answer": "11. That is 2 x 5 + 1."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Ordinary least squares",
+          "text": "Ordinary least squares is the most common way to fit a linear regression line. It chooses the line that makes the sum of squared residuals as small as possible.",
+          "source": {
+            "title": "Wikipedia: Ordinary least squares",
+            "url": "https://en.wikipedia.org/wiki/Ordinary_least_squares"
+          }
+        },
+        {
+          "title": "Linear models in code",
+          "text": "scikit-learn's LinearRegression fits a linear model by minimising the residual sum of squares between observed and predicted values.",
+          "source": {
+            "title": "scikit-learn: Linear Models",
+            "url": "https://scikit-learn.org/stable/modules/linear_model.html"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You drew a line through five plants, scored it with squared residuals, found the best fit by least squares, and saw why a line should not be trusted past the data.",
+          "Fenn ties off the last stake. \"A line through the notes, and a number for tomorrow.\""
+        ],
+        "mistake": {
+          "title": "Trusting a line far beyond the data it saw",
+          "text": "A fitted line describes the range of the examples. Past that range, it is only a guess, and a straight line cannot capture a curve."
+        }
+      }
+    },
+    {
+      "id": "4.2",
+      "title": "Yes or No",
+      "story": "Fenn holds up a melon. \"Ripe or not? I don't want a number of kilograms this time. I want a yes or a no, and ideally a chance. 'Eighty percent ripe' is something I can act on.\"",
+      "everyday": {
+        "scene": "A bank's app flags a card payment as 'suspicious' or 'fine'. Behind the flag is a number, like '92% likely a fraud', and a cut-off above which the flag turns on.",
+        "question": "How can a model turn facts into a chance, and then into a yes or a no?",
+        "answer": "It computes a score, squashes the score into a chance between 0 and 1, and says yes when the chance is above a cut-off. This is logistic regression."
+      },
+      "lessons": [
+        {
+          "id": "squash-to-chance",
+          "title": "From a score to a chance",
+          "text": [
+            "Like linear regression, logistic regression first computes a score from the features: z = weight x feature + bias. But a score can be any number, and a chance must lie between 0 and 1.",
+            "The sigmoid function fixes that: chance = 1 / (1 + e to the power of minus z). A score of 0 gives 0.5. Big negative scores give chances near 0, and big positive scores give chances near 1."
+          ],
+          "terms": [
+            {
+              "term": "Sigmoid",
+              "meaning": "The S-shaped function that turns any score into a chance."
+            },
+            {
+              "term": "Score",
+              "meaning": "The weighted sum of the features, before squashing."
+            }
+          ],
+          "table": {
+            "head": [
+              "Score z",
+              "Chance"
+            ],
+            "rows": [
+              [
+                "-3",
+                "0.05"
+              ],
+              [
+                "-2",
+                "0.12"
+              ],
+              [
+                "-1",
+                "0.27"
+              ],
+              [
+                "0",
+                "0.50"
+              ],
+              [
+                "1",
+                "0.73"
+              ],
+              [
+                "2",
+                "0.88"
+              ],
+              [
+                "3",
+                "0.95"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Logistic function",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Logistic_function"
+            },
+            {
+              "title": "Wikipedia: Logistic regression",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Logistic_regression"
+            }
+          ]
+        },
+        {
+          "id": "cutoff-boundary",
+          "title": "Chance to yes or no",
+          "text": [
+            "The model says Yes when the chance is at least 0.5, which is the same as the score being at least 0. The place where the score is exactly 0 is the decision boundary.",
+            "For melons, say the score is z = 2x - 5, where x counts warm days. It is zero at x = 2.5, so patches with 3 or more warm days are called ripe. Despite its name, logistic regression is used for classification."
+          ],
+          "predict": {
+            "prompt": "The score is z = 2x - 5. At what x is the score exactly 0?",
+            "answer": "At x = 2.5, because 2 x 2.5 - 5 = 0."
+          },
+          "references": [
+            {
+              "title": "Speech and Language Processing, chapter 5: Logistic Regression",
+              "source": "Free online book (linked, not copied)",
+              "url": "https://web.stanford.edu/~jurafsky/slp3/5.pdf"
+            },
+            {
+              "title": "Wikipedia: Logistic regression",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Logistic_regression"
+            }
+          ]
+        },
+        {
+          "id": "odds-and-fit",
+          "title": "Odds and fitting",
+          "text": [
+            "The score z has a handy meaning: it is the log of the odds. If the chance is 0.8, the odds are 4 to 1, because 0.8 / 0.2 = 4.",
+            "The weights are found by picking the ones that make the labelled examples as likely as possible, not by least squares. The 0.5 cut-off can also move. A cautious farmer might demand 0.9 before calling a melon ripe."
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Logistic regression",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Logistic_regression"
+            },
+            {
+              "title": "Speech and Language Processing, chapter 5: Logistic Regression",
+              "source": "Free online book (linked, not copied)",
+              "url": "https://web.stanford.edu/~jurafsky/slp3/5.pdf"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "score-at-four",
+          "type": "numeric",
+          "taughtOn": "cutoff-boundary",
+          "prompt": "The score is z = 2x - 5. What is the score at x = 4?",
+          "answer": 3,
+          "calculator": false,
+          "hints": [
+            "Put 4 in for x.",
+            "2 x 4 - 5"
+          ],
+          "explain": "2 x 4 = 8, and 8 - 5 = 3."
+        },
+        {
+          "id": "sigmoid-two",
+          "type": "numeric",
+          "taughtOn": "squash-to-chance",
+          "prompt": "A score of 2 goes through the sigmoid. Using the table's pattern, what chance comes out? (Round to two decimals.)",
+          "answer": 0.88,
+          "tolerance": 0.005,
+          "calculator": false,
+          "hints": [
+            "A score of 1 gives 0.73 and a score of 3 gives 0.95.",
+            "A score of 2 sits between those two, nearer the top."
+          ],
+          "explain": "The sigmoid of 2 is about 0.88. The chance is high, but not certain."
+        },
+        {
+          "id": "squash-sim",
+          "type": "stepsim",
+          "taughtOn": "squash-to-chance",
+          "mode": "predict",
+          "prompt": "Watch scores turn into chances, and chances into yes or no.",
+          "explain": "The score is squashed into a chance, and the cut-off at 0.5 sorts the patches into Yes and No.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "-5",
+                      "mark": null,
+                      "tag": "x = 0"
+                    },
+                    {
+                      "value": "-3",
+                      "mark": null,
+                      "tag": "x = 1"
+                    },
+                    {
+                      "value": "-1",
+                      "mark": null,
+                      "tag": "x = 2"
+                    },
+                    {
+                      "value": "1",
+                      "mark": null,
+                      "tag": "x = 3"
+                    },
+                    {
+                      "value": "3",
+                      "mark": null,
+                      "tag": "x = 4"
+                    },
+                    {
+                      "value": "5",
+                      "mark": null,
+                      "tag": "x = 5"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Chance of ripe at each x"
+                },
+                "say": "Each box shows the score z = 2x - 5 for a melon patch with x warm days. The score can be any number, negative or positive."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "0.01",
+                      "mark": null,
+                      "tag": "x = 0: No"
+                    },
+                    {
+                      "value": "0.05",
+                      "mark": null,
+                      "tag": "x = 1: No"
+                    },
+                    {
+                      "value": "0.27",
+                      "mark": null,
+                      "tag": "x = 2: No"
+                    },
+                    {
+                      "value": "0.73",
+                      "mark": null,
+                      "tag": "x = 3: Yes"
+                    },
+                    {
+                      "value": "0.95",
+                      "mark": null,
+                      "tag": "x = 4: Yes"
+                    },
+                    {
+                      "value": "0.99",
+                      "mark": null,
+                      "tag": "x = 5: Yes"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Chance of ripe at each x"
+                },
+                "say": "The sigmoid squashes each score into a chance between 0 and 1. A score of 0 would give exactly 0.5. Large negative scores give chances near 0, and large positive scores give chances near 1.",
+                "predict": {
+                  "prompt": "The score for x = 3 is 1. Is the chance of ripe above or below 0.5?",
+                  "options": [
+                    {
+                      "text": "Above 0.5",
+                      "correct": true
+                    },
+                    {
+                      "text": "Below 0.5",
+                      "correct": false
+                    },
+                    {
+                      "text": "Exactly 0.5",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "A score of 0 gives 0.5.",
+                    "Positive scores give more than 0.5."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "0.01",
+                      "mark": null,
+                      "tag": "x = 0: No"
+                    },
+                    {
+                      "value": "0.05",
+                      "mark": null,
+                      "tag": "x = 1: No"
+                    },
+                    {
+                      "value": "0.27",
+                      "mark": null,
+                      "tag": "x = 2: No"
+                    },
+                    {
+                      "value": "0.73",
+                      "mark": "best",
+                      "tag": "x = 3: Yes"
+                    },
+                    {
+                      "value": "0.95",
+                      "mark": "best",
+                      "tag": "x = 4: Yes"
+                    },
+                    {
+                      "value": "0.99",
+                      "mark": "best",
+                      "tag": "x = 5: Yes"
+                    }
+                  ],
+                  "pointers": {
+                    "3": "first Yes"
+                  },
+                  "label": "Chance of ripe at each x"
+                },
+                "say": "Say Yes when the chance is at least 0.5. The marked boxes are the Yes patches: x = 3, 4 and 5. The boundary sits where the score is 0, at x = 2.5.",
+                "predict": {
+                  "prompt": "Which is the first x where the model says Yes?",
+                  "options": [
+                    {
+                      "text": "3",
+                      "correct": true
+                    },
+                    {
+                      "text": "2",
+                      "correct": false
+                    },
+                    {
+                      "text": "4",
+                      "correct": false
+                    },
+                    {
+                      "text": "5",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Look for the first chance of at least 0.5.",
+                    "x = 2 gives 0.27."
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "boundary-x",
+          "type": "numeric",
+          "taughtOn": "cutoff-boundary",
+          "prompt": "For z = 2x - 5, at which x does the model switch from No to Yes?",
+          "answer": 2.5,
+          "tolerance": 0.001,
+          "calculator": false,
+          "hints": [
+            "Where is the score exactly 0?",
+            "Solve 2x - 5 = 0."
+          ],
+          "explain": "2x - 5 = 0 when x = 2.5. Patches above that are called ripe."
+        },
+        {
+          "id": "yes-or-no",
+          "type": "buckets",
+          "taughtOn": "cutoff-boundary",
+          "prompt": "With the 0.5 cut-off, what does the model say for each number of warm days?",
+          "buckets": [
+            "Ripe: Yes",
+            "Ripe: No"
+          ],
+          "items": [
+            {
+              "text": "x = 0 (chance 0.01)",
+              "bucket": "Ripe: No"
+            },
+            {
+              "text": "x = 1 (chance 0.05)",
+              "bucket": "Ripe: No"
+            },
+            {
+              "text": "x = 2 (chance 0.27)",
+              "bucket": "Ripe: No"
+            },
+            {
+              "text": "x = 3 (chance 0.73)",
+              "bucket": "Ripe: Yes"
+            },
+            {
+              "text": "x = 4 (chance 0.95)",
+              "bucket": "Ripe: Yes"
+            }
+          ],
+          "hints": [
+            "Yes means the chance is at least 0.5.",
+            "0.27 is below 0.5."
+          ],
+          "explain": "The model says Yes from x = 3 upwards, where the chance passes 0.5."
+        },
+        {
+          "id": "logit-words",
+          "type": "match",
+          "taughtOn": "squash-to-chance",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Sigmoid",
+              "right": "Turns any score into a chance between 0 and 1"
+            },
+            {
+              "left": "Decision boundary",
+              "right": "Where the score is zero"
+            },
+            {
+              "left": "Score",
+              "right": "The weighted sum before squashing"
+            },
+            {
+              "left": "Cut-off",
+              "right": "The chance above which the answer is Yes"
+            }
+          ],
+          "hints": [
+            "The sigmoid squashes, the cut-off decides.",
+            "The decision boundary is where the chance is 0.5."
+          ],
+          "explain": "The score is squashed by the sigmoid into a chance, and the cut-off turns the chance into Yes or No."
+        },
+        {
+          "id": "not-linear",
+          "type": "choice",
+          "taughtOn": "squash-to-chance",
+          "prompt": "Why not use a plain straight line to predict a chance?",
+          "options": [
+            {
+              "text": "A line can go below 0 or above 1",
+              "correct": true
+            },
+            {
+              "text": "A line can only predict labels"
+            },
+            {
+              "text": "A line cannot have a slope"
+            },
+            {
+              "text": "Chances must be negative"
+            }
+          ],
+          "hints": [
+            "What are the smallest and largest chances?",
+            "A straight line keeps going."
+          ],
+          "explain": "A line has no ceiling or floor, so it can give impossible chances. The sigmoid keeps them between 0 and 1."
+        },
+        {
+          "id": "logit-steps",
+          "type": "order",
+          "taughtOn": "squash-to-chance",
+          "prompt": "Put the steps of logistic regression for one example in order.",
+          "items": [
+            "Compute the score from the features",
+            "Squash the score into a chance",
+            "Compare the chance with the cut-off",
+            "Say Yes or No"
+          ],
+          "hints": [
+            "The score comes first.",
+            "Compare before you say Yes or No."
+          ],
+          "explain": "Score, squash, compare with the cut-off, and answer."
+        },
+        {
+          "id": "odds-of-08",
+          "type": "numeric",
+          "taughtOn": "odds-and-fit",
+          "prompt": "The chance of ripe is 0.8. What are the odds, as a number to 1? (chance divided by one minus chance)",
+          "answer": 4,
+          "tolerance": 0.001,
+          "calculator": false,
+          "hints": [
+            "One minus 0.8 is 0.2.",
+            "0.8 / 0.2"
+          ],
+          "explain": "0.8 / 0.2 = 4, so the odds are 4 to 1."
+        },
+        {
+          "id": "cautious-x",
+          "type": "numeric",
+          "taughtOn": "odds-and-fit",
+          "prompt": "Challenge: a cautious farmer says Yes only if the chance is at least 0.9. Using the earlier table, what is the lowest x that now gets a Yes?",
+          "answer": 4,
+          "calculator": false,
+          "hints": [
+            "x = 3 gives 0.73. Is that at least 0.9?",
+            "x = 4 gives 0.95."
+          ],
+          "explain": "x = 3 has a chance of only 0.73, below 0.9. x = 4 has 0.95, so 4 is the first Yes.",
+          "challenge": true
+        },
+        {
+          "id": "cutoff-tradeoff",
+          "type": "choice",
+          "taughtOn": "odds-and-fit",
+          "prompt": "Challenge: raising the cut-off from 0.5 to 0.9 does what?",
+          "options": [
+            {
+              "text": "Fewer melons are called ripe, but those that are, are more certain",
+              "correct": true
+            },
+            {
+              "text": "More melons are called ripe"
+            },
+            {
+              "text": "Nothing changes"
+            },
+            {
+              "text": "The scores become negative"
+            }
+          ],
+          "hints": [
+            "How many melons clear a higher bar?",
+            "A stricter bar admits fewer."
+          ],
+          "explain": "A higher cut-off gives fewer Yes answers, with more confidence in each. The right cut-off depends on which mistake costs more.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m4.2-f1",
+          "type": "quiz",
+          "taughtOn": "squash-to-chance",
+          "prompt": "What does the sigmoid do?",
+          "options": [
+            {
+              "text": "Turns any score into a chance between 0 and 1",
+              "correct": true
+            },
+            {
+              "text": "Adds up the labels"
+            },
+            {
+              "text": "Finds the slope"
+            },
+            {
+              "text": "Counts the examples"
+            }
+          ],
+          "explain": "The sigmoid squashes scores into the range 0 to 1."
+        },
+        {
+          "id": "m4.2-f2",
+          "type": "quiz",
+          "taughtOn": "cutoff-boundary",
+          "prompt": "What chance does a score of 0 give?",
+          "options": [
+            {
+              "text": "0.5",
+              "correct": true
+            },
+            {
+              "text": "0"
+            },
+            {
+              "text": "1"
+            },
+            {
+              "text": "-0.5"
+            }
+          ],
+          "explain": "A score of 0 sits exactly on the boundary."
+        },
+        {
+          "id": "m4.2-f3",
+          "type": "why",
+          "taughtOn": "odds-and-fit",
+          "prompt": "Why might you raise the cut-off above 0.5?",
+          "options": [
+            {
+              "text": "To make Yes answers more certain, at the cost of fewer of them",
+              "correct": true
+            },
+            {
+              "text": "To make all answers Yes"
+            },
+            {
+              "text": "To get negative scores"
+            },
+            {
+              "text": "To ignore the features"
+            }
+          ],
+          "explain": "A higher bar admits fewer, surer Yes answers."
+        },
+        {
+          "id": "m4.2-f4",
+          "type": "predict",
+          "taughtOn": "squash-to-chance",
+          "prompt": "A model's chance is 0.2. Using the 0.5 cut-off, what does it say?",
+          "answer": "No, because 0.2 is below 0.5."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Not for numbers",
+          "text": "Despite its name, logistic regression models the probability of a yes-or-no outcome. The model itself is not a classifier, but a cutoff on that probability turns it into one.",
+          "source": {
+            "title": "Wikipedia: Logistic regression",
+            "url": "https://en.wikipedia.org/wiki/Logistic_regression"
+          },
+          "verify": false
+        },
+        {
+          "title": "The S-shaped curve",
+          "text": "The logistic function squashes any real number into the range between 0 and 1, which is why it can model probabilities.",
+          "source": {
+            "title": "Wikipedia: Logistic function",
+            "url": "https://en.wikipedia.org/wiki/Logistic_function"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You turned a score into a chance with the sigmoid, found where the model switches from No to Yes, and saw how moving the cut-off changes the answers.",
+          "Fenn sets the ripe melons on the cart. \"A chance I can act on.\""
+        ],
+        "mistake": {
+          "title": "Thinking logistic regression predicts a number",
+          "text": "It predicts a chance and then a yes or no. The word regression is a historical name."
+        }
+      }
+    }
+  ]
+}

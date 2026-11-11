@@ -1,0 +1,4285 @@
+{
+  "zone": 3,
+  "levels": [
+    {
+      "id": "3.1",
+      "title": "Island Census",
+      "story": "The Bridge Isles are scattered across the water, and the council has no map of who is linked to whom. Kit draws one, island by island, and learns the words for what it sees.",
+      "everyday": {
+        "scene": "A friend group chat: some people know each other, some only know one person, and one friend does not know anyone else in the group.",
+        "question": "How would you draw who knows whom, and how would you store it in a computer?",
+        "answer": "Dots for people and lines for friendships. That drawing is called a graph, and it is the basic picture behind maps, social networks and the internet."
+      },
+      "lessons": [
+        {
+          "id": "vocab",
+          "title": "Dots and lines",
+          "text": [
+            "A graph is a set of vertices (the dots) joined by edges (the lines). Here the islands are vertices and the bridges are edges. The degree of a vertex is how many edges touch it. A path is a walk along edges from one vertex to another.",
+            "A graph is connected if there is a path between every pair of vertices. A cycle is a path that starts and ends at the same vertex without reusing an edge. A graph that falls into separate pieces has several connected components."
+          ],
+          "terms": [
+            {
+              "term": "Vertex",
+              "meaning": "A dot. Here, an island."
+            },
+            {
+              "term": "Edge",
+              "meaning": "A line joining two vertices. Here, a bridge."
+            },
+            {
+              "term": "Degree",
+              "meaning": "The number of edges at a vertex."
+            },
+            {
+              "term": "Connected component",
+              "meaning": "A group of vertices that can all reach each other."
+            }
+          ],
+          "predict": {
+            "prompt": "A graph has 3 separate groups of islands. How many connected components?",
+            "answer": "3."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Graph (discrete mathematics)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"
+            },
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 5: Basic Graph Algorithms",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/05-graphs.pdf"
+            }
+          ]
+        },
+        {
+          "id": "handshake",
+          "title": "Counting bridges",
+          "text": [
+            "Each bridge has two ends, so it adds 1 to the degree of two islands. So the degrees always add up to twice the number of edges. On our map: A=2, B=2, C=3, D=1, E=0, F=1, H=1, which adds to 10, and the map has 5 bridges.",
+            "The number of connected components is 3: the group A, B, C, D, then E on its own, and F with H. An island with no bridges is a component of its own."
+          ],
+          "table": {
+            "head": [
+              "Island",
+              "Degree"
+            ],
+            "rows": [
+              [
+                "A",
+                "2"
+              ],
+              [
+                "B",
+                "2"
+              ],
+              [
+                "C",
+                "3"
+              ],
+              [
+                "D",
+                "1"
+              ],
+              [
+                "E",
+                "0"
+              ],
+              [
+                "F",
+                "1"
+              ],
+              [
+                "H",
+                "1"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "A map has 12 bridges. What do the degrees add up to?",
+            "answer": "24. Every bridge is counted at both ends."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Graph (discrete mathematics)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"
+            },
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 5: Basic Graph Algorithms",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/05-graphs.pdf"
+            }
+          ]
+        },
+        {
+          "id": "store",
+          "title": "Storing a graph",
+          "text": [
+            "A computer can store a graph two ways. An adjacency matrix is a square grid with one row and column per vertex, with a mark where two vertices are joined. For 7 islands that is 49 cells. An adjacency list gives each vertex a list of its neighbours.",
+            "For an undirected graph the lists hold 10 entries in total, which is twice the edges. When most vertices have few neighbours, lists use far less space. A matrix gives a quick answer to \"are these two joined?\", at the cost of V × V space."
+          ],
+          "terms": [
+            {
+              "term": "Adjacency matrix",
+              "meaning": "A V × V grid showing which pairs are joined."
+            },
+            {
+              "term": "Adjacency list",
+              "meaning": "For each vertex, a list of its neighbours."
+            }
+          ],
+          "predict": {
+            "prompt": "A graph has 1,000 vertices. How many cells does its adjacency matrix have?",
+            "answer": "1,000,000."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Graph (discrete mathematics)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"
+            },
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 5: Basic Graph Algorithms",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/05-graphs.pdf"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "watch-census",
+          "type": "stepsim",
+          "taughtOn": "vocab",
+          "mode": "predict",
+          "prompt": "Look at three islands on the map, and predict their degrees.",
+          "script": {
+            "view": "graph",
+            "steps": [
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 50,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 80,
+                      "y": 120,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 140,
+                      "label": "D"
+                    },
+                    {
+                      "id": "E",
+                      "x": 150,
+                      "y": 60,
+                      "label": "E"
+                    },
+                    {
+                      "id": "F",
+                      "x": 230,
+                      "y": 50,
+                      "label": "F"
+                    },
+                    {
+                      "id": "H",
+                      "x": 260,
+                      "y": 120,
+                      "label": "H"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "C",
+                      "to": "D"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H"
+                    }
+                  ],
+                  "legend": "Seven islands, five bridges. The ringed island is the one being looked at."
+                },
+                "say": "The census: Kit maps the islands as dots (vertices) and the bridges as lines (edges), then counts how many bridges meet at each island."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 50,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 80,
+                      "y": 120,
+                      "label": "C",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 140,
+                      "label": "D"
+                    },
+                    {
+                      "id": "E",
+                      "x": 150,
+                      "y": 60,
+                      "label": "E"
+                    },
+                    {
+                      "id": "F",
+                      "x": 230,
+                      "y": 50,
+                      "label": "F"
+                    },
+                    {
+                      "id": "H",
+                      "x": 260,
+                      "y": 120,
+                      "label": "H"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "C",
+                      "to": "D"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H"
+                    }
+                  ],
+                  "legend": "Seven islands, five bridges. The ringed island is the one being looked at."
+                },
+                "say": "Island C has 3 bridges. Its degree is 3.",
+                "predict": {
+                  "prompt": "How many bridges meet at island C?",
+                  "options": [
+                    {
+                      "text": "3",
+                      "correct": true
+                    },
+                    {
+                      "text": "0"
+                    },
+                    {
+                      "text": "1"
+                    },
+                    {
+                      "text": "2"
+                    }
+                  ],
+                  "hints": [
+                    "Count the lines that touch the ringed island.",
+                    "Neighbours: A, B, D."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 50,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 80,
+                      "y": 120,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 140,
+                      "label": "D",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "E",
+                      "x": 150,
+                      "y": 60,
+                      "label": "E"
+                    },
+                    {
+                      "id": "F",
+                      "x": 230,
+                      "y": 50,
+                      "label": "F"
+                    },
+                    {
+                      "id": "H",
+                      "x": 260,
+                      "y": 120,
+                      "label": "H"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "C",
+                      "to": "D"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H"
+                    }
+                  ],
+                  "legend": "Seven islands, five bridges. The ringed island is the one being looked at."
+                },
+                "say": "Island D has 1 bridge. Its degree is 1.",
+                "predict": {
+                  "prompt": "How many bridges meet at island D?",
+                  "options": [
+                    {
+                      "text": "1",
+                      "correct": true
+                    },
+                    {
+                      "text": "0"
+                    },
+                    {
+                      "text": "2"
+                    },
+                    {
+                      "text": "3"
+                    }
+                  ],
+                  "hints": [
+                    "Count the lines that touch the ringed island.",
+                    "Neighbours: C."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 50,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 80,
+                      "y": 120,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 140,
+                      "label": "D"
+                    },
+                    {
+                      "id": "E",
+                      "x": 150,
+                      "y": 60,
+                      "label": "E",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "F",
+                      "x": 230,
+                      "y": 50,
+                      "label": "F"
+                    },
+                    {
+                      "id": "H",
+                      "x": 260,
+                      "y": 120,
+                      "label": "H"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "C",
+                      "to": "D"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H"
+                    }
+                  ],
+                  "legend": "Seven islands, five bridges. The ringed island is the one being looked at."
+                },
+                "say": "Island E has 0 bridges, so it stands alone. Its degree is 0.",
+                "predict": {
+                  "prompt": "How many bridges meet at island E?",
+                  "options": [
+                    {
+                      "text": "0",
+                      "correct": true
+                    },
+                    {
+                      "text": "1"
+                    },
+                    {
+                      "text": "2"
+                    },
+                    {
+                      "text": "3"
+                    }
+                  ],
+                  "hints": [
+                    "Count the lines that touch the ringed island.",
+                    "Is any line touching it?"
+                  ]
+                }
+              }
+            ]
+          },
+          "explain": "Look at three islands on the map, and predict their degrees."
+        },
+        {
+          "id": "graph-words",
+          "type": "match",
+          "taughtOn": "vocab",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Vertex",
+              "right": "A dot on the map"
+            },
+            {
+              "left": "Edge",
+              "right": "A line joining two dots"
+            },
+            {
+              "left": "Degree",
+              "right": "How many lines touch a dot"
+            },
+            {
+              "left": "Path",
+              "right": "A walk along lines from one dot to another"
+            },
+            {
+              "left": "Cycle",
+              "right": "A walk that returns to where it started without reusing a line"
+            }
+          ],
+          "hints": [
+            "Edges join vertices.",
+            "Degree is a count."
+          ],
+          "explain": "Vertices are dots, edges are lines, degree counts the edges at a vertex, a path is a walk, and a cycle returns to its start."
+        },
+        {
+          "id": "deg-sum",
+          "type": "numeric",
+          "taughtOn": "handshake",
+          "prompt": "The map above has 5 bridges. What do the seven degrees add up to?",
+          "answer": 10,
+          "unit": "",
+          "hints": [
+            "Each bridge counts at both of its ends.",
+            "5 × 2."
+          ],
+          "explain": "Each bridge adds 1 to two islands: 5 × 2 = 10."
+        },
+        {
+          "id": "components",
+          "type": "numeric",
+          "taughtOn": "handshake",
+          "prompt": "How many separate groups (connected components) does the map have?",
+          "answer": 3,
+          "unit": "groups",
+          "hints": [
+            "Group islands that can reach each other. A lonely island counts as a group.",
+            "A, B, C, D form one. E is alone. F and H form one."
+          ],
+          "explain": "The groups are {A, B, C, D}, {E} and {F, H}: 3."
+        },
+        {
+          "id": "matrix-cells",
+          "type": "numeric",
+          "taughtOn": "store",
+          "prompt": "How many cells does the adjacency matrix for 7 islands have?",
+          "answer": 49,
+          "unit": "cells",
+          "hints": [
+            "One row and one column per island.",
+            "7 × 7."
+          ],
+          "explain": "7 × 7 = 49."
+        },
+        {
+          "id": "list-entries",
+          "type": "numeric",
+          "taughtOn": "store",
+          "prompt": "How many entries are there in total in the adjacency lists of the map?",
+          "answer": 10,
+          "unit": "entries",
+          "hints": [
+            "Each bridge is listed at both islands.",
+            "The same as the sum of the degrees."
+          ],
+          "explain": "Each of the 5 bridges appears twice, giving 10."
+        },
+        {
+          "id": "max-edges",
+          "type": "numeric",
+          "taughtOn": "handshake",
+          "prompt": "Challenge: at most how many bridges can 7 islands have if no two islands share more than one bridge and no island has a bridge to itself?",
+          "answer": 21,
+          "unit": "bridges",
+          "hints": [
+            "Each pair of islands can have one bridge.",
+            "7 × 6 ÷ 2."
+          ],
+          "explain": "That is the number of pairs: 7 × 6 ÷ 2 = 21.",
+          "challenge": true
+        },
+        {
+          "id": "min-edges",
+          "type": "numeric",
+          "taughtOn": "vocab",
+          "prompt": "Challenge: at least how many bridges are needed to make 7 islands one connected graph?",
+          "answer": 6,
+          "unit": "bridges",
+          "hints": [
+            "Each new bridge can join at most one new island to the group.",
+            "Start with one island. Each of the other 6 needs a bridge."
+          ],
+          "explain": "Seven islands in a chain or a star need 6 bridges. Fewer would leave a lonely island.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "a3.1-f1",
+          "type": "quiz",
+          "taughtOn": "vocab",
+          "prompt": "In a graph, an edge is...",
+          "options": [
+            {
+              "text": "A line joining two vertices",
+              "correct": true
+            },
+            {
+              "text": "A dot"
+            },
+            {
+              "text": "A group of lines"
+            },
+            {
+              "text": "A path that returns to its start"
+            }
+          ],
+          "explain": "Vertices are dots, and edges are lines between them."
+        },
+        {
+          "id": "a3.1-f2",
+          "type": "quiz",
+          "taughtOn": "handshake",
+          "prompt": "A graph has 9 edges. What do the degrees add up to?",
+          "options": [
+            {
+              "text": "18",
+              "correct": true
+            },
+            {
+              "text": "9"
+            },
+            {
+              "text": "81"
+            },
+            {
+              "text": "36"
+            }
+          ],
+          "explain": "Each edge is counted at both ends."
+        },
+        {
+          "id": "a3.1-f3",
+          "type": "predict",
+          "taughtOn": "store",
+          "prompt": "How many cells has an adjacency matrix for 100 vertices?",
+          "answer": "10,000 (100 × 100)."
+        },
+        {
+          "id": "a3.1-f4",
+          "type": "why",
+          "taughtOn": "store",
+          "prompt": "Adjacency lists use less space than a matrix when...",
+          "options": [
+            {
+              "text": "Most vertices have only a few neighbours",
+              "correct": true
+            },
+            {
+              "text": "The graph has many cycles"
+            },
+            {
+              "text": "The graph is connected"
+            },
+            {
+              "text": "The vertices have names"
+            }
+          ],
+          "explain": "Lists store only the edges that exist."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Graphs are everywhere",
+          "text": "Road maps, friend networks, the links between web pages and the cables between routers can all be drawn as graphs. Once you see them that way, one set of methods works for all of them.",
+          "source": {
+            "title": "Wikipedia: Graph (discrete mathematics)",
+            "url": "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You learned the words vertex, edge, degree, path, cycle and connected component, counted degrees, and compared a matrix with an adjacency list.",
+          "The council has its map. \"Now we can ask questions of it,\" says the mayor. Next, Kit walks it."
+        ],
+        "mistake": {
+          "title": "Forgetting that a lone island is a component",
+          "text": "An island with no bridges is its own connected component, so it counts toward the number of groups."
+        }
+      }
+    },
+    {
+      "id": "3.2",
+      "title": "Deep Dive",
+      "story": "Kit has a map and a lantern. The mayor wants to know which islands can be reached from the first one, and the quickest way is to go as deep as possible down one route before trying another.",
+      "everyday": {
+        "scene": "You are in a maze with a ball of string. You walk down a corridor to the end. If it is a dead end, you follow the string back to the last junction and try another corridor.",
+        "question": "What would you need to remember to do this?",
+        "answer": "The path you took, so you can back up. That is depth-first search: go deep, and back up when stuck."
+      },
+      "lessons": [
+        {
+          "id": "dive",
+          "title": "Go deep, then back up",
+          "text": [
+            "Depth-first search (DFS) starts at one vertex and marks it seen. Then it picks any neighbour not yet seen, moves there, and does the same. When a vertex has no unseen neighbours, it backs up to the vertex before and tries its next neighbour.",
+            "Marking vertices as seen means no island is visited twice, even if the graph has cycles. With neighbours taken in alphabetical order, DFS from A on our map visits: A, B, D, H, E, F, C."
+          ],
+          "terms": [
+            {
+              "term": "Depth-first search",
+              "meaning": "Explore as deep as possible, then back up."
+            },
+            {
+              "term": "Visited",
+              "meaning": "Marked as already seen, so it is not visited twice."
+            }
+          ],
+          "predict": {
+            "prompt": "DFS reaches an island with no unseen neighbours. What does it do?",
+            "answer": "It backs up to the previous island."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Depth-first search",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Depth-first_search"
+            },
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 6: Depth-First Search",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/06-dfs.pdf"
+            }
+          ]
+        },
+        {
+          "id": "stack",
+          "title": "The path is a stack",
+          "text": [
+            "To back up, DFS must remember the path. The path works like a stack: you push an island when you arrive, and pop it when you back up. A stack gives out the most recently added thing first, like a pile of plates.",
+            "A recursive method gets this for free, because the computer keeps the calls waiting like a stack. Either way, the most recent island is the first one to be revisited when you back up."
+          ],
+          "terms": [
+            {
+              "term": "Stack",
+              "meaning": "Last in, first out: the newest item is taken first."
+            }
+          ],
+          "predict": {
+            "prompt": "A stack holds A, B, D (D on top). You back up. Which island is on top?",
+            "answer": "B. D is removed first."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Stack (abstract data type)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Stack_(abstract_data_type)"
+            },
+            {
+              "title": "Wikipedia: Recursion (computer science)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Recursion_(computer_science)"
+            }
+          ]
+        },
+        {
+          "id": "dfs-uses",
+          "title": "What DFS is good for",
+          "text": [
+            "DFS visits every island reachable from the start, and looks at each bridge from both ends, so on our map 16 bridge-looks for 8 bridges. Its work grows with the number of vertices plus the number of edges.",
+            "It can find all connected components, tell whether a graph has a cycle, and help build a topological order. It does not find the shortest path: the first route it finds may be a long way round."
+          ],
+          "predict": {
+            "prompt": "Does DFS find the route with the fewest bridges?",
+            "answer": "Not necessarily. It takes the first route it finds going deep."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Depth-first search",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Depth-first_search"
+            },
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 6: Depth-First Search",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/06-dfs.pdf"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "watch-dfs",
+          "type": "stepsim",
+          "taughtOn": "dive",
+          "mode": "predict",
+          "prompt": "Watch depth-first search from island A, and predict where it goes next.",
+          "script": {
+            "view": "graph",
+            "steps": [
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H"
+                    }
+                  ],
+                  "legend": "Eight bridges. Ringed: the island Kit is on. Ticked: finished arriving. Thick line: a bridge walked."
+                },
+                "say": "Depth-first search: from where you are, go to a neighbour you have not seen, and keep going deeper. When there is nowhere new to go, back up. Rule: pick neighbours in alphabetical order."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H"
+                    }
+                  ],
+                  "legend": "Path from the start: A"
+                },
+                "say": "Start at A."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H"
+                    }
+                  ],
+                  "legend": "Path from the start: A → B"
+                },
+                "say": "Go from A to B. Path so far: A → B.",
+                "predict": {
+                  "prompt": "From A, which island does depth-first search visit next? (Alphabetical order among those not yet seen.)",
+                  "options": [
+                    {
+                      "text": "B",
+                      "correct": true
+                    },
+                    {
+                      "text": "C"
+                    },
+                    {
+                      "text": "A"
+                    },
+                    {
+                      "text": "D"
+                    }
+                  ],
+                  "hints": [
+                    "Take the neighbours of the current island that have not been visited.",
+                    "Neighbours of A: B, C. Pick the first one not yet visited."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H"
+                    }
+                  ],
+                  "legend": "Path from the start: A → B → D"
+                },
+                "say": "Go from B to D. Path so far: A → B → D.",
+                "predict": {
+                  "prompt": "From B, which island does depth-first search visit next? (Alphabetical order among those not yet seen.)",
+                  "options": [
+                    {
+                      "text": "D",
+                      "correct": true
+                    },
+                    {
+                      "text": "E"
+                    },
+                    {
+                      "text": "A"
+                    },
+                    {
+                      "text": "B"
+                    }
+                  ],
+                  "hints": [
+                    "Take the neighbours of the current island that have not been visited.",
+                    "Neighbours of B: A, D, E. Pick the first one not yet visited."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H"
+                    }
+                  ],
+                  "legend": "Path from the start: A → B → D → H"
+                },
+                "say": "Go from D to H. Path so far: A → B → D → H.",
+                "predict": {
+                  "prompt": "From D, which island does depth-first search visit next? (Alphabetical order among those not yet seen.)",
+                  "options": [
+                    {
+                      "text": "H",
+                      "correct": true
+                    },
+                    {
+                      "text": "A"
+                    },
+                    {
+                      "text": "B"
+                    },
+                    {
+                      "text": "C"
+                    }
+                  ],
+                  "hints": [
+                    "Take the neighbours of the current island that have not been visited.",
+                    "Neighbours of D: B, H. Pick the first one not yet visited."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H",
+                      "mark": "visited"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H"
+                    }
+                  ],
+                  "legend": "Path from the start: A → B → D → H → E"
+                },
+                "say": "Go from H to E. Path so far: A → B → D → H → E.",
+                "predict": {
+                  "prompt": "From H, which island does depth-first search visit next? (Alphabetical order among those not yet seen.)",
+                  "options": [
+                    {
+                      "text": "E",
+                      "correct": true
+                    },
+                    {
+                      "text": "F"
+                    },
+                    {
+                      "text": "A"
+                    },
+                    {
+                      "text": "B"
+                    }
+                  ],
+                  "hints": [
+                    "Take the neighbours of the current island that have not been visited.",
+                    "Neighbours of H: D, E, F. Pick the first one not yet visited."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H"
+                    }
+                  ],
+                  "legend": "Path from the start: A → B → D → H"
+                },
+                "say": "Nothing new from the island just left. Back up to H and look at its next neighbour."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H",
+                      "mark": "visited"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H"
+                    }
+                  ],
+                  "legend": "Path from the start: A → B → D → H → F"
+                },
+                "say": "Go from H to F. Path so far: A → B → D → H → F.",
+                "predict": {
+                  "prompt": "From H, which island does depth-first search visit next? (Alphabetical order among those not yet seen.)",
+                  "options": [
+                    {
+                      "text": "F",
+                      "correct": true
+                    },
+                    {
+                      "text": "A"
+                    },
+                    {
+                      "text": "B"
+                    },
+                    {
+                      "text": "C"
+                    }
+                  ],
+                  "hints": [
+                    "Take the neighbours of the current island that have not been visited.",
+                    "Neighbours of H: D, E, F. Pick the first one not yet visited."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H",
+                      "mark": "visited"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "Path from the start: A → B → D → H → F → C"
+                },
+                "say": "Go from F to C. Path so far: A → B → D → H → F → C.",
+                "predict": {
+                  "prompt": "From F, which island does depth-first search visit next? (Alphabetical order among those not yet seen.)",
+                  "options": [
+                    {
+                      "text": "C",
+                      "correct": true
+                    },
+                    {
+                      "text": "A"
+                    },
+                    {
+                      "text": "B"
+                    },
+                    {
+                      "text": "D"
+                    }
+                  ],
+                  "hints": [
+                    "Take the neighbours of the current island that have not been visited.",
+                    "Neighbours of F: C, H. Pick the first one not yet visited."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H",
+                      "mark": "visited"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "Path from the start: A → B → D → H → F"
+                },
+                "say": "Nothing new from the island just left. Back up to F and look at its next neighbour."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "Path from the start: A → B → D → H"
+                },
+                "say": "Nothing new from the island just left. Back up to H and look at its next neighbour."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H",
+                      "mark": "visited"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "Path from the start: A → B → D"
+                },
+                "say": "Nothing new from the island just left. Back up to D and look at its next neighbour."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H",
+                      "mark": "visited"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "Path from the start: A → B"
+                },
+                "say": "Nothing new from the island just left. Back up to B and look at its next neighbour."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H",
+                      "mark": "visited"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "Path from the start: A"
+                },
+                "say": "Nothing new from the island just left. Back up to A and look at its next neighbour."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H",
+                      "mark": "visited"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "Every island is ticked. Thick lines are the bridges used to discover new islands."
+                },
+                "say": "Done. Visit order: A, B, D, H, E, F, C."
+              }
+            ]
+          },
+          "explain": "Watch depth-first search from island A, and predict where it goes next."
+        },
+        {
+          "id": "dfs-order",
+          "type": "order",
+          "taughtOn": "dive",
+          "prompt": "Put the islands in the order DFS visits them from A on this map: bridges A–B, A–C, B–D, C–D, C–E (take neighbours in alphabetical order).",
+          "items": [
+            "A",
+            "B",
+            "D",
+            "C",
+            "E"
+          ],
+          "hints": [
+            "Start at A, then take the alphabetically first neighbour.",
+            "From A the first neighbour is B."
+          ],
+          "explain": "The path is A, B, D, C, E."
+        },
+        {
+          "id": "which-structure",
+          "type": "choice",
+          "taughtOn": "stack",
+          "prompt": "Which structure does depth-first search use to remember where to back up to?",
+          "options": [
+            {
+              "text": "A stack",
+              "correct": true
+            },
+            {
+              "text": "A queue"
+            },
+            {
+              "text": "A sorted list"
+            },
+            {
+              "text": "A matrix"
+            }
+          ],
+          "hints": [
+            "Which island is revisited first when you back up: the newest or the oldest?",
+            "The newest. That is last in, first out."
+          ],
+          "explain": "A stack gives back the most recently visited island first."
+        },
+        {
+          "id": "visited-count",
+          "type": "numeric",
+          "taughtOn": "dive",
+          "prompt": "DFS from A on the main map visits how many islands?",
+          "answer": 7,
+          "unit": "islands",
+          "hints": [
+            "Is every island reachable from A?",
+            "Count the ticks at the end."
+          ],
+          "explain": "All 7 islands are reachable from A, so DFS visits each once."
+        },
+        {
+          "id": "bridge-looks",
+          "type": "numeric",
+          "taughtOn": "dfs-uses",
+          "prompt": "On the main map with 8 bridges, DFS looks at each bridge from both ends. How many bridge-looks in total?",
+          "answer": 16,
+          "unit": "looks",
+          "hints": [
+            "Each bridge is seen once from each end.",
+            "8 × 2."
+          ],
+          "explain": "8 × 2 = 16."
+        },
+        {
+          "id": "shortest-no",
+          "type": "choice",
+          "taughtOn": "dfs-uses",
+          "prompt": "Challenge: DFS finds a route from A to H. Is it guaranteed to use the fewest bridges?",
+          "options": [
+            {
+              "text": "No: it takes the first route it finds going deep",
+              "correct": true
+            },
+            {
+              "text": "Yes: depth-first always means shortest"
+            },
+            {
+              "text": "Yes: it tries every route and keeps the shortest"
+            },
+            {
+              "text": "No: it only finds routes of length 1"
+            }
+          ],
+          "hints": [
+            "Does DFS compare routes?",
+            "It stops exploring once it has seen an island."
+          ],
+          "explain": "DFS can find a long route before a short one. Another method does better, and you meet it in the next level.",
+          "challenge": true
+        },
+        {
+          "id": "cycle-detect",
+          "type": "choice",
+          "taughtOn": "dfs-uses",
+          "prompt": "Challenge: while exploring an undirected graph, DFS finds a bridge to an island that is already visited (and is not where it just came from). What does this show?",
+          "options": [
+            {
+              "text": "The graph has a cycle",
+              "correct": true
+            },
+            {
+              "text": "The graph is disconnected"
+            },
+            {
+              "text": "The graph has no edges"
+            },
+            {
+              "text": "The search has finished"
+            }
+          ],
+          "hints": [
+            "It reached a place it already knew by a different route.",
+            "Two routes to the same island make a loop."
+          ],
+          "explain": "Reaching a visited island by a new bridge means two routes meet there, so there is a cycle.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "a3.2-f1",
+          "type": "quiz",
+          "taughtOn": "dive",
+          "prompt": "DFS goes to the next island...",
+          "options": [
+            {
+              "text": "Deeper first, backing up only when stuck",
+              "correct": true
+            },
+            {
+              "text": "One layer at a time"
+            },
+            {
+              "text": "At random"
+            },
+            {
+              "text": "To the nearest island"
+            }
+          ],
+          "explain": "Depth-first goes deep before wide."
+        },
+        {
+          "id": "a3.2-f2",
+          "type": "quiz",
+          "taughtOn": "stack",
+          "prompt": "A stack gives out first...",
+          "options": [
+            {
+              "text": "The item added most recently",
+              "correct": true
+            },
+            {
+              "text": "The item added first"
+            },
+            {
+              "text": "The biggest item"
+            },
+            {
+              "text": "A random item"
+            }
+          ],
+          "explain": "Last in, first out."
+        },
+        {
+          "id": "a3.2-f3",
+          "type": "predict",
+          "taughtOn": "dive",
+          "prompt": "Why mark islands as visited?",
+          "answer": "So no island is visited twice, even when the graph has cycles."
+        },
+        {
+          "id": "a3.2-f4",
+          "type": "why",
+          "taughtOn": "dfs-uses",
+          "prompt": "DFS does not guarantee the shortest route because...",
+          "options": [
+            {
+              "text": "It takes the first route it finds",
+              "correct": true
+            },
+            {
+              "text": "It never backs up"
+            },
+            {
+              "text": "It visits each island twice"
+            },
+            {
+              "text": "It ignores bridges"
+            }
+          ],
+          "explain": "It goes deep rather than comparing routes."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Mazes and file folders",
+          "text": "Exploring a folder, with its folders inside folders, is naturally depth-first: open one folder, dive into it, and come back out. Solving mazes with a trail behind you is the same idea.",
+          "source": {
+            "title": "Wikipedia: Depth-first search",
+            "url": "https://en.wikipedia.org/wiki/Depth-first_search"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You watched depth-first search dive and back up, saw that a stack remembers the path, and counted its bridge-looks as twice the number of bridges.",
+          "The mayor tips the lantern. \"So every island on the map is reachable from the first.\" But not by the shortest route, so a different explorer is coming."
+        ],
+        "mistake": {
+          "title": "Forgetting to mark islands visited",
+          "text": "Without marking, DFS on a graph with a cycle walks round and round forever. Mark an island the moment you arrive."
+        }
+      }
+    },
+    {
+      "id": "3.3",
+      "title": "Ripple Out",
+      "story": "A stone dropped in water makes rings. Ferry Master Fen wants to know how many bridges stand between the harbour and every other island, and the answer spreads out in rings too.",
+      "everyday": {
+        "scene": "You post a rumour to your friends. Next day, their friends have heard it. The day after, their friends' friends have too.",
+        "question": "How many days until it reaches a particular person?",
+        "answer": "The number of friendships on the shortest chain between you. Breadth-first search finds exactly that, ring by ring."
+      },
+      "lessons": [
+        {
+          "id": "ripple",
+          "title": "Ring by ring",
+          "text": [
+            "Breadth-first search (BFS) visits the start, then every island one bridge away, then every island two bridges away, and so on. Like ripples, it finishes each ring before starting the next.",
+            "It uses a queue: a line where the first one in is the first one out. Take an island from the front, add its unseen neighbours to the back, and repeat until the queue is empty. Marking islands as seen when they join the queue stops repeats."
+          ],
+          "terms": [
+            {
+              "term": "Breadth-first search",
+              "meaning": "Visit everything near first, then further out, ring by ring."
+            },
+            {
+              "term": "Queue",
+              "meaning": "First in, first out, like a line at a shop."
+            }
+          ],
+          "predict": {
+            "prompt": "A queue holds B, C, D (B at the front). Which is taken next?",
+            "answer": "B."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Breadth-first search",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Breadth-first_search"
+            },
+            {
+              "title": "Wikipedia: Queue (abstract data type)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Queue_(abstract_data_type)"
+            }
+          ]
+        },
+        {
+          "id": "fewest",
+          "title": "The fewest bridges",
+          "text": [
+            "When all bridges count the same, BFS finds the fewest bridges to every island. An island discovered in ring k has distance k, and no shorter route exists, because every closer island was handled in an earlier ring.",
+            "On our map, distances from A are A = 0, B = 1, C = 1, D = 2, E = 2, F = 2, H = 3. The farthest island is H, 3 bridges away."
+          ],
+          "table": {
+            "head": [
+              "Island",
+              "Distance from A"
+            ],
+            "rows": [
+              [
+                "A",
+                "0"
+              ],
+              [
+                "B",
+                "1"
+              ],
+              [
+                "C",
+                "1"
+              ],
+              [
+                "D",
+                "2"
+              ],
+              [
+                "E",
+                "2"
+              ],
+              [
+                "F",
+                "2"
+              ],
+              [
+                "H",
+                "3"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "Island X is in ring 3. How many bridges is the shortest route?",
+            "answer": "3."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Breadth-first search",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Breadth-first_search"
+            },
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 5: Basic Graph Algorithms",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/05-graphs.pdf"
+            }
+          ]
+        },
+        {
+          "id": "bfs-cost",
+          "title": "What BFS costs",
+          "text": [
+            "Each island enters the queue once, and each bridge is looked at from both of its ends. So the work grows with the number of islands plus the number of bridges, the same as DFS.",
+            "The difference is memory and meaning. DFS only holds the current path. BFS may hold a whole ring in the queue, which can be large. In return, BFS gives you shortest routes when every bridge counts the same."
+          ],
+          "predict": {
+            "prompt": "Which can use more memory on a wide graph: DFS or BFS?",
+            "answer": "BFS, because it may hold a whole ring in the queue."
+          },
+          "deeper": {
+            "title": "Weighted bridges",
+            "text": [
+              "If bridges have different lengths, BFS no longer finds the shortest route. Other methods handle that."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Breadth-first search",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Breadth-first_search"
+            },
+            {
+              "title": "Wikipedia: Time complexity",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Time_complexity"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "watch-bfs",
+          "type": "stepsim",
+          "taughtOn": "ripple",
+          "mode": "predict",
+          "prompt": "Watch breadth-first search from island A, and predict which island is taken from the queue.",
+          "script": {
+            "view": "graph",
+            "steps": [
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H"
+                    }
+                  ],
+                  "legend": "Queue (front first): A. Ringed: the island being processed."
+                },
+                "say": "Breadth-first search: visit the start, then all its neighbours, then all of theirs, ring by ring. A queue keeps the order. Rule: add neighbours in alphabetical order."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H"
+                    }
+                  ],
+                  "legend": "Queue after this step (front first): B, C"
+                },
+                "say": "Take A from the front. Add its unseen neighbours B, C to the back. Distance from A: 0."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H"
+                    }
+                  ],
+                  "legend": "Queue after this step (front first): C, D, E"
+                },
+                "say": "Take B from the front. Add its unseen neighbours D, E to the back. Distance from A: 1.",
+                "predict": {
+                  "prompt": "The queue (front first) is B, C. Which island is taken next?",
+                  "options": [
+                    {
+                      "text": "B",
+                      "correct": true
+                    },
+                    {
+                      "text": "C"
+                    },
+                    {
+                      "text": "A"
+                    },
+                    {
+                      "text": "D"
+                    }
+                  ],
+                  "hints": [
+                    "A queue gives out the oldest item first.",
+                    "The front of the queue is B."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H"
+                    }
+                  ],
+                  "legend": "Queue after this step (front first): D, E, F"
+                },
+                "say": "Take C from the front. Add its unseen neighbours F to the back. Distance from A: 1.",
+                "predict": {
+                  "prompt": "The queue (front first) is C, D, E. Which island is taken next?",
+                  "options": [
+                    {
+                      "text": "C",
+                      "correct": true
+                    },
+                    {
+                      "text": "D"
+                    },
+                    {
+                      "text": "E"
+                    },
+                    {
+                      "text": "A"
+                    }
+                  ],
+                  "hints": [
+                    "A queue gives out the oldest item first.",
+                    "The front of the queue is C."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H",
+                      "mark": "queued"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H"
+                    }
+                  ],
+                  "legend": "Queue after this step (front first): E, F, H"
+                },
+                "say": "Take D from the front. Add its unseen neighbours H to the back. Distance from A: 2.",
+                "predict": {
+                  "prompt": "The queue (front first) is D, E, F. Which island is taken next?",
+                  "options": [
+                    {
+                      "text": "D",
+                      "correct": true
+                    },
+                    {
+                      "text": "E"
+                    },
+                    {
+                      "text": "F"
+                    },
+                    {
+                      "text": "A"
+                    }
+                  ],
+                  "hints": [
+                    "A queue gives out the oldest item first.",
+                    "The front of the queue is D."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H",
+                      "mark": "queued"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H"
+                    }
+                  ],
+                  "legend": "Queue after this step (front first): F, H"
+                },
+                "say": "Take E from the front. It has no unseen neighbours. Distance from A: 2.",
+                "predict": {
+                  "prompt": "The queue (front first) is E, F, H. Which island is taken next?",
+                  "options": [
+                    {
+                      "text": "E",
+                      "correct": true
+                    },
+                    {
+                      "text": "F"
+                    },
+                    {
+                      "text": "H"
+                    },
+                    {
+                      "text": "A"
+                    }
+                  ],
+                  "hints": [
+                    "A queue gives out the oldest item first.",
+                    "The front of the queue is E."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H",
+                      "mark": "queued"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H"
+                    }
+                  ],
+                  "legend": "Queue after this step (front first): H"
+                },
+                "say": "Take F from the front. It has no unseen neighbours. Distance from A: 2.",
+                "predict": {
+                  "prompt": "The queue (front first) is F, H. Which island is taken next?",
+                  "options": [
+                    {
+                      "text": "F",
+                      "correct": true
+                    },
+                    {
+                      "text": "H"
+                    },
+                    {
+                      "text": "A"
+                    },
+                    {
+                      "text": "B"
+                    }
+                  ],
+                  "hints": [
+                    "A queue gives out the oldest item first.",
+                    "The front of the queue is F."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H"
+                    }
+                  ],
+                  "legend": "Queue after this step (front first): empty"
+                },
+                "say": "Take H from the front. It has no unseen neighbours. Distance from A: 3.",
+                "predict": {
+                  "prompt": "The queue (front first) is H. Which island is taken next?",
+                  "options": [
+                    {
+                      "text": "H",
+                      "correct": true
+                    },
+                    {
+                      "text": "A"
+                    },
+                    {
+                      "text": "B"
+                    },
+                    {
+                      "text": "C"
+                    }
+                  ],
+                  "hints": [
+                    "A queue gives out the oldest item first.",
+                    "The front of the queue is H."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 100,
+                      "y": 40,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 100,
+                      "y": 140,
+                      "label": "C",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D",
+                      "x": 170,
+                      "y": 40,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 170,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "F",
+                      "x": 240,
+                      "y": 90,
+                      "label": "F",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "H",
+                      "x": 270,
+                      "y": 150,
+                      "label": "H",
+                      "mark": "visited"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "H"
+                    },
+                    {
+                      "from": "E",
+                      "to": "H"
+                    },
+                    {
+                      "from": "F",
+                      "to": "H"
+                    }
+                  ],
+                  "legend": "Every island is ticked."
+                },
+                "say": "Done. Visit order: A, B, C, D, E, F, H. Distances from A: A=0, B=1, C=1, D=2, E=2, F=2, H=3."
+              }
+            ]
+          },
+          "explain": "Watch breadth-first search from island A, and predict which island is taken from the queue."
+        },
+        {
+          "id": "dist-far",
+          "type": "numeric",
+          "taughtOn": "fewest",
+          "prompt": "On the main map, how many bridges is the farthest island from A?",
+          "answer": 3,
+          "unit": "bridges",
+          "hints": [
+            "Look at the ring numbers in the table.",
+            "H is in the last ring."
+          ],
+          "explain": "H is in ring 3."
+        },
+        {
+          "id": "ring-2",
+          "type": "numeric",
+          "taughtOn": "fewest",
+          "prompt": "How many islands are exactly 2 bridges from A?",
+          "answer": 3,
+          "unit": "islands",
+          "hints": [
+            "Ring 1 is B and C. Ring 2 is what they lead to.",
+            "Count the islands with distance 2."
+          ],
+          "explain": "D, E, F are in ring 2."
+        },
+        {
+          "id": "bfs-order",
+          "type": "order",
+          "taughtOn": "ripple",
+          "prompt": "Put the islands in the order BFS visits them from A on this map: bridges A–B, A–C, B–D, C–D, C–E (neighbours in alphabetical order).",
+          "items": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E"
+          ],
+          "hints": [
+            "Visit A, then both its neighbours, then theirs.",
+            "Neighbours are added to the back of the queue."
+          ],
+          "explain": "The order is A, B, C, D, E."
+        },
+        {
+          "id": "which-q",
+          "type": "choice",
+          "taughtOn": "ripple",
+          "prompt": "Which structure does breadth-first search use?",
+          "options": [
+            {
+              "text": "A queue",
+              "correct": true
+            },
+            {
+              "text": "A stack"
+            },
+            {
+              "text": "A sorted list"
+            },
+            {
+              "text": "A matrix"
+            }
+          ],
+          "hints": [
+            "Is the oldest island or the newest island taken next?",
+            "The oldest: first in, first out."
+          ],
+          "explain": "A queue gives the oldest waiting island first, which is what makes it go ring by ring."
+        },
+        {
+          "id": "bfs-memory",
+          "type": "choice",
+          "taughtOn": "bfs-cost",
+          "prompt": "On a very wide map, which search may need more memory to hold its waiting islands?",
+          "options": [
+            {
+              "text": "Breadth-first, because the queue can hold a whole ring",
+              "correct": true
+            },
+            {
+              "text": "Depth-first, because it holds every island"
+            },
+            {
+              "text": "Neither: both hold exactly one island"
+            },
+            {
+              "text": "Neither: both hold the whole map"
+            }
+          ],
+          "hints": [
+            "Think about what each search keeps waiting.",
+            "DFS keeps one path. BFS keeps a whole ring."
+          ],
+          "explain": "DFS only remembers the path it is on. BFS may have a whole ring of islands waiting in its queue."
+        },
+        {
+          "id": "shortest-yes",
+          "type": "choice",
+          "taughtOn": "fewest",
+          "prompt": "Challenge: why does BFS find the fewest-bridge route?",
+          "options": [
+            {
+              "text": "It finishes every ring before the next, so closer islands are always found first",
+              "correct": true
+            },
+            {
+              "text": "It tries every route"
+            },
+            {
+              "text": "It always goes straight to the target"
+            },
+            {
+              "text": "It uses the biggest bridges"
+            }
+          ],
+          "hints": [
+            "Think about when each island is first reached.",
+            "An island in ring 3 cannot be reached before ring 2 is finished."
+          ],
+          "explain": "Rings are completed in order, so the first time an island is found is by a shortest route.",
+          "challenge": true
+        },
+        {
+          "id": "bfs2-far",
+          "type": "numeric",
+          "taughtOn": "fewest",
+          "prompt": "Challenge: on the small map with bridges A–B, A–C, B–D, C–D, C–E, how many bridges from A to E?",
+          "answer": 2,
+          "unit": "bridges",
+          "hints": [
+            "A is joined to B and C.",
+            "E is joined only to C."
+          ],
+          "explain": "A to C is 1 bridge and C to E is 1 more: 2.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "a3.3-f1",
+          "type": "quiz",
+          "taughtOn": "ripple",
+          "prompt": "BFS uses...",
+          "options": [
+            {
+              "text": "A queue",
+              "correct": true
+            },
+            {
+              "text": "A stack"
+            },
+            {
+              "text": "A matrix"
+            },
+            {
+              "text": "Sorting"
+            }
+          ],
+          "explain": "First in, first out gives ring-by-ring order."
+        },
+        {
+          "id": "a3.3-f2",
+          "type": "quiz",
+          "taughtOn": "fewest",
+          "prompt": "In BFS, an island found in ring 3 is how many bridges from the start?",
+          "options": [
+            {
+              "text": "3",
+              "correct": true
+            },
+            {
+              "text": "2"
+            },
+            {
+              "text": "4"
+            },
+            {
+              "text": "It depends"
+            }
+          ],
+          "explain": "The ring number is the distance."
+        },
+        {
+          "id": "a3.3-f3",
+          "type": "predict",
+          "taughtOn": "ripple",
+          "prompt": "What does BFS do before moving to ring 2?",
+          "answer": "It finishes every island in ring 1."
+        },
+        {
+          "id": "a3.3-f4",
+          "type": "why",
+          "taughtOn": "fewest",
+          "prompt": "BFS gives shortest routes (when all bridges count the same) because...",
+          "options": [
+            {
+              "text": "Closer islands are always found before farther ones",
+              "correct": true
+            },
+            {
+              "text": "It checks every route"
+            },
+            {
+              "text": "It never repeats"
+            },
+            {
+              "text": "It starts at the farthest island"
+            }
+          ],
+          "explain": "Rings are finished in order."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Friends of friends",
+          "text": "Ring-by-ring search suits questions like \"who is within two steps of me?\". Everyone one step away is the first ring, and everyone two steps away is the second. A friend-suggestion feature could use it.",
+          "source": {
+            "title": "Wikipedia: Breadth-first search",
+            "url": "https://en.wikipedia.org/wiki/Breadth-first_search"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You watched BFS spread in rings, used a queue, and read the fewest-bridge distances straight off the ring numbers.",
+          "Fen draws the rings on the chart. \"Two bridges from the harbour, no more.\" Next, Kit puts both explorers on one map."
+        ],
+        "mistake": {
+          "title": "Marking an island seen only when it is taken from the queue",
+          "text": "Mark it when it joins the queue. Otherwise it can be added several times by different neighbours."
+        }
+      }
+    },
+    {
+      "id": "3.4",
+      "title": "Same Map, Two Explorers",
+      "story": "Two explorers, Dive and Ripple, start from the same island on the same map. They both visit every island, but in different orders and for different reasons. Kit compares their notes.",
+      "everyday": {
+        "scene": "Two friends search a big shop for a lost phone. One walks every aisle to the end and back. The other checks every aisle entrance first, then every aisle midpoint.",
+        "question": "Both find the phone. Which would you pick if the phone is probably near the entrance?",
+        "answer": "The second, because it checks nearby places first. Which search to use depends on what you want to know."
+      },
+      "lessons": [
+        {
+          "id": "two-orders",
+          "title": "Same map, two orders",
+          "text": [
+            "On our map from A, DFS visits A, B, D, H, E, F, C. BFS visits A, B, C, D, E, F, H. Both visit all 7 islands exactly once, but they put them in a different order.",
+            "DFS is the stack explorer. It dives, and its order follows one long route at a time. BFS is the queue explorer. It spreads, and its order follows distance from the start. The only difference in the method is stack versus queue."
+          ],
+          "table": {
+            "head": [
+              "Position",
+              "DFS",
+              "BFS"
+            ],
+            "rows": [
+              [
+                "1",
+                "A",
+                "A"
+              ],
+              [
+                "2",
+                "B",
+                "B"
+              ],
+              [
+                "3",
+                "D",
+                "C"
+              ],
+              [
+                "4",
+                "H",
+                "D"
+              ],
+              [
+                "5",
+                "E",
+                "E"
+              ],
+              [
+                "6",
+                "F",
+                "F"
+              ],
+              [
+                "7",
+                "C",
+                "H"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "What single change turns DFS into BFS?",
+            "answer": "Using a queue instead of a stack."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Depth-first search",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Depth-first_search"
+            },
+            {
+              "title": "Wikipedia: Breadth-first search",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Breadth-first_search"
+            }
+          ]
+        },
+        {
+          "id": "same-cost",
+          "title": "The same cost",
+          "text": [
+            "With adjacency lists, both methods touch each island once and each bridge twice, so both take about V + E steps. Neither is faster than the other in this sense. The choice is about the answer you want.",
+            "With an adjacency matrix, finding an island's neighbours means scanning a whole row. For V islands that is V × V cells in total, which is slow when most cells are empty."
+          ],
+          "predict": {
+            "prompt": "Two graph searches both take about V + E steps. How do you choose?",
+            "answer": "By what you need: shortest routes, or deep exploration, or the memory available."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Graph (discrete mathematics)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"
+            },
+            {
+              "title": "Wikipedia: Time complexity",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Time_complexity"
+            }
+          ]
+        },
+        {
+          "id": "pick",
+          "title": "Which to choose",
+          "text": [
+            "Choose BFS for the fewest bridges, for everything within a given distance, or for spreading in rings. Choose DFS for finding cycles, for listing every component, for topological order, and when the graph is deep rather than wide.",
+            "Both answer 'is there a route from here to there at all?', and both find connected components. Then pick the simpler one. Many programs write DFS with recursion in a few lines."
+          ],
+          "predict": {
+            "prompt": "You need all islands within 2 bridges of the harbour. DFS or BFS?",
+            "answer": "BFS: it already works in rings."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Depth-first search",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Depth-first_search"
+            },
+            {
+              "title": "Wikipedia: Breadth-first search",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Breadth-first_search"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "dfs-order-main",
+          "type": "order",
+          "taughtOn": "two-orders",
+          "prompt": "Put the islands in the order DFS visits them from A on the main map (neighbours in alphabetical order).",
+          "items": [
+            "A",
+            "B",
+            "D",
+            "H",
+            "E",
+            "F",
+            "C"
+          ],
+          "hints": [
+            "Go deep first: take the first neighbour, then its first unseen neighbour.",
+            "From A, go to B, then D."
+          ],
+          "explain": "The order is A, B, D, H, E, F, C."
+        },
+        {
+          "id": "bfs-order-main",
+          "type": "order",
+          "taughtOn": "two-orders",
+          "prompt": "Put the islands in the order BFS visits them from A on the main map.",
+          "items": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "H"
+          ],
+          "hints": [
+            "Visit A, then all of its neighbours, then theirs.",
+            "Ring 1 is B and C."
+          ],
+          "explain": "The order is A, B, C, D, E, F, H."
+        },
+        {
+          "id": "which-search",
+          "type": "buckets",
+          "taughtOn": "pick",
+          "prompt": "Which search suits each job?",
+          "buckets": [
+            "Depth-first",
+            "Breadth-first"
+          ],
+          "items": [
+            {
+              "text": "Fewest bridges from the harbour to every island",
+              "bucket": "Breadth-first"
+            },
+            {
+              "text": "All islands within 2 bridges of the harbour",
+              "bucket": "Breadth-first"
+            },
+            {
+              "text": "Spread a rumour through friends, ring by ring",
+              "bucket": "Breadth-first"
+            },
+            {
+              "text": "Check whether the map contains a cycle",
+              "bucket": "Depth-first"
+            },
+            {
+              "text": "List every connected group of islands",
+              "bucket": "Depth-first"
+            },
+            {
+              "text": "Build an order for jobs with \"before\" rules",
+              "bucket": "Depth-first"
+            }
+          ],
+          "hints": [
+            "Does the job care about distance from the start?",
+            "Distance and rings point to BFS. Cycles and ordering rules point to DFS."
+          ],
+          "explain": "Distance questions suit BFS. Cycle and ordering questions are usually written with DFS."
+        },
+        {
+          "id": "pos-dfs",
+          "type": "numeric",
+          "taughtOn": "two-orders",
+          "prompt": "At which position in the DFS order does island C (the last one) appear?",
+          "answer": 7,
+          "unit": "",
+          "hints": [
+            "How many islands are visited in total?",
+            "The last one is at the end."
+          ],
+          "explain": "All 7 islands are visited, so the last is in position 7."
+        },
+        {
+          "id": "pos-bfs-h",
+          "type": "numeric",
+          "taughtOn": "two-orders",
+          "prompt": "At which position in the BFS order does island H appear?",
+          "answer": 7,
+          "unit": "",
+          "hints": [
+            "Look at the BFS table.",
+            "H is in ring 3."
+          ],
+          "explain": "H is visited 7th, in ring 3. In DFS it is 4th."
+        },
+        {
+          "id": "matrix-slow",
+          "type": "choice",
+          "taughtOn": "same-cost",
+          "prompt": "Challenge: why can a graph search on an adjacency matrix be slower than on adjacency lists?",
+          "options": [
+            {
+              "text": "Finding an island's neighbours means scanning a whole row, even if it has few bridges",
+              "correct": true
+            },
+            {
+              "text": "Matrices cannot store graphs"
+            },
+            {
+              "text": "Matrices make the graph directed"
+            },
+            {
+              "text": "It needs a bigger queue"
+            }
+          ],
+          "hints": [
+            "How do you find the neighbours of one island in a matrix?",
+            "You check every cell in its row."
+          ],
+          "explain": "Scanning a row costs V cells per island, so V × V in total.",
+          "challenge": true
+        },
+        {
+          "id": "matrix-cost",
+          "type": "numeric",
+          "taughtOn": "same-cost",
+          "prompt": "Challenge: with an adjacency matrix, a search scans one whole row per island. For 1,000 islands, how many cells are scanned in total?",
+          "answer": 1000000,
+          "unit": "cells",
+          "hints": [
+            "Each row has 1,000 cells.",
+            "1,000 × 1,000."
+          ],
+          "explain": "1,000,000 cells, even if there are only a few bridges.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "a3.4-f1",
+          "type": "quiz",
+          "taughtOn": "two-orders",
+          "prompt": "The only difference between the methods of DFS and BFS is...",
+          "options": [
+            {
+              "text": "A stack versus a queue",
+              "correct": true
+            },
+            {
+              "text": "One uses a matrix"
+            },
+            {
+              "text": "One visits fewer islands"
+            },
+            {
+              "text": "One needs sorting"
+            }
+          ],
+          "explain": "Swap the stack for a queue, and DFS becomes BFS."
+        },
+        {
+          "id": "a3.4-f2",
+          "type": "quiz",
+          "taughtOn": "pick",
+          "prompt": "You need the fewest bridges from the harbour to every island. Which search?",
+          "options": [
+            {
+              "text": "Breadth-first",
+              "correct": true
+            },
+            {
+              "text": "Depth-first"
+            },
+            {
+              "text": "Either gives the same answer"
+            },
+            {
+              "text": "Neither can do it"
+            }
+          ],
+          "explain": "BFS works in rings of distance."
+        },
+        {
+          "id": "a3.4-f3",
+          "type": "predict",
+          "taughtOn": "same-cost",
+          "prompt": "With adjacency lists, about how many steps do DFS and BFS take?",
+          "answer": "About V + E: each island once and each bridge twice."
+        },
+        {
+          "id": "a3.4-f4",
+          "type": "why",
+          "taughtOn": "pick",
+          "prompt": "DFS is often used to find cycles because...",
+          "options": [
+            {
+              "text": "Reaching an already visited island by a new bridge shows a loop",
+              "correct": true
+            },
+            {
+              "text": "It visits fewer islands"
+            },
+            {
+              "text": "It uses a queue"
+            },
+            {
+              "text": "It is faster than BFS"
+            }
+          ],
+          "explain": "Two routes meeting show a cycle."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Pick the search by the question",
+          "text": "Ring-by-ring search finds a route with the fewest steps when every step counts the same, such as a simple map of links. Dive-and-back-up search can put tasks into an order that respects what must come first (a topological order).",
+          "source": {
+            "title": "Wikipedia: Depth-first search",
+            "url": "https://en.wikipedia.org/wiki/Depth-first_search"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You put both explorers on one map, saw that DFS and BFS visit the same islands in different orders, and matched jobs to the right one.",
+          "The mayor files both reports. \"Two tools, one map.\" The Bridge Isles are charted."
+        ],
+        "mistake": {
+          "title": "Thinking one search is always better",
+          "text": "Both take about V + E steps with adjacency lists. The right one depends on whether you need distances (BFS) or a deep exploration (DFS)."
+        }
+      }
+    }
+  ]
+}

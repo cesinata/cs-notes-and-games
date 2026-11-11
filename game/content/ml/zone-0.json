@@ -1,0 +1,1203 @@
+{
+  "zone": 0,
+  "levels": [
+    {
+      "id": "0.1",
+      "title": "Sorting Seeds",
+      "story": "Farmer Fenn tips a sack of seed packets across the bench. \"Two thousand packets, and half the labels got wet,\" Fenn sighs. \"I could write a rule for every kind of seed, or I could show the computer a few I have already sorted and let it work out the rest.\"",
+      "everyday": {
+        "scene": "Your phone groups your photos into things like beaches and dogs. Nobody sat down and wrote a rule for what a dog looks like. The phone was shown a huge number of photos that people had already labelled.",
+        "question": "How can a computer sort things when nobody wrote the rules?",
+        "answer": "It learns from labelled examples. It finds a pattern that fits them, and then uses the pattern on new things it has never seen."
+      },
+      "lessons": [
+        {
+          "id": "rules-or-examples",
+          "title": "Rules or examples",
+          "text": [
+            "Normally you write the rules yourself, and the computer follows them exactly. That works when you can say the rules out loud, such as adding two numbers.",
+            "Some jobs are too hard to write rules for, such as spotting spam or a dog in a photo. In machine learning you give the computer examples that already have answers. It works out its own rule from them. That rule is called a model."
+          ],
+          "terms": [
+            {
+              "term": "Model",
+              "meaning": "The pattern the computer learns from examples."
+            },
+            {
+              "term": "Example",
+              "meaning": "One item together with its answer."
+            }
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Machine learning",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Machine_learning"
+            },
+            {
+              "title": "Wikipedia: Supervised learning",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Supervised_learning"
+            }
+          ]
+        },
+        {
+          "id": "train-then-predict",
+          "title": "Train, then predict",
+          "text": [
+            "Working out the pattern from examples is called training. Using the pattern on something new is called prediction.",
+            "The table shows the six seeds again and the simplest model there is: a cut-off length. It was picked because it makes no mistakes on these examples. The real test comes later, on seeds the model has not seen."
+          ],
+          "table": {
+            "head": [
+              "Training example",
+              "Label"
+            ],
+            "rows": [
+              [
+                "3 mm",
+                "Short"
+              ],
+              [
+                "4 mm",
+                "Short"
+              ],
+              [
+                "5 mm",
+                "Short"
+              ],
+              [
+                "7 mm",
+                "Long"
+              ],
+              [
+                "8 mm",
+                "Long"
+              ],
+              [
+                "9 mm",
+                "Long"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "A new seed is 8 mm long. The model says anything of 6 mm or more is Long. What does it predict?",
+            "answer": "Long, because 8 is more than 6."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Machine learning",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Machine_learning"
+            },
+            {
+              "title": "Wikipedia: Training, validation and test data sets",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Training,_validation,_and_test_data_sets"
+            }
+          ]
+        },
+        {
+          "id": "kinds-of-learning",
+          "title": "Three ways to learn",
+          "text": [
+            "In supervised learning the examples come with answers, like our labelled seeds. A teacher has marked each one.",
+            "In unsupervised learning there are no answers, and the computer looks for groups or structure on its own. In reinforcement learning a program tries actions and gets rewards or penalties, and learns which actions pay off. Most of this region is about supervised learning."
+          ],
+          "deeper": {
+            "title": "A fourth idea",
+            "text": [
+              {
+                "text": "Semi-supervised learning sits between the first two. Some examples have labels and many do not, and researchers have found that adding unlabelled data to a small labelled set can improve accuracy.",
+                "verify": false
+              }
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Machine learning",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Machine_learning"
+            },
+            {
+              "title": "Wikipedia: Supervised learning",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Supervised_learning"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "rules-or-learned",
+          "type": "buckets",
+          "taughtOn": "rules-or-examples",
+          "prompt": "Is each of these a rule a person wrote, or something learned from examples?",
+          "buckets": [
+            "Written rule",
+            "Learned from examples"
+          ],
+          "items": [
+            {
+              "text": "A calculator adding two numbers",
+              "bucket": "Written rule"
+            },
+            {
+              "text": "A spam filter trained on thousands of labelled emails",
+              "bucket": "Learned from examples"
+            },
+            {
+              "text": "A traffic light on a fixed timer",
+              "bucket": "Written rule"
+            },
+            {
+              "text": "A phone that sorts photos of dogs after seeing labelled photos",
+              "bucket": "Learned from examples"
+            },
+            {
+              "text": "A program that says: if the packet is red, bin it",
+              "bucket": "Written rule"
+            },
+            {
+              "text": "A shop's suggestions based on what people clicked before",
+              "bucket": "Learned from examples"
+            }
+          ],
+          "hints": [
+            "Ask: did a person list the steps, or did the computer find a pattern?",
+            "Learning needs examples to learn from."
+          ],
+          "explain": "When someone can write down the steps, a normal program will do. When the steps are too hard to write, a model learns them from examples."
+        },
+        {
+          "id": "learning-steps",
+          "type": "order",
+          "taughtOn": "train-then-predict",
+          "prompt": "Put the steps of building a model in order.",
+          "items": [
+            "Collect examples that already have answers",
+            "Train the model on them",
+            "Test it on examples it has not seen",
+            "Use it to predict on new items"
+          ],
+          "hints": [
+            "You cannot train before you have examples.",
+            "Testing comes before real use."
+          ],
+          "explain": "Collect, train, test, then use. The test tells you if the model is ready."
+        },
+        {
+          "id": "cutoff-sim",
+          "type": "stepsim",
+          "taughtOn": "train-then-predict",
+          "mode": "predict",
+          "prompt": "Watch a model learn a cut-off for sorting seeds.",
+          "explain": "Learning is finding the setting that makes the fewest mistakes on the examples. Here that is a cut-off near 6 mm.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "3 mm",
+                      "mark": null,
+                      "tag": "Short"
+                    },
+                    {
+                      "value": "4 mm",
+                      "mark": null,
+                      "tag": "Short"
+                    },
+                    {
+                      "value": "5 mm",
+                      "mark": null,
+                      "tag": "Short"
+                    },
+                    {
+                      "value": "7 mm",
+                      "mark": null,
+                      "tag": "Long"
+                    },
+                    {
+                      "value": "8 mm",
+                      "mark": null,
+                      "tag": "Long"
+                    },
+                    {
+                      "value": "9 mm",
+                      "mark": null,
+                      "tag": "Long"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Seeds sorted by a cut-off"
+                },
+                "say": "Six seeds with their labels, sorted by length. A cut-off is a length: seeds at least that long are called Long, and shorter ones Short. Learning means finding a good cut-off."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "3 mm",
+                      "mark": "best",
+                      "tag": "Short"
+                    },
+                    {
+                      "value": "4 mm",
+                      "mark": "compare",
+                      "tag": "Short"
+                    },
+                    {
+                      "value": "5 mm",
+                      "mark": "compare",
+                      "tag": "Short"
+                    },
+                    {
+                      "value": "7 mm",
+                      "mark": "best",
+                      "tag": "Long"
+                    },
+                    {
+                      "value": "8 mm",
+                      "mark": "best",
+                      "tag": "Long"
+                    },
+                    {
+                      "value": "9 mm",
+                      "mark": "best",
+                      "tag": "Long"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "cut-off 3.5"
+                  },
+                  "label": "Seeds sorted by a cut-off"
+                },
+                "say": "Try a cut-off of 3.5 mm. Seeds of 3.5 mm or more are called Long. A box marked with a ring is a seed the model got wrong.",
+                "predict": {
+                  "prompt": "With a cut-off of 3.5 mm, how many of the six seeds does the model sort wrongly?",
+                  "options": [
+                    {
+                      "text": "2",
+                      "correct": true
+                    },
+                    {
+                      "text": "0",
+                      "correct": false
+                    },
+                    {
+                      "text": "1",
+                      "correct": false
+                    },
+                    {
+                      "text": "3",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Which Short seeds are at least 3.5 mm long?",
+                    "The 4 mm and the 5 mm seeds would be called Long, but they are labelled Short."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "3 mm",
+                      "mark": "best",
+                      "tag": "Short"
+                    },
+                    {
+                      "value": "4 mm",
+                      "mark": "best",
+                      "tag": "Short"
+                    },
+                    {
+                      "value": "5 mm",
+                      "mark": "best",
+                      "tag": "Short"
+                    },
+                    {
+                      "value": "7 mm",
+                      "mark": "best",
+                      "tag": "Long"
+                    },
+                    {
+                      "value": "8 mm",
+                      "mark": "best",
+                      "tag": "Long"
+                    },
+                    {
+                      "value": "9 mm",
+                      "mark": "best",
+                      "tag": "Long"
+                    }
+                  ],
+                  "pointers": {
+                    "3": "cut-off 6"
+                  },
+                  "label": "Seeds sorted by a cut-off"
+                },
+                "say": "Now try 6 mm. Every seed lands on the correct side of the line.",
+                "predict": {
+                  "prompt": "With a cut-off of 6 mm, how many seeds are sorted wrongly?",
+                  "options": [
+                    {
+                      "text": "0",
+                      "correct": true
+                    },
+                    {
+                      "text": "1",
+                      "correct": false
+                    },
+                    {
+                      "text": "2",
+                      "correct": false
+                    },
+                    {
+                      "text": "3",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Short seeds are 3, 4 and 5 mm. Long seeds are 7, 8 and 9 mm.",
+                    "6 sits between the 5 and the 7."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "3 mm",
+                      "mark": "best",
+                      "tag": "Short"
+                    },
+                    {
+                      "value": "4 mm",
+                      "mark": "best",
+                      "tag": "Short"
+                    },
+                    {
+                      "value": "5 mm",
+                      "mark": "best",
+                      "tag": "Short"
+                    },
+                    {
+                      "value": "7 mm",
+                      "mark": "compare",
+                      "tag": "Long"
+                    },
+                    {
+                      "value": "8 mm",
+                      "mark": "best",
+                      "tag": "Long"
+                    },
+                    {
+                      "value": "9 mm",
+                      "mark": "best",
+                      "tag": "Long"
+                    }
+                  ],
+                  "pointers": {
+                    "4": "cut-off 7.5"
+                  },
+                  "label": "Seeds sorted by a cut-off"
+                },
+                "say": "A cut-off of 7.5 sorts the 7 mm seed wrongly. It is called Short, but its label is Long. One mistake."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "3 mm",
+                      "mark": "best",
+                      "tag": "Short"
+                    },
+                    {
+                      "value": "4 mm",
+                      "mark": "best",
+                      "tag": "Short"
+                    },
+                    {
+                      "value": "5 mm",
+                      "mark": "best",
+                      "tag": "Short"
+                    },
+                    {
+                      "value": "7 mm",
+                      "mark": "best",
+                      "tag": "Long"
+                    },
+                    {
+                      "value": "8 mm",
+                      "mark": "best",
+                      "tag": "Long"
+                    },
+                    {
+                      "value": "9 mm",
+                      "mark": "best",
+                      "tag": "Long"
+                    }
+                  ],
+                  "pointers": {
+                    "3": "learned: 6"
+                  },
+                  "label": "Seeds sorted by a cut-off"
+                },
+                "say": "The learned model is the cut-off with the fewest mistakes on the examples: 6 mm. Any cut-off between 5 and 7 would do, and 6 is the middle. A new 8 mm seed will be called Long.",
+                "predict": {
+                  "prompt": "A new seed is 5.5 mm long. What does the learned model say?",
+                  "options": [
+                    {
+                      "text": "Short",
+                      "correct": true
+                    },
+                    {
+                      "text": "Long",
+                      "correct": false
+                    },
+                    {
+                      "text": "It cannot say",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Compare 5.5 with the cut-off of 6.",
+                    "5.5 is below 6."
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "how-many-test",
+          "type": "numeric",
+          "taughtOn": "train-then-predict",
+          "prompt": "Fenn has 240 labelled seed photos and keeps one sixth back for testing. How many photos are kept back?",
+          "answer": 40,
+          "calculator": false,
+          "hints": [
+            "Divide 240 by 6.",
+            "240 / 6 = ?"
+          ],
+          "explain": "240 divided by 6 is 40. Those 40 photos are never used for training, so they can honestly test the model."
+        },
+        {
+          "id": "ml-words",
+          "type": "match",
+          "taughtOn": "rules-or-examples",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Model",
+              "right": "The pattern learned from examples"
+            },
+            {
+              "left": "Training",
+              "right": "Working out the pattern from examples"
+            },
+            {
+              "left": "Prediction",
+              "right": "Using the pattern on something new"
+            },
+            {
+              "left": "Label",
+              "right": "The answer attached to an example"
+            }
+          ],
+          "hints": [
+            "Training happens before prediction.",
+            "The label is the 'right answer' for one example."
+          ],
+          "explain": "A model is learned by training, and then used to predict. A label is the known answer for one example."
+        },
+        {
+          "id": "supervised-def",
+          "type": "choice",
+          "taughtOn": "kinds-of-learning",
+          "prompt": "What makes learning supervised?",
+          "options": [
+            {
+              "text": "The examples come with answers",
+              "correct": true
+            },
+            {
+              "text": "The computer is watched by a person all the time"
+            },
+            {
+              "text": "There are no examples"
+            },
+            {
+              "text": "The computer gets rewards in a game"
+            }
+          ],
+          "hints": [
+            "Think of the labelled seeds.",
+            "The 'teacher' is the set of labels."
+          ],
+          "explain": "Supervised learning learns from examples that have labels, like seeds marked Short or Long."
+        },
+        {
+          "id": "group-no-labels",
+          "type": "choice",
+          "taughtOn": "kinds-of-learning",
+          "prompt": "A shop has lots of customer records with no labels and wants to find groups of similar customers. Which kind of learning is that?",
+          "options": [
+            {
+              "text": "Unsupervised learning",
+              "correct": true
+            },
+            {
+              "text": "Supervised learning"
+            },
+            {
+              "text": "Reinforcement learning"
+            },
+            {
+              "text": "Rule writing"
+            }
+          ],
+          "hints": [
+            "Are there answers to learn from?",
+            "No labels means the computer looks for structure itself."
+          ],
+          "explain": "With no labels, the computer finds groups on its own. That is unsupervised learning."
+        },
+        {
+          "id": "why-new-seeds",
+          "type": "choice",
+          "taughtOn": "train-then-predict",
+          "prompt": "Challenge: why does Fenn test the model on seeds it was not trained on?",
+          "options": [
+            {
+              "text": "A model can fit its training seeds well and still fail on new ones",
+              "correct": true
+            },
+            {
+              "text": "Old seeds are always wrong"
+            },
+            {
+              "text": "Testing makes training faster"
+            },
+            {
+              "text": "New seeds cost nothing"
+            }
+          ],
+          "hints": [
+            "What is the model for: the seeds it has seen, or new ones?",
+            "Fitting the examples is not the same as working on new data."
+          ],
+          "explain": "Predicting new items is the goal. Only unseen examples show whether the model works there.",
+          "challenge": true
+        },
+        {
+          "id": "mistakes-at-45",
+          "type": "numeric",
+          "taughtOn": "train-then-predict",
+          "prompt": "Challenge: seeds are 3, 4, 5, 7, 8 and 9 mm. The first three are Short and the rest are Long. With a cut-off of 4.5 mm, how many seeds does the model sort wrongly?",
+          "answer": 1,
+          "calculator": false,
+          "hints": [
+            "Which seeds are 4.5 mm or longer?",
+            "The 5 mm seed is Short, but it would be called Long."
+          ],
+          "explain": "With a cut-off of 4.5, the 5 mm seed is called Long although it is Short. That is one mistake.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m0.1-f1",
+          "type": "quiz",
+          "taughtOn": "train-then-predict",
+          "prompt": "What is training?",
+          "options": [
+            {
+              "text": "Working out a pattern from examples",
+              "correct": true
+            },
+            {
+              "text": "Typing in the rules"
+            },
+            {
+              "text": "Deleting the data"
+            },
+            {
+              "text": "Using the model on new items"
+            }
+          ],
+          "explain": "Training fits the model to examples. Prediction uses it."
+        },
+        {
+          "id": "m0.1-f2",
+          "type": "quiz",
+          "taughtOn": "kinds-of-learning",
+          "prompt": "Labelled examples belong to which kind of learning?",
+          "options": [
+            {
+              "text": "Supervised learning",
+              "correct": true
+            },
+            {
+              "text": "Unsupervised learning"
+            },
+            {
+              "text": "Reinforcement learning"
+            },
+            {
+              "text": "None of them"
+            }
+          ],
+          "explain": "Supervised learning needs examples with answers."
+        },
+        {
+          "id": "m0.1-f3",
+          "type": "why",
+          "taughtOn": "rules-or-examples",
+          "prompt": "When is machine learning a better fit than writing rules?",
+          "options": [
+            {
+              "text": "When the rules are too hard to write down",
+              "correct": true
+            },
+            {
+              "text": "When the task is adding two numbers"
+            },
+            {
+              "text": "When there is no data at all"
+            },
+            {
+              "text": "When you want the same answer every time"
+            }
+          ],
+          "explain": "Models learn rules that are hard to state, such as what a dog looks like."
+        },
+        {
+          "id": "m0.1-f4",
+          "type": "predict",
+          "taughtOn": "train-then-predict",
+          "prompt": "A model has learned a cut-off of 6 mm for Long seeds. What does it say for a 4 mm seed?",
+          "answer": "Short, because 4 is below 6."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Where the name comes from",
+          "text": "The term machine learning was coined in 1959 by Arthur Samuel, an IBM employee who worked on computer game-playing.",
+          "source": {
+            "title": "Wikipedia: Machine learning",
+            "url": "https://en.wikipedia.org/wiki/Machine_learning"
+          }
+        },
+        {
+          "title": "Labelled examples",
+          "text": "In supervised learning, the training data is labelled with the expected answers, so the model learns from examples that already have answers.",
+          "source": {
+            "title": "Wikipedia: Supervised learning",
+            "url": "https://en.wikipedia.org/wiki/Supervised_learning"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You saw that a model is a pattern learned from labelled examples, watched a cut-off get chosen by counting mistakes, and learned the three ways a computer can learn.",
+          "Fenn grins at the sorted packets. \"I like it when the bench does the sorting.\""
+        ],
+        "mistake": {
+          "title": "Thinking a model memorises answers",
+          "text": "A model is meant to work on new items. Fitting the training examples is only the start, which is why part of the data is kept back for testing."
+        }
+      }
+    },
+    {
+      "id": "0.2",
+      "title": "Labels and Features",
+      "story": "Fenn lays out six tomatoes and a notebook. \"The notebook is the only thing the computer sees,\" Fenn says. \"So the question is what I write in it. Which facts help me decide if a tomato is ready to pick?\"",
+      "everyday": {
+        "scene": "A bank checks whether to lend money. It does not see you. It sees a form: age, income, how long you have had your job. Whatever is on the form is all it has to go on.",
+        "question": "What does a model actually see?",
+        "answer": "Only the numbers and facts written down for each example, called features. If a helpful fact is missing, the model cannot use it."
+      },
+      "lessons": [
+        {
+          "id": "rows-features-label",
+          "title": "Rows, features and a label",
+          "text": [
+            "A data set is a table. Each row is one example, such as one tomato. Each column is a feature: a measurable fact about the example, like its width or its colour.",
+            "One more column holds the label: the answer you want the model to learn, such as ready to pick, yes or no. When the model is working, it gets the features and has to predict the label."
+          ],
+          "terms": [
+            {
+              "term": "Feature",
+              "meaning": "A measurable fact about an example."
+            },
+            {
+              "term": "Label",
+              "meaning": "The answer to predict."
+            }
+          ],
+          "table": {
+            "head": [
+              "Shape",
+              "Width (cm)",
+              "Colour",
+              "Ready?"
+            ],
+            "rows": [
+              [
+                "Round",
+                "6.1",
+                "Red",
+                "Yes"
+              ],
+              [
+                "Round",
+                "4.8",
+                "Green",
+                "No"
+              ],
+              [
+                "Oval",
+                "5.5",
+                "Red",
+                "Yes"
+              ],
+              [
+                "Round",
+                "5.9",
+                "Green",
+                "No"
+              ],
+              [
+                "Oval",
+                "6.4",
+                "Red",
+                "Yes"
+              ],
+              [
+                "Round",
+                "4.2",
+                "Red",
+                "No"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Feature (machine learning)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Feature_(machine_learning)"
+            },
+            {
+              "title": "Wikipedia: Supervised learning",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Supervised_learning"
+            }
+          ]
+        },
+        {
+          "id": "good-features",
+          "title": "Choosing good features",
+          "text": [
+            "Good features carry information about the label. Colour tells you a lot about whether a tomato is ripe. The farmer's middle name tells you nothing.",
+            "Beware of a feature that gives away the answer too late. If you record the price paid for each tomato at market, and ripe ones fetch more, the model leans on a number you will not have when you pick. Features must be known at prediction time."
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Feature (machine learning)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Feature_(machine_learning)"
+            },
+            {
+              "title": "scikit-learn user guide: Preprocessing data",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/preprocessing.html"
+            }
+          ]
+        },
+        {
+          "id": "kinds-of-values",
+          "title": "Numbers and categories",
+          "text": [
+            "Some features are numbers, like width. Others are categories, like colour. A model needs numbers, so categories are turned into numbers first, for example one yes-or-no column for each colour.",
+            "Numbers can also be on very different scales. Width is a few centimetres, but a weight in grams is in the hundreds. Some methods, such as k-nearest neighbours in the next level, are thrown off unless the scales are brought together."
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Feature (machine learning)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Feature_(machine_learning)"
+            },
+            {
+              "title": "scikit-learn user guide: Preprocessing data",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/preprocessing.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "feature-or-label",
+          "type": "buckets",
+          "taughtOn": "rows-features-label",
+          "prompt": "Fenn wants a model that predicts whether a tomato is ready to pick. Is each column a feature or the label?",
+          "buckets": [
+            "Feature",
+            "Label"
+          ],
+          "items": [
+            {
+              "text": "Width in centimetres",
+              "bucket": "Feature"
+            },
+            {
+              "text": "Ready to pick? (yes or no)",
+              "bucket": "Label"
+            },
+            {
+              "text": "Skin colour",
+              "bucket": "Feature"
+            },
+            {
+              "text": "Shape of the tomato",
+              "bucket": "Feature"
+            },
+            {
+              "text": "Firmness when squeezed",
+              "bucket": "Feature"
+            }
+          ],
+          "hints": [
+            "The label is the answer you want to predict.",
+            "Everything you could measure before deciding is a feature."
+          ],
+          "explain": "The label is the thing you predict, here ready or not. The other columns are features."
+        },
+        {
+          "id": "count-cells",
+          "type": "numeric",
+          "taughtOn": "rows-features-label",
+          "prompt": "The table has 6 tomatoes, each with 3 features and a label. How many feature values are in the table, not counting labels?",
+          "answer": 18,
+          "calculator": false,
+          "hints": [
+            "Rows times features.",
+            "6 x 3 = ?"
+          ],
+          "explain": "Six rows with three features each is 6 x 3 = 18 feature values. The six labels are extra."
+        },
+        {
+          "id": "table-words",
+          "type": "match",
+          "taughtOn": "rows-features-label",
+          "prompt": "Match each table word to its meaning.",
+          "pairs": [
+            {
+              "left": "Row",
+              "right": "One example"
+            },
+            {
+              "left": "Column",
+              "right": "One kind of fact about every example"
+            },
+            {
+              "left": "Feature",
+              "right": "A fact the model may use"
+            },
+            {
+              "left": "Label",
+              "right": "The answer the model should predict"
+            }
+          ],
+          "hints": [
+            "Rows go across, columns go down.",
+            "The label is the odd one out: it is what you predict."
+          ],
+          "explain": "A row is one example. A column holds one kind of fact. Features go in, the label comes out."
+        },
+        {
+          "id": "useful-feature",
+          "type": "choice",
+          "taughtOn": "good-features",
+          "prompt": "Which feature would most likely help predict whether a tomato is ripe?",
+          "options": [
+            {
+              "text": "Skin colour",
+              "correct": true
+            },
+            {
+              "text": "The farmer's middle name"
+            },
+            {
+              "text": "The row number"
+            },
+            {
+              "text": "The day of the week it was photographed"
+            }
+          ],
+          "hints": [
+            "Which one is connected to ripeness?",
+            "The others have nothing to do with the tomato."
+          ],
+          "explain": "Colour tells you something about ripeness. The others carry no information about the label."
+        },
+        {
+          "id": "late-feature",
+          "type": "choice",
+          "taughtOn": "good-features",
+          "prompt": "A model to predict ripeness is given a feature called 'price paid at market'. Why is that a problem?",
+          "options": [
+            {
+              "text": "You only know the price after picking, so it is not available at prediction time",
+              "correct": true
+            },
+            {
+              "text": "Prices are not numbers"
+            },
+            {
+              "text": "Market prices never change"
+            },
+            {
+              "text": "It makes the table too short"
+            }
+          ],
+          "hints": [
+            "When do you need the prediction?",
+            "A feature must be known at the moment you predict."
+          ],
+          "explain": "A feature that is only known after the event cannot help predict it in real use."
+        },
+        {
+          "id": "number-or-category",
+          "type": "buckets",
+          "taughtOn": "kinds-of-values",
+          "prompt": "Is each feature a number or a category?",
+          "buckets": [
+            "Number",
+            "Category"
+          ],
+          "items": [
+            {
+              "text": "Width in centimetres",
+              "bucket": "Number"
+            },
+            {
+              "text": "Skin colour",
+              "bucket": "Category"
+            },
+            {
+              "text": "Weight in grams",
+              "bucket": "Number"
+            },
+            {
+              "text": "Shape: round or oval",
+              "bucket": "Category"
+            },
+            {
+              "text": "Days since flowering",
+              "bucket": "Number"
+            }
+          ],
+          "hints": [
+            "A number can be added up and compared.",
+            "A category is a name."
+          ],
+          "explain": "Width, weight and days are numbers. Colour and shape are categories, which are turned into numbers before a model can use them."
+        },
+        {
+          "id": "prepare-order",
+          "type": "order",
+          "taughtOn": "kinds-of-values",
+          "prompt": "Put these steps in order for getting a table ready.",
+          "items": [
+            "Collect rows of examples",
+            "Turn categories into numbers",
+            "Bring number columns to similar scales",
+            "Hand the table to the model"
+          ],
+          "hints": [
+            "You need rows before you can change them.",
+            "The model comes last."
+          ],
+          "explain": "Collect the rows, turn categories into numbers, even out the scales, and then give the table to the model."
+        },
+        {
+          "id": "scale-problem",
+          "type": "choice",
+          "taughtOn": "kinds-of-values",
+          "prompt": "Why can a feature measured in the hundreds cause trouble for a method that compares distances?",
+          "options": [
+            {
+              "text": "It can drown out features measured in single digits",
+              "correct": true
+            },
+            {
+              "text": "Large numbers are not allowed"
+            },
+            {
+              "text": "It makes the labels wrong"
+            },
+            {
+              "text": "It deletes the small features"
+            }
+          ],
+          "hints": [
+            "Think of adding a big number and a small one.",
+            "The big scale dominates the total."
+          ],
+          "explain": "Distances add up all features. A feature with a huge scale swamps the others unless the scales are matched."
+        },
+        {
+          "id": "label-leak",
+          "type": "choice",
+          "taughtOn": "good-features",
+          "prompt": "Challenge: you add the column 'picked yesterday: yes or no' to predict ripeness, but the farmer only picks ripe tomatoes. What is wrong?",
+          "options": [
+            {
+              "text": "The feature is really the label in disguise",
+              "correct": true
+            },
+            {
+              "text": "It is a number"
+            },
+            {
+              "text": "It is too short"
+            },
+            {
+              "text": "Nothing, it is a great feature"
+            }
+          ],
+          "hints": [
+            "Why do tomatoes get picked?",
+            "If the feature copies the answer, the model learns nothing real."
+          ],
+          "explain": "A feature that simply restates the label gives perfect training results but is useless when you do not yet know the answer.",
+          "challenge": true
+        },
+        {
+          "id": "features-after-onehot",
+          "type": "numeric",
+          "taughtOn": "kinds-of-values",
+          "prompt": "Challenge: a Colour feature has three values: Red, Green and Yellow. After turning it into one yes-or-no column per value, how many columns do the three colours take, if Width stays as one column?",
+          "answer": 4,
+          "calculator": false,
+          "hints": [
+            "One new column for each colour value.",
+            "3 colour columns plus 1 for Width."
+          ],
+          "explain": "Each colour gets its own column, so 3 colour columns plus the Width column make 4.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m0.2-f1",
+          "type": "quiz",
+          "taughtOn": "rows-features-label",
+          "prompt": "In a data table, what is a row?",
+          "options": [
+            {
+              "text": "One example",
+              "correct": true
+            },
+            {
+              "text": "One feature"
+            },
+            {
+              "text": "The label"
+            },
+            {
+              "text": "The model"
+            }
+          ],
+          "explain": "Each row is one example."
+        },
+        {
+          "id": "m0.2-f2",
+          "type": "quiz",
+          "taughtOn": "rows-features-label",
+          "prompt": "What is the label?",
+          "options": [
+            {
+              "text": "The answer the model should predict",
+              "correct": true
+            },
+            {
+              "text": "A fact the model uses as input"
+            },
+            {
+              "text": "A row number"
+            },
+            {
+              "text": "The name of the model"
+            }
+          ],
+          "explain": "The label is the target."
+        },
+        {
+          "id": "m0.2-f3",
+          "type": "why",
+          "taughtOn": "good-features",
+          "prompt": "Why can't you use a fact that is only known after the event?",
+          "options": [
+            {
+              "text": "It is not available when you need to predict",
+              "correct": true
+            },
+            {
+              "text": "Facts after the event are always wrong"
+            },
+            {
+              "text": "It has too many decimals"
+            },
+            {
+              "text": "It is a category"
+            }
+          ],
+          "explain": "A model can only use what is known at prediction time."
+        },
+        {
+          "id": "m0.2-f4",
+          "type": "predict",
+          "taughtOn": "kinds-of-values",
+          "prompt": "A table has 5 rows and 4 features. How many feature values are there?",
+          "answer": "20. That is 5 rows x 4 features."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Features in the wild",
+          "text": "A feature is an individual measurable property of what is being observed. Choosing informative, discriminating and independent features is crucial for good results.",
+          "source": {
+            "title": "Wikipedia: Feature (machine learning)",
+            "url": "https://en.wikipedia.org/wiki/Feature_(machine_learning)"
+          }
+        },
+        {
+          "title": "Preparing data",
+          "text": "Many methods work better when features are scaled to similar ranges, and scikit-learn offers ready-made tools for scaling and for turning categories into numbers.",
+          "source": {
+            "title": "scikit-learn: Preprocessing data",
+            "url": "https://scikit-learn.org/stable/modules/preprocessing.html"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You split a table into rows, features and a label, chose which facts are worth using, and saw why categories and scales need tidying first.",
+          "Fenn closes the notebook. \"Garbage in, garbage out. Good columns, good tomatoes.\""
+        ],
+        "mistake": {
+          "title": "Giving the model facts you will not have later",
+          "text": "Every feature must be known at the moment you predict. A column that copies or comes after the answer gives great training results and a useless model."
+        }
+      }
+    }
+  ]
+}

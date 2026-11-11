@@ -1,0 +1,1653 @@
+{
+  "zone": 7,
+  "levels": [
+    {
+      "id": "7.1",
+      "title": "Secret Notes",
+      "story": "Kit reaches Castle Keep, where the gatekeepers pass notes in code. Anyone could read a plain letter on the way. Kit needs to learn how a note can be hidden, and why old ways of hiding it were not good enough.",
+      "everyday": {
+        "scene": "You pass a note in class and fold it small. Someone behind you reads it anyway. So you and your friend agree on a trick: every letter is written as the next one along. Now the note looks like nonsense to everyone else.",
+        "question": "If a stranger sees the note and guesses the trick, what is left to protect it?",
+        "answer": "Only the secret you and your friend share. A good code works even if everyone knows the method, so long as the secret stays hidden. That secret is called the key."
+      },
+      "lessons": [
+        {
+          "id": "goals-keys",
+          "title": "What we want, and what protects it",
+          "text": [
+            "Network security asks for several things. Confidentiality means only the right people can read a message. Integrity means it was not changed on the way. Authentication means knowing who really sent it. Non-repudiation means a sender cannot later deny sending.",
+            "Encryption turns plaintext into ciphertext using a key. Kerckhoffs' principle says to assume attackers know the method, and keep only the key secret. A longer key means more possibilities to try."
+          ],
+          "terms": [
+            {
+              "term": "Plaintext",
+              "meaning": "A message anyone can read."
+            },
+            {
+              "term": "Ciphertext",
+              "meaning": "The scrambled version."
+            },
+            {
+              "term": "Key",
+              "meaning": "The secret that locks and unlocks a message."
+            }
+          ],
+          "predict": {
+            "prompt": "A cipher's inner workings are published for anyone to read. Is it safe to use?",
+            "answer": "It can be. A good cipher stays safe as long as the key is secret."
+          },
+          "deeper": {
+            "title": "Modern ciphers",
+            "text": [
+              "Today's standard cipher, AES, works on 128-bit blocks, with keys of 128, 192 or 256 bits. Its design is public, which fits Kerckhoffs' principle, and experts have tested it for years."
+            ]
+          },
+          "references": [
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, Cryptographic Building Blocks",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/security/crypto.html"
+            },
+            {
+              "title": "Wikipedia: Kerckhoffs's principle",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Kerckhoffs%27s_principle"
+            }
+          ]
+        },
+        {
+          "id": "classic-ciphers",
+          "title": "Two old tricks",
+          "text": [
+            "A substitution cipher replaces each letter with another. It looks scrambled, but each letter always becomes the same one, so common letters still stand out. In English, E and T are very common. Counting letters in the ciphertext, called frequency analysis, gives the key away.",
+            "A transposition cipher keeps the letters but moves them. In a columnar one, write the message in rows under a keyword, then read the columns in the alphabetical order of the keyword's letters."
+          ],
+          "terms": [
+            {
+              "term": "Substitution",
+              "meaning": "Swapping each letter for another."
+            },
+            {
+              "term": "Transposition",
+              "meaning": "Keeping the letters but changing their order."
+            },
+            {
+              "term": "Frequency analysis",
+              "meaning": "Counting letters to guess what they stand for."
+            }
+          ],
+          "predict": {
+            "prompt": "In a long English text, which letter is usually the most common?",
+            "answer": "E."
+          },
+          "deeper": {
+            "title": "Why weak ciphers are still taught",
+            "text": [
+              "Cracking a simple cipher shows exactly why modern ciphers must hide patterns. Any pattern a cipher leaves is a clue."
+            ]
+          },
+          "references": [
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, Cryptographic Building Blocks",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/security/crypto.html"
+            },
+            {
+              "title": "Wikipedia: Frequency analysis",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Frequency_analysis_(cryptanalysis)"
+            }
+          ]
+        },
+        {
+          "id": "one-time-pad",
+          "title": "The perfect lock that is hard to use",
+          "text": [
+            "Computers work with bits. XOR is a rule for combining two bits: the result is 1 if they differ and 0 if they match. A one-time pad XORs the message with a truly random key as long as the message. XOR with the same key again and the original returns.",
+            "Used once, it cannot be cracked, since every message is equally likely. The catch: the key must be as long as the message, and shared safely. Reusing a pad is a disaster, because XOR-ing two ciphertexts cancels the key and leaves the two messages mixed."
+          ],
+          "terms": [
+            {
+              "term": "XOR",
+              "meaning": "A bit rule: 1 if the two bits differ, 0 if they match."
+            },
+            {
+              "term": "One-time pad",
+              "meaning": "A random key as long as the message, used once."
+            }
+          ],
+          "table": {
+            "head": [
+              "Message bit",
+              "Key bit",
+              "Result"
+            ],
+            "rows": [
+              [
+                "0",
+                "0",
+                "0"
+              ],
+              [
+                "0",
+                "1",
+                "1"
+              ],
+              [
+                "1",
+                "0",
+                "1"
+              ],
+              [
+                "1",
+                "1",
+                "0"
+              ]
+            ]
+          },
+          "diagramCaption": "XOR in one table.",
+          "predict": {
+            "prompt": "Message bits 1011 are XORed with key bits 0110. What is the ciphertext?",
+            "answer": "1101."
+          },
+          "references": [
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, Cryptographic Building Blocks",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/security/crypto.html"
+            },
+            {
+              "title": "Wikipedia: One-time pad",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/One-time_pad"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "goals",
+          "type": "match",
+          "taughtOn": "goals-keys",
+          "prompt": "Match each security goal to what it means.",
+          "pairs": [
+            {
+              "left": "Confidentiality",
+              "right": "Only the right people can read the message"
+            },
+            {
+              "left": "Integrity",
+              "right": "The message was not changed on the way"
+            },
+            {
+              "left": "Authentication",
+              "right": "You know who really sent it"
+            },
+            {
+              "left": "Non-repudiation",
+              "right": "The sender cannot later deny sending it"
+            }
+          ],
+          "hints": [
+            "Integrity is about changes.",
+            "Authentication is about who."
+          ],
+          "explain": "Confidentiality is secrecy, integrity is no tampering, authentication is knowing the sender, and non-repudiation is no denying."
+        },
+        {
+          "id": "kerckhoffs",
+          "type": "choice",
+          "taughtOn": "goals-keys",
+          "prompt": "By Kerckhoffs' principle, what should a good cipher keep secret?",
+          "options": [
+            {
+              "text": "Only the key",
+              "correct": true
+            },
+            {
+              "text": "The method and the key"
+            },
+            {
+              "text": "Only the method"
+            },
+            {
+              "text": "Nothing at all"
+            }
+          ],
+          "hints": [
+            "Assume attackers can learn the method.",
+            "What does the key do?"
+          ],
+          "explain": "The method may be public. Only the key must stay secret."
+        },
+        {
+          "id": "watch-frequency",
+          "type": "stepsim",
+          "taughtOn": "classic-ciphers",
+          "mode": "predict",
+          "prompt": "Crack a substitution cipher by counting letters, and predict each step.",
+          "script": {
+            "view": "bars",
+            "steps": [
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Letter M (times seen)",
+                      "value": 20
+                    },
+                    {
+                      "label": "Letter G (times seen)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Letter C (times seen)",
+                      "value": 8
+                    },
+                    {
+                      "label": "Letter T (times seen)",
+                      "value": 6
+                    },
+                    {
+                      "label": "Letter A (times seen)",
+                      "value": 6
+                    },
+                    {
+                      "label": "Letter N (times seen)",
+                      "value": 6
+                    }
+                  ]
+                },
+                "say": "A note reads: GTM CMGGMV AF FNYM SHGAC GTM DNGM AF BUMH EMMG EM NG GTM BCK EACC NYGMV GTM MQMHAHD JMCC NHK JVAHD GTM CMGGMV GB GTM YNVE. Each letter was swapped for another one, the same way every time. The bars count the six most common letters in the note."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Letter M (times seen)",
+                      "value": 20
+                    },
+                    {
+                      "label": "Letter G (times seen)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Letter C (times seen)",
+                      "value": 8
+                    },
+                    {
+                      "label": "Letter T (times seen)",
+                      "value": 6
+                    },
+                    {
+                      "label": "Letter A (times seen)",
+                      "value": 6
+                    },
+                    {
+                      "label": "Letter N (times seen)",
+                      "value": 6
+                    }
+                  ]
+                },
+                "say": "M appears 20 times, then G 16 times, then C 8 times.",
+                "predict": {
+                  "prompt": "M is by far the most common letter in the note. What does it probably stand for?",
+                  "options": [
+                    {
+                      "text": "E",
+                      "correct": true
+                    },
+                    {
+                      "text": "Z"
+                    },
+                    {
+                      "text": "Q"
+                    },
+                    {
+                      "text": "X"
+                    }
+                  ],
+                  "hints": [
+                    "Which letter is most common in English?",
+                    "A substitution keeps counts the same: the commonest ciphertext letter stands for the commonest plain letter."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Letter M (times seen)",
+                      "value": 20
+                    },
+                    {
+                      "label": "Letter G (times seen)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Letter C (times seen)",
+                      "value": 8
+                    },
+                    {
+                      "label": "Letter T (times seen)",
+                      "value": 6
+                    },
+                    {
+                      "label": "Letter A (times seen)",
+                      "value": 6
+                    },
+                    {
+                      "label": "Letter N (times seen)",
+                      "value": 6
+                    }
+                  ]
+                },
+                "say": "Try M = E. The second most common letter, G, is likely T. And \"GTM\" appears six times, near the start of lots of phrases.",
+                "predict": {
+                  "prompt": "If G is T and M is E, what is the repeated three-letter word GTM probably?",
+                  "options": [
+                    {
+                      "text": "THE",
+                      "correct": true
+                    },
+                    {
+                      "text": "AND"
+                    },
+                    {
+                      "text": "FOR"
+                    },
+                    {
+                      "text": "BUT"
+                    }
+                  ],
+                  "hints": [
+                    "Fill in the letters you know: G is T, M is E.",
+                    "T?E: which common word fits?"
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Letter M (times seen)",
+                      "value": 20
+                    },
+                    {
+                      "label": "Letter G (times seen)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Letter C (times seen)",
+                      "value": 8
+                    },
+                    {
+                      "label": "Letter T (times seen)",
+                      "value": 6
+                    },
+                    {
+                      "label": "Letter A (times seen)",
+                      "value": 6
+                    },
+                    {
+                      "label": "Letter N (times seen)",
+                      "value": 6
+                    }
+                  ]
+                },
+                "say": "So T stands for H. Now the word CMGGMV. M is E and G is T, so it reads ? E T T E ?. Six letters with a double T in the middle: LETTER fits. The key is falling apart, and the whole note reads: THE LETTER IS SAFE UNTIL THE GATE IS OPEN. A substitution cipher hides the letters, but not how often they appear."
+              }
+            ]
+          },
+          "hints": [],
+          "explain": "Crack a substitution cipher by counting letters, and predict each step."
+        },
+        {
+          "id": "trans-choice",
+          "type": "choice",
+          "taughtOn": "classic-ciphers",
+          "prompt": "Write BRIDGE IS OUT USE THE HILL in rows of 4 (padding the end with X). The keyword is FARM. Reading columns in the alphabetical order of the keyword's letters (A, F, M, R), what is the ciphertext?",
+          "options": [
+            {
+              "text": "REUEHXBGOSELDSUHLXIITTIX",
+              "correct": true
+            },
+            {
+              "text": "BGOSELREUEHXIITTIXDSUHLX"
+            },
+            {
+              "text": "BRIDGEISOUTUSETHEHILLXXX"
+            },
+            {
+              "text": "IITTIXDSUHLXBGOSELREUEHX"
+            }
+          ],
+          "hints": [
+            "Alphabetical order of FARM is A, F, M, R.",
+            "A is the second column, F the first, M the fourth, R the third."
+          ],
+          "explain": "Column A is REUEHX, F is BGOSEL, M is DSUHLX and R is IITTIX, read in that order."
+        },
+        {
+          "id": "which-cipher",
+          "type": "buckets",
+          "taughtOn": "classic-ciphers",
+          "prompt": "Is each clue about a substitution cipher or a transposition cipher?",
+          "buckets": [
+            "Substitution",
+            "Transposition"
+          ],
+          "items": [
+            {
+              "text": "Every letter turns into a different letter",
+              "bucket": "Substitution"
+            },
+            {
+              "text": "The same letters appear, in a new order",
+              "bucket": "Transposition"
+            },
+            {
+              "text": "Common letters stand out when you count them",
+              "bucket": "Substitution"
+            },
+            {
+              "text": "A keyword decides the order the columns are read",
+              "bucket": "Transposition"
+            },
+            {
+              "text": "Shifting every letter along by the same amount",
+              "bucket": "Substitution"
+            },
+            {
+              "text": "Positions are shuffled and the letters are left alone",
+              "bucket": "Transposition"
+            }
+          ],
+          "hints": [
+            "Which one changes the letters? Which one moves them?",
+            "Counting letters helps against the one that changes them."
+          ],
+          "explain": "Substitution changes the letters, so counts give it away. Transposition moves them around."
+        },
+        {
+          "id": "xor-choice",
+          "type": "choice",
+          "taughtOn": "one-time-pad",
+          "prompt": "Message bits 1011 are XORed with the pad 0110. Then the result is XORed with the same pad again. What comes out?",
+          "options": [
+            {
+              "text": "1011, the original message",
+              "correct": true
+            },
+            {
+              "text": "0110"
+            },
+            {
+              "text": "1101"
+            },
+            {
+              "text": "0000"
+            }
+          ],
+          "hints": [
+            "XOR with the same key twice undoes it.",
+            "Each bit that flipped gets flipped back."
+          ],
+          "explain": "XOR is its own undo: 1011 becomes 1101, and XOR with the pad again returns 1011."
+        },
+        {
+          "id": "pad-reuse",
+          "type": "choice",
+          "taughtOn": "one-time-pad",
+          "prompt": "Two messages are both locked with the same pad. An eavesdropper XORs the two ciphertexts together. What happens to the pad?",
+          "options": [
+            {
+              "text": "It cancels out, leaving the two messages mixed together",
+              "correct": true
+            },
+            {
+              "text": "It is revealed in full"
+            },
+            {
+              "text": "It doubles in length"
+            },
+            {
+              "text": "Nothing, the messages stay safe"
+            }
+          ],
+          "hints": [
+            "Write it as (P1 XOR K) XOR (P2 XOR K).",
+            "K XOR K is zero."
+          ],
+          "explain": "The pad appears twice and cancels. What remains is the two messages XORed together, which gives a lot away. That is why a pad must be used once."
+        },
+        {
+          "id": "key-size",
+          "type": "numeric",
+          "taughtOn": "goals-keys",
+          "prompt": "Challenge: each extra key bit doubles the number of possible keys. If you add 3 bits to a key, by what number do you multiply the number of keys?",
+          "answer": 8,
+          "unit": "times",
+          "hints": [
+            "Doubling three times.",
+            "2 × 2 × 2."
+          ],
+          "explain": "Three extra bits double the count three times, which is 2^3 = 8 times as many keys.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "7.1-f1",
+          "type": "quiz",
+          "taughtOn": "goals-keys",
+          "prompt": "What does integrity mean in security?",
+          "options": [
+            {
+              "text": "The message was not changed",
+              "correct": true
+            },
+            {
+              "text": "Only the receiver can read it"
+            },
+            {
+              "text": "The sender is known"
+            },
+            {
+              "text": "The message is long enough"
+            }
+          ],
+          "explain": "Integrity means no one tampered with the message."
+        },
+        {
+          "id": "7.1-f2",
+          "type": "quiz",
+          "taughtOn": "classic-ciphers",
+          "prompt": "What breaks a simple substitution cipher?",
+          "options": [
+            {
+              "text": "Counting how often each letter appears",
+              "correct": true
+            },
+            {
+              "text": "Reading it backwards"
+            },
+            {
+              "text": "Making it longer"
+            },
+            {
+              "text": "Using a faster computer only"
+            }
+          ],
+          "explain": "Common letters in English still stand out after substitution."
+        },
+        {
+          "id": "7.1-f3",
+          "type": "predict",
+          "taughtOn": "one-time-pad",
+          "prompt": "XOR 1100 with 0101. What is the result?",
+          "answer": "1001."
+        },
+        {
+          "id": "7.1-f4",
+          "type": "why",
+          "taughtOn": "one-time-pad",
+          "prompt": "Why must a one-time pad never be reused?",
+          "options": [
+            {
+              "text": "XOR-ing two ciphertexts cancels the pad and leaks the messages",
+              "correct": true
+            },
+            {
+              "text": "It wears out"
+            },
+            {
+              "text": "It becomes too short"
+            },
+            {
+              "text": "The receiver forgets it"
+            }
+          ],
+          "explain": "The pad cancels out, and the two messages are left mixed together."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "A cipher with a famous name",
+          "text": "The Caesar cipher shifts every letter by a fixed number. It is named after Julius Caesar, who is said to have used a shift of three. It is just a very simple kind of substitution, and is easy to crack by counting letters or trying all 25 shifts.",
+          "source": {
+            "title": "Wikipedia: Caesar cipher",
+            "url": "https://en.wikipedia.org/wiki/Caesar_cipher"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You learned the goals of security, cracked a substitution cipher by counting letters, saw how a columnar transposition works, and saw why a one-time pad is perfect but hard to use.",
+          "The gatekeeper folds the note away. \"Old tricks,\" he says. \"Strong in the way they scramble, weak in how you share the key. How do two strangers agree on a key without meeting?\""
+        ],
+        "mistake": {
+          "title": "Thinking a scrambled-looking message is a safe one",
+          "text": "A message can look like nonsense and still leak. Patterns, such as how often each letter appears, give a simple cipher away. Safety comes from a strong method and a secret key, not from looking messy."
+        }
+      }
+    },
+    {
+      "id": "7.3",
+      "title": "Key Pairs",
+      "story": "The gatekeeper has a puzzle. Kit must send Farmer Juno a secret PIN, but the two have never met and share no key. Every path between them can be watched.",
+      "everyday": {
+        "scene": "A village has a post box with a slot. Anyone can drop a letter through the slot, but only the postmaster holds the key that opens the box and takes the letters out.",
+        "question": "Does the person who posts a letter need to know the postmaster's key?",
+        "answer": "No. Posting needs no secret at all, and only opening the box does. Public-key cryptography splits one secret key into two: a public one anyone can use to lock, and a private one only the owner holds to unlock."
+      },
+      "lessons": [
+        {
+          "id": "two-keys",
+          "title": "A lock anyone can close",
+          "text": [
+            "With a shared secret key, both sides need the same key, and sharing it safely is hard. Public-key cryptography solves this with a pair of keys. The public key can be given to everyone. The private key never leaves its owner.",
+            "To send Juno a secret, Kit encrypts with Juno's public key. Only Juno's private key can decrypt it. Even Kit cannot undo it. Public-key methods are slow, so in practice they are used to agree a shared secret key, and a fast symmetric cipher then protects the bulk of the data."
+          ],
+          "terms": [
+            {
+              "term": "Public key",
+              "meaning": "The half of a key pair that anyone may know. It locks."
+            },
+            {
+              "term": "Private key",
+              "meaning": "The half only the owner holds. It unlocks."
+            }
+          ],
+          "predict": {
+            "prompt": "Kit encrypts a message with Juno's public key. Which key decrypts it?",
+            "answer": "Juno's private key. Not even Kit's own keys can."
+          },
+          "references": [
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, Cryptographic Building Blocks",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/security/crypto.html"
+            },
+            {
+              "title": "Wikipedia: Public-key cryptography",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Public-key_cryptography"
+            }
+          ]
+        },
+        {
+          "id": "rsa-toy",
+          "title": "Making a tiny RSA key",
+          "text": [
+            "RSA is a classic public-key method. To make a key pair: pick two primes p and q. Set n = p × q and z = (p − 1) × (q − 1). Choose e sharing no factor with z, then find d so that e × d leaves remainder 1 when divided by z.",
+            "Public key: (e, n). Private key: (d, n). Encrypt: C = P^e mod n. Decrypt: P = C^d mod n.",
+            "Toy example: p = 7 and q = 17, so n = 119 and z = 96. Take e = 5 and d = 77, since 5 × 77 = 385 = 4 × 96 + 1."
+          ],
+          "terms": [
+            {
+              "term": "mod",
+              "meaning": "The remainder after dividing: 17 mod 5 is 2."
+            },
+            {
+              "term": "Prime",
+              "meaning": "A number only divisible by 1 and itself."
+            }
+          ],
+          "table": {
+            "head": [
+              "Step",
+              "Toy value"
+            ],
+            "rows": [
+              [
+                "Primes p and q",
+                "7 and 17"
+              ],
+              [
+                "n = p × q",
+                "119"
+              ],
+              [
+                "z = (p − 1)(q − 1)",
+                "96"
+              ],
+              [
+                "Public key (e, n)",
+                "(5, 119)"
+              ],
+              [
+                "Private key (d, n)",
+                "(77, 119)"
+              ]
+            ]
+          },
+          "diagramCaption": "A toy RSA key pair.",
+          "predict": {
+            "prompt": "With the toy key, encrypt P = 10. What is 10^5 mod 119?",
+            "answer": "40. (100000 divided by 119 leaves remainder 40.)"
+          },
+          "deeper": {
+            "title": "Why the private key stays hidden",
+            "text": [
+              "To find d from (e, n), you need z, and that means factoring n into p and q. For n = 119 that is trivial. Real keys use primes hundreds of digits long, and for those there is no known fast way, which is what protects the private key."
+            ]
+          },
+          "references": [
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, Cryptographic Building Blocks",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/security/crypto.html"
+            },
+            {
+              "title": "Wikipedia: RSA (cryptosystem)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/RSA_(cryptosystem)"
+            }
+          ]
+        },
+        {
+          "id": "protect-private",
+          "title": "Guarding the private key",
+          "text": [
+            "Anyone can encrypt with the public key, so it can be posted anywhere. The private key does the opposite job, so whoever holds it can read every secret meant for the owner.",
+            "It follows that a stolen private key cannot be fixed by changing the message. The owner has to make a new key pair and tell everyone the new public key. And using the wrong key, even the matching public one, gives gibberish, not the message."
+          ],
+          "predict": {
+            "prompt": "Someone copies Juno's private key. Which messages can they read?",
+            "answer": "Every message encrypted to Juno's public key, including old ones they recorded."
+          },
+          "references": [
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, Key Predistribution",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/security/key-distro.html"
+            },
+            {
+              "title": "RFC 8017: PKCS #1, RSA Cryptography Specifications",
+              "source": "IETF RFC (linked)",
+              "url": "https://www.rfc-editor.org/rfc/rfc8017"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "toy-n",
+          "type": "numeric",
+          "taughtOn": "rsa-toy",
+          "prompt": "Maya picks the primes p = 7 and q = 17. What is n = p × q?",
+          "answer": 119,
+          "unit": "",
+          "hints": [
+            "Multiply the two primes.",
+            "7 × 17."
+          ],
+          "explain": "7 × 17 = 119."
+        },
+        {
+          "id": "toy-z",
+          "type": "numeric",
+          "taughtOn": "rsa-toy",
+          "prompt": "With p = 7 and q = 17, what is z = (p − 1) × (q − 1)?",
+          "answer": 96,
+          "unit": "",
+          "hints": [
+            "Subtract 1 from each prime first.",
+            "6 × 16."
+          ],
+          "explain": "6 × 16 = 96."
+        },
+        {
+          "id": "pick-e",
+          "type": "choice",
+          "taughtOn": "rsa-toy",
+          "prompt": "With z = 96, which of these can be used as e? (e must share no factor with z.)",
+          "options": [
+            {
+              "text": "5",
+              "correct": true
+            },
+            {
+              "text": "6"
+            },
+            {
+              "text": "8"
+            },
+            {
+              "text": "9"
+            }
+          ],
+          "hints": [
+            "96 = 2 × 2 × 2 × 2 × 2 × 3.",
+            "Check which numbers share a factor of 2 or 3 with 96."
+          ],
+          "explain": "6 and 8 share a factor of 2 with 96, and 9 shares a factor of 3. Only 5 shares nothing."
+        },
+        {
+          "id": "find-d",
+          "type": "numeric",
+          "taughtOn": "rsa-toy",
+          "prompt": "With e = 5 and z = 96, find d so that 5 × d leaves remainder 1 when divided by 96. (Hint: it is between 70 and 80.)",
+          "answer": 77,
+          "unit": "",
+          "hints": [
+            "Multiples of 96 plus 1: 97, 193, 289, 385, ...",
+            "385 divided by 5 is d."
+          ],
+          "explain": "5 × 77 = 385 = 4 × 96 + 1, so d = 77."
+        },
+        {
+          "id": "encrypt",
+          "type": "numeric",
+          "taughtOn": "rsa-toy",
+          "prompt": "Encrypt Kit's PIN, P = 10, with the public key (5, 119). What is C = 10^5 mod 119? (The calculator understands \"mod\".)",
+          "answer": 40,
+          "unit": "",
+          "hints": [
+            "Work out 10^5 first, then take the remainder after dividing by 119.",
+            "100000 mod 119."
+          ],
+          "explain": "10^5 = 100000, and 100000 mod 119 = 40."
+        },
+        {
+          "id": "watch-rsa",
+          "type": "stepsim",
+          "taughtOn": "protect-private",
+          "mode": "predict",
+          "prompt": "Follow the PIN from Kit to Juno, and see what the wrong key does.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "label": "The message on its journey",
+                  "items": [
+                    {
+                      "value": 10,
+                      "tag": "PIN"
+                    }
+                  ]
+                },
+                "say": "Kit's secret PIN is 10. Juno's public key is (5, 119) and anyone can see it."
+              },
+              {
+                "state": {
+                  "label": "The message on its journey",
+                  "items": [
+                    {
+                      "value": 40,
+                      "tag": "Sent"
+                    }
+                  ]
+                },
+                "say": "Kit encrypts with the public key: 10^5 mod 119 = 40. The 40 travels along a road where anyone may watch."
+              },
+              {
+                "state": {
+                  "label": "The message on its journey",
+                  "items": [
+                    {
+                      "value": 10,
+                      "tag": "Juno"
+                    }
+                  ]
+                },
+                "say": "Juno decrypts with the private key (77, 119): 40^77 mod 119 = 10. Only Juno can do this.",
+                "predict": {
+                  "prompt": "Juno decrypts 40 with the private key 77. What does she get?",
+                  "options": [
+                    {
+                      "text": "The original PIN, 10",
+                      "correct": true
+                    },
+                    {
+                      "text": "40"
+                    },
+                    {
+                      "text": "77"
+                    },
+                    {
+                      "text": "Nothing readable"
+                    }
+                  ],
+                  "hints": [
+                    "Decryption undoes encryption.",
+                    "The two keys are a matching pair."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "label": "The message on its journey",
+                  "items": [
+                    {
+                      "value": 24,
+                      "tag": "Wrong key"
+                    }
+                  ]
+                },
+                "say": "A watcher tries the public key again on the 40: 40^5 mod 119 = 24. That is not the PIN. Only the matching private key undoes it.",
+                "predict": {
+                  "prompt": "A watcher uses the public key (5, 119) to try to decrypt 40. Do they get the PIN?",
+                  "options": [
+                    {
+                      "text": "No, they get a different number",
+                      "correct": true
+                    },
+                    {
+                      "text": "Yes, 10"
+                    },
+                    {
+                      "text": "Yes, but only on Tuesdays"
+                    },
+                    {
+                      "text": "They get the private key"
+                    }
+                  ],
+                  "hints": [
+                    "The public key locks, not unlocks.",
+                    "Only the matching private key undoes it."
+                  ]
+                }
+              }
+            ]
+          },
+          "hints": [],
+          "explain": "Follow the PIN from Kit to Juno, and see what the wrong key does."
+        },
+        {
+          "id": "public-private",
+          "type": "buckets",
+          "taughtOn": "two-keys",
+          "prompt": "Is each statement about the public key or the private key?",
+          "buckets": [
+            "Public key",
+            "Private key"
+          ],
+          "items": [
+            {
+              "text": "You can post it for anyone to see",
+              "bucket": "Public key"
+            },
+            {
+              "text": "Others use it to encrypt a message to you",
+              "bucket": "Public key"
+            },
+            {
+              "text": "It must never leave your device",
+              "bucket": "Private key"
+            },
+            {
+              "text": "You use it to decrypt messages sent to you",
+              "bucket": "Private key"
+            },
+            {
+              "text": "Losing control of it means you must make a new pair",
+              "bucket": "Private key"
+            },
+            {
+              "text": "Knowing it does not let you read secrets for its owner",
+              "bucket": "Public key"
+            }
+          ],
+          "hints": [
+            "One of them is meant to be shared.",
+            "The one that can unlock must be kept safe."
+          ],
+          "explain": "The public key locks and can be shared. The private key unlocks and stays secret."
+        },
+        {
+          "id": "hybrid",
+          "type": "choice",
+          "taughtOn": "two-keys",
+          "prompt": "Why is RSA usually used only to agree a shared key, which then protects the data?",
+          "options": [
+            {
+              "text": "RSA is slow, and a symmetric cipher is much faster for large amounts of data",
+              "correct": true
+            },
+            {
+              "text": "RSA cannot encrypt anything"
+            },
+            {
+              "text": "Symmetric ciphers are slower"
+            },
+            {
+              "text": "The data would not fit in a packet"
+            }
+          ],
+          "hints": [
+            "Think about the amount of work for each.",
+            "Which one is quicker on big files?"
+          ],
+          "explain": "Public-key methods are slow. So RSA agrees a key, and a fast symmetric cipher does the heavy lifting."
+        },
+        {
+          "id": "find-d2",
+          "type": "numeric",
+          "taughtOn": "rsa-toy",
+          "prompt": "Challenge: with the primes 5 and 17, we get n = 85 and z = 64. If e = 3, find d so that 3 × d leaves remainder 1 when divided by 64.",
+          "answer": 43,
+          "unit": "",
+          "hints": [
+            "Try numbers of the form 64 × k + 1 that divide evenly by 3.",
+            "129 = 2 × 64 + 1, and 129 ÷ 3 is a whole number."
+          ],
+          "explain": "3 × 43 = 129 = 2 × 64 + 1, so d = 43.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "7.3-f1",
+          "type": "quiz",
+          "taughtOn": "two-keys",
+          "prompt": "Which key do you use to send someone a secret?",
+          "options": [
+            {
+              "text": "Their public key",
+              "correct": true
+            },
+            {
+              "text": "Their private key"
+            },
+            {
+              "text": "Your private key"
+            },
+            {
+              "text": "Neither"
+            }
+          ],
+          "explain": "Anyone can lock with the public key. Only the owner's private key unlocks."
+        },
+        {
+          "id": "7.3-f2",
+          "type": "quiz",
+          "taughtOn": "protect-private",
+          "prompt": "Which key must stay secret?",
+          "options": [
+            {
+              "text": "The private key",
+              "correct": true
+            },
+            {
+              "text": "The public key"
+            },
+            {
+              "text": "Both equally"
+            },
+            {
+              "text": "Neither"
+            }
+          ],
+          "explain": "Whoever holds the private key can read every secret meant for the owner."
+        },
+        {
+          "id": "7.3-f3",
+          "type": "predict",
+          "taughtOn": "rsa-toy",
+          "prompt": "In RSA, n = p × q. What is n for p = 3 and q = 13?",
+          "answer": "39."
+        },
+        {
+          "id": "7.3-f4",
+          "type": "why",
+          "taughtOn": "two-keys",
+          "prompt": "What is RSA mostly used for in practice?",
+          "options": [
+            {
+              "text": "Agreeing a shared key for a faster cipher",
+              "correct": true
+            },
+            {
+              "text": "Encrypting every video frame"
+            },
+            {
+              "text": "Counting letters"
+            },
+            {
+              "text": "Compressing files"
+            }
+          ],
+          "explain": "RSA is slow, so it agrees a key and a fast cipher does the bulk."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "A secret that was not so secret",
+          "text": "RSA was publicly described in 1977 by Rivest, Shamir and Adleman, and is named after their initials. A similar system had been developed in secret in 1973 at GCHQ, a British government agency. Typical RSA keys today are 2,048 to 4,096 bits.",
+          "source": {
+            "title": "Wikipedia: RSA (cryptosystem)",
+            "url": "https://en.wikipedia.org/wiki/RSA_(cryptosystem)"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You built a toy RSA key pair, encrypted a PIN with the public key, decrypted it with the private key, and saw why the private key must stay secret.",
+          "The gatekeeper nods. \"Anyone can send you a secret now,\" he says. \"But how do I know the key I used really belongs to Juno? Anyone could post a key in her name.\""
+        ],
+        "mistake": {
+          "title": "Thinking the public key can decrypt",
+          "text": "The public key only locks. Using it again on a locked message gives a different number. Only the matching private key undoes the lock."
+        }
+      }
+    },
+    {
+      "id": "7.4",
+      "title": "Seal of Approval",
+      "story": "A letter arrives at the castle gate with Juno's name on it. But anyone can write a name, and anyone can change a letter on the way. The gatekeeper has a stamp that proves who wrote it, and whether it was changed.",
+      "everyday": {
+        "scene": "A sealed envelope has a wax stamp pressed with a special ring. If the seal is unbroken and matches the sender's ring, you know two things: who sent it, and that nobody opened it.",
+        "question": "What happens if someone changes the letter and re-seals it?",
+        "answer": "The seal will no longer match, and without the ring they cannot make a matching one. A digital signature does the same job for messages: it proves who wrote them, and that nothing changed."
+      },
+      "lessons": [
+        {
+          "id": "digest",
+          "title": "A fingerprint for a message",
+          "text": [
+            "A hash function turns any message, long or short, into a short fixed-size fingerprint called a digest. The same message always gives the same digest. Change a single letter, and a good hash gives a completely different digest. And you cannot work backwards from a digest to the message.",
+            "SHA-256 is a common modern choice. Older ones, MD5 and SHA-1, are considered broken. In this game we use a toy hash: add up each letter's place in the alphabet (A = 1, B = 2, ...) and take the remainder after dividing by 119. It is only for practice. Real hashes mix far more thoroughly."
+          ],
+          "terms": [
+            {
+              "term": "Hash function",
+              "meaning": "A recipe that turns any message into a short fixed-size fingerprint."
+            },
+            {
+              "term": "Digest",
+              "meaning": "The fingerprint a hash produces."
+            }
+          ],
+          "predict": {
+            "prompt": "Using the toy hash, what is the digest of KIT? (K = 11, I = 9, T = 20.)",
+            "answer": "40. 11 + 9 + 20 = 40, which is less than 119."
+          },
+          "references": [
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, Cryptographic Building Blocks",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/security/crypto.html"
+            },
+            {
+              "title": "Wikipedia: Cryptographic hash function",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Cryptographic_hash_function"
+            }
+          ]
+        },
+        {
+          "id": "signatures",
+          "title": "Signing with the private key",
+          "text": [
+            "To sign, the sender hashes the message and then locks the digest with their private key. The result is the signature. It is sent along with the message.",
+            "The receiver hashes the message they got, and unlocks the signature with the sender's public key. If the two digests match, the message is genuine and unchanged. Only the real owner of the private key could have made that signature, so the sender cannot later deny it.",
+            "Signing the short digest is much faster than signing the whole message. Note that a signature does not hide the message. It only proves who wrote it and that it is unchanged."
+          ],
+          "terms": [
+            {
+              "term": "Digital signature",
+              "meaning": "A digest locked with a private key, which anyone can check with the public key."
+            }
+          ],
+          "table": {
+            "head": [
+              "Job",
+              "Whose key",
+              "Which half"
+            ],
+            "rows": [
+              [
+                "Sign a message",
+                "The sender",
+                "Private"
+              ],
+              [
+                "Check a signature",
+                "The sender",
+                "Public"
+              ],
+              [
+                "Encrypt a secret for someone",
+                "The receiver",
+                "Public"
+              ],
+              [
+                "Decrypt a secret for you",
+                "You",
+                "Private"
+              ]
+            ]
+          },
+          "diagramCaption": "Who uses which key.",
+          "predict": {
+            "prompt": "Kit signs a message. Which key does Kit use?",
+            "answer": "Kit's own private key. Anyone then checks it with Kit's public key."
+          },
+          "references": [
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, Cryptographic Building Blocks",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/security/crypto.html"
+            },
+            {
+              "title": "Wikipedia: Digital signature",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Digital_signature"
+            }
+          ]
+        },
+        {
+          "id": "certificates",
+          "title": "Who does this key really belong to?",
+          "text": [
+            "A public key is just a number. How do you know it belongs to Juno? A certificate links an identity (the name) to a public key, and is signed by a trusted Certificate Authority (CA).",
+            "CAs form a chain of trust. A website's certificate is signed by an intermediate CA, whose own certificate is signed by a root CA. Browsers and operating systems ship with a list of root CAs they trust.",
+            "HTTPS is HTTP carried over TLS. The server's certificate proves who it is, and a shared session key then encrypts the traffic."
+          ],
+          "terms": [
+            {
+              "term": "Certificate",
+              "meaning": "A signed statement that a public key belongs to a named owner."
+            },
+            {
+              "term": "CA",
+              "meaning": "A Certificate Authority: an organisation trusted to sign certificates."
+            },
+            {
+              "term": "Chain of trust",
+              "meaning": "Certificates signed by other certificates, up to a trusted root."
+            }
+          ],
+          "predict": {
+            "prompt": "A certificate for juno-farm.example is signed by a CA that your browser has never heard of, and which no trusted CA vouches for. Should it be trusted?",
+            "answer": "No. The chain does not reach a root the browser trusts."
+          },
+          "deeper": {
+            "title": "Names must match too",
+            "text": [
+              "A certificate also names the site it is for. A real certificate from a trusted CA, but for a different site name, still fails the check, because it does not prove that this site is who it says."
+            ]
+          },
+          "references": [
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, Key Predistribution",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/security/key-distro.html"
+            },
+            {
+              "title": "RFC 8446: TLS 1.3",
+              "source": "IETF RFC (linked)",
+              "url": "https://www.rfc-editor.org/rfc/rfc8446"
+            },
+            {
+              "title": "Wikipedia: HTTPS",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/HTTPS"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "toy-digest",
+          "type": "numeric",
+          "taughtOn": "digest",
+          "prompt": "Using the toy hash (add the letters' places in the alphabet, then take the remainder after dividing by 119), what is the digest of \"GATE\"? (G = 7, A = 1, T = 20, E = 5.)",
+          "answer": 33,
+          "unit": "",
+          "hints": [
+            "Add the four letter values.",
+            "7 + 1 + 20 + 5."
+          ],
+          "explain": "7 + 1 + 20 + 5 = 33, which is below 119."
+        },
+        {
+          "id": "watch-sign",
+          "type": "stepsim",
+          "taughtOn": "signatures",
+          "mode": "predict",
+          "prompt": "Sign a message, send it, and check it. Then see what a change does.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "label": "Signing and checking",
+                  "items": [
+                    {
+                      "value": 116,
+                      "tag": "Digest"
+                    }
+                  ]
+                },
+                "say": "Kit's message is OPEN THE GATE. Its toy digest is 116. (Add the letters, take the remainder after dividing by 119.)"
+              },
+              {
+                "state": {
+                  "label": "Signing and checking",
+                  "items": [
+                    {
+                      "value": 107,
+                      "tag": "Signature"
+                    }
+                  ]
+                },
+                "say": "Kit signs the digest with the private key (77, 119): 116^77 mod 119 = 107. The message and the signature 107 are sent together."
+              },
+              {
+                "state": {
+                  "label": "Signing and checking",
+                  "items": [
+                    {
+                      "value": 116,
+                      "tag": "Check"
+                    }
+                  ]
+                },
+                "say": "The gatekeeper hashes the message he got, getting 116. He unlocks the signature with Kit's public key (5, 119): 107^5 mod 119 = 116. The two digests match.",
+                "predict": {
+                  "prompt": "The gatekeeper unlocks the signature with Kit's public key and gets the same digest he computed from the message. What does this tell him?",
+                  "options": [
+                    {
+                      "text": "The message is from Kit and has not changed",
+                      "correct": true
+                    },
+                    {
+                      "text": "The message is secret"
+                    },
+                    {
+                      "text": "The message has changed"
+                    },
+                    {
+                      "text": "Nothing yet"
+                    }
+                  ],
+                  "hints": [
+                    "Matching digests mean the signature fits this message.",
+                    "Only Kit's private key could make 107."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "label": "Signing and checking",
+                  "items": [
+                    {
+                      "value": 117,
+                      "tag": "New digest"
+                    }
+                  ]
+                },
+                "say": "Now a prankster changes the last letter: OPEN THE GATF. Its digest is 117. The signature still unlocks to 116.",
+                "predict": {
+                  "prompt": "The message was changed to OPEN THE GATF, but the signature is the old one. Does the check pass?",
+                  "options": [
+                    {
+                      "text": "No. The digests no longer match",
+                      "correct": true
+                    },
+                    {
+                      "text": "Yes, the signature is still valid"
+                    },
+                    {
+                      "text": "Yes, because the letters look similar"
+                    },
+                    {
+                      "text": "It depends on the weather"
+                    }
+                  ],
+                  "hints": [
+                    "Compare the digest of the new message with the one the signature unlocks to.",
+                    "117 against 116."
+                  ]
+                }
+              }
+            ]
+          },
+          "hints": [],
+          "explain": "Sign a message, send it, and check it. Then see what a change does."
+        },
+        {
+          "id": "which-key",
+          "type": "match",
+          "taughtOn": "signatures",
+          "prompt": "Match each key to its job.",
+          "pairs": [
+            {
+              "left": "Your private key, used on your own message",
+              "right": "Makes your signature"
+            },
+            {
+              "left": "The signer's public key",
+              "right": "Checks their signature"
+            },
+            {
+              "left": "A friend's public key",
+              "right": "Encrypts a secret for your friend"
+            },
+            {
+              "left": "Your private key, used on a locked message sent to you",
+              "right": "Decrypts it"
+            }
+          ],
+          "hints": [
+            "Private keys are used by their owner.",
+            "Public keys are used by everyone else."
+          ],
+          "explain": "Your private key signs and decrypts. Other people's public keys check signatures and encrypt secrets to them."
+        },
+        {
+          "id": "chain-order",
+          "type": "order",
+          "taughtOn": "certificates",
+          "prompt": "Put the steps of checking a website's certificate in order.",
+          "items": [
+            "The browser receives the website's certificate",
+            "It checks the signature on it against the intermediate CA",
+            "It checks the intermediate CA's signature against a root CA",
+            "It confirms the root CA is on its trusted list",
+            "It confirms the certificate's name matches the site"
+          ],
+          "hints": [
+            "You start with the certificate you were given.",
+            "The trusted list is at the top of the chain."
+          ],
+          "explain": "Start at the certificate you received, work up through the intermediate to the root, then check the name."
+        },
+        {
+          "id": "forged",
+          "type": "choice",
+          "taughtOn": "certificates",
+          "prompt": "A site shows a certificate for \"bank.example\" signed by \"Trusty Cert Co\", which is not on your browser's trusted list and has not been signed by any trusted CA. What should your browser do?",
+          "options": [
+            {
+              "text": "Warn you, because the chain does not end at a trusted root",
+              "correct": true
+            },
+            {
+              "text": "Trust it, because it looks official"
+            },
+            {
+              "text": "Trust it, because it has a name on it"
+            },
+            {
+              "text": "Trust it if the page looks right"
+            }
+          ],
+          "hints": [
+            "What does the chain have to end at?",
+            "A name on a certificate proves nothing without a trusted signature."
+          ],
+          "explain": "Anyone can write a certificate. It is trusted only if the chain leads to a root CA the browser already trusts."
+        },
+        {
+          "id": "why-digest",
+          "type": "choice",
+          "taughtOn": "signatures",
+          "prompt": "Why do we sign the digest instead of the whole message?",
+          "options": [
+            {
+              "text": "It is much faster, because the digest is short",
+              "correct": true
+            },
+            {
+              "text": "Because the digest is secret"
+            },
+            {
+              "text": "Because the message cannot be signed at all"
+            },
+            {
+              "text": "To make the message shorter for the receiver"
+            }
+          ],
+          "hints": [
+            "Think about the size of the thing being locked.",
+            "Public-key methods are slow on long inputs."
+          ],
+          "explain": "Public-key operations are slow, so we sign the short digest instead of the whole message."
+        },
+        {
+          "id": "sign-not-secret",
+          "type": "choice",
+          "taughtOn": "signatures",
+          "prompt": "Kit signs a message and sends it with the signature. Can an eavesdropper read the message?",
+          "options": [
+            {
+              "text": "Yes. A signature proves who wrote it, not that it is hidden",
+              "correct": true
+            },
+            {
+              "text": "No, signing hides it"
+            },
+            {
+              "text": "No, only the receiver can see it"
+            },
+            {
+              "text": "Only if it is short"
+            }
+          ],
+          "hints": [
+            "Signing is not locking the message away.",
+            "What does the signature prove?"
+          ],
+          "explain": "A signature proves who wrote the message and that it is unchanged. To hide the message, you also have to encrypt it."
+        },
+        {
+          "id": "verify-sig",
+          "type": "numeric",
+          "taughtOn": "signatures",
+          "prompt": "Challenge: a message arrives with the signature 107. Using the public key (5, 119), what is 107^5 mod 119? (This is the digest the signature unlocks to.)",
+          "answer": 116,
+          "unit": "",
+          "hints": [
+            "Work out 107^5 first, then take the remainder after dividing by 119.",
+            "The calculator understands \"mod\"."
+          ],
+          "explain": "107^5 mod 119 = 116, which is the digest of OPEN THE GATE.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "7.4-f1",
+          "type": "quiz",
+          "taughtOn": "digest",
+          "prompt": "What happens to a good hash's digest if one letter of the message changes?",
+          "options": [
+            {
+              "text": "It changes completely",
+              "correct": true
+            },
+            {
+              "text": "It stays the same"
+            },
+            {
+              "text": "It gets one letter longer"
+            },
+            {
+              "text": "It becomes the message"
+            }
+          ],
+          "explain": "Even a tiny change gives a very different digest, so tampering shows."
+        },
+        {
+          "id": "7.4-f2",
+          "type": "quiz",
+          "taughtOn": "signatures",
+          "prompt": "Which key signs a message?",
+          "options": [
+            {
+              "text": "The sender's private key",
+              "correct": true
+            },
+            {
+              "text": "The receiver's public key"
+            },
+            {
+              "text": "The sender's public key"
+            },
+            {
+              "text": "The receiver's private key"
+            }
+          ],
+          "explain": "Only the owner of the private key could have made the signature."
+        },
+        {
+          "id": "7.4-f3",
+          "type": "predict",
+          "taughtOn": "certificates",
+          "prompt": "What does a certificate link together?",
+          "answer": "A name (an identity) and a public key."
+        },
+        {
+          "id": "7.4-f4",
+          "type": "why",
+          "taughtOn": "certificates",
+          "prompt": "Where must a chain of trust end?",
+          "options": [
+            {
+              "text": "At a root CA that the browser already trusts",
+              "correct": true
+            },
+            {
+              "text": "At the website itself"
+            },
+            {
+              "text": "At any CA"
+            },
+            {
+              "text": "At the user's password"
+            }
+          ],
+          "explain": "Browsers ship with a list of trusted roots."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Why your browser shows a padlock",
+          "text": "When a site's address starts with https, the connection uses TLS. Your browser checks the server's certificate, which must be signed by an authority it trusts, and the two sides agree on keys to encrypt the traffic. That protects against eavesdropping and tampering, provided the certificate is verified and trusted.",
+          "source": {
+            "title": "Wikipedia: HTTPS",
+            "url": "https://en.wikipedia.org/wiki/HTTPS"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You hashed a message, signed the digest, checked a signature, saw a one-letter change break it, and followed a certificate chain up to a trusted root.",
+          "The gatekeeper stamps the letter with a bright wax seal. \"Safe,\" he says. Farmer Juno, waiting at the far gate, gives a little wave. Then a ferry whistle sounds from across the water, long and low. Something beyond the valley is calling."
+        ],
+        "mistake": {
+          "title": "Thinking a signature hides the message",
+          "text": "A signature only proves who wrote the message and that it is unchanged. Anyone can still read it. To keep it secret as well, encrypt it too."
+        }
+      }
+    }
+  ]
+}

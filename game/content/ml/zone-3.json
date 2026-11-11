@@ -1,0 +1,1175 @@
+{
+  "zone": 3,
+  "levels": [
+    {
+      "id": "3.1",
+      "title": "Odds and Evens",
+      "story": "Fenn flips a coin on the fence post. \"Heads, I go to market. Tails, I mend the fence.\" Then Fenn looks at the clouds. \"But for rain I don't flip a coin. I count. After a hundred mornings of notes, I can do better than 'who knows'.\"",
+      "everyday": {
+        "scene": "A weather app says '70% chance of rain'. It does not know what will happen. It says that in days like this one, it rained about 7 times out of every 10.",
+        "question": "What does a probability tell you?",
+        "answer": "How often something happens in situations like this one. Many machine learning models give their answers as probabilities, and then pick the most likely one."
+      },
+      "lessons": [
+        {
+          "id": "probability-basics",
+          "title": "Probability by counting",
+          "text": [
+            "A probability is a number from 0 to 1. Zero means never and 1 means always. One way to estimate it is by counting: the number of days it happened divided by the number of days you looked at.",
+            "The table covers 100 mornings. Rain followed on 35 of them, so the chance of rain is 35 out of 100, or 0.35. The chances of all the possible outcomes add up to 1, so no rain is 0.65."
+          ],
+          "table": {
+            "head": [
+              "Sky in the morning",
+              "Rain later",
+              "No rain later"
+            ],
+            "rows": [
+              [
+                "Cloudy",
+                "30",
+                "20"
+              ],
+              [
+                "Clear",
+                "5",
+                "45"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Probability",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Probability"
+            }
+          ]
+        },
+        {
+          "id": "given-and-and",
+          "title": "Given and both",
+          "text": [
+            "A conditional probability is a chance among a narrowed group. The chance of rain given a cloudy morning looks only at the 50 cloudy mornings, and 30 of them had rain. That is 30 out of 50, or 0.6.",
+            "Two events are independent when one tells you nothing about the other. Then the chance of both is the two chances multiplied. If two fields each have a 0.35 chance of rain, independently, both get rain with chance 0.35 x 0.35 = 0.1225."
+          ],
+          "predict": {
+            "prompt": "Of the 50 cloudy mornings, 30 had rain. What is the chance of rain given a cloudy morning?",
+            "answer": "30 out of 50, which is 0.6."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Conditional probability",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Conditional_probability"
+            },
+            {
+              "title": "Wikipedia: Probability",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Probability"
+            }
+          ]
+        },
+        {
+          "id": "models-of-chance",
+          "title": "A model gives chances",
+          "text": [
+            "A probabilistic model turns clues into chances and then picks the most likely answer. Here, a cloudy morning gives 0.6 for rain, so the model would say rain.",
+            "Counting is only as good as the sample. If a coin lands heads 3 times out of 3, counting says the chance is 1. With only three flips, that is too confident. More data makes the estimate steadier."
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Probability",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Probability"
+            },
+            {
+              "title": "Wikipedia: Conditional probability",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Conditional_probability"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "p-rain-percent",
+          "type": "numeric",
+          "taughtOn": "probability-basics",
+          "prompt": "Out of 100 mornings, 35 were followed by rain. What is the chance of rain, as a percentage?",
+          "answer": 35,
+          "calculator": false,
+          "hints": [
+            "Rain days divided by all days, times 100.",
+            "35 out of 100."
+          ],
+          "explain": "35 out of 100 is 35 percent, or 0.35."
+        },
+        {
+          "id": "p-no-rain",
+          "type": "numeric",
+          "taughtOn": "probability-basics",
+          "prompt": "The chance of rain is 35 percent. What is the chance of no rain, as a percentage?",
+          "answer": 65,
+          "calculator": false,
+          "hints": [
+            "The chances of all outcomes add up to 100 percent.",
+            "100 - 35."
+          ],
+          "explain": "Rain and no rain cover everything, so they add up to 100 percent. No rain is 65 percent."
+        },
+        {
+          "id": "valid-prob",
+          "type": "buckets",
+          "taughtOn": "probability-basics",
+          "prompt": "Could this number be a probability?",
+          "buckets": [
+            "Yes",
+            "No"
+          ],
+          "items": [
+            {
+              "text": "0.3",
+              "bucket": "Yes"
+            },
+            {
+              "text": "1.2",
+              "bucket": "No"
+            },
+            {
+              "text": "0",
+              "bucket": "Yes"
+            },
+            {
+              "text": "-0.1",
+              "bucket": "No"
+            },
+            {
+              "text": "1",
+              "bucket": "Yes"
+            }
+          ],
+          "hints": [
+            "A probability runs from 0 to 1.",
+            "Nothing can be less than never or more than always."
+          ],
+          "explain": "A probability is between 0 and 1, including both ends."
+        },
+        {
+          "id": "given-sim",
+          "type": "stepsim",
+          "taughtOn": "given-and-and",
+          "mode": "predict",
+          "prompt": "Narrow down to the cloudy mornings.",
+          "explain": "A conditional probability only counts the group you are given. Cloudy mornings lifted the chance of rain from 0.35 to 0.6.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "30",
+                      "mark": null,
+                      "tag": "Cloudy, rain"
+                    },
+                    {
+                      "value": "20",
+                      "mark": null,
+                      "tag": "Cloudy, dry"
+                    },
+                    {
+                      "value": "5",
+                      "mark": null,
+                      "tag": "Clear, rain"
+                    },
+                    {
+                      "value": "45",
+                      "mark": null,
+                      "tag": "Clear, dry"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Mornings by sky and weather later"
+                },
+                "say": "One hundred past mornings, sorted into four groups by the sky and what happened later. Each box shows how many days were in that group."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "30",
+                      "mark": "current",
+                      "tag": "Cloudy, rain"
+                    },
+                    {
+                      "value": "20",
+                      "mark": "current",
+                      "tag": "Cloudy, dry"
+                    },
+                    {
+                      "value": "5",
+                      "mark": null,
+                      "tag": "Clear, rain"
+                    },
+                    {
+                      "value": "45",
+                      "mark": null,
+                      "tag": "Clear, dry"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "cloudy"
+                  },
+                  "label": "Mornings by sky and weather later"
+                },
+                "say": "Now only look at the cloudy mornings. The two cloudy groups together hold 30 + 20 = 50 days. Everything else is ignored.",
+                "predict": {
+                  "prompt": "How many cloudy mornings are there in all?",
+                  "options": [
+                    {
+                      "text": "50",
+                      "correct": true
+                    },
+                    {
+                      "text": "30",
+                      "correct": false
+                    },
+                    {
+                      "text": "35",
+                      "correct": false
+                    },
+                    {
+                      "text": "100",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Add the two cloudy groups.",
+                    "30 rainy plus 20 dry."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "30",
+                      "mark": "best",
+                      "tag": "Cloudy, rain"
+                    },
+                    {
+                      "value": "20",
+                      "mark": "current",
+                      "tag": "Cloudy, dry"
+                    },
+                    {
+                      "value": "5",
+                      "mark": null,
+                      "tag": "Clear, rain"
+                    },
+                    {
+                      "value": "45",
+                      "mark": null,
+                      "tag": "Clear, dry"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "rain"
+                  },
+                  "label": "Mornings by sky and weather later"
+                },
+                "say": "Of those 50 cloudy mornings, 30 were followed by rain. The chance of rain, given a cloudy morning, is 30 out of 50.",
+                "predict": {
+                  "prompt": "Out of the 50 cloudy mornings, 30 had rain. What fraction is that?",
+                  "options": [
+                    {
+                      "text": "3/5, or 0.6",
+                      "correct": true
+                    },
+                    {
+                      "text": "3/10, or 0.3",
+                      "correct": false
+                    },
+                    {
+                      "text": "1/2, or 0.5",
+                      "correct": false
+                    },
+                    {
+                      "text": "30/100, or 0.3",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Divide 30 by 50.",
+                    "Do not divide by all 100 days. Only the cloudy ones count."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "30",
+                      "mark": "best",
+                      "tag": "Cloudy, rain"
+                    },
+                    {
+                      "value": "20",
+                      "mark": null,
+                      "tag": "Cloudy, dry"
+                    },
+                    {
+                      "value": "5",
+                      "mark": "compare",
+                      "tag": "Clear, rain"
+                    },
+                    {
+                      "value": "45",
+                      "mark": null,
+                      "tag": "Clear, dry"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Mornings by sky and weather later"
+                },
+                "say": "Compare with all 100 days: 35 had rain, so rain overall is 0.35. A cloudy morning lifts the chance from 0.35 to 0.6. That shift is why the sky is a useful clue."
+              }
+            ]
+          }
+        },
+        {
+          "id": "p-rain-given-cloudy",
+          "type": "numeric",
+          "taughtOn": "given-and-and",
+          "prompt": "What is the chance of rain given a cloudy morning? (Give it as a number from 0 to 1.)",
+          "answer": 0.6,
+          "tolerance": 0.001,
+          "calculator": false,
+          "hints": [
+            "Use only the 50 cloudy mornings.",
+            "30 / 50"
+          ],
+          "explain": "30 of the 50 cloudy mornings had rain, so 30 / 50 = 0.6."
+        },
+        {
+          "id": "prob-words",
+          "type": "match",
+          "taughtOn": "given-and-and",
+          "prompt": "Match each idea to its meaning.",
+          "pairs": [
+            {
+              "left": "Probability",
+              "right": "A number from 0 to 1 for how likely something is"
+            },
+            {
+              "left": "Given",
+              "right": "Only looking at the days where something is true"
+            },
+            {
+              "left": "Independent",
+              "right": "One event tells you nothing about the other"
+            },
+            {
+              "left": "Estimate",
+              "right": "A chance worked out from counted data"
+            }
+          ],
+          "hints": [
+            "Given means a narrowed group.",
+            "Independent events do not affect each other."
+          ],
+          "explain": "A probability measures likelihood, given narrows the group, independent events do not affect each other, and an estimate comes from counting."
+        },
+        {
+          "id": "both-fields",
+          "type": "numeric",
+          "taughtOn": "given-and-and",
+          "prompt": "Two far-apart fields each have an independent 35 percent chance of rain. What is the chance that both get rain, as a percentage?",
+          "answer": 12.25,
+          "tolerance": 0.01,
+          "calculator": false,
+          "hints": [
+            "Multiply the two chances: 0.35 x 0.35.",
+            "0.35 x 0.35 = 0.1225."
+          ],
+          "explain": "Independent chances multiply: 0.35 x 0.35 = 0.1225, which is 12.25 percent."
+        },
+        {
+          "id": "most-likely",
+          "type": "choice",
+          "taughtOn": "models-of-chance",
+          "prompt": "A model says the chance of rain is 0.6 and the chance of no rain is 0.4. What does it predict?",
+          "options": [
+            {
+              "text": "Rain, the most likely outcome",
+              "correct": true
+            },
+            {
+              "text": "No rain, since it is closer to 0.5"
+            },
+            {
+              "text": "Nothing, until it is 1"
+            },
+            {
+              "text": "Both at once"
+            }
+          ],
+          "hints": [
+            "A model picks the biggest chance.",
+            "0.6 is bigger than 0.4."
+          ],
+          "explain": "A probabilistic model picks the outcome with the highest probability, here rain."
+        },
+        {
+          "id": "too-confident",
+          "type": "choice",
+          "taughtOn": "models-of-chance",
+          "prompt": "A coin lands heads 3 times in 3 flips. Why is it wrong to conclude the chance of heads is 1?",
+          "options": [
+            {
+              "text": "Three flips is too few to trust",
+              "correct": true
+            },
+            {
+              "text": "Coins cannot land heads"
+            },
+            {
+              "text": "Probabilities cannot be 1"
+            },
+            {
+              "text": "Heads is never likely"
+            }
+          ],
+          "hints": [
+            "How many examples is that?",
+            "A tiny sample can be lucky."
+          ],
+          "explain": "A small sample can mislead. More flips give a steadier estimate, which is why models need plenty of examples."
+        },
+        {
+          "id": "cloudy-independent",
+          "type": "choice",
+          "taughtOn": "given-and-and",
+          "prompt": "Challenge: overall, rain has chance 0.35 and cloudy has chance 0.5. Both together happened on 30 of 100 days. If they were independent, both together would be 0.175. What does that tell you?",
+          "options": [
+            {
+              "text": "Cloudy mornings and rain are linked, not independent",
+              "correct": true
+            },
+            {
+              "text": "The counts must be wrong"
+            },
+            {
+              "text": "Rain causes clouds earlier in the day"
+            },
+            {
+              "text": "They are independent after all"
+            }
+          ],
+          "hints": [
+            "Compare 0.30 with 0.175.",
+            "Clouds make rain more likely."
+          ],
+          "explain": "0.35 x 0.5 is 0.175, but 0.30 is far higher, so the two are linked. That link is what makes the sky a useful clue.",
+          "challenge": true
+        },
+        {
+          "id": "clear-dry",
+          "type": "numeric",
+          "taughtOn": "probability-basics",
+          "prompt": "Challenge: out of the 100 mornings, 45 were clear and had no rain later. What is the chance of a morning being clear with no rain, as a percentage?",
+          "answer": 45,
+          "calculator": false,
+          "hints": [
+            "That group is one of the four boxes.",
+            "45 out of 100."
+          ],
+          "explain": "45 of the 100 mornings were in that group, so the chance is 45 percent.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m3.1-f1",
+          "type": "quiz",
+          "taughtOn": "probability-basics",
+          "prompt": "What range can a probability take?",
+          "options": [
+            {
+              "text": "From 0 to 1",
+              "correct": true
+            },
+            {
+              "text": "From -1 to 1"
+            },
+            {
+              "text": "From 0 to 100 only"
+            },
+            {
+              "text": "Any number"
+            }
+          ],
+          "explain": "0 means never and 1 means always."
+        },
+        {
+          "id": "m3.1-f2",
+          "type": "quiz",
+          "taughtOn": "given-and-and",
+          "prompt": "What does 'given a cloudy morning' mean?",
+          "options": [
+            {
+              "text": "Only look at the cloudy mornings",
+              "correct": true
+            },
+            {
+              "text": "Look at all mornings"
+            },
+            {
+              "text": "Ignore the clouds"
+            },
+            {
+              "text": "Look at the rainy mornings"
+            }
+          ],
+          "explain": "A conditional probability narrows to the group in question."
+        },
+        {
+          "id": "m3.1-f3",
+          "type": "why",
+          "taughtOn": "models-of-chance",
+          "prompt": "Why can a small sample mislead?",
+          "options": [
+            {
+              "text": "A lucky run can look like a real pattern",
+              "correct": true
+            },
+            {
+              "text": "Small samples are always right"
+            },
+            {
+              "text": "It adds up to more than 1"
+            },
+            {
+              "text": "It hides the label"
+            }
+          ],
+          "explain": "With few examples, chance can look like a pattern."
+        },
+        {
+          "id": "m3.1-f4",
+          "type": "predict",
+          "taughtOn": "given-and-and",
+          "prompt": "Two independent events each have chance 0.5. What is the chance of both?",
+          "answer": "0.25, because 0.5 x 0.5 = 0.25."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Conditional chances",
+          "text": "A conditional probability is the probability of an event given that another event has already happened, for example the chance of rain given a cloudy sky.",
+          "source": {
+            "title": "Wikipedia: Conditional probability",
+            "url": "https://en.wikipedia.org/wiki/Conditional_probability"
+          },
+          "verify": false
+        },
+        {
+          "title": "Forecasts are chances",
+          "text": "A forecast of a 70 percent chance of rain gives the probability that a given spot gets measurable rain. It is not a promise that it will rain.",
+          "source": {
+            "title": "National Weather Service: Explaining Probability of Precipitation",
+            "url": "https://www.weather.gov/ffc/pop"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You estimated probabilities by counting, narrowed to a group to find a conditional chance, and saw why a model would pick the most likely answer.",
+          "Fenn jots 0.6 on the barn door. \"Clouds mean rain, sixty times in a hundred.\""
+        ],
+        "mistake": {
+          "title": "Dividing by all the days instead of the group you are given",
+          "text": "When something is given, the group shrinks. The chance of rain given a cloudy morning divides by the 50 cloudy mornings, not by all 100."
+        }
+      }
+    },
+    {
+      "id": "3.2",
+      "title": "Count the Clues",
+      "story": "The farm's inbox is filling up. Some notes are orders, and some are junk. Fenn reads one aloud: \"'Eggs, free delivery.' Hmm. 'Eggs' sounds like an order, and 'free' sounds like junk. Which clue wins?\"",
+      "everyday": {
+        "scene": "A spam filter sees an email with the words 'winner', 'free' and 'click'. Each word on its own is only a small hint, but together they add up.",
+        "question": "How can a computer weigh several small clues at once?",
+        "answer": "It multiplies how common each clue is in each class, starting from how common the class is. Whichever class scores higher wins. That method is called naive Bayes."
+      },
+      "lessons": [
+        {
+          "id": "prior-and-clues",
+          "title": "Start with how common",
+          "text": [
+            "Naive Bayes starts from the prior: how common each class is. Of 20 past notes, 12 were Orders and 8 were Junk, so the priors are 0.6 and 0.4.",
+            "Then it asks, for each word, how often that word shows up in notes of each class. The table counts the notes containing each word. 'Eggs' is in 9 of the 12 Orders and 1 of the 8 Junk notes."
+          ],
+          "table": {
+            "head": [
+              "Word",
+              "In Orders (of 12)",
+              "In Junk (of 8)"
+            ],
+            "rows": [
+              [
+                "eggs",
+                "9",
+                "1"
+              ],
+              [
+                "free",
+                "2",
+                "6"
+              ],
+              [
+                "invoice",
+                "6",
+                "2"
+              ],
+              [
+                "pigeon",
+                "0",
+                "1"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Naive Bayes classifier",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Naive_Bayes_classifier"
+            },
+            {
+              "title": "Wikipedia: Bayes' theorem",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Bayes%27_theorem"
+            }
+          ]
+        },
+        {
+          "id": "naive-multiply",
+          "title": "Multiply the clues",
+          "text": [
+            "The 'naive' part is a simple assumption: given the class, each word is independent of the others. Then you can multiply. For a note with 'eggs' and 'free', the Order score is 0.6 x 9/12 x 2/12 = 0.075, and the Junk score is 0.4 x 1/8 x 6/8 = 0.0375.",
+            "Divide each score by the total to get chances. Order gets two thirds. The assumption is rarely true, since words come in pairs, but the method often works well anyway."
+          ],
+          "predict": {
+            "prompt": "Order scores 0.075 and Junk scores 0.0375. What chance does Order get?",
+            "answer": "Two thirds, because 0.075 / (0.075 + 0.0375) = 2/3."
+          },
+          "references": [
+            {
+              "title": "scikit-learn user guide: Naive Bayes",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/naive_bayes.html"
+            },
+            {
+              "title": "Wikipedia: Naive Bayes classifier",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Naive_Bayes_classifier"
+            }
+          ]
+        },
+        {
+          "id": "zero-problem",
+          "title": "The zero problem",
+          "text": [
+            "Suppose the word 'pigeon' has never appeared in an Order. Then its Order count is 0, and multiplying by 0 wipes out the whole score, however strong the other clues are.",
+            {
+              "text": "The fix is smoothing: add 1 to each count and 2 to each total, as if every word had been seen once with and once without. (The general rule adds 1 to each count and the number of possible outcomes to the total, which is 2 here.) For 'eggs' and 'pigeon', Order scores 3/98 and Junk scores 2/125, and Order wins with about 0.66.",
+              "verify": false
+            }
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Naive Bayes classifier",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Naive_Bayes_classifier"
+            },
+            {
+              "title": "Speech and Language Processing, chapter 4: Naive Bayes, Text Classification, and Sentiment",
+              "source": "Free online book (linked, not copied)",
+              "url": "https://web.stanford.edu/~jurafsky/slp3/4.pdf"
+            },
+            {
+              "title": "Wikipedia: Additive smoothing",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Additive_smoothing"
+            },
+            {
+              "title": "scikit-learn user guide: Naive Bayes",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/naive_bayes.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "prior-order",
+          "type": "numeric",
+          "taughtOn": "prior-and-clues",
+          "prompt": "Of 20 past notes, 12 were Orders. What is the prior for Order, as a number from 0 to 1?",
+          "answer": 0.6,
+          "tolerance": 0.001,
+          "calculator": false,
+          "hints": [
+            "Orders divided by all notes.",
+            "12 / 20"
+          ],
+          "explain": "12 of 20 is 0.6."
+        },
+        {
+          "id": "bayes-sim",
+          "type": "stepsim",
+          "taughtOn": "naive-multiply",
+          "mode": "predict",
+          "prompt": "Multiply the clues in for 'eggs' and 'free'.",
+          "explain": "Each word multiplies the scores. 'Eggs' favoured Order strongly, 'free' favoured Junk, and in total Order won two to one.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "0.6",
+                      "mark": null,
+                      "tag": "Order"
+                    },
+                    {
+                      "value": "0.4",
+                      "mark": null,
+                      "tag": "Junk"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Score for each class"
+                },
+                "say": "A note arrives with the words 'eggs' and 'free'. Each class starts with its prior: how common it is. 12 of 20 past notes were Orders, so 0.6, and 8 were Junk, so 0.4."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "0.45",
+                      "mark": "best",
+                      "tag": "Order"
+                    },
+                    {
+                      "value": "0.05",
+                      "mark": null,
+                      "tag": "Junk"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "leads"
+                  },
+                  "label": "Score for each class"
+                },
+                "say": "Multiply by how often 'eggs' appears in each class: 9 of 12 Orders, but only 1 of 8 Junk notes. Order is now far ahead.",
+                "predict": {
+                  "prompt": "After the word 'eggs', which class has the higher score?",
+                  "options": [
+                    {
+                      "text": "Order",
+                      "correct": true
+                    },
+                    {
+                      "text": "Junk",
+                      "correct": false
+                    },
+                    {
+                      "text": "They are level",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Compare 0.45 with 0.05.",
+                    "'Eggs' is common in Orders and rare in Junk."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "0.075",
+                      "mark": "best",
+                      "tag": "Order"
+                    },
+                    {
+                      "value": "0.0375",
+                      "mark": null,
+                      "tag": "Junk"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "leads"
+                  },
+                  "label": "Score for each class"
+                },
+                "say": "Now multiply by 'free': 2 of 12 Orders, but 6 of 8 Junk notes. Junk catches up, but Order still leads.",
+                "predict": {
+                  "prompt": "After the word 'free', which class still has the higher score?",
+                  "options": [
+                    {
+                      "text": "Order, 0.075 against 0.0375",
+                      "correct": true
+                    },
+                    {
+                      "text": "Junk",
+                      "correct": false
+                    },
+                    {
+                      "text": "They are level",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Compare the two numbers.",
+                    "0.075 is twice 0.0375."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "0.075",
+                      "mark": "best",
+                      "tag": "Order"
+                    },
+                    {
+                      "value": "0.0375",
+                      "mark": null,
+                      "tag": "Junk"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "wins"
+                  },
+                  "label": "Score for each class"
+                },
+                "say": "To turn scores into chances, divide each by their total. Order gets 0.075 / 0.1125 = two thirds, so the note is called an Order."
+              }
+            ]
+          }
+        },
+        {
+          "id": "order-score",
+          "type": "numeric",
+          "taughtOn": "naive-multiply",
+          "prompt": "A note says 'eggs' and 'free'. What is the Order score: 0.6 x 9/12 x 2/12? (Give it as a decimal.)",
+          "answer": 0.075,
+          "tolerance": 0.0005,
+          "calculator": false,
+          "hints": [
+            "First 0.6 x 0.75 = 0.45.",
+            "Then 0.45 x 2/12."
+          ],
+          "explain": "0.6 x 9/12 = 0.45, and 0.45 x 2/12 = 0.075."
+        },
+        {
+          "id": "order-chance",
+          "type": "numeric",
+          "taughtOn": "naive-multiply",
+          "prompt": "The Order score is 0.075 and the Junk score is 0.0375. What is the chance the note is an Order, as a percentage? (Round to a whole number.)",
+          "answer": 67,
+          "tolerance": 0.6,
+          "calculator": false,
+          "hints": [
+            "Divide Order by the total of both scores.",
+            "0.075 / 0.1125"
+          ],
+          "explain": "0.075 / 0.1125 = 2/3, about 67 percent."
+        },
+        {
+          "id": "favours",
+          "type": "buckets",
+          "taughtOn": "prior-and-clues",
+          "prompt": "Using the table, does this word favour Order or Junk?",
+          "buckets": [
+            "Favours Order",
+            "Favours Junk"
+          ],
+          "items": [
+            {
+              "text": "eggs",
+              "bucket": "Favours Order"
+            },
+            {
+              "text": "free",
+              "bucket": "Favours Junk"
+            },
+            {
+              "text": "invoice",
+              "bucket": "Favours Order"
+            },
+            {
+              "text": "pigeon",
+              "bucket": "Favours Junk"
+            }
+          ],
+          "hints": [
+            "Compare each count with the class size: 12 for Orders, 8 for Junk.",
+            "'Invoice' is in 6 of 12 Orders but only 2 of 8 Junk notes."
+          ],
+          "explain": "'Eggs' and 'invoice' are more common in Orders, and 'free' is more common in Junk, once you account for the class sizes."
+        },
+        {
+          "id": "naive-meaning",
+          "type": "choice",
+          "taughtOn": "naive-multiply",
+          "prompt": "What is 'naive' about naive Bayes?",
+          "options": [
+            {
+              "text": "It assumes the clues are independent given the class",
+              "correct": true
+            },
+            {
+              "text": "It guesses at random"
+            },
+            {
+              "text": "It ignores the prior"
+            },
+            {
+              "text": "It only uses one clue"
+            }
+          ],
+          "hints": [
+            "Why can it just multiply the word chances?",
+            "The assumption is simple and rarely exactly true."
+          ],
+          "explain": "Naive Bayes assumes the features are independent once the class is known. That is what allows it to multiply them."
+        },
+        {
+          "id": "zero-wipe",
+          "type": "choice",
+          "taughtOn": "zero-problem",
+          "prompt": "Why does one word with a count of 0 cause trouble?",
+          "options": [
+            {
+              "text": "Multiplying by 0 wipes out every other clue",
+              "correct": true
+            },
+            {
+              "text": "Zero is not a number"
+            },
+            {
+              "text": "It doubles the score"
+            },
+            {
+              "text": "It makes the prior zero"
+            }
+          ],
+          "hints": [
+            "What is any number times 0?",
+            "All the other evidence is cancelled."
+          ],
+          "explain": "A zero makes the whole product zero, however strong the other clues are."
+        },
+        {
+          "id": "bayes-steps",
+          "type": "order",
+          "taughtOn": "naive-multiply",
+          "prompt": "Put the steps in order for classifying a note.",
+          "items": [
+            "Start each class at its prior",
+            "Multiply by the chance of each word in that class",
+            "Compare the scores",
+            "Pick the class with the higher score"
+          ],
+          "hints": [
+            "The prior is the starting point.",
+            "Comparing comes after multiplying."
+          ],
+          "explain": "Start from the priors, multiply in each word, compare, and pick the winner."
+        },
+        {
+          "id": "nb-words",
+          "type": "match",
+          "taughtOn": "prior-and-clues",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Prior",
+              "right": "How common a class is before reading the note"
+            },
+            {
+              "left": "Clue",
+              "right": "A word whose chance differs between classes"
+            },
+            {
+              "left": "Smoothing",
+              "right": "A small correction so a zero count cannot wipe out the score"
+            },
+            {
+              "left": "Independent",
+              "right": "Not affecting each other"
+            }
+          ],
+          "hints": [
+            "The prior comes before any clue.",
+            "Smoothing deals with zeros."
+          ],
+          "explain": "The prior is the starting chance, each clue shifts it, smoothing prevents zeros, and independence lets the clues multiply."
+        },
+        {
+          "id": "smoothed-count",
+          "type": "numeric",
+          "taughtOn": "zero-problem",
+          "prompt": "Challenge: with smoothing, 'pigeon' gets a chance of (0 + 1) / (12 + 2) in Orders. What is that, as a percentage rounded to a whole number?",
+          "answer": 7,
+          "tolerance": 0.5,
+          "calculator": false,
+          "hints": [
+            "Work out 1 / 14 first.",
+            "1 / 14 is about 0.07."
+          ],
+          "explain": "1 / 14 is about 0.0714, or 7 percent. It is small but not zero.",
+          "challenge": true
+        },
+        {
+          "id": "order-vs-junk-pigeon",
+          "type": "choice",
+          "taughtOn": "zero-problem",
+          "prompt": "Challenge: with smoothing, a note says 'eggs' and 'pigeon'. Order scores 3/98 and Junk scores 2/125. Which class wins?",
+          "options": [
+            {
+              "text": "Order, because 3/98 is about 0.031 and 2/125 is 0.016",
+              "correct": true
+            },
+            {
+              "text": "Junk, because pigeon is a Junk word"
+            },
+            {
+              "text": "A tie"
+            },
+            {
+              "text": "Neither, the score is zero"
+            }
+          ],
+          "hints": [
+            "Turn each fraction into a decimal.",
+            "0.031 is bigger than 0.016."
+          ],
+          "explain": "Smoothing keeps the pigeon clue from vetoing the answer, and the strong 'eggs' clue still gives Order the win.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m3.2-f1",
+          "type": "quiz",
+          "taughtOn": "prior-and-clues",
+          "prompt": "What is the prior in naive Bayes?",
+          "options": [
+            {
+              "text": "How common each class is before looking at the clues",
+              "correct": true
+            },
+            {
+              "text": "The score after all words"
+            },
+            {
+              "text": "The number of words"
+            },
+            {
+              "text": "The smallest count"
+            }
+          ],
+          "explain": "The prior is the starting chance for each class."
+        },
+        {
+          "id": "m3.2-f2",
+          "type": "quiz",
+          "taughtOn": "naive-multiply",
+          "prompt": "What does naive Bayes do with the chances of the words?",
+          "options": [
+            {
+              "text": "Multiplies them together with the prior",
+              "correct": true
+            },
+            {
+              "text": "Adds them"
+            },
+            {
+              "text": "Picks the largest one"
+            },
+            {
+              "text": "Ignores them"
+            }
+          ],
+          "explain": "It multiplies the prior and each word's chance."
+        },
+        {
+          "id": "m3.2-f3",
+          "type": "why",
+          "taughtOn": "zero-problem",
+          "prompt": "Why add smoothing?",
+          "options": [
+            {
+              "text": "A zero count would wipe out all other evidence",
+              "correct": true
+            },
+            {
+              "text": "To make the prior bigger"
+            },
+            {
+              "text": "To remove common words"
+            },
+            {
+              "text": "To make the answer a fraction"
+            }
+          ],
+          "explain": "Smoothing prevents a single unseen word from making a score zero."
+        },
+        {
+          "id": "m3.2-f4",
+          "type": "predict",
+          "taughtOn": "naive-multiply",
+          "prompt": "Order scores 0.3 and Junk scores 0.1. What chance does Order get?",
+          "answer": "0.75, because 0.3 / (0.3 + 0.1) = 0.75."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Why 'naive'",
+          "text": "Naive Bayes classifiers assume that the features are conditionally independent given the class. The page calls this assumption highly unrealistic, which is where the name 'naive' comes from.",
+          "source": {
+            "title": "Wikipedia: Naive Bayes classifier",
+            "url": "https://en.wikipedia.org/wiki/Naive_Bayes_classifier"
+          },
+          "verify": false
+        },
+        {
+          "title": "Spam and text",
+          "text": "Naive Bayes is well known for document classification and spam filtering, and it can be extremely fast compared with more sophisticated methods.",
+          "source": {
+            "title": "scikit-learn: Naive Bayes",
+            "url": "https://scikit-learn.org/stable/modules/naive_bayes.html"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You started each class at its prior, multiplied in the chance of each word, and saw how smoothing stops a single zero from wiping out the answer.",
+          "Fenn sorts the inbox into two piles. \"Eggs to the left. Free pigeons to the bin.\""
+        ],
+        "mistake": {
+          "title": "Letting one unseen word decide everything",
+          "text": "A single zero count wipes out every other clue. A small correction, smoothing, keeps rare words from vetoing the answer."
+        }
+      }
+    }
+  ]
+}
