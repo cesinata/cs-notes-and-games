@@ -43,7 +43,7 @@ This project is for people who find computer science hard to learn. Plain-langua
 
 ## Report a mistake
 
-If something looks wrong, email cesilianata@gmail.com with the page name and what looks wrong.
+If you spot any errors or have suggestions, please feel free to [email me](mailto:cesilianata@gmail.com) with the page title and a brief description.
 
 ## Licences and credits
 
