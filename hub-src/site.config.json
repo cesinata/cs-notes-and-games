@@ -1,0 +1,1003 @@
+{
+ "name": "CS Notes & Games",
+ "emoji": [
+  "📝",
+  "🎮"
+ ],
+ "tagline": "Computer science explained, with a game to practise.",
+ "about": "This site helps refresh computer science knowledge. Each guide explains one topic, and each level in the game practises it.",
+ "aiNote": "AI helped build this site and write the first drafts. Not every page has been fully checked yet. If something looks wrong, please report it.",
+ "repoName": "cs-notes-and-games",
+ "gameName": "Courier's Atlas",
+ "gamePath": "game/",
+ "subjects": [
+  {
+   "slug": "networks",
+   "title": "Networks",
+   "summary": "How data gets from one device to another, step by step.",
+   "question": "Why does a video call lag even on fast internet?",
+   "game": {
+    "region": "net",
+    "name": "Packet Valley",
+    "levels": 24
+   },
+   "groups": [
+    {
+     "title": "The big picture",
+     "chapters": [
+      {
+       "slug": "layers-and-protocols",
+       "title": "Layers and protocols"
+      },
+      {
+       "slug": "encapsulation",
+       "title": "Encapsulation"
+      },
+      {
+       "slug": "services-and-interfaces",
+       "title": "Services and interfaces"
+      }
+     ]
+    },
+    {
+     "title": "Wires and signals",
+     "chapters": [
+      {
+       "slug": "delay",
+       "title": "Delay"
+      },
+      {
+       "slug": "cables-and-wireless",
+       "title": "Cables and wireless"
+      },
+      {
+       "slug": "signals-and-bandwidth",
+       "title": "Signals and bandwidth"
+      },
+      {
+       "slug": "channel-limits",
+       "title": "Channel limits"
+      },
+      {
+       "slug": "sharing-a-link",
+       "title": "Sharing a link"
+      }
+     ]
+    },
+    {
+     "title": "Frames and errors",
+     "chapters": [
+      {
+       "slug": "framing",
+       "title": "Framing"
+      },
+      {
+       "slug": "error-detection",
+       "title": "Error detection"
+      },
+      {
+       "slug": "crc",
+       "title": "CRC"
+      },
+      {
+       "slug": "error-correction",
+       "title": "Error correction"
+      },
+      {
+       "slug": "sliding-windows",
+       "title": "Sliding windows"
+      }
+     ]
+    },
+    {
+     "title": "Sharing the channel",
+     "chapters": [
+      {
+       "slug": "aloha",
+       "title": "ALOHA"
+      },
+      {
+       "slug": "carrier-sense",
+       "title": "Carrier sense"
+      },
+      {
+       "slug": "taking-turns",
+       "title": "Taking turns"
+      },
+      {
+       "slug": "hidden-terminals",
+       "title": "Hidden terminals"
+      },
+      {
+       "slug": "ethernet-and-switches",
+       "title": "Ethernet and switches"
+      }
+     ]
+    },
+    {
+     "title": "Addresses and routes",
+     "chapters": [
+      {
+       "slug": "forwarding-and-routing",
+       "title": "Forwarding and routing"
+      },
+      {
+       "slug": "ip-addresses",
+       "title": "IP addresses"
+      },
+      {
+       "slug": "subnetting",
+       "title": "Subnetting"
+      },
+      {
+       "slug": "fragmentation",
+       "title": "Fragmentation"
+      },
+      {
+       "slug": "shortest-path-routing",
+       "title": "Shortest-path routing"
+      },
+      {
+       "slug": "distance-vector-routing",
+       "title": "Distance-vector routing"
+      },
+      {
+       "slug": "announcing-routes",
+       "title": "Announcing routes"
+      }
+     ]
+    },
+    {
+     "title": "Ports and transport",
+     "chapters": [
+      {
+       "slug": "ports-and-udp",
+       "title": "Ports and UDP"
+      },
+      {
+       "slug": "the-tcp-handshake",
+       "title": "The TCP handshake"
+      },
+      {
+       "slug": "tcp-reliability",
+       "title": "TCP reliability"
+      },
+      {
+       "slug": "windows-and-timers",
+       "title": "Windows and timers"
+      },
+      {
+       "slug": "congestion-control",
+       "title": "Congestion control"
+      }
+     ]
+    },
+    {
+     "title": "The web and email",
+     "chapters": [
+      {
+       "slug": "dns",
+       "title": "DNS"
+      },
+      {
+       "slug": "http-and-the-web",
+       "title": "HTTP and the web"
+      },
+      {
+       "slug": "cookies-and-caching",
+       "title": "Cookies and caching"
+      },
+      {
+       "slug": "email",
+       "title": "Email"
+      },
+      {
+       "slug": "streaming",
+       "title": "Streaming"
+      }
+     ]
+    },
+    {
+     "title": "Security",
+     "chapters": [
+      {
+       "slug": "network-security-basics",
+       "title": "Network security basics"
+      },
+      {
+       "slug": "ciphers-and-secret-keys",
+       "title": "Ciphers and secret keys"
+      },
+      {
+       "slug": "block-ciphers",
+       "title": "Block ciphers"
+      },
+      {
+       "slug": "public-key-cryptography",
+       "title": "Public-key cryptography"
+      },
+      {
+       "slug": "signatures-and-certificates",
+       "title": "Signatures and certificates"
+      },
+      {
+       "slug": "firewalls",
+       "title": "Firewalls"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "algorithms",
+   "title": "Algorithms",
+   "summary": "Step-by-step methods for sorting, searching and finding routes, and how to compare them.",
+   "question": "How does a map app find the quickest route so fast?",
+   "game": {
+    "region": "algo",
+    "name": "Algo Archipelago",
+    "levels": 23
+   },
+   "groups": [
+    {
+     "title": "Foundations",
+     "chapters": [
+      {
+       "slug": "what-an-algorithm-is",
+       "title": "What an algorithm is"
+      },
+      {
+       "slug": "maths-you-need",
+       "title": "Maths you need"
+      },
+      {
+       "slug": "the-ram-computational-model",
+       "title": "The RAM computational model"
+      },
+      {
+       "slug": "analysing-algorithms",
+       "title": "Analysing algorithms"
+      }
+     ]
+    },
+    {
+     "title": "Basic methods",
+     "chapters": [
+      {
+       "slug": "brute-force",
+       "title": "Brute force"
+      },
+      {
+       "slug": "recursion",
+       "title": "Recursion"
+      }
+     ]
+    },
+    {
+     "title": "Graphs",
+     "chapters": [
+      {
+       "slug": "graph-concepts",
+       "title": "Graph concepts"
+      },
+      {
+       "slug": "graph-traversal",
+       "title": "Graph traversal"
+      }
+     ]
+    },
+    {
+     "title": "Decrease and conquer",
+     "chapters": [
+      {
+       "slug": "decrease-and-conquer-by-a-constant",
+       "title": "Decrease and conquer by a constant"
+      },
+      {
+       "slug": "decrease-and-conquer-by-a-factor",
+       "title": "Decrease and conquer by a factor"
+      }
+     ]
+    },
+    {
+     "title": "Divide and conquer",
+     "chapters": [
+      {
+       "slug": "sorting-with-divide-and-conquer",
+       "title": "Sorting with divide and conquer"
+      },
+      {
+       "slug": "tree-traversal-and-more-divide-and-conquer",
+       "title": "Tree traversal and more divide and conquer"
+      }
+     ]
+    },
+    {
+     "title": "Transform and conquer",
+     "chapters": [
+      {
+       "slug": "priority-queues-heaps-and-heapsort",
+       "title": "Priority queues, heaps and heapsort"
+      },
+      {
+       "slug": "transform-and-conquer",
+       "title": "Transform and conquer"
+      },
+      {
+       "slug": "balanced-trees",
+       "title": "Balanced trees"
+      }
+     ]
+    },
+    {
+     "title": "Space and time trade-offs",
+     "chapters": [
+      {
+       "slug": "string-search",
+       "title": "String search"
+      },
+      {
+       "slug": "hashing",
+       "title": "Hashing"
+      }
+     ]
+    },
+    {
+     "title": "Dynamic programming",
+     "chapters": [
+      {
+       "slug": "dynamic-programming",
+       "title": "Dynamic programming"
+      },
+      {
+       "slug": "warshalls-and-floyds-algorithms",
+       "title": "Warshall's and Floyd's algorithms"
+      }
+     ]
+    },
+    {
+     "title": "Greedy methods and limits",
+     "chapters": [
+      {
+       "slug": "greedy-methods",
+       "title": "Greedy methods"
+      },
+      {
+       "slug": "minimum-spanning-trees",
+       "title": "Minimum spanning trees"
+      },
+      {
+       "slug": "hard-problems-p-and-np",
+       "title": "Hard problems: P and NP"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "databases",
+   "title": "Databases",
+   "summary": "How apps store information and find it again.",
+   "question": "How does a bank stay correct when thousands of people pay at once?",
+   "game": {
+    "region": "db",
+    "name": "Ledger Library",
+    "levels": 8
+   },
+   "groups": [
+    {
+     "title": "Foundations",
+     "chapters": [
+      {
+       "slug": "what-a-database-is",
+       "title": "What a database is"
+      },
+      {
+       "slug": "modelling-data-with-er-diagrams",
+       "title": "Modelling data with ER diagrams"
+      },
+      {
+       "slug": "keys-and-logical-design",
+       "title": "Keys and logical design"
+      },
+      {
+       "slug": "physical-design-and-data-types",
+       "title": "Physical design and data types"
+      },
+      {
+       "slug": "normalisation",
+       "title": "Normalisation"
+      }
+     ]
+    },
+    {
+     "title": "SQL",
+     "chapters": [
+      {
+       "slug": "sql-the-basics",
+       "title": "SQL: the basics"
+      },
+      {
+       "slug": "sql-joins-and-grouping",
+       "title": "SQL: joins and grouping"
+      },
+      {
+       "slug": "sql-subqueries-and-advanced-queries",
+       "title": "SQL: subqueries and advanced queries"
+      }
+     ]
+    },
+    {
+     "title": "Running a database",
+     "chapters": [
+      {
+       "slug": "transactions-and-locking",
+       "title": "Transactions and locking"
+      },
+      {
+       "slug": "database-administration",
+       "title": "Database administration"
+      },
+      {
+       "slug": "distributed-databases",
+       "title": "Distributed databases"
+      },
+      {
+       "slug": "data-warehouses",
+       "title": "Data warehouses"
+      },
+      {
+       "slug": "json-and-nosql",
+       "title": "JSON and NoSQL"
+      },
+      {
+       "slug": "database-security",
+       "title": "Database security"
+      },
+      {
+       "slug": "databases-behind-web-apps",
+       "title": "Databases behind web apps"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "java",
+   "title": "Java",
+   "summary": "Writing programs with classes and objects.",
+   "question": "What does 'object-oriented' actually mean?",
+   "game": {
+    "region": "java",
+    "name": "Blueprint Borough",
+    "levels": 8
+   },
+   "groups": [
+    {
+     "title": "The basics",
+     "chapters": [
+      {
+       "slug": "getting-started-with-java",
+       "title": "Getting started with Java"
+      },
+      {
+       "slug": "data-types-and-console-input-and-output",
+       "title": "Data types and console input and output"
+      },
+      {
+       "slug": "operators",
+       "title": "Operators"
+      },
+      {
+       "slug": "control-flow",
+       "title": "Control flow"
+      }
+     ]
+    },
+    {
+     "title": "Objects",
+     "chapters": [
+      {
+       "slug": "classes-part-1",
+       "title": "Classes, part 1"
+      },
+      {
+       "slug": "classes-part-2",
+       "title": "Classes, part 2"
+      },
+      {
+       "slug": "arrays",
+       "title": "Arrays"
+      }
+     ]
+    },
+    {
+     "title": "Object-oriented programming",
+     "chapters": [
+      {
+       "slug": "inheritance",
+       "title": "Inheritance"
+      },
+      {
+       "slug": "polymorphism-and-abstract-classes",
+       "title": "Polymorphism and abstract classes"
+      },
+      {
+       "slug": "interfaces",
+       "title": "Interfaces"
+      }
+     ]
+    },
+    {
+     "title": "Real programs",
+     "chapters": [
+      {
+       "slug": "exception-handling",
+       "title": "Exception handling"
+      },
+      {
+       "slug": "file-handling",
+       "title": "File handling"
+      },
+      {
+       "slug": "generics",
+       "title": "Generics"
+      },
+      {
+       "slug": "collections",
+       "title": "Collections"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "advanced-databases",
+   "title": "Advanced Databases",
+   "summary": "What happens inside a database: storage, queries, transactions and recovery.",
+   "question": "What happens to your data if the power cuts mid-payment?",
+   "game": {
+    "region": "adb",
+    "name": "Vault Harbour",
+    "levels": 10
+   },
+   "groups": [
+    {
+     "title": "How databases use hardware",
+     "chapters": [
+      {
+       "slug": "disks-ssds-and-memory",
+       "title": "Disks, SSDs and memory"
+      },
+      {
+       "slug": "types-of-databases",
+       "title": "Types of databases"
+      },
+      {
+       "slug": "database-architectures",
+       "title": "Database architectures"
+      }
+     ]
+    },
+    {
+     "title": "Queries",
+     "chapters": [
+      {
+       "slug": "how-a-query-runs",
+       "title": "How a query runs"
+      },
+      {
+       "slug": "cost-estimates-and-joins",
+       "title": "Cost estimates and joins"
+      },
+      {
+       "slug": "query-costs-in-practice",
+       "title": "Query costs in practice"
+      }
+     ]
+    },
+    {
+     "title": "Indexes",
+     "chapters": [
+      {
+       "slug": "b-trees",
+       "title": "B+ trees"
+      },
+      {
+       "slug": "hash-and-bitmap-indexes",
+       "title": "Hash and bitmap indexes"
+      },
+      {
+       "slug": "indexes-for-places-and-distance",
+       "title": "Indexes for places and distance"
+      }
+     ]
+    },
+    {
+     "title": "Transactions",
+     "chapters": [
+      {
+       "slug": "what-a-transaction-is",
+       "title": "What a transaction is"
+      },
+      {
+       "slug": "concurrency-problems",
+       "title": "Concurrency problems"
+      },
+      {
+       "slug": "semaphores-and-deadlocks",
+       "title": "Semaphores and deadlocks"
+      },
+      {
+       "slug": "isolation-and-serialisability",
+       "title": "Isolation and serialisability"
+      },
+      {
+       "slug": "locking-in-practice",
+       "title": "Locking in practice"
+      }
+     ]
+    },
+    {
+     "title": "Staying safe",
+     "chapters": [
+      {
+       "slug": "crash-recovery-with-logs",
+       "title": "Crash recovery with logs"
+      },
+      {
+       "slug": "the-aries-recovery-method",
+       "title": "The ARIES recovery method"
+      },
+      {
+       "slug": "backups",
+       "title": "Backups"
+      }
+     ]
+    },
+    {
+     "title": "Beyond one machine",
+     "chapters": [
+      {
+       "slug": "distributed-databases-and-cap",
+       "title": "Distributed databases and CAP"
+      },
+      {
+       "slug": "data-warehouses",
+       "title": "Data warehouses"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "machine-learning",
+   "title": "Machine Learning",
+   "summary": "How computers learn patterns from examples.",
+   "question": "How does a computer learn to tell a cat from a dog without being given rules?",
+   "game": {
+    "region": "ml",
+    "name": "Learning Fields",
+    "levels": 12
+   },
+   "groups": [
+    {
+     "title": "Getting started",
+     "chapters": [
+      {
+       "slug": "what-machine-learning-is",
+       "title": "What machine learning is"
+      },
+      {
+       "slug": "data-features-and-labels",
+       "title": "Data, features and labels"
+      }
+     ]
+    },
+    {
+     "title": "Simple methods",
+     "chapters": [
+      {
+       "slug": "k-nearest-neighbours",
+       "title": "k-nearest neighbours"
+      },
+      {
+       "slug": "probability-and-models",
+       "title": "Probability and models"
+      },
+      {
+       "slug": "decision-trees",
+       "title": "Decision trees"
+      },
+      {
+       "slug": "naive-bayes",
+       "title": "Naive Bayes"
+      }
+     ]
+    },
+    {
+     "title": "Learning numbers",
+     "chapters": [
+      {
+       "slug": "linear-regression",
+       "title": "Linear regression"
+      },
+      {
+       "slug": "logistic-regression",
+       "title": "Logistic regression"
+      },
+      {
+       "slug": "the-perceptron",
+       "title": "The perceptron"
+      }
+     ]
+    },
+    {
+     "title": "More powerful models",
+     "chapters": [
+      {
+       "slug": "support-vector-machines-margins",
+       "title": "Support vector machines: margins"
+      },
+      {
+       "slug": "support-vector-machines-kernels",
+       "title": "Support vector machines: kernels"
+      },
+      {
+       "slug": "neural-networks",
+       "title": "Neural networks"
+      },
+      {
+       "slug": "backpropagation",
+       "title": "Backpropagation"
+      }
+     ]
+    },
+    {
+     "title": "Doing it properly",
+     "chapters": [
+      {
+       "slug": "evaluating-a-model",
+       "title": "Evaluating a model"
+      },
+      {
+       "slug": "bias-variance-and-model-choice",
+       "title": "Bias, variance and model choice"
+      },
+      {
+       "slug": "feature-selection",
+       "title": "Feature selection"
+      }
+     ]
+    },
+    {
+     "title": "Other settings",
+     "chapters": [
+      {
+       "slug": "unsupervised-learning",
+       "title": "Unsupervised learning"
+      },
+      {
+       "slug": "semi-supervised-learning",
+       "title": "Semi-supervised learning"
+      },
+      {
+       "slug": "ensembles",
+       "title": "Ensembles"
+      },
+      {
+       "slug": "fairness-and-bias",
+       "title": "Fairness and bias"
+      },
+      {
+       "slug": "anomaly-detection",
+       "title": "Anomaly detection"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "nlp",
+   "title": "Natural Language Processing",
+   "summary": "How computers work with human language.",
+   "question": "How does a chatbot decide which word comes next?",
+   "game": {
+    "region": "nlp",
+    "name": "Wordwood",
+    "levels": 10
+   },
+   "groups": [
+    {
+     "title": "Text basics",
+     "chapters": [
+      {
+       "slug": "what-nlp-is",
+       "title": "What NLP is"
+      },
+      {
+       "slug": "preparing-text",
+       "title": "Preparing text"
+      },
+      {
+       "slug": "language-models-with-n-grams",
+       "title": "Language models with n-grams"
+      },
+      {
+       "slug": "text-classification",
+       "title": "Text classification"
+      }
+     ]
+    },
+    {
+     "title": "Tagging and neural networks",
+     "chapters": [
+      {
+       "slug": "part-of-speech-tagging",
+       "title": "Part-of-speech tagging"
+      },
+      {
+       "slug": "hidden-markov-models",
+       "title": "Hidden Markov models"
+      },
+      {
+       "slug": "feedforward-networks",
+       "title": "Feedforward networks"
+      },
+      {
+       "slug": "recurrent-networks",
+       "title": "Recurrent networks"
+      }
+     ]
+    },
+    {
+     "title": "Meaning and transformers",
+     "chapters": [
+      {
+       "slug": "word-embeddings",
+       "title": "Word embeddings"
+      },
+      {
+       "slug": "transformers",
+       "title": "Transformers"
+      },
+      {
+       "slug": "pretrained-models",
+       "title": "Pretrained models"
+      }
+     ]
+    },
+    {
+     "title": "Large language models",
+     "chapters": [
+      {
+       "slug": "large-language-models",
+       "title": "Large language models"
+      },
+      {
+       "slug": "prompting-and-few-shot-learning",
+       "title": "Prompting and few-shot learning"
+      },
+      {
+       "slug": "fine-tuning-large-models",
+       "title": "Fine-tuning large models"
+      },
+      {
+       "slug": "efficient-fine-tuning",
+       "title": "Efficient fine-tuning"
+      },
+      {
+       "slug": "learning-from-human-feedback",
+       "title": "Learning from human feedback"
+      },
+      {
+       "slug": "multimodal-language-models",
+       "title": "Multimodal language models"
+      },
+      {
+       "slug": "retrieval-augmented-language-models",
+       "title": "Retrieval-augmented language models"
+      },
+      {
+       "slug": "ethics-and-bias-in-nlp",
+       "title": "Ethics and bias in NLP"
+      }
+     ]
+    },
+    {
+     "title": "In the world",
+     "chapters": [
+      {
+       "slug": "ai-and-work",
+       "title": "AI and work"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "ai-planning",
+   "title": "AI Planning",
+   "summary": "How a program works out a series of steps to reach a goal.",
+   "question": "How does a robot work out the steps to reach a goal?",
+   "game": {
+    "region": "plan",
+    "name": "Waypoint Woods",
+    "levels": 9
+   },
+   "groups": [
+    {
+     "title": "Planning",
+     "chapters": [
+      {
+       "slug": "what-planning-is",
+       "title": "What planning is"
+      },
+      {
+       "slug": "search",
+       "title": "Search"
+      },
+      {
+       "slug": "describing-problems-with-strips-and-pddl",
+       "title": "Describing problems with STRIPS and PDDL"
+      },
+      {
+       "slug": "heuristics",
+       "title": "Heuristics"
+      },
+      {
+       "slug": "delete-relaxation",
+       "title": "Delete relaxation"
+      },
+      {
+       "slug": "width-based-planning",
+       "title": "Width-based planning"
+      },
+      {
+       "slug": "plan-and-goal-recognition",
+       "title": "Plan and goal recognition"
+      }
+     ]
+    },
+    {
+     "title": "Learning to act",
+     "chapters": [
+      {
+       "slug": "reinforcement-learning-basics",
+       "title": "Reinforcement learning basics"
+      },
+      {
+       "slug": "markov-decision-processes",
+       "title": "Markov decision processes"
+      },
+      {
+       "slug": "model-free-prediction",
+       "title": "Model-free prediction"
+      },
+      {
+       "slug": "learning-and-planning-together",
+       "title": "Learning and planning together"
+      },
+      {
+       "slug": "value-function-approximation",
+       "title": "Value function approximation"
+      },
+      {
+       "slug": "policy-gradients",
+       "title": "Policy gradients"
+      },
+      {
+       "slug": "monte-carlo-tree-search",
+       "title": "Monte Carlo tree search"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "reportUrl": "https://github.com/cesinata/cs-notes-and-games#report-a-mistake",
+ "gamePreview": {
+  "file": "hub/img/game-preview.png",
+  "alt": "The game's main page in English on a dark background: the title Courier's Atlas, the language buttons, a short welcome box, and eight region cards in two columns (Packet Valley, Algo Archipelago, Ledger Library, Blueprint Borough, Vault Harbour, Learning Fields, Wordwood and Waypoint Woods), each with a pixel picture, a short description, a Did you know box and an Enter button. All progress shows 0 stars."
+ }
+}
