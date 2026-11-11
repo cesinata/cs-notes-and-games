@@ -1,6 +1,21 @@
 # Progress
 
-Last updated: 2026-11-02 (end of Session 4)
+Last updated: 2026-11-10 (hub restructure, bundle 5)
+
+## Hub restructure (new, 2026-11-10)
+
+The project is becoming **CS Notes & Games**: a learning hub at the root with the game inside `game/`. Decisions so far:
+
+- Scope for the first public version: the hub is complete for all 8 subjects (Networks, Algorithms, Databases, Java, Advanced Databases, Machine Learning, NLP, AI Planning). The game covers the first half of each subject.
+- Style: white, Japanese-inspired layout. Voice: plain and neutral ("this site"). See `voice-guide.md`.
+- Pages are generated from Markdown by `tools/build-hub.mjs` (see `hub-architecture.md`).
+- Bundle 1 adds the hub shell, the full chapter outline (174 chapters), and three pilot chapters: The TCP handshake, Subnetting and Network security basics. Their facts still need a source check.
+- Bundle 5 applies the findings of the Networks, Java and Algorithms source checks (a script edits the chapters), adds the Erickson credit line, and adds 10 Algorithms chapters (68 of 166 written). The source checks found no contradicted claim.
+- Bundle 4 adds 14 Java chapters (from the Week 1 subject plan: weeks 1 to 12) and 3 Algorithms chapters (greedy methods, minimum spanning trees, P and NP). Outline total is 166 chapters, 58 written.
+- Bundle 3 completes Networks (41 of 154 chapters written) and sets the outlines for Algorithms (19), Databases (15), Java (5, to be confirmed), NLP (20) from the real lecture lists. The total outline is now 154 chapters.
+- Bundle 2 added 10 more Networks chapters, a game-language fix (the game starts in English), support for a game screenshot on the home page, and reusable Claude Code prompts for writing chapters and building game regions. See `game-regions-plan.md` for the 8 regions and about 80 levels still to build.
+- Not done: the other chapters, the game levels for the six other subjects, the Indonesian hub, the remaining game fixes, and the 36 `verify` facts.
+- The repo will be renamed `cs-notes-and-games`. Do not turn on GitHub Pages until the game has been played through locally after the move.
 
 ## In one line
 
@@ -52,7 +67,7 @@ Following `docs/two-day-build-plan.md`.
 - Daily Feed (spaced repetition) and Field Journal.
 - Progress and stars saved in the browser, with a Reset progress button and a safe fallback if storage fails.
 - English and Bahasa Indonesia interface; level text is English only for now.
-- Content checker: `node tools/check-content.mjs` (Node 22+, no packages).
+- Content checker: `node game/tools/check-content.mjs` (Node 22+, no packages).
 - Test page for every activity type at `#/sample`.
 
 ## Quality checks so far
@@ -75,7 +90,7 @@ Following `docs/two-day-build-plan.md`.
 
 ## Facts waiting for the correctness reviewer
 
-Everything marked `"verify": true`. Run `node tools/check-content.mjs` for the full list. From Session 3, one Field Note per unit:
+Everything marked `"verify": true`. Run `node game/tools/check-content.mjs` for the full list. From Session 3, one Field Note per unit:
 
 - 1.1 Sydney–London distance and round-trip time
 - 1.3 QAM sizes in Wi-Fi 6 and Wi-Fi 7
@@ -96,12 +111,12 @@ One Field Note per unit is marked verify where unsure: 4.5 (OSPF/RIP/BGP summary
 
 ## Git and GitHub
 
-- Repo: `cesinata/packet-valley`.
-- Session 1 is pushed. Sessions 2 to 4 are local only and not yet pushed (run `git push`).
+- Repo: `cesinata/packet-valley`, to be renamed `cs-notes-and-games`.
+- A read-only audit on 2026-11-08 found `main` matching `origin/main` at `a640a34` (local references only, no fetch). Sessions 2 to 4 appear to be pushed.
 
 ## Later (not scheduled)
 
-- Indonesian translation of all level text.
+- Indonesian translation of the hub pages, then all level text.
 - Trim over-length zone-0 lessons.
 - "Re-read this page" button driven by `taughtOn`.
 - Optional levels 1.2, 1.5, 2.4, 3.3, 3.5.
