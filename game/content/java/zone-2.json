@@ -1,0 +1,732 @@
+{
+  "zone": 2,
+  "levels": [
+    {
+      "id": "2.1",
+      "title": "Numbered Lockers",
+      "story": "Bram unlocks a hall of lockers in a long straight row. \"Same size, numbered from the left, and nothing in the wrong locker,\" he says. \"Count carefully. The first one is not number one.\"",
+      "everyday": {
+        "scene": "A row of school lockers has numbers on the doors, and every locker is the same size. To find your things you go straight to your locker's number, without opening the others.",
+        "question": "How would a program keep a row of values and fetch any one by its number?",
+        "answer": "In an array. An array is a fixed row of values of one type, and each place has an index that you can jump straight to."
+      },
+      "lessons": [
+        {
+          "id": "array-idea",
+          "title": "Lockers with numbers",
+          "text": [
+            "An array holds a fixed number of values, all of one type. The line int[] lockers = new int[5]; makes five int lockers, and each starts as 0. You can also list the values: int[] a = {3, 8, 1};",
+            "The size is fixed when the array is made and cannot change. The number of lockers is lockers.length, written with no brackets after it."
+          ],
+          "terms": [
+            {
+              "term": "Array",
+              "meaning": "A fixed row of values of one type."
+            },
+            {
+              "term": "Index",
+              "meaning": "The number of a place in the array."
+            },
+            {
+              "term": "Element",
+              "meaning": "One value stored in an array."
+            }
+          ],
+          "table": {
+            "head": [
+              "Line",
+              "Code"
+            ],
+            "rows": [
+              [
+                "1",
+                "int[] lockers = new int[5];"
+              ],
+              [
+                "2",
+                "lockers[2] = 40;"
+              ],
+              [
+                "3",
+                "System.out.println(lockers.length);"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Dev.java: Arrays",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/constructs/basics/arrays/"
+            },
+            {
+              "title": "Java Language Specification (SE 21), chapter 10: Arrays",
+              "source": "Java specification (linked, not copied)",
+              "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-10.html"
+            }
+          ]
+        },
+        {
+          "id": "count-zero",
+          "title": "Count from zero",
+          "text": [
+            "Index numbers start at 0. The first locker is lockers[0], the third is lockers[2], and in an array of 5 the last is lockers[4]. The last index is always the length minus one, so lockers[lockers.length - 1] is a safe way to say the last locker.",
+            "Square brackets with an index reach one element, either to read it or to change it. For example lockers[2] = 40; puts 40 in the third locker."
+          ],
+          "predict": {
+            "prompt": "An array has 7 lockers. What is the index of the last one?",
+            "answer": "6. The indexes run from 0 to 6."
+          },
+          "references": [
+            {
+              "title": "Dev.java: Arrays",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/constructs/basics/arrays/"
+            },
+            {
+              "title": "Java Language Specification (SE 21), chapter 10: Arrays",
+              "source": "Java specification (linked, not copied)",
+              "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-10.html"
+            }
+          ]
+        },
+        {
+          "id": "walk-row",
+          "title": "Walking the row",
+          "text": [
+            "A for loop is the natural way to visit every locker: for (int i = 0; i < data.length; i++). The listing finds the biggest value: it remembers the best so far in max, and replaces it whenever a bigger value turns up.",
+            "Go past the end and the program stops with an ArrayIndexOutOfBoundsException. It compiles fine, and fails when it runs. The message names the bad index and the length, such as Index 5 out of bounds for length 5."
+          ],
+          "table": {
+            "head": [
+              "Line",
+              "Code"
+            ],
+            "rows": [
+              [
+                "1",
+                "int[] data = {4, 9, 2, 7, 5};"
+              ],
+              [
+                "2",
+                "int max = data[0];"
+              ],
+              [
+                "3",
+                "for (int i = 1; i < data.length; i++) {"
+              ],
+              [
+                "4",
+                "    if (data[i] > max) {"
+              ],
+              [
+                "5",
+                "        max = data[i];"
+              ],
+              [
+                "6",
+                "    }"
+              ],
+              [
+                "7",
+                "}"
+              ],
+              [
+                "8",
+                "System.out.println(max);"
+              ]
+            ]
+          },
+          "deeper": {
+            "title": "What is in a new array?",
+            "text": [
+              "A new array is filled with default values: 0 for numbers, false for boolean, and null for objects such as String. null means no object yet."
+            ]
+          },
+          "references": [
+            {
+              "title": "Dev.java: Arrays",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/constructs/basics/arrays/"
+            },
+            {
+              "title": "Java SE 21 API: ArrayIndexOutOfBoundsException",
+              "source": "Java SE 21 API docs (linked, not copied)",
+              "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/ArrayIndexOutOfBoundsException.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "find-max",
+          "type": "stepsim",
+          "taughtOn": "walk-row",
+          "mode": "predict",
+          "prompt": "Watch the loop find the biggest number in five lockers, and predict what happens at two lockers.",
+          "explain": "The loop visits each locker once. max only changes when a locker holds a bigger number, so it ended on 9.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 4,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 9,
+                      "mark": null
+                    },
+                    {
+                      "value": 2,
+                      "mark": null
+                    },
+                    {
+                      "value": 7,
+                      "mark": null
+                    },
+                    {
+                      "value": 5,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "0": "max"
+                  },
+                  "label": "Lockers and their numbers"
+                },
+                "say": "The code starts with max = data[0], so max is 4, the number in locker 0. The gold crate shows the biggest so far."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 4,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 9,
+                      "mark": "compare"
+                    },
+                    {
+                      "value": 2,
+                      "mark": null
+                    },
+                    {
+                      "value": 7,
+                      "mark": null
+                    },
+                    {
+                      "value": 5,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "0": "max",
+                    "1": "i"
+                  },
+                  "label": "Lockers and their numbers"
+                },
+                "say": "i is 1. The program looks at locker 1, which holds 9, and asks: is 9 bigger than max, which is 4?",
+                "predict": {
+                  "prompt": "Locker 1 holds 9 and max is 4. Is data[1] > max true?",
+                  "options": [
+                    {
+                      "text": "Yes, so max becomes 9",
+                      "correct": true
+                    },
+                    {
+                      "text": "No, so max stays 4",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Compare 9 with 4.",
+                    "9 is bigger than 4."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 4,
+                      "mark": null
+                    },
+                    {
+                      "value": 9,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 2,
+                      "mark": null
+                    },
+                    {
+                      "value": 7,
+                      "mark": null
+                    },
+                    {
+                      "value": 5,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "1": "max"
+                  },
+                  "label": "Lockers and their numbers"
+                },
+                "say": "9 is bigger, so max = data[1]. Now max is 9."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 4,
+                      "mark": null
+                    },
+                    {
+                      "value": 9,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 2,
+                      "mark": "compare"
+                    },
+                    {
+                      "value": 7,
+                      "mark": null
+                    },
+                    {
+                      "value": 5,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "1": "max",
+                    "2": "i"
+                  },
+                  "label": "Lockers and their numbers"
+                },
+                "say": "i is 2. Locker 2 holds 2. Is 2 bigger than 9? No, so max stays 9."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 4,
+                      "mark": null
+                    },
+                    {
+                      "value": 9,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 2,
+                      "mark": null
+                    },
+                    {
+                      "value": 7,
+                      "mark": "compare"
+                    },
+                    {
+                      "value": 5,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "1": "max",
+                    "3": "i"
+                  },
+                  "label": "Lockers and their numbers"
+                },
+                "say": "i is 3. Locker 3 holds 7, and max is 9.",
+                "predict": {
+                  "prompt": "Locker 3 holds 7 and max is 9. Does max change?",
+                  "options": [
+                    {
+                      "text": "No, 7 is not bigger than 9",
+                      "correct": true
+                    },
+                    {
+                      "text": "Yes, max becomes 7",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Compare 7 with 9.",
+                    "Only a bigger number replaces max."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 4,
+                      "mark": null
+                    },
+                    {
+                      "value": 9,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 2,
+                      "mark": null
+                    },
+                    {
+                      "value": 7,
+                      "mark": null
+                    },
+                    {
+                      "value": 5,
+                      "mark": "compare"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "max",
+                    "4": "i"
+                  },
+                  "label": "Lockers and their numbers"
+                },
+                "say": "i is 4. Locker 4 holds 5. Not bigger than 9, so max stays 9."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 4,
+                      "mark": null
+                    },
+                    {
+                      "value": 9,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 2,
+                      "mark": null
+                    },
+                    {
+                      "value": 7,
+                      "mark": null
+                    },
+                    {
+                      "value": 5,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "1": "max"
+                  },
+                  "label": "Lockers and their numbers"
+                },
+                "say": "i becomes 5, which is not under data.length (5), so the loop ends. The program prints 9."
+              }
+            ]
+          }
+        },
+        {
+          "id": "pick-index",
+          "type": "numeric",
+          "taughtOn": "count-zero",
+          "prompt": "int[] a = {3, 8, 1, 6}; What number is stored in a[2]?",
+          "answer": 1,
+          "calculator": false,
+          "hints": [
+            "Count from 0: a[0] is 3.",
+            "a[0] is 3, a[1] is 8, a[2] is the next one."
+          ],
+          "explain": "The indexes run 0, 1, 2, 3, so a[2] is the third value, which is 1."
+        },
+        {
+          "id": "two-sum",
+          "type": "numeric",
+          "taughtOn": "count-zero",
+          "prompt": "int[] a = {5, 10, 15, 20}; What is a[1] + a[3]?",
+          "answer": 30,
+          "calculator": false,
+          "hints": [
+            "Remember, index 0 is the first element.",
+            "a[1] is 10 and a[3] is 20."
+          ],
+          "explain": "a[1] is the second value, 10, and a[3] is the fourth, 20. Together they make 30."
+        },
+        {
+          "id": "last-index",
+          "type": "numeric",
+          "taughtOn": "count-zero",
+          "prompt": "An array is made with new int[7]. What is the index of its last element?",
+          "answer": 6,
+          "calculator": false,
+          "hints": [
+            "The first index is 0.",
+            "Seven elements are numbered 0 up to length minus one."
+          ],
+          "explain": "The indexes are 0, 1, 2, 3, 4, 5 and 6, so the last is 6. In general it is length - 1."
+        },
+        {
+          "id": "legal-index",
+          "type": "buckets",
+          "taughtOn": "walk-row",
+          "prompt": "scores is an array of length 4. Does each access work, or fail when the program runs?",
+          "buckets": [
+            "Works",
+            "Fails when run"
+          ],
+          "items": [
+            {
+              "text": "scores[0]",
+              "bucket": "Works"
+            },
+            {
+              "text": "scores[3]",
+              "bucket": "Works"
+            },
+            {
+              "text": "scores[scores.length - 1]",
+              "bucket": "Works"
+            },
+            {
+              "text": "scores[4]",
+              "bucket": "Fails when run"
+            },
+            {
+              "text": "scores[-1]",
+              "bucket": "Fails when run"
+            },
+            {
+              "text": "scores[scores.length]",
+              "bucket": "Fails when run"
+            }
+          ],
+          "hints": [
+            "Valid indexes run from 0 up to length minus 1.",
+            "Length is 4, so the last valid index is 3."
+          ],
+          "explain": "Indexes 0 to 3 work. 4, -1 and scores.length are outside the array, so the program stops with an ArrayIndexOutOfBoundsException."
+        },
+        {
+          "id": "array-words",
+          "type": "match",
+          "taughtOn": "array-idea",
+          "prompt": "Match each piece of code to what it does. Think of an array called lockers.",
+          "pairs": [
+            {
+              "left": "new int[5]",
+              "right": "Makes five lockers, all holding 0"
+            },
+            {
+              "left": "lockers[2]",
+              "right": "The third locker"
+            },
+            {
+              "left": "lockers.length",
+              "right": "How many lockers there are, with no brackets"
+            },
+            {
+              "left": "lockers[lockers.length - 1]",
+              "right": "The last locker"
+            },
+            {
+              "left": "{3, 8, 1}",
+              "right": "A shortcut that lists the values to put in"
+            }
+          ],
+          "hints": [
+            "The number in square brackets is an index, and indexes start at 0.",
+            "Length is the count, and the last index is one less."
+          ],
+          "explain": "new makes the lockers, square brackets reach one, .length counts them, and curly brackets list starting values."
+        },
+        {
+          "id": "total-steps",
+          "type": "order",
+          "taughtOn": "walk-row",
+          "prompt": "Put the steps for adding up every number in an array in order.",
+          "items": [
+            "Make a variable called total and set it to 0",
+            "Start a loop with i at 0",
+            "Keep going while i is less than the array's length",
+            "Add the element at index i to total",
+            "When the loop ends, print total"
+          ],
+          "hints": [
+            "The total has to exist before anything is added to it.",
+            "Setting up the loop comes before the part that repeats."
+          ],
+          "explain": "Set total to 0, loop over every index, add each element, and print the total once the loop has finished."
+        },
+        {
+          "id": "out-of-range",
+          "type": "choice",
+          "taughtOn": "walk-row",
+          "prompt": "An array has 5 elements. What happens when the program runs a[5] = 1; ?",
+          "options": [
+            {
+              "text": "It stops with an ArrayIndexOutOfBoundsException",
+              "correct": true
+            },
+            {
+              "text": "It adds a sixth element"
+            },
+            {
+              "text": "It writes into element 0"
+            },
+            {
+              "text": "It quietly does nothing"
+            }
+          ],
+          "hints": [
+            "The last valid index is 4.",
+            "Arrays cannot grow, and Java does not wrap around."
+          ],
+          "explain": "Index 5 is past the end of a 5-element array. The program compiles, then stops while running, with the message Index 5 out of bounds for length 5."
+        },
+        {
+          "id": "fresh-array",
+          "type": "choice",
+          "taughtOn": "array-idea",
+          "prompt": "boolean[] flags = new boolean[3]; What does flags[1] hold straight away?",
+          "options": [
+            {
+              "text": "false",
+              "correct": true
+            },
+            {
+              "text": "true"
+            },
+            {
+              "text": "null"
+            },
+            {
+              "text": "It will not compile"
+            }
+          ],
+          "hints": [
+            "A new array is filled with a default value, not left blank.",
+            "For boolean the default is the one that sounds like off."
+          ],
+          "explain": "New arrays are filled with default values. For boolean that is false. For int it is 0, and for objects such as String it is null.",
+          "challenge": true
+        },
+        {
+          "id": "skip-first",
+          "type": "numeric",
+          "taughtOn": "walk-row",
+          "prompt": "int[] a = {2, 4, 6, 8}; int total = 0; for (int i = 1; i < a.length; i++) { total = total + a[i]; } What does total hold?",
+          "answer": 18,
+          "calculator": false,
+          "hints": [
+            "Check where i starts.",
+            "i starts at 1, so a[0] is never added."
+          ],
+          "explain": "The loop starts at index 1, so the first value, 2, is skipped. 4 + 6 + 8 is 18, not 20.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d2.1-f1",
+          "type": "quiz",
+          "taughtOn": "count-zero",
+          "prompt": "An array has length 6. What is its last valid index?",
+          "options": [
+            {
+              "text": "5",
+              "correct": true
+            },
+            {
+              "text": "6"
+            },
+            {
+              "text": "7"
+            },
+            {
+              "text": "1"
+            }
+          ],
+          "explain": "Indexes run from 0 to length - 1."
+        },
+        {
+          "id": "d2.1-f2",
+          "type": "quiz",
+          "taughtOn": "walk-row",
+          "prompt": "What happens if you use an index past the end of an array?",
+          "options": [
+            {
+              "text": "The program stops with an ArrayIndexOutOfBoundsException",
+              "correct": true
+            },
+            {
+              "text": "Java adds more space"
+            },
+            {
+              "text": "It reads zero"
+            },
+            {
+              "text": "Nothing happens"
+            }
+          ],
+          "explain": "Java checks every index when the program runs, and refuses one outside the array."
+        },
+        {
+          "id": "d2.1-f3",
+          "type": "why",
+          "taughtOn": "array-idea",
+          "prompt": "Why can an array not grow after it is made?",
+          "options": [
+            {
+              "text": "Its size is fixed when it is created",
+              "correct": true
+            },
+            {
+              "text": "Java forgot to add growing"
+            },
+            {
+              "text": "It is too heavy"
+            },
+            {
+              "text": "It stores only text"
+            }
+          ],
+          "explain": "An array's length is set when it is created and cannot change afterwards."
+        },
+        {
+          "id": "d2.1-f4",
+          "type": "predict",
+          "taughtOn": "array-idea",
+          "prompt": "What does a new int[4] contain before you put anything in it?",
+          "answer": "Four zeros. Number arrays start filled with 0."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Rows of data are everywhere",
+          "text": "An array is a container object that holds a fixed number of values of a single type. Its length is set when it is created and cannot change after that.",
+          "source": {
+            "title": "Dev.java: Arrays",
+            "url": "https://dev.java/learn/language/constructs/basics/arrays/"
+          }
+        },
+        {
+          "title": "Checked at run time",
+          "text": "Java checks every array index while the program runs, and stops with an exception rather than reading or writing outside the array.",
+          "source": {
+            "title": "Java Language Specification, chapter 10",
+            "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-10.html"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You made arrays, counted from zero, walked a row with a loop, and met the out-of-bounds error.",
+          "Bram closes the last locker. \"Count from zero, stop at length minus one.\""
+        ],
+        "mistake": {
+          "title": "Using length as an index",
+          "text": "In an array of 5, the last index is 4, not 5. Writing a[a.length] goes one step too far, and the program stops with an exception while it runs."
+        }
+      }
+    }
+  ]
+}

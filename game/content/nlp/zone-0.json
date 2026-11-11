@@ -1,0 +1,1222 @@
+{
+  "zone": 0,
+  "levels": [
+    {
+      "id": "0.1",
+      "title": "Letters to Words",
+      "story": "Deep in Wordwood, notes hang from every branch in a keeper's neat handwriting. \"I can read every letter,\" says Warden Wren, \"but the meaning is the hard part. Help me work out how a computer could read these notes.\"",
+      "everyday": {
+        "scene": "Your phone suggests the next word as you type a message, and your voice assistant turns a spoken question into a search.",
+        "question": "What is a computer actually doing when it handles language?",
+        "answer": "It turns letters and sounds into numbers, then looks for patterns that point to meaning. That whole job is called natural language processing, or NLP."
+      },
+      "lessons": [
+        {
+          "id": "what-is-nlp",
+          "title": "What NLP is",
+          "text": [
+            "Natural language processing, or NLP, is the work of getting computers to handle human language, such as text and speech. It is part of computer science and is closely tied to linguistics, the study of language.",
+            "People read meaning from words straight away. A computer begins with raw characters. NLP is the set of methods that bridge the gap: finding words, working out how they fit together and using that to do something useful."
+          ],
+          "terms": [
+            {
+              "term": "Text",
+              "meaning": "Written language, handled as a string of characters."
+            },
+            {
+              "term": "Corpus",
+              "meaning": "A collection of text used to study or teach a program."
+            },
+            {
+              "term": "Token",
+              "meaning": "One piece of text that a program treats as a unit, often a word."
+            }
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Natural language processing",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Natural_language_processing"
+            },
+            {
+              "title": "NLTK book, chapter 3: Processing Raw Text",
+              "source": "NLTK book (linked, not copied)",
+              "url": "https://www.nltk.org/book/ch03.html"
+            }
+          ]
+        },
+        {
+          "id": "computers-see-numbers",
+          "title": "Computers see numbers",
+          "text": [
+            "A computer stores each character as a number. In the ASCII code, a capital A is 65, B is 66, C is 67 and so on up the alphabet. A word is then just a row of numbers.",
+            "Numbers alone say nothing about meaning. The word 'bat' is three codes whether it is a flying animal or a cricket bat. Meaning has to be worked out from the words around it."
+          ],
+          "predict": {
+            "prompt": "A capital A has code 65. What code would a capital C have?",
+            "answer": "67, because the capitals go up by one each letter."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: ASCII",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/ASCII"
+            },
+            {
+              "title": "Wikipedia: Natural language processing",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Natural_language_processing"
+            }
+          ]
+        },
+        {
+          "id": "ambiguity-and-tasks",
+          "title": "Ambiguity and tasks",
+          "text": [
+            "Language is full of ambiguity: one piece of text with more than one meaning. 'I saw her duck' could mean she crouched or that I saw her pet bird. Computers need context to choose.",
+            "NLP tasks come in two broad kinds. Some sort a text into a label, like spam or not spam. Others produce new text from text, like translating or summarising."
+          ],
+          "deeper": {
+            "title": "Where the tasks sit",
+            "text": [
+              {
+                "text": "Real systems often chain tasks into what is called an NLP pipeline. A typical start is to split the text into words, then tag each word with its part of speech. The next levels build a small pipeline, piece by piece.",
+                "verify": false
+              }
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Natural language processing",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Natural_language_processing"
+            },
+            {
+              "title": "NLTK book, chapter 6: Learning to Classify Text",
+              "source": "NLTK book (linked, not copied)",
+              "url": "https://www.nltk.org/book/ch06.html"
+            },
+            {
+              "title": "NLTK book, chapter 5: Categorizing and Tagging Words",
+              "source": "NLTK book (linked, not copied)",
+              "url": "https://www.nltk.org/book/ch05.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "code-of-d",
+          "type": "numeric",
+          "taughtOn": "computers-see-numbers",
+          "prompt": "In ASCII, a capital A is 65 and the capitals go up one letter at a time. What is the code for a capital D?",
+          "answer": 68,
+          "calculator": false,
+          "hints": [
+            "A is 65, B is 66, and so on.",
+            "A, B, C, D is three steps after A."
+          ],
+          "explain": "A is 65, so B is 66, C is 67 and D is 68."
+        },
+        {
+          "id": "what-is-nlp-q",
+          "type": "choice",
+          "taughtOn": "what-is-nlp",
+          "prompt": "Which of these is a job for NLP?",
+          "options": [
+            {
+              "text": "Turning a spoken question into text a search engine can use",
+              "correct": true
+            },
+            {
+              "text": "Making a photo brighter"
+            },
+            {
+              "text": "Sorting a spreadsheet by a number column"
+            },
+            {
+              "text": "Drawing a map from GPS points"
+            }
+          ],
+          "hints": [
+            "NLP is about human language.",
+            "Look for the one that starts with words or speech."
+          ],
+          "explain": "NLP handles human language. Turning speech into text is a classic case. The others work on pictures, numbers or places."
+        },
+        {
+          "id": "duck-sim",
+          "type": "stepsim",
+          "taughtOn": "ambiguity-and-tasks",
+          "mode": "predict",
+          "prompt": "One sentence, two readings.",
+          "explain": "The same words can mean two things. People use context to choose. A computer has to learn to use context too.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "I",
+                      "mark": null,
+                      "tag": "0"
+                    },
+                    {
+                      "value": "saw",
+                      "mark": null,
+                      "tag": "1"
+                    },
+                    {
+                      "value": "her",
+                      "mark": null,
+                      "tag": "2"
+                    },
+                    {
+                      "value": "duck",
+                      "mark": null,
+                      "tag": "3"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "The sentence 'I saw her duck'"
+                },
+                "say": "Four words, and a computer has to work out what they mean. Each box is one word of the sentence."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "I",
+                      "mark": null,
+                      "tag": "0"
+                    },
+                    {
+                      "value": "saw",
+                      "mark": "current",
+                      "tag": "1"
+                    },
+                    {
+                      "value": "her",
+                      "mark": null,
+                      "tag": "2"
+                    },
+                    {
+                      "value": "duck",
+                      "mark": "current",
+                      "tag": "3"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "saw",
+                    "3": "duck"
+                  },
+                  "label": "The sentence 'I saw her duck'"
+                },
+                "say": "Reading one: Wren saw her pet duck. Here 'saw' is a past-tense verb for seeing, and 'duck' is a bird, a noun.",
+                "predict": {
+                  "prompt": "In reading one, what kind of word is 'duck'?",
+                  "options": [
+                    {
+                      "text": "A noun, the bird",
+                      "correct": true
+                    },
+                    {
+                      "text": "A verb, to crouch down",
+                      "correct": false
+                    },
+                    {
+                      "text": "A joining word",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Think about what Wren is looking at.",
+                    "Wren saw a thing, and a thing is a noun."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "I",
+                      "mark": null,
+                      "tag": "0"
+                    },
+                    {
+                      "value": "saw",
+                      "mark": "compare",
+                      "tag": "1"
+                    },
+                    {
+                      "value": "her",
+                      "mark": "compare",
+                      "tag": "2"
+                    },
+                    {
+                      "value": "duck",
+                      "mark": "compare",
+                      "tag": "3"
+                    }
+                  ],
+                  "pointers": {
+                    "3": "duck"
+                  },
+                  "label": "The sentence 'I saw her duck'"
+                },
+                "say": "Reading two: Wren watched her crouch down. Now 'duck' is a verb, something she does. The words are identical. Only the meaning changed.",
+                "predict": {
+                  "prompt": "In reading two, what kind of word is 'duck'?",
+                  "options": [
+                    {
+                      "text": "A verb, to crouch down",
+                      "correct": true
+                    },
+                    {
+                      "text": "A noun, the bird",
+                      "correct": false
+                    },
+                    {
+                      "text": "A number",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "She is doing something.",
+                    "Crouching is an action, and an action is a verb."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "I",
+                      "mark": null,
+                      "tag": "0"
+                    },
+                    {
+                      "value": "saw",
+                      "mark": null,
+                      "tag": "1"
+                    },
+                    {
+                      "value": "her",
+                      "mark": null,
+                      "tag": "2"
+                    },
+                    {
+                      "value": "duck",
+                      "mark": null,
+                      "tag": "3"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "The sentence 'I saw her duck'"
+                },
+                "say": "The same four words give two different meanings. People settle it from context. NLP is about teaching computers to do the same, and that is why it is hard."
+              }
+            ]
+          }
+        },
+        {
+          "id": "task-kinds",
+          "type": "buckets",
+          "taughtOn": "ambiguity-and-tasks",
+          "prompt": "Does this job sort a text into a label, or write new text?",
+          "buckets": [
+            "Gives a label",
+            "Writes text"
+          ],
+          "items": [
+            {
+              "text": "Marking an email as spam or not spam",
+              "bucket": "Gives a label"
+            },
+            {
+              "text": "Translating a note into another language",
+              "bucket": "Writes text"
+            },
+            {
+              "text": "Deciding if a review is positive or negative",
+              "bucket": "Gives a label"
+            },
+            {
+              "text": "Summarising a long article in three lines",
+              "bucket": "Writes text"
+            },
+            {
+              "text": "Spotting which language a note is written in",
+              "bucket": "Gives a label"
+            }
+          ],
+          "hints": [
+            "Does the job end with a name tag, or with fresh sentences?",
+            "Translating and summarising both give back text."
+          ],
+          "explain": "Spam marking, sentiment and language spotting each give back a label. Translating and summarising each produce new text."
+        },
+        {
+          "id": "nlp-words",
+          "type": "match",
+          "taughtOn": "what-is-nlp",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Corpus",
+              "right": "A collection of text used to study or teach a program"
+            },
+            {
+              "left": "Token",
+              "right": "One piece of text treated as a unit, often a word"
+            },
+            {
+              "left": "Ambiguity",
+              "right": "Text that can be read more than one way"
+            },
+            {
+              "left": "NLP",
+              "right": "Getting computers to handle human language"
+            }
+          ],
+          "hints": [
+            "A corpus is a pile of text.",
+            "Ambiguity is about more than one meaning."
+          ],
+          "explain": "A corpus is a text collection, a token is one unit, ambiguity is more than one reading, and NLP is the whole field."
+        },
+        {
+          "id": "why-hard",
+          "type": "choice",
+          "taughtOn": "computers-see-numbers",
+          "prompt": "Why can't a computer just read meaning from the numbers that stand for the letters?",
+          "options": [
+            {
+              "text": "The codes for letters say nothing about what a word means",
+              "correct": true
+            },
+            {
+              "text": "Computers cannot store letters"
+            },
+            {
+              "text": "Letters have no order"
+            },
+            {
+              "text": "Every word has exactly one meaning"
+            }
+          ],
+          "hints": [
+            "Think about the word 'bat'. What is its code?",
+            "A code stands for a letter, not an idea."
+          ],
+          "explain": "Character codes only identify letters. Meaning comes from the words around them and from what the reader knows."
+        },
+        {
+          "id": "bat-ambig",
+          "type": "choice",
+          "taughtOn": "ambiguity-and-tasks",
+          "prompt": "Challenge: 'The bat was too heavy to lift.' What helps a program choose between a flying animal and a cricket bat?",
+          "options": [
+            {
+              "text": "The other words in the sentence, such as 'heavy' and 'lift'",
+              "correct": true
+            },
+            {
+              "text": "The number of letters in 'bat'"
+            },
+            {
+              "text": "The capital letter at the start"
+            },
+            {
+              "text": "Nothing can help"
+            }
+          ],
+          "hints": [
+            "Which neighbouring words fit one meaning better?",
+            "Context is the clue."
+          ],
+          "explain": "Words nearby give context. 'Heavy' and 'lift' fit a cricket bat better than a flying animal.",
+          "challenge": true
+        },
+        {
+          "id": "count-words",
+          "type": "numeric",
+          "taughtOn": "what-is-nlp",
+          "prompt": "Challenge: Wren's note reads 'the owl sat on the branch'. How many words (tokens split at spaces) is that?",
+          "answer": 6,
+          "calculator": false,
+          "hints": [
+            "Count the gaps between words and add one.",
+            "the, owl, sat, on, the, branch."
+          ],
+          "explain": "There are six words: the, owl, sat, on, the, branch. The word 'the' is counted twice.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m0.1-f1",
+          "type": "quiz",
+          "taughtOn": "computers-see-numbers",
+          "prompt": "What does a computer store for each letter of a word?",
+          "options": [
+            {
+              "text": "A number",
+              "correct": true
+            },
+            {
+              "text": "A tiny picture of its meaning"
+            },
+            {
+              "text": "A dictionary entry"
+            },
+            {
+              "text": "A sound"
+            }
+          ],
+          "explain": "Each character gets a number code, such as 65 for a capital A."
+        },
+        {
+          "id": "m0.1-f2",
+          "type": "quiz",
+          "taughtOn": "ambiguity-and-tasks",
+          "prompt": "What is ambiguity in language?",
+          "options": [
+            {
+              "text": "Text that can be read more than one way",
+              "correct": true
+            },
+            {
+              "text": "Text with spelling mistakes"
+            },
+            {
+              "text": "Text in two languages"
+            },
+            {
+              "text": "Text that is too long"
+            }
+          ],
+          "explain": "'I saw her duck' is a classic example."
+        },
+        {
+          "id": "m0.1-f3",
+          "type": "why",
+          "taughtOn": "what-is-nlp",
+          "prompt": "Which is a label-giving NLP task?",
+          "options": [
+            {
+              "text": "Spotting spam",
+              "correct": true
+            },
+            {
+              "text": "Translating a note"
+            },
+            {
+              "text": "Summarising an article"
+            },
+            {
+              "text": "Writing a poem"
+            }
+          ],
+          "explain": "Spotting spam gives back a label. The others make new text."
+        },
+        {
+          "id": "m0.1-f4",
+          "type": "predict",
+          "taughtOn": "computers-see-numbers",
+          "prompt": "A capital A is 65 and the capitals go up by one. What is a capital B?",
+          "answer": "66."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Predicting words",
+          "text": "A language model is a computational model that predicts sequences in natural language, such as which word is likely to come next.",
+          "source": {
+            "title": "Wikipedia: Language model",
+            "url": "https://en.wikipedia.org/wiki/Language_model"
+          },
+          "verify": false
+        },
+        {
+          "title": "Speech recognition",
+          "text": "Speech recognition is one of the major tasks in an NLP system, alongside text classification, natural language understanding and natural language generation.",
+          "source": {
+            "title": "Wikipedia: Natural language processing",
+            "url": "https://en.wikipedia.org/wiki/Natural_language_processing"
+          },
+          "verify": false
+        },
+        {
+          "title": "Why it is hard",
+          "text": "Computational linguistics has long treated ambiguity as a central problem, since a typical sentence can have several possible analyses.",
+          "source": {
+            "title": "Wikipedia: Natural language processing",
+            "url": "https://en.wikipedia.org/wiki/Natural_language_processing"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You met NLP as the job of getting computers to handle human language, saw that letters are stored as numbers, and saw why 'I saw her duck' is hard.",
+          "Wren pins a note on the tree. \"Letters are the easy part. Words and meaning come next.\""
+        ],
+        "mistake": {
+          "title": "Thinking the codes carry the meaning",
+          "text": "A letter's number only says which letter it is. Meaning has to come from the words around it, which is why NLP needs more than a lookup table."
+        }
+      }
+    },
+    {
+      "id": "0.2",
+      "title": "Chop and Tidy",
+      "story": "Wren hands Kit a bundle of notes. \"Before anyone can count anything, the notes have to be tidy. 'The' and 'the' look different to a computer. So do 'owl' and 'owls'.\"",
+      "everyday": {
+        "scene": "A search for 'running shoes' also finds pages that say 'run' or 'shoe'. The search tidied up the words before it matched them.",
+        "question": "Why does a program change the text before using it?",
+        "answer": "Small differences like capital letters or word endings make the same idea look different. Tidying the text first lets the program treat them as the same."
+      },
+      "lessons": [
+        {
+          "id": "tokenising",
+          "title": "Chopping into tokens",
+          "text": [
+            "The first step is tokenisation: splitting text into tokens, the pieces a program works with. Often a token is a word, and punctuation marks can become tokens of their own.",
+            "Splitting on spaces is a start but not enough. 'sitting,' would stay stuck to its comma.",
+            {
+              "text": "A tokeniser turns text into a list of words and punctuation marks, and each one becomes a token.",
+              "verify": false
+            }
+          ],
+          "terms": [
+            {
+              "term": "Tokenisation",
+              "meaning": "Splitting text into tokens."
+            },
+            {
+              "term": "Vocabulary",
+              "meaning": "The set of different tokens that appear in a text."
+            }
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Lexical analysis (tokenization)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Lexical_analysis"
+            },
+            {
+              "title": "NLTK book, chapter 3: Processing Raw Text",
+              "source": "NLTK book (linked, not copied)",
+              "url": "https://www.nltk.org/book/ch03.html"
+            }
+          ]
+        },
+        {
+          "id": "tidying",
+          "title": "Lower case and stop words",
+          "text": [
+            "Lower-casing makes 'The' and 'the' the same token. It is simple and often helps, though it loses some information: 'Apple' the company and 'apple' the fruit become one token.",
+            "Stop words are very common words, like 'the' and 'and', that are often filtered out because they say little about the topic. Whether to remove them depends on the job. In some tasks they matter."
+          ],
+          "predict": {
+            "prompt": "Lower-casing turns 'Owl' and 'owl' into one token. What might be lost?",
+            "answer": "Information that a capital letter carries, such as telling a name from an ordinary word."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Stop word",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Stop_word"
+            },
+            {
+              "title": "NLTK book, chapter 3: Processing Raw Text",
+              "source": "NLTK book (linked, not copied)",
+              "url": "https://www.nltk.org/book/ch03.html"
+            }
+          ]
+        },
+        {
+          "id": "stems-and-lemmas",
+          "title": "Stems and lemmas",
+          "text": [
+            "Stemming chops word endings to leave a stem. A stemmer can reduce 'fishing', 'fished' and 'fisher' to 'fish'. The stem need not be a real word: a common stemmer turns 'argue' and 'arguing' into 'argu'.",
+            "Lemmatisation is more careful. It finds the dictionary form, called the lemma, using the word's meaning. For example, the lemma of 'better' is 'good', which no ending-chopper would find."
+          ],
+          "table": {
+            "head": [
+              "Word",
+              "Stem (may not be a word)",
+              "Lemma (a dictionary word)"
+            ],
+            "rows": [
+              [
+                "fishing",
+                "fish",
+                "fish"
+              ],
+              [
+                "argues",
+                "argu",
+                "argue"
+              ],
+              [
+                "better",
+                "better",
+                "good"
+              ]
+            ]
+          },
+          "deeper": {
+            "title": "A trade-off",
+            "text": [
+              "Stemming is quick and rough. Lemmatising is slower because it needs a dictionary and some sense of the word's role. Which is better depends on the job."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Stemming",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Stemming"
+            },
+            {
+              "title": "Wikipedia: Lemmatisation",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Lemmatisation"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "token-count",
+          "type": "numeric",
+          "taughtOn": "tokenising",
+          "prompt": "How many tokens does 'The Owls were sitting, and the owl was calling.' make when words and punctuation marks each count as a token?",
+          "answer": 11,
+          "calculator": false,
+          "hints": [
+            "Count each word, plus the comma and the full stop.",
+            "There are 9 words and 2 punctuation marks."
+          ],
+          "explain": "There are 9 words, 1 comma and 1 full stop: 11 tokens."
+        },
+        {
+          "id": "tidy-sim",
+          "type": "stepsim",
+          "taughtOn": "tidying",
+          "mode": "predict",
+          "prompt": "Follow the sentence through each cleaning step.",
+          "explain": "Lower-casing merges 'The' and 'the', stop-word removal leaves the content words, and reducing to a base makes 'owls' and 'owl' match.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "The",
+                      "mark": null,
+                      "tag": "0"
+                    },
+                    {
+                      "value": "Owls",
+                      "mark": null,
+                      "tag": "1"
+                    },
+                    {
+                      "value": "were",
+                      "mark": null,
+                      "tag": "2"
+                    },
+                    {
+                      "value": "sitting",
+                      "mark": null,
+                      "tag": "3"
+                    },
+                    {
+                      "value": ",",
+                      "mark": null,
+                      "tag": "4"
+                    },
+                    {
+                      "value": "and",
+                      "mark": null,
+                      "tag": "5"
+                    },
+                    {
+                      "value": "the",
+                      "mark": null,
+                      "tag": "6"
+                    },
+                    {
+                      "value": "owl",
+                      "mark": null,
+                      "tag": "7"
+                    },
+                    {
+                      "value": "was",
+                      "mark": null,
+                      "tag": "8"
+                    },
+                    {
+                      "value": "calling",
+                      "mark": null,
+                      "tag": "9"
+                    },
+                    {
+                      "value": ".",
+                      "mark": null,
+                      "tag": "10"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Cleaning one sentence"
+                },
+                "say": "The raw sentence has been split into 11 tokens, with the comma and the full stop as their own pieces."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "the",
+                      "mark": "current",
+                      "tag": "0"
+                    },
+                    {
+                      "value": "owls",
+                      "mark": "current",
+                      "tag": "1"
+                    },
+                    {
+                      "value": "were",
+                      "mark": null,
+                      "tag": "2"
+                    },
+                    {
+                      "value": "sitting",
+                      "mark": null,
+                      "tag": "3"
+                    },
+                    {
+                      "value": ",",
+                      "mark": null,
+                      "tag": "4"
+                    },
+                    {
+                      "value": "and",
+                      "mark": null,
+                      "tag": "5"
+                    },
+                    {
+                      "value": "the",
+                      "mark": null,
+                      "tag": "6"
+                    },
+                    {
+                      "value": "owl",
+                      "mark": null,
+                      "tag": "7"
+                    },
+                    {
+                      "value": "was",
+                      "mark": null,
+                      "tag": "8"
+                    },
+                    {
+                      "value": "calling",
+                      "mark": null,
+                      "tag": "9"
+                    },
+                    {
+                      "value": ".",
+                      "mark": null,
+                      "tag": "10"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "The",
+                    "6": "the"
+                  },
+                  "label": "Cleaning one sentence"
+                },
+                "say": "Step 1: make everything lower case. 'The' and 'the' become one word. The vocabulary of different words shrinks from 9 to 8.",
+                "predict": {
+                  "prompt": "After lower-casing, how many different words (not counting the comma and the full stop) are in the sentence?",
+                  "options": [
+                    {
+                      "text": "8",
+                      "correct": true
+                    },
+                    {
+                      "text": "9",
+                      "correct": false
+                    },
+                    {
+                      "text": "11",
+                      "correct": false
+                    },
+                    {
+                      "text": "4",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Count each different word once: the, owls, were, sitting, and, owl, was, calling.",
+                    "'The' and 'the' now match."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "owls",
+                      "mark": null,
+                      "tag": "0"
+                    },
+                    {
+                      "value": "sitting",
+                      "mark": null,
+                      "tag": "1"
+                    },
+                    {
+                      "value": "owl",
+                      "mark": null,
+                      "tag": "2"
+                    },
+                    {
+                      "value": "calling",
+                      "mark": null,
+                      "tag": "3"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Cleaning one sentence"
+                },
+                "say": "Step 2: drop the stop words 'the', 'and', 'were' and 'was', and the punctuation. Four content words are left.",
+                "predict": {
+                  "prompt": "How many tokens are left after removing punctuation and the stop words the, and, were, was?",
+                  "options": [
+                    {
+                      "text": "4",
+                      "correct": true
+                    },
+                    {
+                      "text": "5",
+                      "correct": false
+                    },
+                    {
+                      "text": "7",
+                      "correct": false
+                    },
+                    {
+                      "text": "8",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "The words kept are the ones that carry the topic.",
+                    "owls, sitting, owl, calling."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "owl",
+                      "mark": null,
+                      "tag": "owls"
+                    },
+                    {
+                      "value": "sit",
+                      "mark": null,
+                      "tag": "sitting"
+                    },
+                    {
+                      "value": "owl",
+                      "mark": null,
+                      "tag": "owl"
+                    },
+                    {
+                      "value": "call",
+                      "mark": null,
+                      "tag": "calling"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Cleaning one sentence"
+                },
+                "say": "Step 3: reduce each word to its base. 'owls' and 'owl' now match, so a count of owl words gives 2."
+              }
+            ]
+          }
+        },
+        {
+          "id": "tidy-order",
+          "type": "order",
+          "taughtOn": "tidying",
+          "prompt": "Put the cleaning steps in a sensible order.",
+          "items": [
+            "Split the text into tokens",
+            "Make every token lower case",
+            "Remove stop words and punctuation",
+            "Reduce each word to its base form"
+          ],
+          "hints": [
+            "You cannot clean words until you have words.",
+            "Reducing to a base form works on the words that are left."
+          ],
+          "explain": "First split into tokens, then lower-case them, then drop stop words and punctuation, then reduce each word to its base form."
+        },
+        {
+          "id": "stem-or-lemma",
+          "type": "buckets",
+          "taughtOn": "stems-and-lemmas",
+          "prompt": "Does this describe stemming or lemmatising?",
+          "buckets": [
+            "Stemming",
+            "Lemmatising"
+          ],
+          "items": [
+            {
+              "text": "Chops off word endings with simple rules",
+              "bucket": "Stemming"
+            },
+            {
+              "text": "Looks up the dictionary form of a word",
+              "bucket": "Lemmatising"
+            },
+            {
+              "text": "Can turn 'argue' into 'argu', which is not a word",
+              "bucket": "Stemming"
+            },
+            {
+              "text": "Turns 'better' into 'good'",
+              "bucket": "Lemmatising"
+            },
+            {
+              "text": "Quick but rough",
+              "bucket": "Stemming"
+            }
+          ],
+          "hints": [
+            "Which one needs a dictionary?",
+            "A stem does not have to be a real word."
+          ],
+          "explain": "Stemming chops endings with rules and is quick but rough. Lemmatising uses a dictionary and word meaning to find the real base word."
+        },
+        {
+          "id": "stop-why",
+          "type": "choice",
+          "taughtOn": "tidying",
+          "prompt": "Why are words like 'the' and 'and' often dropped for topic searches?",
+          "options": [
+            {
+              "text": "They are so common that they say little about the topic",
+              "correct": true
+            },
+            {
+              "text": "They are never spelled correctly"
+            },
+            {
+              "text": "They are always the first words"
+            },
+            {
+              "text": "They have no letters"
+            }
+          ],
+          "hints": [
+            "Do they help tell an article on owls from one on bread?",
+            "Every text uses them."
+          ],
+          "explain": "Very common words appear in nearly every text, so they do little to tell texts apart."
+        },
+        {
+          "id": "clean-words",
+          "type": "match",
+          "taughtOn": "stems-and-lemmas",
+          "prompt": "Match each word to its lemma, the dictionary form.",
+          "pairs": [
+            {
+              "left": "mice",
+              "right": "mouse"
+            },
+            {
+              "left": "better",
+              "right": "good"
+            },
+            {
+              "left": "running",
+              "right": "run"
+            },
+            {
+              "left": "owls",
+              "right": "owl"
+            }
+          ],
+          "hints": [
+            "A lemma is a word you would find in a dictionary.",
+            "Plural and past forms go back to one base word."
+          ],
+          "explain": "A lemma is the dictionary form: mice goes to mouse, better to good, running to run and owls to owl."
+        },
+        {
+          "id": "stop-risk",
+          "type": "choice",
+          "taughtOn": "tidying",
+          "prompt": "Challenge: you remove stop words from the search 'to be or not to be'. What goes wrong?",
+          "options": [
+            {
+              "text": "Almost every word is removed, so little is left to search for",
+              "correct": true
+            },
+            {
+              "text": "Nothing, it works better"
+            },
+            {
+              "text": "Capital letters are added back"
+            },
+            {
+              "text": "The words are translated"
+            }
+          ],
+          "hints": [
+            "Which of those words are stop words?",
+            "To, be, or, not are all very common."
+          ],
+          "explain": "Nearly every word in that phrase is a stop word, so removing them leaves almost nothing. This is why stop-word removal depends on the job.",
+          "challenge": true
+        },
+        {
+          "id": "vocab-size",
+          "type": "numeric",
+          "taughtOn": "tokenising",
+          "prompt": "Challenge: after lower-casing, how many different words are in 'The Owls were sitting, and the owl was calling.' (ignore punctuation)?",
+          "answer": 8,
+          "calculator": false,
+          "hints": [
+            "List the different words once each.",
+            "the, owls, were, sitting, and, owl, was, calling."
+          ],
+          "explain": "After lower-casing 'The' and 'the' match, leaving 8 different words.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m0.2-f1",
+          "type": "quiz",
+          "taughtOn": "tokenising",
+          "prompt": "What is tokenisation?",
+          "options": [
+            {
+              "text": "Splitting text into pieces a program can work with",
+              "correct": true
+            },
+            {
+              "text": "Translating text"
+            },
+            {
+              "text": "Deleting text"
+            },
+            {
+              "text": "Encrypting text"
+            }
+          ],
+          "explain": "Tokens are often words, and punctuation marks can be tokens too."
+        },
+        {
+          "id": "m0.2-f2",
+          "type": "quiz",
+          "taughtOn": "tidying",
+          "prompt": "What are stop words?",
+          "options": [
+            {
+              "text": "Very common words often filtered out",
+              "correct": true
+            },
+            {
+              "text": "Words that end a sentence"
+            },
+            {
+              "text": "Rare words"
+            },
+            {
+              "text": "Words in capital letters"
+            }
+          ],
+          "explain": "Examples are 'the', 'and' and 'of'."
+        },
+        {
+          "id": "m0.2-f3",
+          "type": "why",
+          "taughtOn": "stems-and-lemmas",
+          "prompt": "Which finds a real dictionary word?",
+          "options": [
+            {
+              "text": "Lemmatisation",
+              "correct": true
+            },
+            {
+              "text": "Stemming"
+            },
+            {
+              "text": "Tokenisation"
+            },
+            {
+              "text": "Lower-casing"
+            }
+          ],
+          "explain": "A stem need not be a real word. A lemma is one."
+        },
+        {
+          "id": "m0.2-f4",
+          "type": "predict",
+          "taughtOn": "stems-and-lemmas",
+          "prompt": "What might a stemmer do to 'fishing', 'fished' and 'fisher'?",
+          "answer": "Reduce all three to the stem 'fish'."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Search engines",
+          "text": "Many search engines treat words with the same stem as synonyms, so a search for one form of a word can find the others.",
+          "source": {
+            "title": "Wikipedia: Stemming",
+            "url": "https://en.wikipedia.org/wiki/Stemming"
+          },
+          "verify": false
+        },
+        {
+          "title": "Why stemmers are rough",
+          "text": "A stem does not have to be a real word. One widely used stemmer turns 'argue', 'argued' and 'arguing' into 'argu'.",
+          "source": {
+            "title": "Wikipedia: Stemming",
+            "url": "https://en.wikipedia.org/wiki/Stemming"
+          }
+        },
+        {
+          "title": "Stop words",
+          "text": "Stop words are words filtered out before or after processing text because they are thought to carry little meaning. There is no single universal list of them.",
+          "source": {
+            "title": "Wikipedia: Stop word",
+            "url": "https://en.wikipedia.org/wiki/Stop_word"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You split a sentence into tokens, tidied it by lower-casing and dropping stop words, and saw how stems and lemmas bring word forms together.",
+          "Wren sweeps a pile of cut tokens into a basket. \"Now the words can finally be counted.\""
+        ],
+        "mistake": {
+          "title": "Tidying more than the job needs",
+          "text": "Every cleaning step throws something away. Removing stop words or capital letters helps some tasks and hurts others, so choose steps to fit the job."
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,1564 @@
+{
+  "zone": 3,
+  "levels": [
+    {
+      "id": "3.1",
+      "title": "All or Nothing",
+      "story": "Clerk Cobb sits between two cash tills with a pen. \"Move thirty coins from Dara's till to mine,\" he mutters. \"Two writes. If the lamp goes out between them, thirty coins are in nobody's till. I need the two writes to count as one.\"",
+      "everyday": {
+        "scene": "You send 30 dollars to a friend through your banking app. The app takes the money from your account and adds it to theirs. If it crashed after taking it and before adding it, the money would simply vanish.",
+        "question": "How does a bank make sure a transfer happens in full or not at all?",
+        "answer": "It treats the transfer as one transaction: a bundle of steps that either all happen or none do."
+      },
+      "lessons": [
+        {
+          "id": "bundle",
+          "title": "One bundle",
+          "text": [
+            "A transaction bundles several steps into one all-or-nothing operation. Moving 30 coins takes two updates: one takes coins from Dara, one adds them for Cobb. Without a transaction, a crash between them makes 30 coins vanish.",
+            "Inside a transaction, either both steps happen or neither does. Other users do not see the unfinished steps. Money transfers are the classic example."
+          ],
+          "terms": [
+            {
+              "term": "Transaction",
+              "meaning": "A bundle of steps that all happen or none do."
+            }
+          ],
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Transactions (tutorial)",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/tutorial-transactions.html"
+            },
+            {
+              "title": "Wikipedia: ACID",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/ACID"
+            }
+          ]
+        },
+        {
+          "id": "acid",
+          "title": "Four promises",
+          "text": [
+            "Databases describe their transactions with four promises, called ACID. Atomicity: all of the steps happen or none of them. Consistency: the data still follows its rules afterwards. Isolation: transactions running together behave as if one came after the other. Durability: once committed, a change survives a crash.",
+            "Each promise answers a different kind of failure. The first letters of the four words spell ACID."
+          ],
+          "table": {
+            "head": [
+              "Letter",
+              "Promise"
+            ],
+            "rows": [
+              [
+                "Atomicity",
+                "All of the steps happen, or none do"
+              ],
+              [
+                "Consistency",
+                "The data still obeys its rules"
+              ],
+              [
+                "Isolation",
+                "Transactions running together do not disturb each other"
+              ],
+              [
+                "Durability",
+                "A committed change survives a crash"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: ACID",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/ACID"
+            },
+            {
+              "title": "PostgreSQL documentation: Transactions (tutorial)",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/tutorial-transactions.html"
+            }
+          ]
+        },
+        {
+          "id": "commit-rollback",
+          "title": "BEGIN, COMMIT, ROLLBACK",
+          "text": [
+            "BEGIN starts a transaction. COMMIT makes all its changes permanent. ROLLBACK throws them away and leaves the data as it was before BEGIN. If a failure stops a transaction before COMMIT, none of its steps stay.",
+            "The table shows a real SQLite run. After the UPDATE the tills show Dara 70, but ROLLBACK puts Dara back to 100. ROLLBACK is how a program says it has changed its mind."
+          ],
+          "table": {
+            "head": [
+              "Statement",
+              "Tills afterwards"
+            ],
+            "rows": [
+              [
+                "BEGIN",
+                "Dara 100 / Cobb 20"
+              ],
+              [
+                "UPDATE till SET coins = coins - 30 WHERE name = 'Dara'",
+                "Dara 70 / Cobb 20"
+              ],
+              [
+                "ROLLBACK",
+                "Dara 100 / Cobb 20"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "SQLite documentation: Transactions",
+              "source": "SQLite documentation (linked, not copied)",
+              "url": "https://www.sqlite.org/lang_transaction.html"
+            },
+            {
+              "title": "PostgreSQL documentation: Transactions (tutorial)",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/tutorial-transactions.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "plain-sim",
+          "type": "stepsim",
+          "taughtOn": "bundle",
+          "mode": "predict",
+          "prompt": "Watch a transfer without a transaction go wrong.",
+          "explain": "Two separate writes can be interrupted between them. With nothing to undo write 1, 30 coins vanish.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "100",
+                      "mark": null,
+                      "tag": "Dara's till"
+                    },
+                    {
+                      "value": "20",
+                      "mark": null,
+                      "tag": "Cobb's till"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Two tills, one transfer, no transaction"
+                },
+                "say": "Dara's till holds 100 coins and Cobb's holds 20. We want to move 30 coins from Dara to Cobb. That takes two separate writes. Together the tills hold 120 coins."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "70",
+                      "mark": "compare",
+                      "tag": "Dara's till"
+                    },
+                    {
+                      "value": "20",
+                      "mark": null,
+                      "tag": "Cobb's till"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "write 1"
+                  },
+                  "label": "Two tills, one transfer, no transaction"
+                },
+                "say": "Write 1: take 30 coins from Dara's till. Dara now has 70. The 30 coins are in the clerk's hand, not yet in Cobb's till, so the tills hold only 90.",
+                "predict": {
+                  "prompt": "The lamp goes out right now, before write 2. What will the tills show when it comes back?",
+                  "options": [
+                    {
+                      "text": "Dara 70 and Cobb 20, so 30 coins have vanished",
+                      "correct": true
+                    },
+                    {
+                      "text": "Dara 100 and Cobb 20, as if nothing happened",
+                      "correct": false
+                    },
+                    {
+                      "text": "Dara 70 and Cobb 50, the transfer finished",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Write 1 has been done. Write 2 has not.",
+                    "Nothing was set up to undo write 1."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "70",
+                      "mark": "compare",
+                      "tag": "Dara's till"
+                    },
+                    {
+                      "value": "20",
+                      "mark": null,
+                      "tag": "Cobb's till"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Two tills, one transfer, no transaction"
+                },
+                "say": "The lamp comes back. Dara 70, Cobb 20: only 90 coins remain. 30 are gone, and nothing records that the transfer was half done. This is the problem a transaction solves."
+              }
+            ]
+          }
+        },
+        {
+          "id": "tx-sim",
+          "type": "stepsim",
+          "taughtOn": "commit-rollback",
+          "mode": "predict",
+          "prompt": "Watch the same transfer inside a transaction.",
+          "explain": "Inside a transaction, a failure before COMMIT undoes everything. A successful COMMIT makes both writes permanent together.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "100",
+                      "mark": null,
+                      "tag": "Dara's till"
+                    },
+                    {
+                      "value": "20",
+                      "mark": null,
+                      "tag": "Cobb's till"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "The same transfer inside a transaction"
+                },
+                "say": "The same transfer, now inside a transaction. First, BEGIN. Nothing has changed yet: Dara 100, Cobb 20."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "70",
+                      "mark": "compare",
+                      "tag": "Dara's till"
+                    },
+                    {
+                      "value": "20",
+                      "mark": null,
+                      "tag": "Cobb's till"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "write 1"
+                  },
+                  "label": "The same transfer inside a transaction"
+                },
+                "say": "Write 1 takes 30 coins from Dara's till. This change is only inside the transaction. It is not permanent yet.",
+                "predict": {
+                  "prompt": "The lamp goes out now, before COMMIT. What do the tills show when it comes back?",
+                  "options": [
+                    {
+                      "text": "Dara 100 and Cobb 20, as if nothing started",
+                      "correct": true
+                    },
+                    {
+                      "text": "Dara 70 and Cobb 20",
+                      "correct": false
+                    },
+                    {
+                      "text": "Dara 70 and Cobb 50",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Nothing was committed.",
+                    "If a failure stops a transaction, none of its steps stay."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "100",
+                      "mark": null,
+                      "tag": "Dara's till"
+                    },
+                    {
+                      "value": "20",
+                      "mark": null,
+                      "tag": "Cobb's till"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "The same transfer inside a transaction"
+                },
+                "say": "After the failure the unfinished transaction is undone. Dara 100, Cobb 20, and 120 coins in all. We try again."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "70",
+                      "mark": "compare",
+                      "tag": "Dara's till"
+                    },
+                    {
+                      "value": "50",
+                      "mark": "compare",
+                      "tag": "Cobb's till"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "write 1",
+                    "1": "write 2"
+                  },
+                  "label": "The same transfer inside a transaction"
+                },
+                "say": "Both writes are done inside the transaction: Dara 70, Cobb 50. They are still only a draft.",
+                "predict": {
+                  "prompt": "What does COMMIT do now?",
+                  "options": [
+                    {
+                      "text": "Makes both changes permanent together",
+                      "correct": true
+                    },
+                    {
+                      "text": "Undoes both changes",
+                      "correct": false
+                    },
+                    {
+                      "text": "Keeps only the first change",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Think of the word: you are committing to the result.",
+                    "Both writes were part of one bundle."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "70",
+                      "mark": null,
+                      "tag": "Dara's till"
+                    },
+                    {
+                      "value": "50",
+                      "mark": null,
+                      "tag": "Cobb's till"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "The same transfer inside a transaction"
+                },
+                "say": "COMMIT makes the changes permanent. Dara 70, Cobb 50, and the tills still hold 120 coins."
+              }
+            ]
+          }
+        },
+        {
+          "id": "after-rollback",
+          "type": "numeric",
+          "taughtOn": "commit-rollback",
+          "prompt": "Dara has 100 coins. A transaction takes 30 from her till, then ROLLBACK is run. How many coins does Dara have?",
+          "answer": 100,
+          "calculator": false,
+          "hints": [
+            "ROLLBACK undoes the transaction.",
+            "Dara's till goes back to how it was before BEGIN."
+          ],
+          "explain": "ROLLBACK throws the changes away, so Dara is back to 100."
+        },
+        {
+          "id": "after-commit",
+          "type": "numeric",
+          "taughtOn": "commit-rollback",
+          "prompt": "Dara has 100 coins and Cobb has 20. A transaction moves 30 from Dara to Cobb and COMMITs. How many coins does Cobb have?",
+          "answer": 50,
+          "calculator": false,
+          "hints": [
+            "Cobb receives the 30.",
+            "20 + 30."
+          ],
+          "explain": "Cobb gets the 30 coins, so 20 + 30 = 50. Dara has 70."
+        },
+        {
+          "id": "acid-match",
+          "type": "match",
+          "taughtOn": "acid",
+          "prompt": "Match each ACID word to its promise.",
+          "pairs": [
+            {
+              "left": "Atomicity",
+              "right": "All of the steps happen, or none do"
+            },
+            {
+              "left": "Consistency",
+              "right": "The data still obeys its rules"
+            },
+            {
+              "left": "Isolation",
+              "right": "Transactions running together do not disturb each other"
+            },
+            {
+              "left": "Durability",
+              "right": "A committed change survives a crash"
+            }
+          ],
+          "hints": [
+            "Atomic means it cannot be split.",
+            "Durable means it lasts."
+          ],
+          "explain": "Atomicity is all or nothing, consistency keeps the rules, isolation keeps transactions apart, and durability survives crashes."
+        },
+        {
+          "id": "which-promise",
+          "type": "buckets",
+          "taughtOn": "acid",
+          "prompt": "Which promise was broken in each story?",
+          "buckets": [
+            "Atomicity",
+            "Isolation",
+            "Durability"
+          ],
+          "items": [
+            {
+              "text": "A transfer took coins out but never put them in",
+              "bucket": "Atomicity"
+            },
+            {
+              "text": "Half of a five-step booking was saved and the rest lost",
+              "bucket": "Atomicity"
+            },
+            {
+              "text": "A reader saw another clerk's unfinished change",
+              "bucket": "Isolation"
+            },
+            {
+              "text": "Two clerks' overlapping updates produced a wrong total",
+              "bucket": "Isolation"
+            },
+            {
+              "text": "A committed order vanished after a power cut",
+              "bucket": "Durability"
+            },
+            {
+              "text": "After a restart, last night's committed payments were missing",
+              "bucket": "Durability"
+            }
+          ],
+          "hints": [
+            "Atomicity is about partial work. Durability is about losing committed work.",
+            "Isolation is about transactions getting in each other's way."
+          ],
+          "explain": "Partial work breaks atomicity, transactions disturbing each other breaks isolation, and losing committed work breaks durability."
+        },
+        {
+          "id": "transfer-steps",
+          "type": "order",
+          "taughtOn": "commit-rollback",
+          "prompt": "Put the steps of the transfer in order.",
+          "items": [
+            "BEGIN",
+            "Take 30 coins from Dara's till",
+            "Add 30 coins to Cobb's till",
+            "COMMIT"
+          ],
+          "hints": [
+            "A transaction starts before the work.",
+            "COMMIT is what makes the work permanent."
+          ],
+          "explain": "BEGIN, the two updates, then COMMIT to make them permanent."
+        },
+        {
+          "id": "what-rollback",
+          "type": "choice",
+          "taughtOn": "commit-rollback",
+          "prompt": "What does ROLLBACK do?",
+          "options": [
+            {
+              "text": "Throws away the transaction's changes",
+              "correct": true
+            },
+            {
+              "text": "Makes the changes permanent"
+            },
+            {
+              "text": "Saves a copy of the table"
+            },
+            {
+              "text": "Deletes the table"
+            }
+          ],
+          "hints": [
+            "Look at the table in the lesson.",
+            "Dara goes from 70 back to 100."
+          ],
+          "explain": "ROLLBACK undoes everything done since BEGIN."
+        },
+        {
+          "id": "crash-before-commit",
+          "type": "choice",
+          "taughtOn": "bundle",
+          "prompt": "A crash happens after both UPDATEs but before COMMIT. What is the result?",
+          "options": [
+            {
+              "text": "Neither update is kept",
+              "correct": true
+            },
+            {
+              "text": "Both updates are kept"
+            },
+            {
+              "text": "Only the first update is kept"
+            },
+            {
+              "text": "Only the second update is kept"
+            }
+          ],
+          "hints": [
+            "COMMIT was never reached.",
+            "If a failure stops a transaction, none of its steps affect the database."
+          ],
+          "explain": "Until COMMIT, the changes are not permanent. A failure before it leaves the database as it was."
+        },
+        {
+          "id": "durability-letter",
+          "type": "choice",
+          "taughtOn": "acid",
+          "prompt": "Challenge: which ACID letter is about surviving a crash after a COMMIT?",
+          "options": [
+            {
+              "text": "Durability",
+              "correct": true
+            },
+            {
+              "text": "Atomicity"
+            },
+            {
+              "text": "Consistency"
+            },
+            {
+              "text": "Isolation"
+            }
+          ],
+          "hints": [
+            "The D in ACID.",
+            "Committed work lasts."
+          ],
+          "explain": "Durability promises that a committed change stays committed even after a crash.",
+          "challenge": true
+        },
+        {
+          "id": "three-transfers",
+          "type": "numeric",
+          "taughtOn": "commit-rollback",
+          "prompt": "Challenge: Dara has 100 coins. Three transfers of 30 coins to Cobb are each committed. How many coins does Dara have afterwards?",
+          "answer": 10,
+          "calculator": false,
+          "hints": [
+            "Each transfer takes 30.",
+            "100 minus 3 x 30."
+          ],
+          "explain": "100 - 90 = 10. The total across both tills stays at 120.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d3.1-f1",
+          "type": "quiz",
+          "taughtOn": "bundle",
+          "prompt": "What does a transaction guarantee about its steps?",
+          "options": [
+            {
+              "text": "All happen or none do",
+              "correct": true
+            },
+            {
+              "text": "They happen in any order"
+            },
+            {
+              "text": "They happen twice"
+            },
+            {
+              "text": "They are optional"
+            }
+          ],
+          "explain": "A transaction is an all-or-nothing bundle."
+        },
+        {
+          "id": "d3.1-f2",
+          "type": "quiz",
+          "taughtOn": "commit-rollback",
+          "prompt": "Which command makes a transaction's changes permanent?",
+          "options": [
+            {
+              "text": "COMMIT",
+              "correct": true
+            },
+            {
+              "text": "ROLLBACK"
+            },
+            {
+              "text": "BEGIN"
+            },
+            {
+              "text": "SELECT"
+            }
+          ],
+          "explain": "COMMIT makes the changes permanent."
+        },
+        {
+          "id": "d3.1-f3",
+          "type": "why",
+          "taughtOn": "acid",
+          "prompt": "What does the D in ACID stand for?",
+          "options": [
+            {
+              "text": "Durability",
+              "correct": true
+            },
+            {
+              "text": "Deletion"
+            },
+            {
+              "text": "Duplication"
+            },
+            {
+              "text": "Design"
+            }
+          ],
+          "explain": "Durability means committed changes survive a crash."
+        },
+        {
+          "id": "d3.1-f4",
+          "type": "predict",
+          "taughtOn": "commit-rollback",
+          "prompt": "A transaction takes 30 coins from one till. Before COMMIT, the program runs ROLLBACK. What does the till hold?",
+          "answer": "What it held before BEGIN. ROLLBACK undoes the unfinished changes."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "All-or-nothing",
+          "text": "In PostgreSQL's words, the essential point of a transaction is that it bundles multiple steps into a single, all-or-nothing operation.",
+          "source": {
+            "title": "PostgreSQL: Transactions (tutorial)",
+            "url": "https://www.postgresql.org/docs/current/tutorial-transactions.html"
+          }
+        },
+        {
+          "title": "Four promises",
+          "text": "ACID stands for atomicity, consistency, isolation and durability, the four properties usually expected of a database transaction.",
+          "source": {
+            "title": "Wikipedia: ACID",
+            "url": "https://en.wikipedia.org/wiki/ACID"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You watched a transfer lose 30 coins without a transaction, saw BEGIN, COMMIT and ROLLBACK keep it all-or-nothing, and matched the four ACID promises to stories.",
+          "Cobb caps his pen. \"Two writes, one promise.\""
+        ],
+        "mistake": {
+          "title": "Thinking each UPDATE saves on its own",
+          "text": "Without a transaction, each statement can succeed separately, so a failure between them leaves a half-done result. A transaction makes the group succeed or fail together."
+        }
+      }
+    },
+    {
+      "id": "3.2",
+      "title": "Two Clerks, One Ledger",
+      "story": "Two clerks reach for the same ledger line at the same moment. \"I will add 30,\" says Cobb. \"I will add 50,\" says Dara. They both read 100, they both write, and the line says 150. \"Where did my 30 go?\" says Cobb.",
+      "everyday": {
+        "scene": "Two people book the last seat on a flight at the same moment. Each sees one seat free, and each presses Confirm. If nothing guards the seat, both bookings might succeed.",
+        "question": "What goes wrong when two people change the same data at the same time?",
+        "answer": "Their steps can interleave. One person's change can overwrite another's, or one can read a half-finished result. Databases use isolation levels and locks to prevent this."
+      },
+      "lessons": [
+        {
+          "id": "lost-update",
+          "title": "The lost update",
+          "text": [
+            {
+              "text": "Two clerks add to the same balance. Each reads the balance, adds their amount, and writes the result back. If B reads before A writes, B's write overwrites A's, and A's deposit is lost.",
+              "verify": false
+            },
+            "Nothing crashed and no step failed, yet the answer is wrong. Each step was fine on its own. The problem is the interleaving, the way two sequences of steps are mixed together."
+          ],
+          "terms": [
+            {
+              "term": "Lost update",
+              "meaning": "One transaction's write overwriting another's change."
+            },
+            {
+              "term": "Interleaving",
+              "meaning": "Steps from two transactions mixed together in time."
+            }
+          ],
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Transaction Isolation",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/transaction-iso.html"
+            },
+            {
+              "title": "PostgreSQL documentation: Concurrency Control: Introduction",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/mvcc-intro.html"
+            },
+            {
+              "title": "Wikipedia: Concurrency control (the lost update problem)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Concurrency_control"
+            }
+          ]
+        },
+        {
+          "id": "reads-go-wrong",
+          "title": "Reads that go wrong",
+          "text": [
+            "Reading can go wrong too. A dirty read sees data written by a transaction that has not committed. A non-repeatable read reads a row twice and finds it changed by another transaction that committed in between.",
+            "A phantom read runs the same query twice and gets a different set of rows, because another transaction added or removed some. All three come from reading while someone else is writing."
+          ],
+          "terms": [
+            {
+              "term": "Dirty read",
+              "meaning": "Reading another transaction's uncommitted change."
+            },
+            {
+              "term": "Non-repeatable read",
+              "meaning": "Reading a row twice and finding it changed."
+            },
+            {
+              "term": "Phantom read",
+              "meaning": "Running a query twice and getting different rows."
+            }
+          ],
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Transaction Isolation",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/transaction-iso.html"
+            },
+            {
+              "title": "PostgreSQL documentation: Concurrency Control: Introduction",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/mvcc-intro.html"
+            }
+          ]
+        },
+        {
+          "id": "levels-and-locks",
+          "title": "Levels and locks",
+          "text": [
+            "SQL defines isolation levels; stricter ones allow fewer of these effects. PostgreSQL's default is Read Committed, which prevents dirty reads but allows the other two. Serializable allows none.",
+            "A lock is another tool. SELECT ... FOR UPDATE locks the rows it reads until the transaction ends, so a second transaction that wants them is blocked until then. Locks trade speed for safety, because waiting takes time."
+          ],
+          "table": {
+            "head": [
+              "PostgreSQL level",
+              "Dirty read",
+              "Non-repeatable read",
+              "Phantom read"
+            ],
+            "rows": [
+              [
+                "Read committed",
+                "Prevented",
+                "Possible",
+                "Possible"
+              ],
+              [
+                "Repeatable read",
+                "Prevented",
+                "Prevented",
+                "Prevented"
+              ],
+              [
+                "Serializable",
+                "Prevented",
+                "Prevented",
+                "Prevented"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Transaction Isolation",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/transaction-iso.html"
+            },
+            {
+              "title": "PostgreSQL documentation: Explicit Locking",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/explicit-locking.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "lost-sim",
+          "type": "stepsim",
+          "taughtOn": "lost-update",
+          "mode": "predict",
+          "prompt": "Watch two clerks interleave and lose an update.",
+          "explain": "Both clerks read 100 before either wrote. B's write replaced A's, so the ledger ended at 150 instead of 180.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "100",
+                      "mark": null,
+                      "tag": "ledger"
+                    },
+                    {
+                      "value": "-",
+                      "mark": null,
+                      "tag": "Clerk A holds"
+                    },
+                    {
+                      "value": "-",
+                      "mark": null,
+                      "tag": "Clerk B holds"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "One ledger, two clerks, no lock"
+                },
+                "say": "The ledger says 100 coins. Clerk A will add 30 and Clerk B will add 50. Each clerk reads the balance, adds, and writes the new balance back. The right answer afterwards is 180."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "100",
+                      "mark": null,
+                      "tag": "ledger"
+                    },
+                    {
+                      "value": "100",
+                      "mark": "best",
+                      "tag": "Clerk A holds"
+                    },
+                    {
+                      "value": "-",
+                      "mark": null,
+                      "tag": "Clerk B holds"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "A reads"
+                  },
+                  "label": "One ledger, two clerks, no lock"
+                },
+                "say": "Clerk A reads the balance: 100."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "100",
+                      "mark": null,
+                      "tag": "ledger"
+                    },
+                    {
+                      "value": "100",
+                      "mark": null,
+                      "tag": "Clerk A holds"
+                    },
+                    {
+                      "value": "100",
+                      "mark": "best",
+                      "tag": "Clerk B holds"
+                    }
+                  ],
+                  "pointers": {
+                    "2": "B reads"
+                  },
+                  "label": "One ledger, two clerks, no lock"
+                },
+                "say": "Clerk B reads the balance too, before A has written anything.",
+                "predict": {
+                  "prompt": "B reads the ledger before A has written. What does B see?",
+                  "options": [
+                    {
+                      "text": "100, the old balance",
+                      "correct": true
+                    },
+                    {
+                      "text": "130, A's new balance",
+                      "correct": false
+                    },
+                    {
+                      "text": "180, the final total",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "A has not written anything yet.",
+                    "The ledger still says what it said at the start."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "130",
+                      "mark": "compare",
+                      "tag": "ledger"
+                    },
+                    {
+                      "value": "130",
+                      "mark": "best",
+                      "tag": "Clerk A holds"
+                    },
+                    {
+                      "value": "100",
+                      "mark": null,
+                      "tag": "Clerk B holds"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "A writes"
+                  },
+                  "label": "One ledger, two clerks, no lock"
+                },
+                "say": "Clerk A writes 100 + 30 = 130 into the ledger.",
+                "predict": {
+                  "prompt": "Now B writes 100 + 50 into the ledger. What will the ledger hold afterwards?",
+                  "options": [
+                    {
+                      "text": "150",
+                      "correct": true
+                    },
+                    {
+                      "text": "180",
+                      "correct": false
+                    },
+                    {
+                      "text": "130",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "B is still working from the number 100 that it read earlier.",
+                    "100 + 50 is what B writes."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "150",
+                      "mark": "compare",
+                      "tag": "ledger"
+                    },
+                    {
+                      "value": "130",
+                      "mark": null,
+                      "tag": "Clerk A holds"
+                    },
+                    {
+                      "value": "150",
+                      "mark": "best",
+                      "tag": "Clerk B holds"
+                    }
+                  ],
+                  "pointers": {
+                    "2": "B writes"
+                  },
+                  "label": "One ledger, two clerks, no lock"
+                },
+                "say": "Clerk B writes 100 + 50 = 150, overwriting A's 130."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "150",
+                      "mark": null,
+                      "tag": "ledger"
+                    },
+                    {
+                      "value": "130",
+                      "mark": null,
+                      "tag": "Clerk A holds"
+                    },
+                    {
+                      "value": "150",
+                      "mark": null,
+                      "tag": "Clerk B holds"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "One ledger, two clerks, no lock"
+                },
+                "say": "The ledger says 150. It should say 180. Clerk A's 30 coins are lost. Each step was fine on its own. The problem was the way they were interleaved."
+              }
+            ]
+          }
+        },
+        {
+          "id": "lock-sim",
+          "type": "stepsim",
+          "taughtOn": "levels-and-locks",
+          "mode": "predict",
+          "prompt": "Watch the same clerks with a lock.",
+          "explain": "The lock made B wait. B then read A's result and added to it, so the ledger ended at the right 180.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "100",
+                      "mark": null,
+                      "tag": "ledger"
+                    },
+                    {
+                      "value": "-",
+                      "mark": null,
+                      "tag": "Clerk A holds"
+                    },
+                    {
+                      "value": "-",
+                      "mark": null,
+                      "tag": "Clerk B holds"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "The same two clerks with a lock"
+                },
+                "say": "Same ledger, same two clerks, but now Clerk A starts with SELECT ... FOR UPDATE, which locks the row until A's transaction ends."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "100",
+                      "mark": "compare",
+                      "tag": "ledger (locked)"
+                    },
+                    {
+                      "value": "100",
+                      "mark": "best",
+                      "tag": "Clerk A holds"
+                    },
+                    {
+                      "value": "-",
+                      "mark": null,
+                      "tag": "Clerk B holds"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "A reads"
+                  },
+                  "label": "The same two clerks with a lock"
+                },
+                "say": "Clerk A reads 100 and holds the lock on the ledger row."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "100",
+                      "mark": "compare",
+                      "tag": "ledger (locked)"
+                    },
+                    {
+                      "value": "100",
+                      "mark": null,
+                      "tag": "Clerk A holds"
+                    },
+                    {
+                      "value": "waiting",
+                      "mark": null,
+                      "tag": "Clerk B holds"
+                    }
+                  ],
+                  "pointers": {
+                    "2": "B waits"
+                  },
+                  "label": "The same two clerks with a lock"
+                },
+                "say": "Clerk B asks for the same row. The row is locked, so B has to wait until A finishes.",
+                "predict": {
+                  "prompt": "Clerk B asks for the locked row. What happens to B?",
+                  "options": [
+                    {
+                      "text": "B waits until A's transaction ends",
+                      "correct": true
+                    },
+                    {
+                      "text": "B reads 100 at once",
+                      "correct": false
+                    },
+                    {
+                      "text": "B overwrites A",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "The lock is held until A's transaction ends.",
+                    "Other transactions that try to lock the row are blocked."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "130",
+                      "mark": null,
+                      "tag": "ledger"
+                    },
+                    {
+                      "value": "130",
+                      "mark": "best",
+                      "tag": "Clerk A holds"
+                    },
+                    {
+                      "value": "waiting",
+                      "mark": null,
+                      "tag": "Clerk B holds"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "A commits"
+                  },
+                  "label": "The same two clerks with a lock"
+                },
+                "say": "Clerk A writes 100 + 30 = 130 and commits. The lock is released."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "130",
+                      "mark": null,
+                      "tag": "ledger"
+                    },
+                    {
+                      "value": "130",
+                      "mark": null,
+                      "tag": "Clerk A holds"
+                    },
+                    {
+                      "value": "130",
+                      "mark": "best",
+                      "tag": "Clerk B holds"
+                    }
+                  ],
+                  "pointers": {
+                    "2": "B reads"
+                  },
+                  "label": "The same two clerks with a lock"
+                },
+                "say": "Now B's wait is over. B reads the new balance: 130.",
+                "predict": {
+                  "prompt": "B now adds 50 to what it read. What does the ledger hold after B writes?",
+                  "options": [
+                    {
+                      "text": "180",
+                      "correct": true
+                    },
+                    {
+                      "text": "150",
+                      "correct": false
+                    },
+                    {
+                      "text": "130",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "B read 130 this time.",
+                    "130 + 50."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "180",
+                      "mark": "compare",
+                      "tag": "ledger"
+                    },
+                    {
+                      "value": "130",
+                      "mark": null,
+                      "tag": "Clerk A holds"
+                    },
+                    {
+                      "value": "180",
+                      "mark": "best",
+                      "tag": "Clerk B holds"
+                    }
+                  ],
+                  "pointers": {
+                    "2": "B commits"
+                  },
+                  "label": "The same two clerks with a lock"
+                },
+                "say": "Clerk B writes 130 + 50 = 180 and commits. Neither clerk's change was lost."
+              }
+            ]
+          }
+        },
+        {
+          "id": "final-balance",
+          "type": "numeric",
+          "taughtOn": "lost-update",
+          "prompt": "The ledger holds 100. A and B both read 100. A writes 100 + 30, then B writes 100 + 50. What does the ledger hold?",
+          "answer": 150,
+          "calculator": false,
+          "hints": [
+            "B writes last, and B started from 100.",
+            "B writes 100 + 50."
+          ],
+          "explain": "B's write replaces A's, so the ledger holds 150."
+        },
+        {
+          "id": "should-be",
+          "type": "numeric",
+          "taughtOn": "lost-update",
+          "prompt": "If the two additions had not collided, what should the ledger hold after 30 and 50 are added to 100?",
+          "answer": 180,
+          "calculator": false,
+          "hints": [
+            "Just add both amounts.",
+            "100 + 30 + 50."
+          ],
+          "explain": "100 + 30 + 50 = 180."
+        },
+        {
+          "id": "lost-amount",
+          "type": "numeric",
+          "taughtOn": "lost-update",
+          "prompt": "In the interleaved run, how many coins were lost?",
+          "answer": 30,
+          "calculator": false,
+          "hints": [
+            "Compare the right answer with what the ledger holds.",
+            "180 minus 150."
+          ],
+          "explain": "180 - 150 = 30, which is exactly A's deposit."
+        },
+        {
+          "id": "phenomena",
+          "type": "match",
+          "taughtOn": "reads-go-wrong",
+          "prompt": "Match each effect to its description.",
+          "pairs": [
+            {
+              "left": "Dirty read",
+              "right": "Reading another transaction's unfinished change"
+            },
+            {
+              "left": "Non-repeatable read",
+              "right": "Reading a row twice and finding it changed in between"
+            },
+            {
+              "left": "Phantom read",
+              "right": "Running a query twice and getting extra or missing rows"
+            },
+            {
+              "left": "Lost update",
+              "right": "One write overwriting another's change"
+            },
+            {
+              "left": "Serializable",
+              "right": "As if the transactions ran one at a time"
+            }
+          ],
+          "hints": [
+            "Dirty means unfinished.",
+            "Phantom has to do with rows appearing or vanishing."
+          ],
+          "explain": "Each effect is a different way that transactions can disturb each other. Serializable allows none of them."
+        },
+        {
+          "id": "which-effect",
+          "type": "buckets",
+          "taughtOn": "reads-go-wrong",
+          "prompt": "Which effect is each story?",
+          "buckets": [
+            "Dirty read",
+            "Non-repeatable read",
+            "Phantom read"
+          ],
+          "items": [
+            {
+              "text": "A clerk sees a balance change that the other clerk then rolls back",
+              "bucket": "Dirty read"
+            },
+            {
+              "text": "A clerk reads a price another clerk is still editing",
+              "bucket": "Dirty read"
+            },
+            {
+              "text": "Mia's balance reads 40, then 55 a moment later in the same transaction",
+              "bucket": "Non-repeatable read"
+            },
+            {
+              "text": "A row you read twice has a different value the second time",
+              "bucket": "Non-repeatable read"
+            },
+            {
+              "text": "Counting open orders gives 5, then 6, because a new order was committed",
+              "bucket": "Phantom read"
+            },
+            {
+              "text": "A search for 'red' crates returns an extra row the second time",
+              "bucket": "Phantom read"
+            }
+          ],
+          "hints": [
+            "Dirty reads see uncommitted data.",
+            "Same row, different value: non-repeatable. Same query, different rows: phantom."
+          ],
+          "explain": "Dirty reads see unfinished changes, non-repeatable reads see a row change, and phantom reads see the set of rows change."
+        },
+        {
+          "id": "lock-steps",
+          "type": "order",
+          "taughtOn": "levels-and-locks",
+          "prompt": "Put these steps of the locked update in order.",
+          "items": [
+            "Clerk A locks the row",
+            "Clerk A reads 100, writes 130 and commits",
+            "Clerk B's wait ends",
+            "Clerk B reads 130 and writes 180"
+          ],
+          "hints": [
+            "The lock comes first.",
+            "B can only continue after A has committed."
+          ],
+          "explain": "A locks, A finishes and commits, B's wait ends, and B works from the new balance."
+        },
+        {
+          "id": "pg-default",
+          "type": "choice",
+          "taughtOn": "levels-and-locks",
+          "prompt": "What is PostgreSQL's default isolation level?",
+          "options": [
+            {
+              "text": "Read Committed",
+              "correct": true
+            },
+            {
+              "text": "Serializable"
+            },
+            {
+              "text": "Repeatable Read"
+            },
+            {
+              "text": "Read Uncommitted"
+            }
+          ],
+          "hints": [
+            "Look at the first row of the table.",
+            "It prevents dirty reads but allows phantoms."
+          ],
+          "explain": "Read Committed is PostgreSQL's default isolation level."
+        },
+        {
+          "id": "fix-lost",
+          "type": "choice",
+          "taughtOn": "levels-and-locks",
+          "prompt": "How does SELECT ... FOR UPDATE prevent the lost update?",
+          "options": [
+            {
+              "text": "It makes the second clerk wait, so it reads the first clerk's result",
+              "correct": true
+            },
+            {
+              "text": "It deletes the ledger row"
+            },
+            {
+              "text": "It lets both clerks write at once"
+            },
+            {
+              "text": "It rolls back the first clerk"
+            }
+          ],
+          "hints": [
+            "What does the lock do to the second clerk?",
+            "The second clerk then reads the new balance."
+          ],
+          "explain": "The row stays locked until A's transaction ends, so B waits and then adds to A's result."
+        },
+        {
+          "id": "which-effect-2",
+          "type": "choice",
+          "taughtOn": "reads-go-wrong",
+          "prompt": "Challenge: a report counts open orders at the start and end of a transaction. The counts differ because new orders were committed in between. Which effect is this?",
+          "options": [
+            {
+              "text": "A phantom read",
+              "correct": true
+            },
+            {
+              "text": "A dirty read"
+            },
+            {
+              "text": "A lost update"
+            },
+            {
+              "text": "A durable write"
+            }
+          ],
+          "hints": [
+            "Is the same row changing, or the set of rows?",
+            "New rows appeared."
+          ],
+          "explain": "The set of rows matching the query changed, which is a phantom read.",
+          "challenge": true
+        },
+        {
+          "id": "three-clerks",
+          "type": "numeric",
+          "taughtOn": "lost-update",
+          "prompt": "Challenge: three clerks each add 10 to a balance of 100. All three read before any writes. Each then writes what it read plus 10. What does the ledger hold at the end?",
+          "answer": 110,
+          "calculator": false,
+          "hints": [
+            "Each clerk read 100.",
+            "Each clerk writes 100 + 10."
+          ],
+          "explain": "Every clerk read 100 and wrote 110, so the ledger holds 110, not 130. Twenty coins were lost.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d3.2-f1",
+          "type": "quiz",
+          "taughtOn": "lost-update",
+          "prompt": "Two clerks read 100 and add 30 and 50 without a lock. What is the likely final balance?",
+          "options": [
+            {
+              "text": "150 or 130, as one update is lost",
+              "correct": true
+            },
+            {
+              "text": "Always 180"
+            },
+            {
+              "text": "Always 100"
+            },
+            {
+              "text": "Always 80"
+            }
+          ],
+          "explain": "If both read before either writes, the second write overwrites the first."
+        },
+        {
+          "id": "d3.2-f2",
+          "type": "quiz",
+          "taughtOn": "reads-go-wrong",
+          "prompt": "What is a dirty read?",
+          "options": [
+            {
+              "text": "Reading another transaction's uncommitted change",
+              "correct": true
+            },
+            {
+              "text": "Reading a very old backup"
+            },
+            {
+              "text": "Reading a damaged disk"
+            },
+            {
+              "text": "Reading the same row twice"
+            }
+          ],
+          "explain": "A dirty read sees data that might later be rolled back."
+        },
+        {
+          "id": "d3.2-f3",
+          "type": "why",
+          "taughtOn": "levels-and-locks",
+          "prompt": "How does a lock stop a lost update?",
+          "options": [
+            {
+              "text": "The second clerk waits until the first has finished",
+              "correct": true
+            },
+            {
+              "text": "The first clerk is stopped permanently"
+            },
+            {
+              "text": "Both clerks write at once"
+            },
+            {
+              "text": "The ledger is copied"
+            }
+          ],
+          "explain": "The lock is held until the transaction ends."
+        },
+        {
+          "id": "d3.2-f4",
+          "type": "predict",
+          "taughtOn": "levels-and-locks",
+          "prompt": "In PostgreSQL's default level, can a row you read twice change between the two reads?",
+          "answer": "Yes. Read Committed allows non-repeatable reads. Stricter levels prevent them."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Dirty, non-repeatable, phantom",
+          "text": "PostgreSQL's documentation defines these three effects, plus serialization anomalies, and shows which isolation levels allow them.",
+          "source": {
+            "title": "PostgreSQL: Transaction Isolation",
+            "url": "https://www.postgresql.org/docs/current/transaction-iso.html"
+          }
+        },
+        {
+          "title": "Row locks",
+          "text": "SELECT FOR UPDATE locks the rows it returns, and other transactions that try to update, delete or lock those rows are blocked until the first transaction ends.",
+          "source": {
+            "title": "PostgreSQL: Explicit Locking",
+            "url": "https://www.postgresql.org/docs/current/explicit-locking.html"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You watched two clerks overwrite each other's update, met dirty, non-repeatable and phantom reads, and saw how isolation levels and a lock keep the ledger right.",
+          "Dara taps the ledger. \"One at a time on one line, or the total is wrong.\""
+        ],
+        "mistake": {
+          "title": "Thinking each step is safe so the whole is safe",
+          "text": "Steps that are correct one at a time can still give a wrong result when two transactions are interleaved. Isolation levels and locks exist to prevent that."
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,524 @@
+{
+  "zone": 6,
+  "levels": [
+    {
+      "id": "6.1",
+      "title": "Who Looks at Whom",
+      "story": "A note on the lookout says: 'The owl saw the fox because it was hungry.' Wren frowns. \"Who was hungry, the owl or the fox?\" Kit points at the owl. \"How do you know?\" Wren asks. \"I looked back over the sentence and weighed each word.\"",
+      "everyday": {
+        "scene": "In a crowded room, you decide who to listen to by how relevant they are, not by who is closest.",
+        "question": "How can a program decide which other words matter for understanding one word?",
+        "answer": "It gives every other word a score, turns the scores into weights, and blends the words using those weights. This is attention, the core of a transformer."
+      },
+      "lessons": [
+        {
+          "id": "attention-weights",
+          "title": "Weighing the other words",
+          "text": [
+            "Attention lets each word look at every other word and decide how much each one matters. The word gets a score for each of them, and a function called softmax turns the scores into weights that are positive and add up to 1.",
+            "In 'the owl saw the fox because it was hungry', the word 'it' might give owl 67 percent, fox 24 percent and 'the' 9 percent. The new meaning of 'it' is then a blend of the words, mostly owl."
+          ],
+          "terms": [
+            {
+              "term": "Attention",
+              "meaning": "Weighing how much each word matters for another word."
+            },
+            {
+              "term": "Softmax",
+              "meaning": "Turns scores into positive weights that add up to 1."
+            }
+          ],
+          "table": {
+            "head": [
+              "Word",
+              "Score (made up)",
+              "Weight"
+            ],
+            "rows": [
+              [
+                "owl",
+                "2",
+                "67%"
+              ],
+              [
+                "fox",
+                "1",
+                "24%"
+              ],
+              [
+                "the",
+                "0",
+                "9%"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Attention (machine learning)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Attention_(machine_learning)"
+            },
+            {
+              "title": "Wikipedia: Softmax function",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Softmax_function"
+            }
+          ]
+        },
+        {
+          "id": "transformer-idea",
+          "title": "Looking at everything at once",
+          "text": [
+            "A transformer applies attention to every word of a sentence at the same time. In June 2017 a paper called 'Attention Is All You Need' proposed a network built only from attention, with no recurrence. It was more parallelisable and faster to train.",
+            "Attention alone does not know word order, so transformers add position information to each word. Without it, 'owl saw fox' and 'fox saw owl' would look the same."
+          ],
+          "predict": {
+            "prompt": "A word has scores 1, 1, 1 and 1 for four words. What weight does each get?",
+            "answer": "25 percent each, because equal scores give equal weights."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Transformer (deep learning architecture)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)"
+            },
+            {
+              "title": "Attention Is All You Need (arXiv:1706.03762)",
+              "source": "Research paper on arXiv (linked, not copied)",
+              "url": "https://arxiv.org/abs/1706.03762"
+            }
+          ]
+        },
+        {
+          "id": "cost-of-attention",
+          "title": "The price of looking everywhere",
+          "text": [
+            "Every word compares itself with every other word, so a text of n words needs n times n comparisons. Eight words need 64. One hundred words need 10,000. Double the text and the work grows fourfold.",
+            "Standard self-attention has costs that grow quadratically with the sequence length. That is why very long texts are expensive, and why researchers keep looking for cheaper variants."
+          ],
+          "deeper": {
+            "title": "Parallel versus recurrent",
+            "text": [
+              "An RNN must finish one word before starting the next. A transformer can handle all words at once during training, which suits modern graphics hardware."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Transformer (deep learning architecture)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)"
+            },
+            {
+              "title": "The Illustrated Transformer",
+              "source": "Blog post (linked, not copied)",
+              "url": "https://jalammar.github.io/illustrated-transformer/"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "weights-sum",
+          "type": "numeric",
+          "taughtOn": "attention-weights",
+          "prompt": "The attention weights for 'it' are about 67, 24 and 9 percent. What do they add up to, in percent?",
+          "answer": 100,
+          "calculator": false,
+          "hints": [
+            "Add the three numbers.",
+            "67 + 24 + 9."
+          ],
+          "explain": "The weights always add up to 100 percent, which is 1 as a fraction."
+        },
+        {
+          "id": "attention-sim",
+          "type": "stepsim",
+          "taughtOn": "attention-weights",
+          "mode": "predict",
+          "prompt": "Follow the attention for the word 'it'.",
+          "explain": "Scores become weights, and the new meaning of 'it' is a blend, mostly owl.",
+          "script": {
+            "view": "bars",
+            "steps": [
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Score for 'owl'",
+                      "value": 2
+                    },
+                    {
+                      "label": "Score for 'fox'",
+                      "value": 1
+                    },
+                    {
+                      "label": "Score for 'the'",
+                      "value": 0
+                    }
+                  ]
+                },
+                "say": "In 'the owl saw the fox because it was hungry', the word 'it' scores each of the other words by how useful it is. Higher means more useful. The scores are made up for this level: owl 2, fox 1, the 0.",
+                "predict": {
+                  "prompt": "Which word should 'it' pay the most attention to?",
+                  "options": [
+                    {
+                      "text": "owl",
+                      "correct": true
+                    },
+                    {
+                      "text": "fox",
+                      "correct": false
+                    },
+                    {
+                      "text": "the",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Which word has the highest score?",
+                    "owl has the biggest bar."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Weight for 'owl' (%)",
+                      "value": 67
+                    },
+                    {
+                      "label": "Weight for 'fox' (%)",
+                      "value": 24
+                    },
+                    {
+                      "label": "Weight for 'the' (%)",
+                      "value": 9
+                    }
+                  ]
+                },
+                "say": "The softmax step turns the scores into weights that are positive and add up to 100 percent: about 67, 24 and 9.",
+                "predict": {
+                  "prompt": "The three weights are about 67, 24 and 9 percent. What do they add up to?",
+                  "options": [
+                    {
+                      "text": "100 percent",
+                      "correct": true
+                    },
+                    {
+                      "text": "67 percent",
+                      "correct": false
+                    },
+                    {
+                      "text": "200 percent",
+                      "correct": false
+                    },
+                    {
+                      "text": "33 percent",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Add them up.",
+                    "67 + 24 + 9."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Share of 'owl' in the result (%)",
+                      "value": 67
+                    },
+                    {
+                      "label": "Share of 'fox' in the result (%)",
+                      "value": 24
+                    },
+                    {
+                      "label": "Share of 'the' in the result (%)",
+                      "value": 9
+                    }
+                  ]
+                },
+                "say": "The new meaning for 'it' is a blend of the other words' information, mixed using these weights. Most of it comes from 'owl', so 'it' now carries a strong sense of the owl."
+              }
+            ]
+          }
+        },
+        {
+          "id": "why-softmax",
+          "type": "choice",
+          "taughtOn": "attention-weights",
+          "prompt": "What does softmax do to the scores?",
+          "options": [
+            {
+              "text": "Turns them into positive weights that add up to 1",
+              "correct": true
+            },
+            {
+              "text": "Sorts the words alphabetically"
+            },
+            {
+              "text": "Deletes the lowest score"
+            },
+            {
+              "text": "Doubles every score"
+            }
+          ],
+          "hints": [
+            "Look at what the weights add to.",
+            "Weights must all be positive."
+          ],
+          "explain": "Softmax turns any scores into positive weights that sum to 1, which makes a blend possible."
+        },
+        {
+          "id": "pairs-8",
+          "type": "numeric",
+          "taughtOn": "cost-of-attention",
+          "prompt": "How many word-to-word comparisons does attention make for 8 words, with every word looking at every word?",
+          "answer": 64,
+          "calculator": false,
+          "hints": [
+            "Each of 8 words looks at 8 words.",
+            "8 x 8."
+          ],
+          "explain": "8 x 8 = 64 comparisons."
+        },
+        {
+          "id": "pairs-100",
+          "type": "numeric",
+          "taughtOn": "cost-of-attention",
+          "prompt": "How many comparisons for 100 words?",
+          "answer": 10000,
+          "calculator": false,
+          "hints": [
+            "Multiply 100 by 100.",
+            "100 x 100."
+          ],
+          "explain": "100 x 100 = 10,000 comparisons."
+        },
+        {
+          "id": "double-cost",
+          "type": "numeric",
+          "taughtOn": "cost-of-attention",
+          "prompt": "A text of 100 words is doubled to 200 words. How many times as many comparisons does attention need?",
+          "answer": 4,
+          "calculator": false,
+          "hints": [
+            "Work out 200 x 200, then divide by 100 x 100.",
+            "40,000 divided by 10,000."
+          ],
+          "explain": "200 x 200 = 40,000, which is 4 times 10,000. Double the text, four times the work."
+        },
+        {
+          "id": "position",
+          "type": "choice",
+          "taughtOn": "transformer-idea",
+          "prompt": "Why do transformers add position information to each word?",
+          "options": [
+            {
+              "text": "Attention alone does not know the order of the words",
+              "correct": true
+            },
+            {
+              "text": "Words are too short"
+            },
+            {
+              "text": "Position makes softmax work"
+            },
+            {
+              "text": "To save memory"
+            }
+          ],
+          "hints": [
+            "Would 'owl saw fox' and 'fox saw owl' differ without it?",
+            "Attention weighs words but does not track place."
+          ],
+          "explain": "Attention weighs words but does not record where they sit, so position information is added."
+        },
+        {
+          "id": "trans-words",
+          "type": "match",
+          "taughtOn": "attention-weights",
+          "prompt": "Match each idea to its meaning.",
+          "pairs": [
+            {
+              "left": "Attention",
+              "right": "Weighing how much each word matters"
+            },
+            {
+              "left": "Softmax",
+              "right": "Turns scores into weights that add up to 1"
+            },
+            {
+              "left": "Self-attention",
+              "right": "Words in one text attending to each other"
+            },
+            {
+              "left": "Positional encoding",
+              "right": "Information about where each word sits"
+            }
+          ],
+          "hints": [
+            "Self-attention is inside one text.",
+            "Position means place in the sentence."
+          ],
+          "explain": "Attention weighs words, softmax makes weights, self-attention is within one text, and positional encoding adds word order."
+        },
+        {
+          "id": "pairs-1000",
+          "type": "numeric",
+          "taughtOn": "cost-of-attention",
+          "prompt": "Challenge: how many comparisons for a text of 1,000 words?",
+          "answer": 1000000,
+          "calculator": false,
+          "hints": [
+            "1,000 x 1,000.",
+            "A thousand thousands."
+          ],
+          "explain": "1,000 x 1,000 = 1,000,000 comparisons.",
+          "challenge": true
+        },
+        {
+          "id": "parallel",
+          "type": "choice",
+          "taughtOn": "transformer-idea",
+          "prompt": "Challenge: why can a transformer read all words at once while an RNN cannot?",
+          "options": [
+            {
+              "text": "An RNN needs the previous word's state first, but attention does not",
+              "correct": true
+            },
+            {
+              "text": "A transformer ignores word order"
+            },
+            {
+              "text": "A transformer has no weights"
+            },
+            {
+              "text": "An RNN is always shorter"
+            }
+          ],
+          "hints": [
+            "What does an RNN need before reading word 3?",
+            "Its hidden state from word 2."
+          ],
+          "explain": "An RNN passes a state along, so each step must wait. Attention compares words directly, so the comparisons can run side by side.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m6.1-f1",
+          "type": "quiz",
+          "taughtOn": "attention-weights",
+          "prompt": "What does attention do?",
+          "options": [
+            {
+              "text": "Weighs how much each word matters for another word",
+              "correct": true
+            },
+            {
+              "text": "Counts letters"
+            },
+            {
+              "text": "Translates words"
+            },
+            {
+              "text": "Removes stop words"
+            }
+          ],
+          "explain": "Scores become weights that add up to 1."
+        },
+        {
+          "id": "m6.1-f2",
+          "type": "why",
+          "taughtOn": "cost-of-attention",
+          "prompt": "What happens to the number of comparisons if the text doubles?",
+          "options": [
+            {
+              "text": "It becomes four times as many",
+              "correct": true
+            },
+            {
+              "text": "It doubles"
+            },
+            {
+              "text": "It halves"
+            },
+            {
+              "text": "It stays the same"
+            }
+          ],
+          "explain": "Every word compares with every other word."
+        },
+        {
+          "id": "m6.1-f3",
+          "type": "quiz",
+          "taughtOn": "transformer-idea",
+          "prompt": "Which paper proposed the transformer?",
+          "options": [
+            {
+              "text": "Attention Is All You Need",
+              "correct": true
+            },
+            {
+              "text": "Hidden Markov Models"
+            },
+            {
+              "text": "The Bag of Words"
+            },
+            {
+              "text": "Word Counts"
+            }
+          ],
+          "explain": "It was posted in June 2017."
+        },
+        {
+          "id": "m6.1-f4",
+          "type": "predict",
+          "taughtOn": "cost-of-attention",
+          "prompt": "How many comparisons for 10 words, each looking at every word?",
+          "answer": "100, since 10 x 10."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Attention",
+          "text": "Attention is a method that determines the importance of each component in a sequence relative to the other components in that sequence.",
+          "source": {
+            "title": "Wikipedia: Attention (machine learning)",
+            "url": "https://en.wikipedia.org/wiki/Attention_(machine_learning)"
+          }
+        },
+        {
+          "title": "Transformers",
+          "text": "The transformer was introduced in the 2017 paper 'Attention Is All You Need'. It uses attention instead of recurrence and is easier to run in parallel.",
+          "source": {
+            "title": "Attention Is All You Need (arXiv:1706.03762)",
+            "url": "https://arxiv.org/abs/1706.03762"
+          }
+        },
+        {
+          "title": "Cost",
+          "text": "Standard self-attention has computational and memory costs that grow quadratically with sequence length.",
+          "source": {
+            "title": "Wikipedia: Transformer (deep learning architecture)",
+            "url": "https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You gave each word a score for every other word, turned scores into weights, blended the words, and saw why attention gets expensive on long texts.",
+          "Wren reads the note again. \"It was the owl that was hungry. You weighed every word, and the owl won.\""
+        ],
+        "mistake": {
+          "title": "Thinking weights are rules",
+          "text": "The weights come from learned scores, not fixed rules. The numbers in this level are made up to show the idea, and a real model computes them for each sentence."
+        }
+      }
+    }
+  ]
+}

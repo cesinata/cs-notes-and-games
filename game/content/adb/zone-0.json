@@ -1,0 +1,1929 @@
+{
+  "zone": 0,
+  "levels": [
+    {
+      "id": "0.1",
+      "title": "Slow Docks, Fast Docks",
+      "story": "Dock Master Dara walks Kit along the quay. \"Every crate in this harbour sits in one of three places: on the cart by my desk, in the shed, or in the far warehouse. The cart is quick and tiny. The warehouse holds everything but takes a long walk. A good clerk always knows which is which.\"",
+      "everyday": {
+        "scene": "You open a photo on your phone. The photo app is already running and answers straight away, but the photo takes a moment to appear. Switch the phone off and on again and the app has to start from scratch, yet every photo is still there.",
+        "question": "Why does a phone keep the app you are using and your photos in different places?",
+        "answer": "Fast memory is small and forgets everything when the power goes off. Storage is slower and bigger, and it keeps data without power. A database uses both for the same reasons."
+      },
+      "lessons": [
+        {
+          "id": "fast-forgetful",
+          "title": "Fast but forgetful",
+          "text": [
+            "A computer keeps data in layers. Closest to the processor is the CPU cache, then main memory (RAM), then storage such as a solid-state drive (SSD) or a hard disk. Going down the layers, each one is typically bigger and slower.",
+            "RAM and the cache are volatile: they lose their contents when the power goes off. SSDs and hard disks keep data without power. So a database works on data in memory, but must write it to storage to keep it."
+          ],
+          "terms": [
+            {
+              "term": "Volatile",
+              "meaning": "Loses its contents when the power goes off."
+            },
+            {
+              "term": "RAM",
+              "meaning": "Main memory: fast, but volatile."
+            }
+          ],
+          "predict": {
+            "prompt": "A laptop loses power while a table sits only in RAM. What happens to the table?",
+            "answer": "It is lost, because RAM is volatile. Only data written to an SSD or a disk survives."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Memory hierarchy",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Memory_hierarchy"
+            },
+            {
+              "title": "Wikipedia: Computer data storage",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Computer_data_storage"
+            }
+          ]
+        },
+        {
+          "id": "spinning-disk",
+          "title": "A spinning disk",
+          "text": [
+            "A hard disk stores data on spinning platters, and a head on a moving arm reads and writes it. To read something, the head first moves to the right track (the seek), then waits for the data to spin underneath it.",
+            "On average that wait is half a turn. One turn takes 60 divided by the revolutions per minute (rpm). An SSD has no moving parts, so it has no seek and no spin wait."
+          ],
+          "table": {
+            "head": [
+              "Speed (rpm)",
+              "One turn (ms)",
+              "Average spin wait (ms)"
+            ],
+            "rows": [
+              [
+                "5,400",
+                "11.11",
+                "5.56"
+              ],
+              [
+                "7,200",
+                "8.33",
+                "4.17"
+              ],
+              [
+                "15,000",
+                "4.00",
+                "2.00"
+              ]
+            ]
+          },
+          "deeper": {
+            "title": "Why scattered reads hurt",
+            "text": [
+              "After the first seek, data that sits next to it can be read with little extra waiting. So one long read in order is much cheaper than many reads from scattered places. PostgreSQL builds this idea into its cost settings, where a read that jumps around is scored four times a read in order, by default."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Hard disk drive",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Hard_disk_drive"
+            },
+            {
+              "title": "Wikipedia: Hard disk drive performance characteristics",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Hard_disk_drive_performance_characteristics"
+            },
+            {
+              "title": "Wikipedia: Solid-state drive",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Solid-state_drive"
+            }
+          ]
+        },
+        {
+          "id": "read-by-page",
+          "title": "Read by the page",
+          "text": [
+            "A database does not fetch one row at a time. It reads and writes storage in fixed-size chunks called pages. In PostgreSQL a page is usually 8 kB. A page holds many rows, so reading one row means reading its whole page.",
+            "That makes pages the thing to count. Imagine 100 rows fit on a page, an easy number for this level. A table of 10,000 rows is then 100 pages. Scanning the whole table costs 100 page reads, and fetching one row costs 1."
+          ],
+          "terms": [
+            {
+              "term": "Page",
+              "meaning": "The fixed-size chunk of storage that a database reads or writes at once."
+            }
+          ],
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Database Page Layout",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/storage-page-layout.html"
+            },
+            {
+              "title": "PostgreSQL documentation: Planner Cost Constants",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/runtime-config-query.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "order-speed",
+          "type": "order",
+          "taughtOn": "fast-forgetful",
+          "prompt": "Put these in order from fastest to slowest.",
+          "items": [
+            "CPU cache",
+            "Main memory (RAM)",
+            "Solid-state drive (SSD)",
+            "Spinning hard disk"
+          ],
+          "hints": [
+            "Think of the layers: closest to the processor first.",
+            "Memory with no moving parts is faster than a disk that has to spin."
+          ],
+          "explain": "The cache sits next to the processor, RAM comes next, and then storage. An SSD has no moving parts, so it beats a spinning disk."
+        },
+        {
+          "id": "keeps-or-loses",
+          "type": "buckets",
+          "taughtOn": "fast-forgetful",
+          "prompt": "What happens to this data when the power goes off?",
+          "buckets": [
+            "Kept",
+            "Lost"
+          ],
+          "items": [
+            {
+              "text": "Data held only in RAM",
+              "bucket": "Lost"
+            },
+            {
+              "text": "Data in the CPU cache",
+              "bucket": "Lost"
+            },
+            {
+              "text": "Files on an SSD",
+              "bucket": "Kept"
+            },
+            {
+              "text": "Files on a hard disk",
+              "bucket": "Kept"
+            },
+            {
+              "text": "Photos on a USB flash drive",
+              "bucket": "Kept"
+            },
+            {
+              "text": "A table that a program built only in memory",
+              "bucket": "Lost"
+            }
+          ],
+          "hints": [
+            "Ask: is it volatile?",
+            "RAM and cache forget. SSDs, disks and flash drives keep their data."
+          ],
+          "explain": "RAM and the cache are volatile, so they forget. Storage devices keep data without power, which is why a database writes to them."
+        },
+        {
+          "id": "turn-time",
+          "type": "numeric",
+          "taughtOn": "spinning-disk",
+          "prompt": "A disk spins at 6,000 rpm. How many milliseconds does one full turn take?",
+          "answer": 10,
+          "unit": "ms",
+          "calculator": false,
+          "hints": [
+            "One turn takes 60 divided by the rpm, in seconds.",
+            "60 divided by 6,000 is 0.01 seconds. How many milliseconds is that?"
+          ],
+          "explain": "60 / 6,000 = 0.01 seconds, which is 10 milliseconds."
+        },
+        {
+          "id": "spin-wait",
+          "type": "numeric",
+          "taughtOn": "spinning-disk",
+          "prompt": "At 6,000 rpm, what is the average spin wait in milliseconds?",
+          "answer": 5,
+          "unit": "ms",
+          "calculator": false,
+          "hints": [
+            "The average wait is half a turn.",
+            "One turn takes 10 ms at 6,000 rpm. Half of that?"
+          ],
+          "explain": "One turn is 10 ms, and the average wait is half a turn, so 5 ms."
+        },
+        {
+          "id": "disk-words",
+          "type": "match",
+          "taughtOn": "spinning-disk",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Seek",
+              "right": "Moving the head to the right track"
+            },
+            {
+              "left": "Spin wait",
+              "right": "Waiting for the data to turn under the head"
+            },
+            {
+              "left": "Page",
+              "right": "The fixed-size chunk a database reads at once"
+            },
+            {
+              "left": "Volatile",
+              "right": "Forgets its contents without power"
+            },
+            {
+              "left": "rpm",
+              "right": "Turns of the platter each minute"
+            }
+          ],
+          "hints": [
+            "The seek is about the arm. The spin wait is about the platter.",
+            "Volatile has to do with power."
+          ],
+          "explain": "A seek moves the head, the spin wait lets the data come round, a page is the unit of reading, volatile memory forgets, and rpm counts turns."
+        },
+        {
+          "id": "scan-pages",
+          "type": "numeric",
+          "taughtOn": "read-by-page",
+          "prompt": "A table has 2,400 rows and 100 rows fit on a page. How many page reads does a full scan need?",
+          "answer": 24,
+          "calculator": false,
+          "hints": [
+            "A full scan reads every page once.",
+            "Divide the rows by the rows per page."
+          ],
+          "explain": "2,400 / 100 = 24 pages, so a full scan costs 24 page reads."
+        },
+        {
+          "id": "which-page",
+          "type": "numeric",
+          "taughtOn": "read-by-page",
+          "prompt": "Rows are numbered from 1, and 100 rows fit on each page. Pages are numbered from 1 too, so rows 1 to 100 are on page 1. Which page holds row 250?",
+          "answer": 3,
+          "calculator": false,
+          "hints": [
+            "Rows 1 to 100 are on page 1. Where do the next hundred go?",
+            "Rows 201 to 300 share a page."
+          ],
+          "explain": "Rows 201 to 300 are on page 3, so row 250 is there. One page read finds it."
+        },
+        {
+          "id": "why-page",
+          "type": "choice",
+          "taughtOn": "read-by-page",
+          "prompt": "Why does fetching one row cost a whole page read?",
+          "options": [
+            {
+              "text": "Storage is read in whole pages, and the row sits inside one",
+              "correct": true
+            },
+            {
+              "text": "The row is too big to fit in memory"
+            },
+            {
+              "text": "Each page holds exactly one row"
+            },
+            {
+              "text": "The database has to copy the whole table first"
+            }
+          ],
+          "hints": [
+            "Think about the smallest chunk a database reads.",
+            "The row lives inside a page, and the page is the unit."
+          ],
+          "explain": "A database reads storage a page at a time. The row is part of a page, so the page comes along with it."
+        },
+        {
+          "id": "faster-spin",
+          "type": "choice",
+          "taughtOn": "spinning-disk",
+          "prompt": "Two disks: one spins at 5,400 rpm, the other at 15,000 rpm. Which has the shorter average spin wait?",
+          "options": [
+            {
+              "text": "The 15,000 rpm disk, because it turns faster",
+              "correct": true
+            },
+            {
+              "text": "The 5,400 rpm disk, because it turns slower"
+            },
+            {
+              "text": "They are the same"
+            },
+            {
+              "text": "Neither: the spin wait only depends on the seek"
+            }
+          ],
+          "hints": [
+            "See the table in the lesson.",
+            "More turns per minute means each turn takes less time."
+          ],
+          "explain": "The 15,000 rpm disk takes 4.00 ms per turn, so its average wait is 2.00 ms. The 5,400 rpm disk waits 5.56 ms on average.",
+          "challenge": true
+        },
+        {
+          "id": "wait-7200",
+          "type": "numeric",
+          "taughtOn": "spinning-disk",
+          "prompt": "Challenge: what is the average spin wait at 7,200 rpm, in milliseconds, to two decimal places?",
+          "answer": 4.17,
+          "unit": "ms",
+          "tolerance": 0.01,
+          "calculator": false,
+          "hints": [
+            "Half a turn, and a turn is 60 / rpm seconds.",
+            "One turn at 7,200 rpm takes about 8.33 ms."
+          ],
+          "explain": "60 / 7,200 s = 8.33 ms for a turn. Half of that is about 4.17 ms.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d0.1-f1",
+          "type": "quiz",
+          "taughtOn": "fast-forgetful",
+          "prompt": "Which of these keeps its data when the power goes off?",
+          "options": [
+            {
+              "text": "A solid-state drive",
+              "correct": true
+            },
+            {
+              "text": "RAM"
+            },
+            {
+              "text": "The CPU cache"
+            },
+            {
+              "text": "A variable inside a running program"
+            }
+          ],
+          "explain": "RAM and the cache are volatile. An SSD keeps its data without power."
+        },
+        {
+          "id": "d0.1-f2",
+          "type": "quiz",
+          "taughtOn": "spinning-disk",
+          "prompt": "How long is the average spin wait compared with one full turn?",
+          "options": [
+            {
+              "text": "Half a turn",
+              "correct": true
+            },
+            {
+              "text": "A full turn"
+            },
+            {
+              "text": "A quarter turn"
+            },
+            {
+              "text": "Two turns"
+            }
+          ],
+          "explain": "On average the data you want is half a turn away from the head."
+        },
+        {
+          "id": "d0.1-f3",
+          "type": "why",
+          "taughtOn": "read-by-page",
+          "prompt": "Why does a database count pages instead of rows?",
+          "options": [
+            {
+              "text": "Storage is read a page at a time",
+              "correct": true
+            },
+            {
+              "text": "Rows are too small to count"
+            },
+            {
+              "text": "Pages are always bigger than the table"
+            },
+            {
+              "text": "Rows cannot be stored on disk"
+            }
+          ],
+          "explain": "A page is the smallest chunk read, so the number of pages read is what costs time."
+        },
+        {
+          "id": "d0.1-f4",
+          "type": "predict",
+          "taughtOn": "spinning-disk",
+          "prompt": "A disk spins at 7,200 rpm. About how long is one turn?",
+          "answer": "About 8.33 milliseconds. That is 60 divided by 7,200, in seconds, times 1,000."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Pages everywhere",
+          "text": "PostgreSQL stores every table and every index as a row of fixed-size pages, usually 8 kB each. When it reads one row, it reads the page that holds it.",
+          "source": {
+            "title": "PostgreSQL: Database Page Layout",
+            "url": "https://www.postgresql.org/docs/current/storage-page-layout.html"
+          }
+        },
+        {
+          "title": "No moving parts",
+          "text": "A solid-state drive has no moving parts, so it has no seek and no spin wait. This is why it usually answers much faster than a spinning disk.",
+          "source": {
+            "title": "Wikipedia: Solid-state drive",
+            "url": "https://en.wikipedia.org/wiki/Solid-state_drive"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You sorted storage from fast and forgetful to slow and lasting, worked out how long a disk takes to spin round, and counted pages instead of rows.",
+          "Dara taps the cart. \"Quick, small, forgets. Remember who is who.\""
+        ],
+        "mistake": {
+          "title": "Counting rows instead of pages",
+          "text": "A database reads whole pages, so the cost of a query is mostly the number of pages it touches. One row in a page still costs a full page read."
+        }
+      }
+    },
+    {
+      "id": "0.2",
+      "title": "Many Kinds of Warehouse",
+      "story": "Dara waves at four warehouses along the quay, each with a different kind of door. \"Same harbour, different stores,\" she says. \"A tidy grid of shelves. A wall of labelled folders. A row of coat-check hooks. A map of ropes between crates. The job decides which one you want.\"",
+      "everyday": {
+        "scene": "A shop keeps customer details. A coffee app saves each order with whatever extras were chosen. A music app looks up a song by its ID. A social app asks who your friends' friends are.",
+        "question": "Should all four use the same kind of database?",
+        "answer": "Not necessarily. Each job has a shape: fixed rows, flexible records, quick lookup by key, or links between things. Different kinds of database fit different shapes."
+      },
+      "lessons": [
+        {
+          "id": "tables-or-documents",
+          "title": "Tables or documents",
+          "text": [
+            "A relational database keeps data in tables with fixed columns, and links tables through keys. A document database keeps each record as one self-contained document, often written in JSON.",
+            "Documents in the same collection can have different fields, and a whole order with its items can sit inside one document. Both are databases. They simply choose different shapes for the data."
+          ],
+          "terms": [
+            {
+              "term": "Document",
+              "meaning": "One self-contained record, often written in JSON."
+            }
+          ],
+          "table": {
+            "head": [
+              "Order",
+              "Fields stored"
+            ],
+            "rows": [
+              [
+                "1",
+                "customer, items"
+              ],
+              [
+                "2",
+                "customer, items, gift note"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "Order 2 has a gift note and order 1 does not. Which shape copes with that without any change to the others?",
+            "answer": "A document database. Each document carries its own fields."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Document-oriented database",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Document-oriented_database"
+            },
+            {
+              "title": "Wikipedia: NoSQL",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/NoSQL"
+            }
+          ]
+        },
+        {
+          "id": "keys-and-families",
+          "title": "Hooks and families",
+          "text": [
+            "A key-value store is like a coat check. You hand over a key and get the stored value back, and the store is built around that one move: find a value by its key.",
+            "A wide-column store names each value by two keys: a row key, then a column name. Columns are grouped into column families, which are kept together on disk."
+          ],
+          "terms": [
+            {
+              "term": "Key-value store",
+              "meaning": "A store that finds a value by its key."
+            },
+            {
+              "term": "Column family",
+              "meaning": "A group of columns kept together on disk."
+            }
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Key-value database",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Key%E2%80%93value_database"
+            },
+            {
+              "title": "Wikipedia: Wide-column store",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Wide-column_store"
+            }
+          ]
+        },
+        {
+          "id": "graph-and-pick",
+          "title": "Links and the choice",
+          "text": [
+            "A graph database stores things as nodes and the links between them as edges. A question such as \"who are the friends of my friends?\" then follows edges directly instead of joining tables.",
+            "Choosing a kind starts with the question you ask most. Fixed rows suit relational. Flexible records suit document. Lookup by key suits key-value. Links between things suit graph."
+          ],
+          "terms": [
+            {
+              "term": "Node",
+              "meaning": "A thing in a graph, such as a person."
+            },
+            {
+              "term": "Edge",
+              "meaning": "A link between two nodes, such as a friendship."
+            }
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Graph database",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Graph_database"
+            },
+            {
+              "title": "Wikipedia: NoSQL",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/NoSQL"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "friends-sim",
+          "type": "stepsim",
+          "taughtOn": "graph-and-pick",
+          "mode": "predict",
+          "prompt": "Follow the lines to find Ana's friends of friends.",
+          "explain": "Friends of friends are found by following edges two steps. In a graph database, that is the basic move.",
+          "script": {
+            "view": "graph",
+            "steps": [
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "Ana",
+                      "x": 40,
+                      "y": 90,
+                      "label": "Ana",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "Ben",
+                      "x": 110,
+                      "y": 40,
+                      "label": "Ben"
+                    },
+                    {
+                      "id": "Cy",
+                      "x": 110,
+                      "y": 140,
+                      "label": "Cy"
+                    },
+                    {
+                      "id": "Dee",
+                      "x": 190,
+                      "y": 45,
+                      "label": "Dee"
+                    },
+                    {
+                      "id": "Eli",
+                      "x": 190,
+                      "y": 140,
+                      "label": "Eli"
+                    },
+                    {
+                      "id": "Fay",
+                      "x": 260,
+                      "y": 140,
+                      "label": "Fay"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "Ana",
+                      "to": "Ben"
+                    },
+                    {
+                      "from": "Ana",
+                      "to": "Cy"
+                    },
+                    {
+                      "from": "Ben",
+                      "to": "Dee"
+                    },
+                    {
+                      "from": "Cy",
+                      "to": "Dee"
+                    },
+                    {
+                      "from": "Cy",
+                      "to": "Eli"
+                    },
+                    {
+                      "from": "Eli",
+                      "to": "Fay"
+                    }
+                  ],
+                  "legend": "now = Ana, where we start. waiting = Ana's direct friends. visited = friends of friends, two steps away."
+                },
+                "say": "Six people and their friendships. Each line is a friendship. We start at Ana and look for friends of friends, meaning people two steps away."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "Ana",
+                      "x": 40,
+                      "y": 90,
+                      "label": "Ana",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "Ben",
+                      "x": 110,
+                      "y": 40,
+                      "label": "Ben",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "Cy",
+                      "x": 110,
+                      "y": 140,
+                      "label": "Cy",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "Dee",
+                      "x": 190,
+                      "y": 45,
+                      "label": "Dee"
+                    },
+                    {
+                      "id": "Eli",
+                      "x": 190,
+                      "y": 140,
+                      "label": "Eli"
+                    },
+                    {
+                      "id": "Fay",
+                      "x": 260,
+                      "y": 140,
+                      "label": "Fay"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "Ana",
+                      "to": "Ben",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "Ana",
+                      "to": "Cy",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "Ben",
+                      "to": "Dee"
+                    },
+                    {
+                      "from": "Cy",
+                      "to": "Dee"
+                    },
+                    {
+                      "from": "Cy",
+                      "to": "Eli"
+                    },
+                    {
+                      "from": "Eli",
+                      "to": "Fay"
+                    }
+                  ],
+                  "legend": "now = Ana, where we start. waiting = Ana's direct friends. visited = friends of friends, two steps away."
+                },
+                "say": "One step from Ana: Ben and Cy, her direct friends. A graph database follows these lines directly, with no table join."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "Ana",
+                      "x": 40,
+                      "y": 90,
+                      "label": "Ana",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "Ben",
+                      "x": 110,
+                      "y": 40,
+                      "label": "Ben",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "Cy",
+                      "x": 110,
+                      "y": 140,
+                      "label": "Cy",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "Dee",
+                      "x": 190,
+                      "y": 45,
+                      "label": "Dee",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Eli",
+                      "x": 190,
+                      "y": 140,
+                      "label": "Eli"
+                    },
+                    {
+                      "id": "Fay",
+                      "x": 260,
+                      "y": 140,
+                      "label": "Fay"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "Ana",
+                      "to": "Ben",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "Ana",
+                      "to": "Cy",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "Ben",
+                      "to": "Dee",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "Cy",
+                      "to": "Dee",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "Cy",
+                      "to": "Eli"
+                    },
+                    {
+                      "from": "Eli",
+                      "to": "Fay"
+                    }
+                  ],
+                  "legend": "now = Ana, where we start. waiting = Ana's direct friends. visited = friends of friends, two steps away."
+                },
+                "say": "Next, follow the lines out of Ben and Cy. Both lead to Dee. Dee is two steps from Ana, and is counted once.",
+                "predict": {
+                  "prompt": "Cy has one more friend that Ben does not. Besides Ana and Dee, who is it?",
+                  "options": [
+                    {
+                      "text": "Eli",
+                      "correct": true
+                    },
+                    {
+                      "text": "Fay",
+                      "correct": false
+                    },
+                    {
+                      "text": "Ben",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Look at the lines leaving Cy.",
+                    "Cy is joined to Ana, Dee and one more person."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "Ana",
+                      "x": 40,
+                      "y": 90,
+                      "label": "Ana",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "Ben",
+                      "x": 110,
+                      "y": 40,
+                      "label": "Ben",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "Cy",
+                      "x": 110,
+                      "y": 140,
+                      "label": "Cy",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "Dee",
+                      "x": 190,
+                      "y": 45,
+                      "label": "Dee",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Eli",
+                      "x": 190,
+                      "y": 140,
+                      "label": "Eli",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "Fay",
+                      "x": 260,
+                      "y": 140,
+                      "label": "Fay"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "Ana",
+                      "to": "Ben",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "Ana",
+                      "to": "Cy",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "Ben",
+                      "to": "Dee",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "Cy",
+                      "to": "Dee",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "Cy",
+                      "to": "Eli",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "Eli",
+                      "to": "Fay"
+                    }
+                  ],
+                  "legend": "now = Ana, where we start. waiting = Ana's direct friends. visited = friends of friends, two steps away."
+                },
+                "say": "Cy also leads to Eli, who is two steps from Ana. Fay is three steps away, so she is not a friend of a friend.",
+                "predict": {
+                  "prompt": "How many people are exactly two steps from Ana?",
+                  "options": [
+                    {
+                      "text": "1",
+                      "correct": false
+                    },
+                    {
+                      "text": "2",
+                      "correct": true
+                    },
+                    {
+                      "text": "3",
+                      "correct": false
+                    },
+                    {
+                      "text": "4",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Count the people marked Visited.",
+                    "Dee and Eli are two steps away. Fay is three."
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "type-job",
+          "type": "match",
+          "taughtOn": "tables-or-documents",
+          "prompt": "Match each kind of database to the job it fits best.",
+          "pairs": [
+            {
+              "left": "Relational",
+              "right": "Fixed rows linked by keys"
+            },
+            {
+              "left": "Document",
+              "right": "Flexible records kept whole"
+            },
+            {
+              "left": "Key-value",
+              "right": "Fast lookup by one key"
+            },
+            {
+              "left": "Wide-column",
+              "right": "Values found by row key and column name"
+            },
+            {
+              "left": "Graph",
+              "right": "Links between things"
+            }
+          ],
+          "hints": [
+            "Start with the one that has a name close to its job.",
+            "Wide-column is the one with two keys."
+          ],
+          "explain": "Each kind is shaped for a job: tables for fixed rows, documents for flexible records, key-value for lookups, wide-column for two-key values, graph for links."
+        },
+        {
+          "id": "pick-store",
+          "type": "buckets",
+          "taughtOn": "graph-and-pick",
+          "prompt": "Which kind of database suits each job best?",
+          "buckets": [
+            "Relational",
+            "Document",
+            "Key-value",
+            "Graph"
+          ],
+          "items": [
+            {
+              "text": "Staff pay records where everyone has the same columns",
+              "bucket": "Relational"
+            },
+            {
+              "text": "Members and loans linked by ID numbers",
+              "bucket": "Relational"
+            },
+            {
+              "text": "Coffee orders where the extras differ each time",
+              "bucket": "Document"
+            },
+            {
+              "text": "A product page stored as one JSON record",
+              "bucket": "Document"
+            },
+            {
+              "text": "Find a login session by its token",
+              "bucket": "Key-value"
+            },
+            {
+              "text": "Keep a page's result under its address for quick reuse",
+              "bucket": "Key-value"
+            },
+            {
+              "text": "Who follows whom, and who they follow",
+              "bucket": "Graph"
+            },
+            {
+              "text": "The shortest chain of introductions between two people",
+              "bucket": "Graph"
+            }
+          ],
+          "hints": [
+            "Look for the shape of the data in each job.",
+            "Links between things point to graph. A lookup by a single token points to key-value."
+          ],
+          "explain": "The shape of the data and the question decide the kind of database. No kind wins every job."
+        },
+        {
+          "id": "cy-friends",
+          "type": "numeric",
+          "taughtOn": "graph-and-pick",
+          "prompt": "In the friendship picture, how many friends does Cy have?",
+          "answer": 3,
+          "calculator": false,
+          "hints": [
+            "Count the lines that touch Cy.",
+            "Cy is joined to Ana, Dee and one more."
+          ],
+          "explain": "Cy's friends are Ana, Dee and Eli, so 3."
+        },
+        {
+          "id": "why-doc",
+          "type": "choice",
+          "taughtOn": "tables-or-documents",
+          "prompt": "Each coffee order has a different set of extras. Which shape handles that most naturally?",
+          "options": [
+            {
+              "text": "A document database, where each order carries its own fields",
+              "correct": true
+            },
+            {
+              "text": "A table where every order must have the same columns"
+            },
+            {
+              "text": "A key-value store with no fields at all"
+            },
+            {
+              "text": "A graph with one node per extra"
+            }
+          ],
+          "hints": [
+            "Which shape lets each record have its own fields?",
+            "Fixed-column tables do not bend. Documents do."
+          ],
+          "explain": "Documents in a collection can differ in their fields. A fixed table would need a column for every possible extra."
+        },
+        {
+          "id": "kv-move",
+          "type": "choice",
+          "taughtOn": "keys-and-families",
+          "prompt": "A key-value store is built around which move?",
+          "options": [
+            {
+              "text": "Finding a value by its key",
+              "correct": true
+            },
+            {
+              "text": "Joining two tables on a shared column"
+            },
+            {
+              "text": "Following links between nodes"
+            },
+            {
+              "text": "Keeping columns in fixed order"
+            }
+          ],
+          "hints": [
+            "Think of the coat check.",
+            "You hand over a key and get a value back."
+          ],
+          "explain": "A key-value store is built for fast lookup by key, like handing over a ticket for a coat."
+        },
+        {
+          "id": "kind-for-links",
+          "type": "choice",
+          "taughtOn": "graph-and-pick",
+          "prompt": "A school wants to ask, \"Which pupils share a friend with Zara?\" Which kind of database suits that question?",
+          "options": [
+            {
+              "text": "Graph, because the question is about links between people",
+              "correct": true
+            },
+            {
+              "text": "Key-value, because each pupil has a key"
+            },
+            {
+              "text": "Wide-column, because there are many columns"
+            },
+            {
+              "text": "None, it cannot be stored"
+            }
+          ],
+          "hints": [
+            "The question is about relationships.",
+            "Edges are how a graph database stores relationships."
+          ],
+          "explain": "Questions about links between things are what graph databases are built for.",
+          "challenge": true
+        },
+        {
+          "id": "fay-edge",
+          "type": "numeric",
+          "taughtOn": "graph-and-pick",
+          "prompt": "Challenge: Ben and Fay become friends, so a new line joins them. Now how many people are exactly two steps from Ana?",
+          "answer": 3,
+          "calculator": false,
+          "hints": [
+            "Fay now has a line to Ben. Is Ben a direct friend of Ana?",
+            "Dee, Eli and now one more are two steps away."
+          ],
+          "explain": "Ana is joined to Ben, and Ben is now joined to Fay, so Fay is two steps away. With Dee and Eli, that makes 3.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d0.2-f1",
+          "type": "quiz",
+          "taughtOn": "tables-or-documents",
+          "prompt": "A database where each record is a self-contained JSON-like record is called what?",
+          "options": [
+            {
+              "text": "A document database",
+              "correct": true
+            },
+            {
+              "text": "A graph database"
+            },
+            {
+              "text": "A key-value cache"
+            },
+            {
+              "text": "A spreadsheet"
+            }
+          ],
+          "explain": "A document database keeps each record as a document."
+        },
+        {
+          "id": "d0.2-f2",
+          "type": "quiz",
+          "taughtOn": "keys-and-families",
+          "prompt": "What do you give a key-value store to get a value back?",
+          "options": [
+            {
+              "text": "The key",
+              "correct": true
+            },
+            {
+              "text": "A SQL join"
+            },
+            {
+              "text": "A column family"
+            },
+            {
+              "text": "A graph edge"
+            }
+          ],
+          "explain": "A key-value store finds values by their keys."
+        },
+        {
+          "id": "d0.2-f3",
+          "type": "why",
+          "taughtOn": "graph-and-pick",
+          "prompt": "Why is a graph database good at \"friends of friends\"?",
+          "options": [
+            {
+              "text": "It stores the links and follows them directly",
+              "correct": true
+            },
+            {
+              "text": "It keeps every record in one table"
+            },
+            {
+              "text": "It never stores relationships"
+            },
+            {
+              "text": "It only stores numbers"
+            }
+          ],
+          "explain": "Edges are stored as part of the data, so following them is the basic move."
+        },
+        {
+          "id": "d0.2-f4",
+          "type": "predict",
+          "taughtOn": "graph-and-pick",
+          "prompt": "A job is \"find someone's session by their token\". Which kind of store would you pick?",
+          "answer": "A key-value store. The token is the key and the session is the value."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Examples you might know",
+          "text": "Redis is often used as a key-value store, MongoDB as a document database, Apache Cassandra as a wide-column store, and Neo4j as a graph database.",
+          "source": {
+            "title": "Wikipedia: NoSQL",
+            "url": "https://en.wikipedia.org/wiki/NoSQL"
+          }
+        },
+        {
+          "title": "More than one kind in one system",
+          "text": "NoSQL databases can work alongside SQL databases in setups where several kinds of database are combined. This is called polyglot persistence.",
+          "source": {
+            "title": "Wikipedia: NoSQL",
+            "url": "https://en.wikipedia.org/wiki/NoSQL"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You met documents, key-value stores, wide-column stores and graphs, followed links to find friends of friends, and matched each kind of database to a job.",
+          "Dara closes the four doors. \"Pick the store from the shape of the job.\""
+        ],
+        "mistake": {
+          "title": "Thinking one kind fits everything",
+          "text": "Each kind of database is shaped for certain jobs. A table is not always the best fit, and a graph is not always overkill. Start from the question you ask most."
+        }
+      }
+    },
+    {
+      "id": "0.3",
+      "title": "Near and Far Harbours",
+      "story": "Dara points across the water. \"We have outgrown one warehouse. Now there are four, on four quays. How do we split the cargo between them? And what happens when one floods?\"",
+      "everyday": {
+        "scene": "A video app has millions of users. Keeping every account on one computer would overload it, and if that computer broke, nobody could log in. So the accounts are spread over many computers, and some computers hold copies of each other's data.",
+        "question": "How can many computers behave like one database?",
+        "answer": "The data is split into pieces and copies of pieces are kept on different machines. The database software hides the split from the user, and works to keep the copies in step."
+      },
+      "lessons": [
+        {
+          "id": "one-or-many",
+          "title": "One harbour or many",
+          "text": [
+            "A centralised database keeps all its data on one computer. That is simple, but the computer sets a limit on size and speed, and if it fails, everything stops.",
+            "A distributed database stores data across several computers, either in one data centre or spread over a network of places. The people using it still see one database. The hard part is hiding the split."
+          ],
+          "terms": [
+            {
+              "term": "Distributed database",
+              "meaning": "One database whose data is stored on several computers."
+            }
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Distributed database",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Distributed_database"
+            },
+            {
+              "title": "Wikipedia: NoSQL",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/NoSQL"
+            }
+          ]
+        },
+        {
+          "id": "split-and-copy",
+          "title": "Split it, copy it",
+          "text": [
+            "Sharding splits a table by rows. Each shard is a horizontal slice of the data and may live on its own server. One simple rule is shard number = id mod the number of shards.",
+            "Replication is different. It keeps full copies of the same data on several machines, so the system can carry on if one fails. Sharding spreads the data. Replication repeats it. Real systems often use both."
+          ],
+          "terms": [
+            {
+              "term": "Shard",
+              "meaning": "One slice of a table's rows, held on its own server."
+            },
+            {
+              "term": "Replica",
+              "meaning": "A full copy of data kept on another machine."
+            }
+          ],
+          "deeper": {
+            "title": "A smarter rule",
+            "text": [
+              {
+                "text": "The mod rule breaks down when you add a shard, because most ids would change shard: going from 4 shards to 5, 80 percent of ids would move. Consistent hashing is a technique used in sharding so that, when the number of slots changes, only about n / m of the keys need to be remapped on average, where n is the number of keys and m is the number of slots.",
+                "verify": false
+              }
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Shard (database architecture)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Shard_(database_architecture)"
+            },
+            {
+              "title": "Wikipedia: Replication (computing)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Replication_(computing)"
+            },
+            {
+              "title": "Wikipedia: Consistent hashing",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Consistent_hashing"
+            }
+          ]
+        },
+        {
+          "id": "what-is-shared",
+          "title": "What do the machines share?",
+          "text": [
+            "Machines in a cluster can share different things. In a shared-nothing design each node has its own processor, memory and storage, and nodes do not share them. In a shared-disk design each node has its own memory, but all of them use the same disks.",
+            "Shared-nothing aims to stop nodes fighting over the same data. Shared-disk lets any node reach all the data."
+          ],
+          "table": {
+            "head": [
+              "Design",
+              "Memory",
+              "Disks"
+            ],
+            "rows": [
+              [
+                "Shared-nothing",
+                "Own for each node",
+                "Own for each node"
+              ],
+              [
+                "Shared-disk",
+                "Own for each node",
+                "Shared by all nodes"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Shared-nothing architecture",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Shared-nothing_architecture"
+            },
+            {
+              "title": "Wikipedia: Shared-disk architecture",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Shared-disk_architecture"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "route-ids",
+          "type": "stepsim",
+          "taughtOn": "split-and-copy",
+          "mode": "predict",
+          "prompt": "Watch ids being sent to four shards by the rule shard = id mod 4.",
+          "explain": "The mod rule sends each id to a shard by its remainder. It is quick and simple, but the spread is not guaranteed to be even.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Four shards (numbered 0 to 3) and the ids they hold"
+                },
+                "say": "Four shards, numbered 0 to 3 under the boxes, each on its own server and all empty. The rule is shard number = id mod 4, which means the remainder after dividing the id by 4."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "5",
+                      "mark": "best"
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "1": "id 5"
+                  },
+                  "label": "Four shards (numbered 0 to 3) and the ids they hold"
+                },
+                "say": "Id 5: 5 mod 4 is 1, so it goes to shard 1."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "12",
+                      "mark": "best"
+                    },
+                    {
+                      "value": "5",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "0": "id 12"
+                  },
+                  "label": "Four shards (numbered 0 to 3) and the ids they hold"
+                },
+                "say": "Id 12: 12 mod 4 is 0, so it goes to shard 0."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "12",
+                      "mark": null
+                    },
+                    {
+                      "value": "5, 9",
+                      "mark": "best"
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "1": "id 9"
+                  },
+                  "label": "Four shards (numbered 0 to 3) and the ids they hold"
+                },
+                "say": "Id 9: 9 mod 4 is 1, so it goes to shard 1."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "12, 16",
+                      "mark": "best"
+                    },
+                    {
+                      "value": "5, 9",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "0": "id 16"
+                  },
+                  "label": "Four shards (numbered 0 to 3) and the ids they hold"
+                },
+                "say": "Id 16: 16 mod 4 is 0, so it goes to shard 0."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "12, 16",
+                      "mark": null
+                    },
+                    {
+                      "value": "5, 9",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "7",
+                      "mark": "best"
+                    }
+                  ],
+                  "pointers": {
+                    "3": "id 7"
+                  },
+                  "label": "Four shards (numbered 0 to 3) and the ids they hold"
+                },
+                "say": "Id 7: 7 mod 4 is 3, so it goes to shard 3.",
+                "predict": {
+                  "prompt": "The id 7 arrives. Which shard does it go to?",
+                  "options": [
+                    {
+                      "text": "Shard 3",
+                      "correct": true
+                    },
+                    {
+                      "text": "Shard 0",
+                      "correct": false
+                    },
+                    {
+                      "text": "Shard 1",
+                      "correct": false
+                    },
+                    {
+                      "text": "Shard 2",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "7 divided by 4 is 1, remainder 3.",
+                    "The shard number is the remainder."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "12, 16, 8",
+                      "mark": "best"
+                    },
+                    {
+                      "value": "5, 9",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "7",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "0": "id 8"
+                  },
+                  "label": "Four shards (numbered 0 to 3) and the ids they hold"
+                },
+                "say": "Id 8: 8 mod 4 is 0, so it goes to shard 0."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "12, 16, 8",
+                      "mark": null
+                    },
+                    {
+                      "value": "5, 9",
+                      "mark": null
+                    },
+                    {
+                      "value": "-",
+                      "mark": null
+                    },
+                    {
+                      "value": "7",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Four shards (numbered 0 to 3) and the ids they hold"
+                },
+                "say": "All six ids are placed. Shard 0 holds three, shard 1 holds two, shard 2 holds none and shard 3 holds one. A simple rule does not promise an even spread.",
+                "predict": {
+                  "prompt": "Which shard ended up with no ids?",
+                  "options": [
+                    {
+                      "text": "Shard 2",
+                      "correct": true
+                    },
+                    {
+                      "text": "Shard 1",
+                      "correct": false
+                    },
+                    {
+                      "text": "Shard 3",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Look for the empty crate.",
+                    "None of the ids had remainder 2."
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "rows-per-shard",
+          "type": "numeric",
+          "taughtOn": "split-and-copy",
+          "prompt": "A table of 1,200,000 rows is split evenly over 4 shards. How many rows does each shard hold?",
+          "answer": 300000,
+          "calculator": false,
+          "hints": [
+            "Divide the rows by the number of shards.",
+            "1,200,000 divided by 4."
+          ],
+          "explain": "1,200,000 / 4 = 300,000 rows per shard."
+        },
+        {
+          "id": "which-shard",
+          "type": "numeric",
+          "taughtOn": "split-and-copy",
+          "prompt": "There are 5 shards, numbered 0 to 4, and the rule is shard = id mod 5. Which shard holds account 4,127?",
+          "answer": 2,
+          "calculator": false,
+          "hints": [
+            "Find the remainder when 4,127 is divided by 5.",
+            "4,125 is a multiple of 5."
+          ],
+          "explain": "4,127 = 5 x 825 + 2, so the remainder is 2 and the account lives on shard 2."
+        },
+        {
+          "id": "route-match",
+          "type": "match",
+          "taughtOn": "split-and-copy",
+          "prompt": "With the rule shard = id mod 4, match each id to its shard.",
+          "pairs": [
+            {
+              "left": "17",
+              "right": "Shard 1"
+            },
+            {
+              "left": "22",
+              "right": "Shard 2"
+            },
+            {
+              "left": "40",
+              "right": "Shard 0"
+            },
+            {
+              "left": "31",
+              "right": "Shard 3"
+            }
+          ],
+          "hints": [
+            "Divide by 4 and keep the remainder.",
+            "40 divides exactly by 4."
+          ],
+          "explain": "17 leaves 1, 22 leaves 2, 40 leaves 0 and 31 leaves 3."
+        },
+        {
+          "id": "split-or-copy",
+          "type": "buckets",
+          "taughtOn": "split-and-copy",
+          "prompt": "Is each statement about sharding or about replication?",
+          "buckets": [
+            "Sharding",
+            "Replication"
+          ],
+          "items": [
+            {
+              "text": "Each server holds a different part of the rows",
+              "bucket": "Sharding"
+            },
+            {
+              "text": "Each server holds the whole table",
+              "bucket": "Replication"
+            },
+            {
+              "text": "Helps when the data is too big for one server",
+              "bucket": "Sharding"
+            },
+            {
+              "text": "Lets reads carry on after one server fails",
+              "bucket": "Replication"
+            },
+            {
+              "text": "Splits 1,000 rows into 250 + 250 + 250 + 250",
+              "bucket": "Sharding"
+            },
+            {
+              "text": "Keeps three identical copies of the data",
+              "bucket": "Replication"
+            }
+          ],
+          "hints": [
+            "Sharding splits. Replication repeats.",
+            "If every server has the same data, it is replication."
+          ],
+          "explain": "Sharding divides the rows between servers. Replication keeps the same data in several places."
+        },
+        {
+          "id": "copy-space",
+          "type": "numeric",
+          "taughtOn": "split-and-copy",
+          "prompt": "A 40 GB table is replicated so that 3 servers each hold a full copy. How many gigabytes are stored in total?",
+          "answer": 120,
+          "unit": "GB",
+          "calculator": false,
+          "hints": [
+            "Each copy is 40 GB.",
+            "3 copies of 40 GB."
+          ],
+          "explain": "3 x 40 GB = 120 GB. Copies cost extra space."
+        },
+        {
+          "id": "central-drawback",
+          "type": "choice",
+          "taughtOn": "one-or-many",
+          "prompt": "A centralised database keeps all its data on one computer. What is one drawback?",
+          "options": [
+            {
+              "text": "If that computer fails, everything stops",
+              "correct": true
+            },
+            {
+              "text": "It cannot store any data"
+            },
+            {
+              "text": "It always runs slower than a distributed one"
+            },
+            {
+              "text": "Its data is never up to date"
+            }
+          ],
+          "hints": [
+            "Think about what depends on that one computer.",
+            "One machine is a single point of failure, and it also limits how much data fits."
+          ],
+          "explain": "With everything on one computer, a failure stops the whole database, and the machine limits how much data and traffic it can handle."
+        },
+        {
+          "id": "shared-nothing",
+          "type": "choice",
+          "taughtOn": "what-is-shared",
+          "prompt": "In a shared-nothing cluster, what do two nodes share?",
+          "options": [
+            {
+              "text": "Neither memory nor storage",
+              "correct": true
+            },
+            {
+              "text": "The same disks"
+            },
+            {
+              "text": "The same memory"
+            },
+            {
+              "text": "The same processor"
+            }
+          ],
+          "hints": [
+            "Read the name of the design.",
+            "Each node has its own."
+          ],
+          "explain": "In a shared-nothing design each node has its own processor, memory and storage."
+        },
+        {
+          "id": "no-replica",
+          "type": "choice",
+          "taughtOn": "split-and-copy",
+          "prompt": "A table is sharded over 4 servers with no replicas. One server fails. What is the effect?",
+          "options": [
+            {
+              "text": "The rows on that shard are unavailable until it is back or restored",
+              "correct": true
+            },
+            {
+              "text": "Nothing, the others hold copies"
+            },
+            {
+              "text": "All four shards lose their data"
+            },
+            {
+              "text": "The rows move to the next server on their own"
+            }
+          ],
+          "hints": [
+            "Think: does any other server hold a copy of those rows?",
+            "Sharding spreads the rows, it does not copy them."
+          ],
+          "explain": "Without replicas, only that one server holds its rows, so they are unavailable until it returns.",
+          "challenge": true
+        },
+        {
+          "id": "copies-total",
+          "type": "numeric",
+          "taughtOn": "split-and-copy",
+          "prompt": "Challenge: 6,000,000 rows are split into 4 shards, and each shard is kept on 2 servers (the original plus one copy). How many row copies are stored in total?",
+          "answer": 12000000,
+          "calculator": false,
+          "hints": [
+            "Every row is stored twice.",
+            "6,000,000 times 2."
+          ],
+          "explain": "Splitting does not change the total. Keeping 2 copies of every row doubles it to 12,000,000.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d0.3-f1",
+          "type": "quiz",
+          "taughtOn": "split-and-copy",
+          "prompt": "Which one keeps full copies of the same data on several machines?",
+          "options": [
+            {
+              "text": "Replication",
+              "correct": true
+            },
+            {
+              "text": "Sharding"
+            },
+            {
+              "text": "Paging"
+            },
+            {
+              "text": "Hashing"
+            }
+          ],
+          "explain": "Replication repeats the data. Sharding splits it."
+        },
+        {
+          "id": "d0.3-f2",
+          "type": "quiz",
+          "taughtOn": "split-and-copy",
+          "prompt": "With shard = id mod 3, which shard holds id 10?",
+          "options": [
+            {
+              "text": "Shard 1",
+              "correct": true
+            },
+            {
+              "text": "Shard 0"
+            },
+            {
+              "text": "Shard 2"
+            },
+            {
+              "text": "Shard 3"
+            }
+          ],
+          "explain": "10 divided by 3 is 3, remainder 1."
+        },
+        {
+          "id": "d0.3-f3",
+          "type": "why",
+          "taughtOn": "what-is-shared",
+          "prompt": "What do nodes in a shared-nothing design share?",
+          "options": [
+            {
+              "text": "Neither memory nor storage",
+              "correct": true
+            },
+            {
+              "text": "Their disks"
+            },
+            {
+              "text": "Their memory"
+            },
+            {
+              "text": "Everything"
+            }
+          ],
+          "explain": "Each node has its own processor, memory and storage."
+        },
+        {
+          "id": "d0.3-f4",
+          "type": "predict",
+          "taughtOn": "split-and-copy",
+          "prompt": "A table is replicated on three servers and one fails. Can the system still answer queries?",
+          "answer": "Usually yes, because the other two servers still hold full copies. That is a main reason to replicate."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Why spread data out",
+          "text": "A distributed database stores data across several computers. That may improve performance, because transactions can be processed on many machines instead of one.",
+          "source": {
+            "title": "Wikipedia: Distributed database",
+            "url": "https://en.wikipedia.org/wiki/Distributed_database"
+          },
+          "verify": false
+        },
+        {
+          "title": "Copies for staying up",
+          "text": "Replication keeps multiple copies of data so that a system can continue when a component fails.",
+          "source": {
+            "title": "Wikipedia: Replication (computing)",
+            "url": "https://en.wikipedia.org/wiki/Replication_(computing)"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You split ids across shards by their remainder, told sharding from replication, and compared designs where machines share nothing or share their disks.",
+          "Dara signs three crates over. \"Split the cargo, copy the important crates.\""
+        ],
+        "mistake": {
+          "title": "Mixing up sharding and replication",
+          "text": "Sharding gives each server a different part of the data. Replication gives each server the same data. One spreads the load, the other protects against failure."
+        }
+      }
+    }
+  ]
+}

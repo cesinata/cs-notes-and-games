@@ -1,0 +1,2353 @@
+{
+  "zone": 5,
+  "levels": [
+    {
+      "id": "5.1",
+      "title": "Dock Numbers",
+      "story": "The parcel has crossed the ranch. Now Kit stands in the Harbour of Ports, where ships arrive by the hundred and the harbourmaster sorts them by dock number.",
+      "everyday": {
+        "scene": "A large office building has one street address. Inside, each company has its own suite number, and the front desk sends every visitor to the right suite.",
+        "question": "The street address got you to the building. What gets you to the right company?",
+        "answer": "The suite number. A computer is the same: the IP address finds the machine, and a port number finds the program inside it that should receive the data."
+      },
+      "lessons": [
+        {
+          "id": "ports",
+          "title": "The address and the suite",
+          "text": [
+            "The network layer delivers packets from one machine to another. The transport layer goes one step further: from one program to another. A port is a 16-bit number that names a program on a machine, like a suite number inside a building.",
+            "A connection is identified by four values: source IP, source port, destination IP and destination port. Many conversations can share one machine, because the four values differ. Some ports are well known: 22 is SSH, 25 is mail, 53 is name lookups, 80 is the web and 443 is the secure web."
+          ],
+          "terms": [
+            {
+              "term": "Port",
+              "meaning": "A 16-bit number that names a program on a machine."
+            },
+            {
+              "term": "Multiplexing",
+              "meaning": "Many conversations sharing one machine and one network address."
+            },
+            {
+              "term": "Process",
+              "meaning": "A running program."
+            }
+          ],
+          "predict": {
+            "prompt": "Two browser tabs on the same laptop open the same website. Which of the four connection values differ?",
+            "answer": "The source port. The laptop uses a different one for each connection."
+          },
+          "deeper": {
+            "title": "Who picks the client's port?",
+            "text": [
+              "A server listens on a well-known port so clients can find it. A client does not need a fixed port, so its operating system picks an unused high-numbered one for each connection."
+            ]
+          },
+          "references": [
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, End-to-End Protocols",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/e2e.html"
+            },
+            {
+              "title": "Wikipedia: List of TCP and UDP port numbers",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers"
+            }
+          ]
+        },
+        {
+          "id": "udp-tcp",
+          "title": "Two ways to ship",
+          "text": [
+            "UDP just sends. It has no set-up, no resends and no ordering, and its header is only 8 bytes: source port, destination port, length and checksum. It is quick and simple.",
+            "TCP first sets up a connection, then delivers a reliable, in-order stream of bytes, resending anything that goes missing. That costs set-up time and extra work.",
+            "Choose UDP when speed matters more than perfection, such as live calls and games. Choose TCP when every byte must arrive."
+          ],
+          "terms": [
+            {
+              "term": "UDP",
+              "meaning": "Connectionless and unreliable, but fast and simple."
+            },
+            {
+              "term": "TCP",
+              "meaning": "Connection-based, reliable and in order."
+            }
+          ],
+          "table": {
+            "head": [
+              "",
+              "UDP",
+              "TCP"
+            ],
+            "rows": [
+              [
+                "Set-up first?",
+                "No",
+                "Yes"
+              ],
+              [
+                "Lost data resent?",
+                "No",
+                "Yes"
+              ],
+              [
+                "Arrives in order?",
+                "Not guaranteed",
+                "Yes"
+              ],
+              [
+                "Header size",
+                "8 bytes",
+                "20 bytes or more"
+              ]
+            ]
+          },
+          "diagramCaption": "Two transport services.",
+          "predict": {
+            "prompt": "A UDP packet carries a 120-byte message. What goes in its length field?",
+            "answer": "128. The length counts the 8-byte header as well as the data."
+          },
+          "references": [
+            {
+              "title": "RFC 768: User Datagram Protocol",
+              "source": "IETF RFC (linked)",
+              "url": "https://www.rfc-editor.org/rfc/rfc768"
+            },
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, Simple Demultiplexer (UDP)",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/e2e/udp.html"
+            }
+          ]
+        },
+        {
+          "id": "sockets",
+          "title": "Opening a dock",
+          "text": [
+            "Programs talk to the transport layer through sockets. A server prepares in four steps: socket creates the socket, bind claims a port number, listen starts waiting for visitors, and accept takes the next arriving connection.",
+            "A client has it easier. It calls socket, then connect, naming the server's address and port. After that both sides can send and receive, and finally close."
+          ],
+          "terms": [
+            {
+              "term": "Socket",
+              "meaning": "A door a program uses to send and receive over the network."
+            },
+            {
+              "term": "Listen",
+              "meaning": "Wait for incoming connections on a port."
+            }
+          ],
+          "predict": {
+            "prompt": "Which call does a server make that a client does not?",
+            "answer": "bind, listen and accept. A client only calls socket and connect."
+          },
+          "references": [
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, End-to-End Protocols",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/e2e.html"
+            },
+            {
+              "title": "Wikipedia: Network socket",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Network_socket"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "well-known",
+          "type": "match",
+          "taughtOn": "ports",
+          "prompt": "Match each well-known port to its job.",
+          "pairs": [
+            {
+              "left": "22",
+              "right": "Remote login over SSH"
+            },
+            {
+              "left": "53",
+              "right": "Name lookups (DNS)"
+            },
+            {
+              "left": "80",
+              "right": "Web pages (HTTP)"
+            },
+            {
+              "left": "443",
+              "right": "Secure web pages (HTTPS)"
+            }
+          ],
+          "hints": [
+            "Port 80 is the older, plain web.",
+            "443 is the secure version of the web."
+          ],
+          "explain": "22 is SSH, 53 is DNS, 80 is HTTP and 443 is HTTPS."
+        },
+        {
+          "id": "which-differs",
+          "type": "choice",
+          "taughtOn": "ports",
+          "prompt": "You open the same website in two tabs. Which value tells the server the two connections apart?",
+          "options": [
+            {
+              "text": "The source port",
+              "correct": true
+            },
+            {
+              "text": "The destination port"
+            },
+            {
+              "text": "The destination IP"
+            },
+            {
+              "text": "The name of the website"
+            }
+          ],
+          "hints": [
+            "The destination does not change.",
+            "Each tab's connection has its own port on your laptop."
+          ],
+          "explain": "Source IP, destination IP and destination port are the same. The laptop's source port differs."
+        },
+        {
+          "id": "watch-docks",
+          "type": "stepsim",
+          "taughtOn": "ports",
+          "mode": "predict",
+          "prompt": "Watch the harbourmaster route ships to docks, and predict where each one goes.",
+          "script": {
+            "view": "graph",
+            "steps": [
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "G",
+                      "x": 50,
+                      "y": 90,
+                      "label": "IP"
+                    },
+                    {
+                      "id": "80",
+                      "x": 220,
+                      "y": 35,
+                      "label": "80"
+                    },
+                    {
+                      "id": "25",
+                      "x": 220,
+                      "y": 90,
+                      "label": "25"
+                    },
+                    {
+                      "id": "53",
+                      "x": 220,
+                      "y": 145,
+                      "label": "53"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "G",
+                      "to": "80"
+                    },
+                    {
+                      "from": "G",
+                      "to": "25"
+                    },
+                    {
+                      "from": "G",
+                      "to": "53"
+                    }
+                  ],
+                  "legend": "IP is the harbour gate: the machine's address. The numbered docks are ports: 80 is the web server, 25 is mail, 53 is name lookups. A thick road is the dock a packet was delivered to."
+                },
+                "say": "Packets arrive at the gate (the machine's IP address). Each carries a destination port. The harbourmaster uses it to pick a dock."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "G",
+                      "x": 50,
+                      "y": 90,
+                      "label": "IP"
+                    },
+                    {
+                      "id": "80",
+                      "x": 220,
+                      "y": 35,
+                      "label": "80",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "25",
+                      "x": 220,
+                      "y": 90,
+                      "label": "25"
+                    },
+                    {
+                      "id": "53",
+                      "x": 220,
+                      "y": 145,
+                      "label": "53"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "G",
+                      "to": "80",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "G",
+                      "to": "25"
+                    },
+                    {
+                      "from": "G",
+                      "to": "53"
+                    }
+                  ],
+                  "legend": "IP is the harbour gate: the machine's address. The numbered docks are ports: 80 is the web server, 25 is mail, 53 is name lookups. A thick road is the dock a packet was delivered to."
+                },
+                "say": "A packet for port 80 goes to the web server."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "G",
+                      "x": 50,
+                      "y": 90,
+                      "label": "IP"
+                    },
+                    {
+                      "id": "80",
+                      "x": 220,
+                      "y": 35,
+                      "label": "80"
+                    },
+                    {
+                      "id": "25",
+                      "x": 220,
+                      "y": 90,
+                      "label": "25"
+                    },
+                    {
+                      "id": "53",
+                      "x": 220,
+                      "y": 145,
+                      "label": "53",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "G",
+                      "to": "80"
+                    },
+                    {
+                      "from": "G",
+                      "to": "25"
+                    },
+                    {
+                      "from": "G",
+                      "to": "53",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "IP is the harbour gate: the machine's address. The numbered docks are ports: 80 is the web server, 25 is mail, 53 is name lookups. A thick road is the dock a packet was delivered to."
+                },
+                "say": "A packet for port 53 goes to name lookups.",
+                "predict": {
+                  "prompt": "The next packet is for port 53. Which dock receives it?",
+                  "options": [
+                    {
+                      "text": "The name lookup dock, 53",
+                      "correct": true
+                    },
+                    {
+                      "text": "The web dock, 80"
+                    },
+                    {
+                      "text": "The mail dock, 25"
+                    },
+                    {
+                      "text": "All docks at once"
+                    }
+                  ],
+                  "hints": [
+                    "The destination port is the dock number.",
+                    "Check the legend: what is 53?"
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "G",
+                      "x": 50,
+                      "y": 90,
+                      "label": "IP"
+                    },
+                    {
+                      "id": "80",
+                      "x": 220,
+                      "y": 35,
+                      "label": "80"
+                    },
+                    {
+                      "id": "25",
+                      "x": 220,
+                      "y": 90,
+                      "label": "25"
+                    },
+                    {
+                      "id": "53",
+                      "x": 220,
+                      "y": 145,
+                      "label": "53"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "G",
+                      "to": "80"
+                    },
+                    {
+                      "from": "G",
+                      "to": "25"
+                    },
+                    {
+                      "from": "G",
+                      "to": "53"
+                    }
+                  ],
+                  "legend": "IP is the harbour gate: the machine's address. The numbered docks are ports: 80 is the web server, 25 is mail, 53 is name lookups. A thick road is the dock a packet was delivered to."
+                },
+                "say": "A packet arrives for port 7000, but no program is listening there.",
+                "predict": {
+                  "prompt": "A packet is for port 7000, and nothing is listening on that port. What happens?",
+                  "options": [
+                    {
+                      "text": "It is turned away, and nothing is delivered",
+                      "correct": true
+                    },
+                    {
+                      "text": "It goes to the nearest dock"
+                    },
+                    {
+                      "text": "It goes to the web server"
+                    },
+                    {
+                      "text": "It waits at the gate forever"
+                    }
+                  ],
+                  "hints": [
+                    "Only listening programs can receive data.",
+                    "The harbourmaster has no dock 7000."
+                  ]
+                }
+              }
+            ]
+          },
+          "hints": [],
+          "explain": "Watch the harbourmaster route ships to docks, and predict where each one goes."
+        },
+        {
+          "id": "udp-or-tcp",
+          "type": "buckets",
+          "taughtOn": "udp-tcp",
+          "prompt": "Would you use UDP or TCP?",
+          "buckets": [
+            "UDP",
+            "TCP"
+          ],
+          "items": [
+            {
+              "text": "A live voice call",
+              "bucket": "UDP"
+            },
+            {
+              "text": "Position updates in a fast online game",
+              "bucket": "UDP"
+            },
+            {
+              "text": "A quick name lookup",
+              "bucket": "UDP"
+            },
+            {
+              "text": "Copying a file where every byte must arrive",
+              "bucket": "TCP"
+            },
+            {
+              "text": "Sending an email to a mail server",
+              "bucket": "TCP"
+            },
+            {
+              "text": "Logging in to a remote machine over SSH",
+              "bucket": "TCP"
+            }
+          ],
+          "hints": [
+            "Which uses are fine losing a little data?",
+            "A late voice packet is useless, but a missing file byte ruins the file."
+          ],
+          "explain": "UDP suits quick, live and small jobs. TCP suits jobs where everything must arrive intact and in order."
+        },
+        {
+          "id": "server-calls",
+          "type": "order",
+          "taughtOn": "sockets",
+          "prompt": "Put a server's socket calls in order.",
+          "items": [
+            "socket",
+            "bind",
+            "listen",
+            "accept",
+            "send and receive",
+            "close"
+          ],
+          "hints": [
+            "The socket must exist before you can give it a port.",
+            "The server listens before it can accept."
+          ],
+          "explain": "Create the socket, claim a port, wait, take a visitor, talk, then close."
+        },
+        {
+          "id": "udp-length",
+          "type": "numeric",
+          "taughtOn": "udp-tcp",
+          "prompt": "A UDP message carries 120 bytes of data. What number goes in the UDP length field?",
+          "answer": 128,
+          "unit": "bytes",
+          "hints": [
+            "The length includes the header.",
+            "The UDP header is 8 bytes."
+          ],
+          "explain": "120 + 8 = 128."
+        },
+        {
+          "id": "non-wk",
+          "type": "numeric",
+          "taughtOn": "ports",
+          "prompt": "Challenge: port numbers are 16 bits, so there are 65,536 of them (0 to 65,535). The well-known ports are 0 to 1,023. How many ports are not well known?",
+          "answer": 64512,
+          "unit": "ports",
+          "hints": [
+            "Subtract the well-known ports from the total.",
+            "65,536 minus 1,024."
+          ],
+          "explain": "The well-known ports from 0 to 1,023 are 1,024 numbers. 65,536 - 1,024 = 64,512.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "5.1-f1",
+          "type": "quiz",
+          "taughtOn": "ports",
+          "prompt": "What does a port number identify?",
+          "options": [
+            {
+              "text": "A program on a machine",
+              "correct": true
+            },
+            {
+              "text": "A machine on the network"
+            },
+            {
+              "text": "A network cable"
+            },
+            {
+              "text": "A website's name"
+            }
+          ],
+          "explain": "The IP address finds the machine. The port finds the program."
+        },
+        {
+          "id": "5.1-f2",
+          "type": "quiz",
+          "taughtOn": "udp-tcp",
+          "prompt": "Which is better for a live video call: UDP or TCP?",
+          "options": [
+            {
+              "text": "UDP",
+              "correct": true
+            },
+            {
+              "text": "TCP, because it is reliable"
+            },
+            {
+              "text": "Neither works"
+            },
+            {
+              "text": "Both are identical"
+            }
+          ],
+          "explain": "A late video frame is useless, so waiting for resends does more harm than good."
+        },
+        {
+          "id": "5.1-f3",
+          "type": "predict",
+          "taughtOn": "ports",
+          "prompt": "Which port does plain web traffic (HTTP) usually use?",
+          "answer": "80. The secure version uses 443."
+        },
+        {
+          "id": "5.1-f4",
+          "type": "why",
+          "taughtOn": "sockets",
+          "prompt": "Which call makes a server start waiting for visitors?",
+          "options": [
+            {
+              "text": "listen",
+              "correct": true
+            },
+            {
+              "text": "connect"
+            },
+            {
+              "text": "close"
+            },
+            {
+              "text": "bind"
+            }
+          ],
+          "explain": "bind claims a port. listen starts the waiting."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Where the client's port comes from",
+          "text": "When your laptop opens a connection, its operating system picks an unused high-numbered port as the source port. The exact range depends on the operating system, so a server never knows in advance what a client's port will be.",
+          "source": {
+            "title": "RFC 6335: IANA Procedures for Port Numbers",
+            "url": "https://www.rfc-editor.org/rfc/rfc6335"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You learned that ports turn machine-to-machine delivery into program-to-program delivery, compared UDP with TCP, and put a server's socket calls in order.",
+          "The harbourmaster stamps the manifest. \"Dock sorted,\" she says. \"But your parcel needs a proper introduction before it is handed over.\""
+        ],
+        "mistake": {
+          "title": "Thinking an IP address is enough",
+          "text": "An IP address gets data to the machine. Without a port, the machine would not know which of its programs should receive the data."
+        }
+      }
+    },
+    {
+      "id": "5.2",
+      "title": "The Handshake",
+      "story": "Before any parcel is handed over, the harbourmaster wants a proper introduction. Kit learns why ships must greet each other first, and what to do when a ghost ship drifts in.",
+      "everyday": {
+        "scene": "Before you give a stranger a phone number to call you back on, you say \"Hello, it is Kit.\" They say \"Hello, Kit, it is Sam.\" You say \"Hi, Sam.\" Now both of you know the other is real and listening.",
+        "question": "Why bother with three steps, not one?",
+        "answer": "One hello proves nothing about who is listening. Three steps let each side check that the other heard it, and both can prove the conversation is new, not an echo of an old one."
+      },
+      "lessons": [
+        {
+          "id": "why-handshake",
+          "title": "Why not just start?",
+          "text": [
+            "Old packets can wander the network and turn up late. If a server accepted every connection request it saw, a stale one from an old conversation could open a ghost connection, with nobody there to use it.",
+            "So each side picks its own starting sequence number, a number that labels the bytes it sends. Each side then confirms the other's number. A stale packet carries the wrong numbers, and its reply fails to match anything the sender remembers."
+          ],
+          "terms": [
+            {
+              "term": "Sequence number",
+              "meaning": "A number that labels the bytes a side is sending."
+            },
+            {
+              "term": "Delayed duplicate",
+              "meaning": "An old copy of a packet that arrives long after it was sent."
+            }
+          ],
+          "predict": {
+            "prompt": "Why would a server be fooled by a delayed duplicate of an old connection request?",
+            "answer": "It cannot tell the old request from a new one unless something checks that the sender still wants it."
+          },
+          "references": [
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, Transmission Control Protocol",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/e2e/tcp.html"
+            },
+            {
+              "title": "RFC 9293: Transmission Control Protocol",
+              "source": "IETF RFC (linked)",
+              "url": "https://www.rfc-editor.org/rfc/rfc9293"
+            }
+          ]
+        },
+        {
+          "id": "three-steps",
+          "title": "The three steps",
+          "text": [
+            "TCP's three-way handshake is SYN, SYN-ACK, ACK. The client sends SYN with a starting number x. The server replies SYN-ACK with its own number y, and an acknowledgement of x + 1, meaning \"the next number I expect from you\". The client finishes with ACK of y + 1.",
+            "Example: x = 4000 and y = 9000. SYN has seq 4000. SYN-ACK has seq 9000 and ack 4001. The final ACK has seq 4001 and ack 9001. Once data flows, the numbers count bytes: 100 bytes from seq 4001 means the next byte is 4101."
+          ],
+          "terms": [
+            {
+              "term": "SYN",
+              "meaning": "A message that opens a connection and carries a starting number."
+            },
+            {
+              "term": "ACK",
+              "meaning": "A confirmation that says which number comes next."
+            }
+          ],
+          "table": {
+            "head": [
+              "Step",
+              "Sender",
+              "Carries"
+            ],
+            "rows": [
+              [
+                "1: SYN",
+                "Client",
+                "seq = 4000"
+              ],
+              [
+                "2: SYN-ACK",
+                "Server",
+                "seq = 9000, ack = 4001"
+              ],
+              [
+                "3: ACK",
+                "Client",
+                "seq = 4001, ack = 9001"
+              ]
+            ]
+          },
+          "diagramCaption": "A handshake using example numbers.",
+          "predict": {
+            "prompt": "The server's SYN-ACK says seq = 9000. What ack does the client's final message carry?",
+            "answer": "9001. It names the next number the client expects from the server."
+          },
+          "deeper": {
+            "title": "The ghost fails",
+            "text": [
+              "A ghost SYN from an old conversation reaches the server, which replies with a SYN-ACK. The client checks the ack number against the SYN it actually sent. It does not match, so the client rejects the reply with a reset (RST), and the server drops the half-open connection."
+            ]
+          },
+          "references": [
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, Transmission Control Protocol",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/e2e/tcp.html"
+            },
+            {
+              "title": "RFC 9293: Transmission Control Protocol",
+              "source": "IETF RFC (linked)",
+              "url": "https://www.rfc-editor.org/rfc/rfc9293"
+            }
+          ]
+        },
+        {
+          "id": "two-armies",
+          "title": "Saying goodbye, and the two armies",
+          "text": [
+            "To close, each direction ends separately: one side sends FIN and the other answers ACK, then the same the other way round. Ending one direction first lets the last data finish.",
+            "There is a deeper puzzle. Two ferry captains must sail at dawn together, but messengers may be lost on the way. Captain A sends \"sail at dawn\". B replies. But B cannot know A got the reply. Every confirmation needs its own confirmation, so perfect certainty is impossible.",
+            "Real protocols settle for timers and a limited number of retries."
+          ],
+          "terms": [
+            {
+              "term": "FIN",
+              "meaning": "A message that says \"I have no more to send\"."
+            },
+            {
+              "term": "Timeout",
+              "meaning": "A decision to give up after waiting long enough."
+            }
+          ],
+          "predict": {
+            "prompt": "Captain B sends the last confirmation. Can B be sure that it arrived?",
+            "answer": "No. The last message might be lost, and adding another confirmation just moves the same problem."
+          },
+          "references": [
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, Transmission Control Protocol",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/e2e/tcp.html"
+            },
+            {
+              "title": "Wikipedia: Two Generals' Problem",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Two_Generals%27_Problem"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "hs-order",
+          "type": "order",
+          "taughtOn": "three-steps",
+          "prompt": "Put the handshake in order.",
+          "items": [
+            "The client sends SYN with its starting number",
+            "The server replies SYN-ACK with its own number and an acknowledgement",
+            "The client sends ACK for the server's number",
+            "Both sides can now send data"
+          ],
+          "hints": [
+            "The client starts the conversation.",
+            "Data comes only after all three steps."
+          ],
+          "explain": "SYN, then SYN-ACK, then ACK. Data follows."
+        },
+        {
+          "id": "ack-1",
+          "type": "numeric",
+          "taughtOn": "three-steps",
+          "prompt": "The client's SYN has seq = 4000. What ack number does the server's SYN-ACK carry?",
+          "answer": 4001,
+          "unit": "",
+          "hints": [
+            "The ack names the next number the server expects.",
+            "The SYN uses up one number."
+          ],
+          "explain": "The ack is 4000 + 1 = 4001."
+        },
+        {
+          "id": "watch-handshake",
+          "type": "stepsim",
+          "taughtOn": "three-steps",
+          "mode": "predict",
+          "prompt": "Watch a handshake, then see what happens to a ghost from an old conversation.",
+          "script": {
+            "view": "graph",
+            "steps": [
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "C",
+                      "x": 60,
+                      "y": 90,
+                      "label": "C"
+                    },
+                    {
+                      "id": "S",
+                      "x": 240,
+                      "y": 90,
+                      "label": "S"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "C",
+                      "to": "S"
+                    }
+                  ],
+                  "legend": "C is the client, S is the server. A ring shows who is sending right now. A thick line shows a message on the road."
+                },
+                "say": "The client wants a connection to the server. It picks the starting number 4000."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "C",
+                      "x": 60,
+                      "y": 90,
+                      "label": "C",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "S",
+                      "x": 240,
+                      "y": 90,
+                      "label": "S"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "C",
+                      "to": "S",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "C is the client, S is the server. A ring shows who is sending right now. A thick line shows a message on the road."
+                },
+                "say": "Step 1. The client sends SYN with seq = 4000."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "C",
+                      "x": 60,
+                      "y": 90,
+                      "label": "C"
+                    },
+                    {
+                      "id": "S",
+                      "x": 240,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "C",
+                      "to": "S",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "C is the client, S is the server. A ring shows who is sending right now. A thick line shows a message on the road."
+                },
+                "say": "Step 2. The server replies SYN-ACK with seq = 9000 and ack = 4001.",
+                "predict": {
+                  "prompt": "The server received SYN with seq = 4000. What ack does the SYN-ACK carry?",
+                  "options": [
+                    {
+                      "text": "4001",
+                      "correct": true
+                    },
+                    {
+                      "text": "4000"
+                    },
+                    {
+                      "text": "9000"
+                    },
+                    {
+                      "text": "9001"
+                    }
+                  ],
+                  "hints": [
+                    "The ack is the next number the server expects.",
+                    "One more than the SYN's number."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "C",
+                      "x": 60,
+                      "y": 90,
+                      "label": "C",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "S",
+                      "x": 240,
+                      "y": 90,
+                      "label": "S"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "C",
+                      "to": "S",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "C is the client, S is the server. A ring shows who is sending right now. A thick line shows a message on the road."
+                },
+                "say": "Step 3. The client sends ACK with seq = 4001 and ack = 9001. The connection is open."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "C",
+                      "x": 60,
+                      "y": 90,
+                      "label": "C",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "S",
+                      "x": 240,
+                      "y": 90,
+                      "label": "S"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "C",
+                      "to": "S",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "C is the client, S is the server. A ring shows who is sending right now. A thick line shows a message on the road."
+                },
+                "say": "Another day. The client sends a new SYN with seq = 6200. Before it arrives, a ghost ship drifts in: an old SYN with seq = 1500 from a dead conversation reaches the server first."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "C",
+                      "x": 60,
+                      "y": 90,
+                      "label": "C"
+                    },
+                    {
+                      "id": "S",
+                      "x": 240,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "C",
+                      "to": "S",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "C is the client, S is the server. A ring shows who is sending right now. A thick line shows a message on the road."
+                },
+                "say": "The server cannot tell the ghost from a real request, so it replies SYN-ACK with ack = 1501.",
+                "predict": {
+                  "prompt": "The client receives a SYN-ACK with ack = 1501, but its own SYN used seq = 6200. What does it do?",
+                  "options": [
+                    {
+                      "text": "It rejects the reply with a reset, since the ack does not match its SYN",
+                      "correct": true
+                    },
+                    {
+                      "text": "It accepts and sends data"
+                    },
+                    {
+                      "text": "It ignores everything for a week"
+                    },
+                    {
+                      "text": "It changes its own number to 1500"
+                    }
+                  ],
+                  "hints": [
+                    "Which ack would the client expect for its SYN?",
+                    "6201 is expected, not 1501."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "C",
+                      "x": 60,
+                      "y": 90,
+                      "label": "C",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "S",
+                      "x": 240,
+                      "y": 90,
+                      "label": "S"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "C",
+                      "to": "S",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "C is the client, S is the server. A ring shows who is sending right now. A thick line shows a message on the road."
+                },
+                "say": "The client sends a reset. The server drops the ghost's half-open connection, and the real SYN is handled next. The ghost fails because the client checks the numbers."
+              }
+            ]
+          },
+          "hints": [],
+          "explain": "Watch a handshake, then see what happens to a ghost from an old conversation."
+        },
+        {
+          "id": "messages",
+          "type": "match",
+          "taughtOn": "three-steps",
+          "prompt": "Match each message to what it carries.",
+          "pairs": [
+            {
+              "left": "SYN",
+              "right": "A starting number, with no acknowledgement yet"
+            },
+            {
+              "left": "SYN-ACK",
+              "right": "The server's own starting number, plus an acknowledgement of the client's"
+            },
+            {
+              "left": "ACK",
+              "right": "An acknowledgement of the server's number"
+            },
+            {
+              "left": "FIN",
+              "right": "A message saying this side has finished sending"
+            }
+          ],
+          "hints": [
+            "Only the middle step has two jobs.",
+            "FIN is for closing."
+          ],
+          "explain": "SYN opens, SYN-ACK answers and opens the other direction, ACK confirms, and FIN closes one direction."
+        },
+        {
+          "id": "why-own",
+          "type": "choice",
+          "taughtOn": "why-handshake",
+          "prompt": "Why does each side pick its own starting number?",
+          "options": [
+            {
+              "text": "So stale packets from old conversations do not match and can be rejected",
+              "correct": true
+            },
+            {
+              "text": "To make the connection faster"
+            },
+            {
+              "text": "Because numbers must start at zero"
+            },
+            {
+              "text": "To save network space"
+            }
+          ],
+          "hints": [
+            "Think about a late packet from yesterday's conversation.",
+            "It carries the wrong numbers."
+          ],
+          "explain": "Fresh starting numbers mean an old packet does not fit the new conversation."
+        },
+        {
+          "id": "two-army-why",
+          "type": "choice",
+          "taughtOn": "two-armies",
+          "prompt": "Why can neither side ever be completely certain that the last message arrived?",
+          "options": [
+            {
+              "text": "Confirming it needs another message that might also be lost",
+              "correct": true
+            },
+            {
+              "text": "Because messages never arrive"
+            },
+            {
+              "text": "Because a handshake takes too long"
+            },
+            {
+              "text": "Because the first message is always lost"
+            }
+          ],
+          "hints": [
+            "Whoever sends the last message cannot see whether it arrived.",
+            "Adding a confirmation does not solve it."
+          ],
+          "explain": "Each confirmation needs its own confirmation, so some uncertainty always remains. Real protocols use timers and retries."
+        },
+        {
+          "id": "next-ack",
+          "type": "numeric",
+          "taughtOn": "three-steps",
+          "prompt": "Challenge: the connection is open, and the client sends 250 bytes starting at seq = 4001. What ack number does the server send back, to say what it expects next?",
+          "answer": 4251,
+          "unit": "",
+          "hints": [
+            "The ack is the next byte number expected.",
+            "4001 + 250."
+          ],
+          "explain": "Bytes 4001 to 4250 arrived, so the next expected byte is 4251.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "5.2-f1",
+          "type": "quiz",
+          "taughtOn": "three-steps",
+          "prompt": "What are the three steps of the TCP handshake?",
+          "options": [
+            {
+              "text": "SYN, SYN-ACK, ACK",
+              "correct": true
+            },
+            {
+              "text": "ACK, ACK, SYN"
+            },
+            {
+              "text": "HELLO, WORLD, DONE"
+            },
+            {
+              "text": "SYN, FIN, ACK"
+            }
+          ],
+          "explain": "The client opens, the server answers, the client confirms."
+        },
+        {
+          "id": "5.2-f2",
+          "type": "predict",
+          "taughtOn": "three-steps",
+          "prompt": "A SYN arrives with seq = 700. What ack does the SYN-ACK carry?",
+          "answer": "701."
+        },
+        {
+          "id": "5.2-f3",
+          "type": "why",
+          "taughtOn": "why-handshake",
+          "prompt": "What problem does the handshake help with?",
+          "options": [
+            {
+              "text": "Old duplicate requests opening ghost connections",
+              "correct": true
+            },
+            {
+              "text": "Slow cables"
+            },
+            {
+              "text": "Wrong spelling in headers"
+            },
+            {
+              "text": "Too many ports"
+            }
+          ],
+          "explain": "Each side checks the other's fresh number."
+        },
+        {
+          "id": "5.2-f4",
+          "type": "quiz",
+          "taughtOn": "two-armies",
+          "prompt": "In the two-army problem, what is the lesson?",
+          "options": [
+            {
+              "text": "Perfect certainty over an unreliable link is impossible",
+              "correct": true
+            },
+            {
+              "text": "Messages always arrive"
+            },
+            {
+              "text": "Two messengers solve it"
+            },
+            {
+              "text": "Handshakes are useless"
+            }
+          ],
+          "explain": "Real protocols use timers and retries instead of certainty."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Unpredictable starting numbers",
+          "text": "Starting sequence numbers are not simply 0 or 1. Modern systems choose them in a hard-to-guess way, partly so that a stranger who cannot see your traffic cannot easily forge packets into your connection.",
+          "source": {
+            "title": "RFC 6528: Defending against Sequence Number Attacks",
+            "url": "https://www.rfc-editor.org/rfc/rfc6528"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You followed a three-way handshake with real numbers, caught a ghost ship by checking the ack, and met the two-army problem.",
+          "The harbourmaster nods. \"A proper introduction,\" she says. \"Now there is the question of how much cargo the harbour can take before it jams.\""
+        ],
+        "mistake": {
+          "title": "Thinking the ack repeats the sequence number",
+          "text": "The ack names the next number expected, one more than what was received. A SYN with seq 4000 is acknowledged with 4001."
+        }
+      }
+    },
+    {
+      "id": "5.5",
+      "title": "Traffic Jam",
+      "story": "The harbour road is jammed. Every ship wants to go at once, and the more they push, the slower everyone moves. Kit has to learn how senders can ease off without a traffic controller.",
+      "everyday": {
+        "scene": "At a school gate, parents all arrive at once and the road blocks. Everyone toots, cars creep, and fewer children get home than if everyone had arrived calmly.",
+        "question": "How could each driver help, with no police officer in charge?",
+        "answer": "Each driver can notice the jam and ease off, then slowly speed up again. No one is in charge, but everyone adjusts. TCP senders do just that."
+      },
+      "lessons": [
+        {
+          "id": "flow-vs-congestion",
+          "title": "Two different worries",
+          "text": [
+            "Flow control protects the receiver. The receiver says how much room its buffer has (its window), and the sender never sends more than that. Congestion control protects the network in the middle.",
+            "A TCP sender keeps a second limit, the congestion window or cwnd, which it guesses from how well delivery is going. It may have in flight only the smaller of the two numbers.",
+            "Without congestion control, a busy network can reach congestion collapse: so many packets and resends that the good traffic actually falls."
+          ],
+          "terms": [
+            {
+              "term": "Flow control",
+              "meaning": "Keeping the sender from overwhelming the receiver."
+            },
+            {
+              "term": "Congestion control",
+              "meaning": "Keeping senders from overwhelming the network."
+            },
+            {
+              "term": "cwnd",
+              "meaning": "The congestion window: how much the sender may have in flight."
+            }
+          ],
+          "predict": {
+            "prompt": "The receiver's window is 30 segments and the congestion window is 24. How many may the sender have in flight?",
+            "answer": "24, the smaller of the two."
+          },
+          "references": [
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, Congestion Control",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/congestion.html"
+            },
+            {
+              "title": "RFC 5681: TCP Congestion Control",
+              "source": "IETF RFC (linked)",
+              "url": "https://www.rfc-editor.org/rfc/rfc5681"
+            }
+          ]
+        },
+        {
+          "id": "slow-start-aimd",
+          "title": "Start slow, then creep",
+          "text": [
+            "A new connection does not know how much the network can carry, so it starts small: cwnd of 1 segment. In slow start, the window doubles every round trip, until it reaches the threshold.",
+            "Past the threshold, it grows by 1 segment per round trip. This is additive increase. When a loss shows the network is full, the sender cuts back sharply, which is multiplicative decrease. Climb slowly, fall fast. Together this is AIMD, and the graph looks like a sawtooth."
+          ],
+          "terms": [
+            {
+              "term": "Slow start",
+              "meaning": "Doubling the window every round trip, from a small start."
+            },
+            {
+              "term": "Threshold",
+              "meaning": "The point where doubling stops and gentle growth begins."
+            },
+            {
+              "term": "AIMD",
+              "meaning": "Additive increase, multiplicative decrease."
+            }
+          ],
+          "predict": {
+            "prompt": "Why is it called slow start when the window doubles every round?",
+            "answer": "It starts small, at 1 segment. Doubling is fast growth from a very low starting point."
+          },
+          "deeper": {
+            "title": "Why the window cannot jump back to where it was",
+            "text": [
+              "A loss is a clue that the old size was too much. Cutting the threshold to half is a way to say \"last time I got in trouble at 20, so doubling past 10 is risky\"."
+            ]
+          },
+          "references": [
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, Congestion Control",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/congestion.html"
+            },
+            {
+              "title": "Wikipedia: TCP congestion control",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/TCP_congestion_control"
+            }
+          ]
+        },
+        {
+          "id": "tahoe-reno",
+          "title": "Two ways to react to a loss",
+          "text": [
+            "A loss shows up two ways. A timeout means nothing is getting through. Three duplicate ACKs mean the receiver keeps asking for the same missing segment, so later segments are still arriving.",
+            "TCP Tahoe treats both the same: threshold = cwnd ÷ 2, cwnd = 1, then slow start again. TCP Reno is gentler on duplicate ACKs. It resends the missing segment at once (fast retransmit), sets the threshold to cwnd ÷ 2, and sets cwnd to the threshold (fast recovery). A timeout still sends Reno back to 1."
+          ],
+          "terms": [
+            {
+              "term": "Duplicate ACKs",
+              "meaning": "Repeated acknowledgements for the same number, hinting at one missing segment."
+            },
+            {
+              "term": "Fast retransmit",
+              "meaning": "Resending the missing segment without waiting for a timeout."
+            }
+          ],
+          "table": {
+            "head": [
+              "What happens",
+              "Tahoe",
+              "Reno"
+            ],
+            "rows": [
+              [
+                "Timeout",
+                "threshold = cwnd ÷ 2, cwnd = 1",
+                "Same as Tahoe"
+              ],
+              [
+                "3 duplicate ACKs",
+                "threshold = cwnd ÷ 2, cwnd = 1",
+                "threshold = cwnd ÷ 2, cwnd = threshold"
+              ]
+            ]
+          },
+          "diagramCaption": "Reacting to loss.",
+          "predict": {
+            "prompt": "Both Tahoe and Reno see 3 duplicate ACKs at cwnd = 20. What is each one's new cwnd?",
+            "answer": "Tahoe 1, Reno 10."
+          },
+          "references": [
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, Congestion Control",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/congestion.html"
+            },
+            {
+              "title": "RFC 5681: TCP Congestion Control",
+              "source": "IETF RFC (linked)",
+              "url": "https://www.rfc-editor.org/rfc/rfc5681"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "flow-or-congestion",
+          "type": "buckets",
+          "taughtOn": "flow-vs-congestion",
+          "prompt": "Is each statement about flow control or congestion control?",
+          "buckets": [
+            "Flow control",
+            "Congestion control"
+          ],
+          "items": [
+            {
+              "text": "Protects the receiver's buffer",
+              "bucket": "Flow control"
+            },
+            {
+              "text": "Uses the window the receiver advertises",
+              "bucket": "Flow control"
+            },
+            {
+              "text": "A zero window pauses the sender",
+              "bucket": "Flow control"
+            },
+            {
+              "text": "Protects the network in the middle",
+              "bucket": "Congestion control"
+            },
+            {
+              "text": "Uses the congestion window, cwnd",
+              "bucket": "Congestion control"
+            },
+            {
+              "text": "Slows down when packets are lost",
+              "bucket": "Congestion control"
+            }
+          ],
+          "hints": [
+            "Ask: who is being protected, the receiver or the network?",
+            "The receiver tells the sender its window."
+          ],
+          "explain": "Flow control is about the receiver. Congestion control is about everything in between."
+        },
+        {
+          "id": "watch-sawtooth",
+          "type": "stepsim",
+          "taughtOn": "slow-start-aimd",
+          "mode": "predict",
+          "prompt": "Build the sawtooth round by round, and predict the window each time.",
+          "script": {
+            "view": "bars",
+            "steps": [
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Threshold (segments)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Round 1: congestion window (segments)",
+                      "value": 1
+                    }
+                  ]
+                },
+                "say": "A new connection starts with a congestion window (cwnd) of 1 segment. The threshold, shown in the top bar, is 16. Each bar below it is one round trip."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Threshold (segments)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Round 1: congestion window (segments)",
+                      "value": 1
+                    },
+                    {
+                      "label": "Round 2: congestion window (segments)",
+                      "value": 2
+                    }
+                  ]
+                },
+                "say": "Slow start: the window doubles each round, so 2."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Threshold (segments)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Round 1: congestion window (segments)",
+                      "value": 1
+                    },
+                    {
+                      "label": "Round 2: congestion window (segments)",
+                      "value": 2
+                    },
+                    {
+                      "label": "Round 3: congestion window (segments)",
+                      "value": 4
+                    }
+                  ]
+                },
+                "say": "Doubles again: 4."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Threshold (segments)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Round 1: congestion window (segments)",
+                      "value": 1
+                    },
+                    {
+                      "label": "Round 2: congestion window (segments)",
+                      "value": 2
+                    },
+                    {
+                      "label": "Round 3: congestion window (segments)",
+                      "value": 4
+                    },
+                    {
+                      "label": "Round 4: congestion window (segments)",
+                      "value": 8
+                    }
+                  ]
+                },
+                "say": "Doubles again: 8."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Threshold (segments)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Round 1: congestion window (segments)",
+                      "value": 1
+                    },
+                    {
+                      "label": "Round 2: congestion window (segments)",
+                      "value": 2
+                    },
+                    {
+                      "label": "Round 3: congestion window (segments)",
+                      "value": 4
+                    },
+                    {
+                      "label": "Round 4: congestion window (segments)",
+                      "value": 8
+                    },
+                    {
+                      "label": "Round 5: congestion window (segments)",
+                      "value": 16
+                    }
+                  ]
+                },
+                "say": "Doubles to 16, which is the threshold.",
+                "predict": {
+                  "prompt": "The congestion window is 8, and the threshold is 16. Still slow start, so the window doubles each round. What is it next round?",
+                  "options": [
+                    {
+                      "text": "16",
+                      "correct": true
+                    },
+                    {
+                      "text": "9"
+                    },
+                    {
+                      "text": "10"
+                    },
+                    {
+                      "text": "12"
+                    }
+                  ],
+                  "hints": [
+                    "In slow start the window doubles each round trip.",
+                    "8 times 2."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Threshold (segments)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Round 1: congestion window (segments)",
+                      "value": 1
+                    },
+                    {
+                      "label": "Round 2: congestion window (segments)",
+                      "value": 2
+                    },
+                    {
+                      "label": "Round 3: congestion window (segments)",
+                      "value": 4
+                    },
+                    {
+                      "label": "Round 4: congestion window (segments)",
+                      "value": 8
+                    },
+                    {
+                      "label": "Round 5: congestion window (segments)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Round 6: congestion window (segments)",
+                      "value": 17
+                    }
+                  ]
+                },
+                "say": "Past the threshold. Growth is now additive: just 1 segment per round. 17.",
+                "predict": {
+                  "prompt": "The window has reached the threshold, 16. From here it grows by 1 segment per round. What is it next?",
+                  "options": [
+                    {
+                      "text": "17",
+                      "correct": true
+                    },
+                    {
+                      "text": "32"
+                    },
+                    {
+                      "text": "18"
+                    },
+                    {
+                      "text": "16"
+                    }
+                  ],
+                  "hints": [
+                    "Above the threshold, growth is additive.",
+                    "16 plus 1."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Threshold (segments)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Round 1: congestion window (segments)",
+                      "value": 1
+                    },
+                    {
+                      "label": "Round 2: congestion window (segments)",
+                      "value": 2
+                    },
+                    {
+                      "label": "Round 3: congestion window (segments)",
+                      "value": 4
+                    },
+                    {
+                      "label": "Round 4: congestion window (segments)",
+                      "value": 8
+                    },
+                    {
+                      "label": "Round 5: congestion window (segments)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Round 6: congestion window (segments)",
+                      "value": 17
+                    },
+                    {
+                      "label": "Round 7: congestion window (segments)",
+                      "value": 18
+                    }
+                  ]
+                },
+                "say": "18."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Threshold (segments)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Round 1: congestion window (segments)",
+                      "value": 1
+                    },
+                    {
+                      "label": "Round 2: congestion window (segments)",
+                      "value": 2
+                    },
+                    {
+                      "label": "Round 3: congestion window (segments)",
+                      "value": 4
+                    },
+                    {
+                      "label": "Round 4: congestion window (segments)",
+                      "value": 8
+                    },
+                    {
+                      "label": "Round 5: congestion window (segments)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Round 6: congestion window (segments)",
+                      "value": 17
+                    },
+                    {
+                      "label": "Round 7: congestion window (segments)",
+                      "value": 18
+                    },
+                    {
+                      "label": "Round 8: congestion window (segments)",
+                      "value": 19
+                    }
+                  ]
+                },
+                "say": "19."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Threshold (segments)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Round 1: congestion window (segments)",
+                      "value": 1
+                    },
+                    {
+                      "label": "Round 2: congestion window (segments)",
+                      "value": 2
+                    },
+                    {
+                      "label": "Round 3: congestion window (segments)",
+                      "value": 4
+                    },
+                    {
+                      "label": "Round 4: congestion window (segments)",
+                      "value": 8
+                    },
+                    {
+                      "label": "Round 5: congestion window (segments)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Round 6: congestion window (segments)",
+                      "value": 17
+                    },
+                    {
+                      "label": "Round 7: congestion window (segments)",
+                      "value": 18
+                    },
+                    {
+                      "label": "Round 8: congestion window (segments)",
+                      "value": 19
+                    },
+                    {
+                      "label": "Round 9: congestion window (segments)",
+                      "value": 20
+                    }
+                  ]
+                },
+                "say": "20. The network is nearly full."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Threshold (segments)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Round 1: congestion window (segments)",
+                      "value": 1
+                    },
+                    {
+                      "label": "Round 2: congestion window (segments)",
+                      "value": 2
+                    },
+                    {
+                      "label": "Round 3: congestion window (segments)",
+                      "value": 4
+                    },
+                    {
+                      "label": "Round 4: congestion window (segments)",
+                      "value": 8
+                    },
+                    {
+                      "label": "Round 5: congestion window (segments)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Round 6: congestion window (segments)",
+                      "value": 17
+                    },
+                    {
+                      "label": "Round 7: congestion window (segments)",
+                      "value": 18
+                    },
+                    {
+                      "label": "Round 8: congestion window (segments)",
+                      "value": 19
+                    },
+                    {
+                      "label": "Round 9: congestion window (segments)",
+                      "value": 20
+                    }
+                  ]
+                },
+                "say": "A timeout. A segment vanished and no acknowledgement came back. The network is jammed. The window drops to 1, and the threshold becomes half of 20.",
+                "predict": {
+                  "prompt": "A timeout hits when the window is 20. What are the new threshold and window?",
+                  "options": [
+                    {
+                      "text": "Threshold 10, window 1",
+                      "correct": true
+                    },
+                    {
+                      "text": "Threshold 20, window 10"
+                    },
+                    {
+                      "text": "Threshold 10, window 10"
+                    },
+                    {
+                      "text": "Threshold 40, window 1"
+                    }
+                  ],
+                  "hints": [
+                    "The threshold is halved.",
+                    "After a timeout the sender starts again from 1 segment."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Threshold (segments)",
+                      "value": 10
+                    },
+                    {
+                      "label": "Round 1: congestion window (segments)",
+                      "value": 1
+                    },
+                    {
+                      "label": "Round 2: congestion window (segments)",
+                      "value": 2
+                    },
+                    {
+                      "label": "Round 3: congestion window (segments)",
+                      "value": 4
+                    },
+                    {
+                      "label": "Round 4: congestion window (segments)",
+                      "value": 8
+                    },
+                    {
+                      "label": "Round 5: congestion window (segments)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Round 6: congestion window (segments)",
+                      "value": 17
+                    },
+                    {
+                      "label": "Round 7: congestion window (segments)",
+                      "value": 18
+                    },
+                    {
+                      "label": "Round 8: congestion window (segments)",
+                      "value": 19
+                    },
+                    {
+                      "label": "Round 9: congestion window (segments)",
+                      "value": 20
+                    },
+                    {
+                      "label": "Round 10: congestion window (segments)",
+                      "value": 1
+                    }
+                  ]
+                },
+                "say": "Round 10: the window is back at 1. Slow start begins again, with a threshold of 10."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Threshold (segments)",
+                      "value": 10
+                    },
+                    {
+                      "label": "Round 1: congestion window (segments)",
+                      "value": 1
+                    },
+                    {
+                      "label": "Round 2: congestion window (segments)",
+                      "value": 2
+                    },
+                    {
+                      "label": "Round 3: congestion window (segments)",
+                      "value": 4
+                    },
+                    {
+                      "label": "Round 4: congestion window (segments)",
+                      "value": 8
+                    },
+                    {
+                      "label": "Round 5: congestion window (segments)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Round 6: congestion window (segments)",
+                      "value": 17
+                    },
+                    {
+                      "label": "Round 7: congestion window (segments)",
+                      "value": 18
+                    },
+                    {
+                      "label": "Round 8: congestion window (segments)",
+                      "value": 19
+                    },
+                    {
+                      "label": "Round 9: congestion window (segments)",
+                      "value": 20
+                    },
+                    {
+                      "label": "Round 10: congestion window (segments)",
+                      "value": 1
+                    },
+                    {
+                      "label": "Round 11: congestion window (segments)",
+                      "value": 2
+                    }
+                  ]
+                },
+                "say": "2."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Threshold (segments)",
+                      "value": 10
+                    },
+                    {
+                      "label": "Round 1: congestion window (segments)",
+                      "value": 1
+                    },
+                    {
+                      "label": "Round 2: congestion window (segments)",
+                      "value": 2
+                    },
+                    {
+                      "label": "Round 3: congestion window (segments)",
+                      "value": 4
+                    },
+                    {
+                      "label": "Round 4: congestion window (segments)",
+                      "value": 8
+                    },
+                    {
+                      "label": "Round 5: congestion window (segments)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Round 6: congestion window (segments)",
+                      "value": 17
+                    },
+                    {
+                      "label": "Round 7: congestion window (segments)",
+                      "value": 18
+                    },
+                    {
+                      "label": "Round 8: congestion window (segments)",
+                      "value": 19
+                    },
+                    {
+                      "label": "Round 9: congestion window (segments)",
+                      "value": 20
+                    },
+                    {
+                      "label": "Round 10: congestion window (segments)",
+                      "value": 1
+                    },
+                    {
+                      "label": "Round 11: congestion window (segments)",
+                      "value": 2
+                    },
+                    {
+                      "label": "Round 12: congestion window (segments)",
+                      "value": 4
+                    }
+                  ]
+                },
+                "say": "4."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Threshold (segments)",
+                      "value": 10
+                    },
+                    {
+                      "label": "Round 1: congestion window (segments)",
+                      "value": 1
+                    },
+                    {
+                      "label": "Round 2: congestion window (segments)",
+                      "value": 2
+                    },
+                    {
+                      "label": "Round 3: congestion window (segments)",
+                      "value": 4
+                    },
+                    {
+                      "label": "Round 4: congestion window (segments)",
+                      "value": 8
+                    },
+                    {
+                      "label": "Round 5: congestion window (segments)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Round 6: congestion window (segments)",
+                      "value": 17
+                    },
+                    {
+                      "label": "Round 7: congestion window (segments)",
+                      "value": 18
+                    },
+                    {
+                      "label": "Round 8: congestion window (segments)",
+                      "value": 19
+                    },
+                    {
+                      "label": "Round 9: congestion window (segments)",
+                      "value": 20
+                    },
+                    {
+                      "label": "Round 10: congestion window (segments)",
+                      "value": 1
+                    },
+                    {
+                      "label": "Round 11: congestion window (segments)",
+                      "value": 2
+                    },
+                    {
+                      "label": "Round 12: congestion window (segments)",
+                      "value": 4
+                    },
+                    {
+                      "label": "Round 13: congestion window (segments)",
+                      "value": 8
+                    }
+                  ]
+                },
+                "say": "8."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Threshold (segments)",
+                      "value": 10
+                    },
+                    {
+                      "label": "Round 1: congestion window (segments)",
+                      "value": 1
+                    },
+                    {
+                      "label": "Round 2: congestion window (segments)",
+                      "value": 2
+                    },
+                    {
+                      "label": "Round 3: congestion window (segments)",
+                      "value": 4
+                    },
+                    {
+                      "label": "Round 4: congestion window (segments)",
+                      "value": 8
+                    },
+                    {
+                      "label": "Round 5: congestion window (segments)",
+                      "value": 16
+                    },
+                    {
+                      "label": "Round 6: congestion window (segments)",
+                      "value": 17
+                    },
+                    {
+                      "label": "Round 7: congestion window (segments)",
+                      "value": 18
+                    },
+                    {
+                      "label": "Round 8: congestion window (segments)",
+                      "value": 19
+                    },
+                    {
+                      "label": "Round 9: congestion window (segments)",
+                      "value": 20
+                    },
+                    {
+                      "label": "Round 10: congestion window (segments)",
+                      "value": 1
+                    },
+                    {
+                      "label": "Round 11: congestion window (segments)",
+                      "value": 2
+                    },
+                    {
+                      "label": "Round 12: congestion window (segments)",
+                      "value": 4
+                    },
+                    {
+                      "label": "Round 13: congestion window (segments)",
+                      "value": 8
+                    },
+                    {
+                      "label": "Round 14: congestion window (segments)",
+                      "value": 10
+                    }
+                  ]
+                },
+                "say": "10. It stops doubling at the threshold, and growth turns additive. The sawtooth is complete: climb, drop, climb again."
+              }
+            ]
+          },
+          "hints": [],
+          "explain": "Build the sawtooth round by round, and predict the window each time."
+        },
+        {
+          "id": "min-window",
+          "type": "numeric",
+          "taughtOn": "flow-vs-congestion",
+          "prompt": "The receiver advertises a window of 30 segments and the congestion window is 24. How many segments may be in flight?",
+          "answer": 24,
+          "unit": "segments",
+          "hints": [
+            "Both limits apply.",
+            "Take the smaller number."
+          ],
+          "explain": "The sender obeys both limits, so it uses the smaller: 24."
+        },
+        {
+          "id": "slow-3",
+          "type": "numeric",
+          "taughtOn": "slow-start-aimd",
+          "prompt": "A connection is in slow start with cwnd = 4 and a threshold of 32. After 3 more round trips with no loss, what is cwnd?",
+          "answer": 32,
+          "unit": "segments",
+          "hints": [
+            "It doubles each round while below the threshold.",
+            "4, 8, 16, ..."
+          ],
+          "explain": "4 doubles to 8, 16 and then 32, which is the threshold."
+        },
+        {
+          "id": "timeout-thresh",
+          "type": "numeric",
+          "taughtOn": "tahoe-reno",
+          "prompt": "A timeout occurs when cwnd = 24. What is the new threshold?",
+          "answer": 12,
+          "unit": "segments",
+          "hints": [
+            "The threshold becomes half the window.",
+            "24 ÷ 2."
+          ],
+          "explain": "The threshold is halved: 12. cwnd drops to 1."
+        },
+        {
+          "id": "reno-dup",
+          "type": "choice",
+          "taughtOn": "tahoe-reno",
+          "prompt": "Reno gets 3 duplicate ACKs when cwnd = 20. What is its cwnd afterwards?",
+          "options": [
+            {
+              "text": "10",
+              "correct": true
+            },
+            {
+              "text": "1"
+            },
+            {
+              "text": "20"
+            },
+            {
+              "text": "40"
+            }
+          ],
+          "hints": [
+            "Reno halves the window and keeps going from there.",
+            "It does not restart at 1 for duplicate ACKs."
+          ],
+          "explain": "Reno sets the threshold to 10 and cwnd to 10, then grows additively."
+        },
+        {
+          "id": "saw-phases",
+          "type": "order",
+          "taughtOn": "slow-start-aimd",
+          "prompt": "Put one tooth of the sawtooth in order.",
+          "items": [
+            "Slow start: the window doubles each round",
+            "The window reaches the threshold",
+            "Additive increase: grow by 1 per round",
+            "A loss shows the network is full",
+            "The window is cut and the threshold is halved"
+          ],
+          "hints": [
+            "Doubling comes before gentle growth.",
+            "The cut comes after the loss."
+          ],
+          "explain": "Double, reach the threshold, creep, notice loss, cut back."
+        },
+        {
+          "id": "rounds-to-20",
+          "type": "numeric",
+          "taughtOn": "slow-start-aimd",
+          "prompt": "Challenge: a connection starts at cwnd = 1 with a threshold of 16. In which round does cwnd first reach 20? (Round 1 has cwnd = 1. Slow start doubles up to the threshold, then grows by 1 per round.)",
+          "answer": 9,
+          "unit": "round",
+          "hints": [
+            "Count the rounds: 1, 2, 4, 8, 16.",
+            "After 16 (round 5) it grows by 1: 17, 18, 19, 20."
+          ],
+          "explain": "1, 2, 4, 8 and 16 take rounds 1 to 5. Then 17, 18, 19 and 20 take rounds 6 to 9.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "5.5-f1",
+          "type": "quiz",
+          "taughtOn": "flow-vs-congestion",
+          "prompt": "What does flow control protect?",
+          "options": [
+            {
+              "text": "The receiver",
+              "correct": true
+            },
+            {
+              "text": "The network"
+            },
+            {
+              "text": "The router"
+            },
+            {
+              "text": "The cable"
+            }
+          ],
+          "explain": "The receiver's window limits the sender. Congestion control protects the network."
+        },
+        {
+          "id": "5.5-f2",
+          "type": "quiz",
+          "taughtOn": "slow-start-aimd",
+          "prompt": "What does the window do in slow start?",
+          "options": [
+            {
+              "text": "Doubles every round trip",
+              "correct": true
+            },
+            {
+              "text": "Grows by 1 each round"
+            },
+            {
+              "text": "Stays at 1"
+            },
+            {
+              "text": "Halves each round"
+            }
+          ],
+          "explain": "It starts small, then grows quickly until the threshold."
+        },
+        {
+          "id": "5.5-f3",
+          "type": "predict",
+          "taughtOn": "tahoe-reno",
+          "prompt": "A timeout hits at cwnd = 18. What is the new threshold?",
+          "answer": "9, and cwnd goes back to 1."
+        },
+        {
+          "id": "5.5-f4",
+          "type": "why",
+          "taughtOn": "tahoe-reno",
+          "prompt": "Why is 3 duplicate ACKs a milder warning than a timeout?",
+          "options": [
+            {
+              "text": "Later segments are still getting through",
+              "correct": true
+            },
+            {
+              "text": "It means the network is empty"
+            },
+            {
+              "text": "Duplicates cannot happen in a jam"
+            },
+            {
+              "text": "It means the receiver has crashed"
+            }
+          ],
+          "explain": "The receiver keeps replying, so the path still works."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "The sawtooth in real life",
+          "text": "Real TCP does not behave exactly like Tahoe or Reno. Many modern systems use other algorithms, and CUBIC is a common default on Linux. They all keep the same idea: probe for room, and back off when the network pushes back.",
+          "source": {
+            "title": "Wikipedia: TCP congestion control",
+            "url": "https://en.wikipedia.org/wiki/TCP_congestion_control"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You separated flow control from congestion control, built a sawtooth round by round, and compared how Tahoe and Reno react to loss.",
+          "The harbour road clears. The parcel arrives whole at the far dock, and Farmer Juno's door is in sight. But when Kit looks at the door, there is no name on it, only a number. \"Where do I take this?\" Kit wonders."
+        ],
+        "mistake": {
+          "title": "Mixing up the two windows",
+          "text": "The receiver's window and the congestion window are different limits, set by different things. The sender obeys whichever is smaller."
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,3624 @@
+{
+  "zone": 1,
+  "levels": [
+    {
+      "id": "1.1",
+      "title": "Crate Sorter",
+      "story": "On Brute Bay the harbour is stacked with crates in no order at all. Kit gets the first honest method: no cleverness, just do the obvious thing, and then count what it costs.",
+      "everyday": {
+        "scene": "You have a shuffled pile of exam papers to put in order by score. Without thinking much, you pick out the lowest, put it on the left, pick out the lowest of what remains, and so on.",
+        "question": "Is that a method a computer could follow?",
+        "answer": "Yes. It is called selection sort, and it is a good example of brute force: the straightforward plan that comes to mind first. It costs n × (n − 1) ÷ 2 comparisons, which is 15 for 6 papers."
+      },
+      "lessons": [
+        {
+          "id": "brute-idea",
+          "title": "Brute force: the first plan",
+          "text": [
+            "Brute force means solving a problem in the most direct way the wording suggests, without clever shortcuts. It is easy to explain, easy to get right, and it is a fair baseline: if a smarter method cannot beat it, there is no point using it.",
+            "Its weakness is cost. Direct methods often do far more work than needed. In Algo Archipelago you will use brute force as the first draft, then count its steps to see whether a better one is worth finding."
+          ],
+          "terms": [
+            {
+              "term": "Brute force",
+              "meaning": "The most direct method, often trying everything."
+            },
+            {
+              "term": "Baseline",
+              "meaning": "A simple method used as the standard to beat."
+            }
+          ],
+          "predict": {
+            "prompt": "Name one everyday job where you would just try everything.",
+            "answer": "For example, finding a lost key by checking every pocket and drawer. It always works, and it is slow only if there are lots of places."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Brute-force search",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Brute-force_search"
+            },
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 0: Introduction",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/00-intro.pdf"
+            }
+          ]
+        },
+        {
+          "id": "selection",
+          "title": "Selection sort",
+          "text": [
+            "Selection sort keeps a sorted part at the left and an unsorted part at the right. Each pass scans the unsorted part to find its smallest crate, then swaps it into the first unsorted spot. After n − 1 passes everything is in order.",
+            "Pass 1 compares n − 1 times, pass 2 compares n − 2 times, and so on. That adds up to n × (n − 1) ÷ 2 comparisons, whatever order the crates started in. It also makes at most one swap per pass."
+          ],
+          "terms": [
+            {
+              "term": "Pass",
+              "meaning": "One sweep through the unsorted part."
+            }
+          ],
+          "table": {
+            "head": [
+              "Crates (n)",
+              "Comparisons"
+            ],
+            "rows": [
+              [
+                "6",
+                "15"
+              ],
+              [
+                "12",
+                "66"
+              ],
+              [
+                "100",
+                "4,950"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "Selection sort runs on 5 crates. How many comparisons?",
+            "answer": "10. 5 × 4 ÷ 2 = 10."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Selection sort",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Selection_sort"
+            },
+            {
+              "title": "VisuAlgo: sorting animations",
+              "source": "VisuAlgo (linked only)",
+              "url": "https://visualgo.net/en/sorting"
+            }
+          ]
+        },
+        {
+          "id": "bubble",
+          "title": "Bubble sort",
+          "text": [
+            "Bubble sort sweeps along the row and compares each neighbouring pair, swapping them if they are the wrong way round. The biggest crate drifts to the end each sweep, like a bubble rising. After n − 1 sweeps the row is sorted.",
+            "The plain version compares n − 1 pairs on the first sweep, n − 2 on the next, and so on: again n × (n − 1) ÷ 2 comparisons. Swaps are different. A reversed row needs a swap at every comparison, while a sorted row needs none."
+          ],
+          "predict": {
+            "prompt": "Which does more swapping in bubble sort: a sorted row or a reversed row?",
+            "answer": "A reversed row. Every pair is the wrong way round."
+          },
+          "deeper": {
+            "title": "Stopping early",
+            "text": [
+              "A common improvement stops when a whole sweep makes no swap. That helps on rows that are nearly sorted. It does not change the worst case."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Bubble sort",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Bubble_sort"
+            },
+            {
+              "title": "VisuAlgo: sorting animations",
+              "source": "VisuAlgo (linked only)",
+              "url": "https://visualgo.net/en/sorting"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "watch-selection",
+          "type": "stepsim",
+          "taughtOn": "selection",
+          "mode": "predict",
+          "prompt": "Watch selection sort on six crates, and predict the smallest crate on each pass.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 42,
+                      "mark": null
+                    },
+                    {
+                      "value": 17,
+                      "mark": null
+                    },
+                    {
+                      "value": 8,
+                      "mark": null
+                    },
+                    {
+                      "value": 31,
+                      "mark": null
+                    },
+                    {
+                      "value": 25,
+                      "mark": null
+                    },
+                    {
+                      "value": 12,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Crates, unsorted"
+                },
+                "say": "Selection sort: find the smallest crate in the unsorted part, then swap it to the front of that part. Repeat."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 42,
+                      "mark": null
+                    },
+                    {
+                      "value": 17,
+                      "mark": null
+                    },
+                    {
+                      "value": 8,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 31,
+                      "mark": null
+                    },
+                    {
+                      "value": 25,
+                      "mark": null
+                    },
+                    {
+                      "value": 12,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "0": "front",
+                    "2": "smallest"
+                  }
+                },
+                "say": "Pass 1: scanning from position 0, the smallest crate is 8.",
+                "predict": {
+                  "prompt": "Pass 1: which crate is the smallest in the unsorted part?",
+                  "options": [
+                    {
+                      "text": "8",
+                      "correct": true
+                    },
+                    {
+                      "text": "42"
+                    },
+                    {
+                      "text": "17"
+                    },
+                    {
+                      "text": "31"
+                    }
+                  ],
+                  "hints": [
+                    "The sorted crates at the left are finished. Look only at the rest.",
+                    "Compare the unsorted crates: 42, 17, 8, 31, 25, 12."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 8,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 17,
+                      "mark": null
+                    },
+                    {
+                      "value": 42,
+                      "mark": null
+                    },
+                    {
+                      "value": 31,
+                      "mark": null
+                    },
+                    {
+                      "value": 25,
+                      "mark": null
+                    },
+                    {
+                      "value": 12,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {}
+                },
+                "say": "Swap 8 with 42. Now 1 crate is in place."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 8,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 17,
+                      "mark": null
+                    },
+                    {
+                      "value": 42,
+                      "mark": null
+                    },
+                    {
+                      "value": 31,
+                      "mark": null
+                    },
+                    {
+                      "value": 25,
+                      "mark": null
+                    },
+                    {
+                      "value": 12,
+                      "mark": "best"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "front",
+                    "5": "smallest"
+                  }
+                },
+                "say": "Pass 2: scanning from position 1, the smallest crate is 12.",
+                "predict": {
+                  "prompt": "Pass 2: which crate is the smallest in the unsorted part?",
+                  "options": [
+                    {
+                      "text": "12",
+                      "correct": true
+                    },
+                    {
+                      "text": "17"
+                    },
+                    {
+                      "text": "42"
+                    },
+                    {
+                      "text": "31"
+                    }
+                  ],
+                  "hints": [
+                    "The sorted crates at the left are finished. Look only at the rest.",
+                    "Compare the unsorted crates: 17, 42, 31, 25, 12."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 8,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 12,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 42,
+                      "mark": null
+                    },
+                    {
+                      "value": 31,
+                      "mark": null
+                    },
+                    {
+                      "value": 25,
+                      "mark": null
+                    },
+                    {
+                      "value": 17,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {}
+                },
+                "say": "Swap 12 with 17. Now 2 crates are in place."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 8,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 12,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 42,
+                      "mark": null
+                    },
+                    {
+                      "value": 31,
+                      "mark": null
+                    },
+                    {
+                      "value": 25,
+                      "mark": null
+                    },
+                    {
+                      "value": 17,
+                      "mark": "best"
+                    }
+                  ],
+                  "pointers": {
+                    "2": "front",
+                    "5": "smallest"
+                  }
+                },
+                "say": "Pass 3: scanning from position 2, the smallest crate is 17.",
+                "predict": {
+                  "prompt": "Pass 3: which crate is the smallest in the unsorted part?",
+                  "options": [
+                    {
+                      "text": "17",
+                      "correct": true
+                    },
+                    {
+                      "text": "42"
+                    },
+                    {
+                      "text": "31"
+                    },
+                    {
+                      "text": "25"
+                    }
+                  ],
+                  "hints": [
+                    "The sorted crates at the left are finished. Look only at the rest.",
+                    "Compare the unsorted crates: 42, 31, 25, 17."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 8,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 12,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 17,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 31,
+                      "mark": null
+                    },
+                    {
+                      "value": 25,
+                      "mark": null
+                    },
+                    {
+                      "value": 42,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {}
+                },
+                "say": "Swap 17 with 42. Now 3 crates are in place."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 8,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 12,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 17,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 31,
+                      "mark": null
+                    },
+                    {
+                      "value": 25,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 42,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "3": "front",
+                    "4": "smallest"
+                  }
+                },
+                "say": "Pass 4: scanning from position 3, the smallest crate is 25.",
+                "predict": {
+                  "prompt": "Pass 4: which crate is the smallest in the unsorted part?",
+                  "options": [
+                    {
+                      "text": "25",
+                      "correct": true
+                    },
+                    {
+                      "text": "31"
+                    },
+                    {
+                      "text": "42"
+                    }
+                  ],
+                  "hints": [
+                    "The sorted crates at the left are finished. Look only at the rest.",
+                    "Compare the unsorted crates: 31, 25, 42."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 8,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 12,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 17,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 25,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 31,
+                      "mark": null
+                    },
+                    {
+                      "value": 42,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {}
+                },
+                "say": "Swap 25 with 31. Now 4 crates are in place."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 8,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 12,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 17,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 25,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 31,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 42,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "4": "smallest"
+                  }
+                },
+                "say": "Pass 5: scanning from position 4, the smallest crate is 31.",
+                "predict": {
+                  "prompt": "Pass 5: which crate is the smallest in the unsorted part?",
+                  "options": [
+                    {
+                      "text": "31",
+                      "correct": true
+                    },
+                    {
+                      "text": "42"
+                    }
+                  ],
+                  "hints": [
+                    "The sorted crates at the left are finished. Look only at the rest.",
+                    "Compare the unsorted crates: 31, 42."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 8,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 12,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 17,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 25,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 31,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 42,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {}
+                },
+                "say": "31 is already at the front, so no swap is needed."
+              }
+            ]
+          },
+          "explain": "Watch selection sort on six crates, and predict the smallest crate on each pass."
+        },
+        {
+          "id": "cmps-12",
+          "type": "numeric",
+          "taughtOn": "selection",
+          "prompt": "How many comparisons does selection sort make on 12 crates?",
+          "answer": 66,
+          "unit": "comparisons",
+          "hints": [
+            "Use n × (n − 1) ÷ 2.",
+            "12 × 11 ÷ 2."
+          ],
+          "explain": "12 × 11 ÷ 2 = 66."
+        },
+        {
+          "id": "already-sorted",
+          "type": "choice",
+          "taughtOn": "selection",
+          "prompt": "Selection sort is given 12 crates already in order. How many comparisons does it make?",
+          "options": [
+            {
+              "text": "66, the same as for any order",
+              "correct": true
+            },
+            {
+              "text": "0, because nothing needs moving"
+            },
+            {
+              "text": "11, one sweep"
+            },
+            {
+              "text": "12"
+            }
+          ],
+          "hints": [
+            "Does selection sort check whether the row is already sorted?",
+            "It always scans the whole unsorted part to find the smallest."
+          ],
+          "explain": "It cannot tell the order is fine without looking, so it still makes 66 comparisons."
+        },
+        {
+          "id": "swaps-6",
+          "type": "numeric",
+          "taughtOn": "selection",
+          "prompt": "On the six crates 42, 17, 8, 31, 25, 12, how many swaps does selection sort actually make? (Skip a swap when the smallest crate is already in place.)",
+          "answer": 4,
+          "unit": "swaps",
+          "hints": [
+            "Count the passes where a swap happened in the simulation.",
+            "Passes where the smallest was already at the front need no swap."
+          ],
+          "explain": "The simulation made 4 swaps out of 5 passes."
+        },
+        {
+          "id": "bubble-order",
+          "type": "order",
+          "taughtOn": "bubble",
+          "prompt": "Put one sweep of bubble sort in order.",
+          "items": [
+            "Start at the left end of the row",
+            "Compare the pair of neighbours",
+            "Swap them if the left one is bigger",
+            "Move one place to the right",
+            "Stop at the end of the unsorted part"
+          ],
+          "hints": [
+            "The comparison comes before the swap.",
+            "You move along only after you have dealt with the pair."
+          ],
+          "explain": "Compare, swap if needed, step right, and repeat until the end."
+        },
+        {
+          "id": "bubble-rev",
+          "type": "numeric",
+          "taughtOn": "bubble",
+          "prompt": "Challenge: bubble sort runs on a reversed row of 8 crates (8, 7, 6, 5, 4, 3, 2, 1). How many swaps does it make in total?",
+          "answer": 28,
+          "unit": "swaps",
+          "hints": [
+            "In a reversed row, every pair is out of order.",
+            "The number of pairs among 8 crates is 8 × 7 ÷ 2."
+          ],
+          "explain": "Each swap fixes exactly one out-of-order pair, and a reversed row of 8 has 28 of them. So 28 swaps.",
+          "challenge": true
+        },
+        {
+          "id": "bubble-cmps",
+          "type": "numeric",
+          "taughtOn": "bubble",
+          "prompt": "Challenge: how many comparisons does plain bubble sort make on 50 crates?",
+          "answer": 1225,
+          "unit": "comparisons",
+          "hints": [
+            "Use n × (n − 1) ÷ 2.",
+            "50 × 49 ÷ 2."
+          ],
+          "explain": "50 × 49 ÷ 2 = 1,225.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "a1.1-f1",
+          "type": "quiz",
+          "taughtOn": "brute-idea",
+          "prompt": "Brute force means...",
+          "options": [
+            {
+              "text": "The most direct method, often trying everything",
+              "correct": true
+            },
+            {
+              "text": "A method that only uses a very fast computer"
+            },
+            {
+              "text": "A method that guesses"
+            },
+            {
+              "text": "The cleverest possible method"
+            }
+          ],
+          "explain": "It is the straightforward first plan."
+        },
+        {
+          "id": "a1.1-f2",
+          "type": "quiz",
+          "taughtOn": "selection",
+          "prompt": "Selection sort on 10 crates makes how many comparisons?",
+          "options": [
+            {
+              "text": "45",
+              "correct": true
+            },
+            {
+              "text": "10"
+            },
+            {
+              "text": "100"
+            },
+            {
+              "text": "20"
+            }
+          ],
+          "explain": "10 × 9 ÷ 2 = 45."
+        },
+        {
+          "id": "a1.1-f3",
+          "type": "predict",
+          "taughtOn": "selection",
+          "prompt": "What does each pass of selection sort do?",
+          "answer": "It finds the smallest crate in the unsorted part and swaps it to the front of that part."
+        },
+        {
+          "id": "a1.1-f4",
+          "type": "why",
+          "taughtOn": "bubble",
+          "prompt": "Bubble sort on a sorted row makes no swaps, but the plain version...",
+          "options": [
+            {
+              "text": "still makes every comparison",
+              "correct": true
+            },
+            {
+              "text": "stops immediately with 0 comparisons"
+            },
+            {
+              "text": "makes twice the comparisons"
+            },
+            {
+              "text": "swaps everything back"
+            }
+          ],
+          "explain": "The plain version does not check whether it can stop early."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Sorting by hand, at small scale",
+          "text": "Simple sorts like selection and insertion sort are fine for short lists. Many faster sorts split a list into pieces and switch to a simple method such as insertion sort once the pieces are small, because the extra bookkeeping of the clever method does not pay off at small sizes.",
+          "source": {
+            "title": "Wikipedia: Insertion sort",
+            "url": "https://en.wikipedia.org/wiki/Insertion_sort"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You watched selection sort pick the smallest crate each pass, counted its comparisons as n × (n − 1) ÷ 2, and compared it with bubble sort.",
+          "The harbour is tidy. \"It works,\" says the harbour master. \"But look how the count grows. Keep that in mind for the next islands.\""
+        ],
+        "mistake": {
+          "title": "Thinking fewer swaps means less work",
+          "text": "Selection sort makes few swaps but still makes n × (n − 1) ÷ 2 comparisons. Always say what you are counting: comparisons or swaps."
+        }
+      }
+    },
+    {
+      "id": "1.2",
+      "title": "Message in a Bottle",
+      "story": "A bottle washes up with a long scrawl inside, and the islanders want to know whether the word they are afraid of is in it. Kit slides the word along the message, one place at a time.",
+      "everyday": {
+        "scene": "You press Ctrl+F in a long web page to find a word. Somewhere, a program has to look through the text for it.",
+        "question": "What is the simplest way for it to look?",
+        "answer": "Line the word up at the start, check letter by letter, and if a letter differs, slide the word one place along and try again. That is brute-force string matching, and it is simple enough to write in a few lines."
+      },
+      "lessons": [
+        {
+          "id": "slide",
+          "title": "Slide and compare",
+          "text": [
+            "Brute-force string matching lines the pattern up under the start of the text and compares letter by letter. If every letter matches, you have found it. At the first letter that differs, you stop, slide the pattern one place to the right, and begin again.",
+            "With a text of 11 letters and a pattern of 7, there are 11 − 7 + 1 = 5 places to try. In our example, it found a match at position 4, after 14 letter comparisons in total."
+          ],
+          "terms": [
+            {
+              "term": "Pattern",
+              "meaning": "The word or string you are looking for."
+            },
+            {
+              "term": "Text",
+              "meaning": "The long string you search inside."
+            }
+          ],
+          "predict": {
+            "prompt": "A text has 20 letters, and the pattern has 5. How many placements are there?",
+            "answer": "16. That is 20 − 5 + 1."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: String-searching algorithm",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/String-searching_algorithm"
+            },
+            {
+              "title": "Wikipedia: Brute-force search",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Brute-force_search"
+            }
+          ]
+        },
+        {
+          "id": "worst-string",
+          "title": "The worst case",
+          "text": [
+            "Most placements fail fast: the first letter is often wrong, so one comparison is enough. The worst case is when the pattern nearly matches everywhere. Searching for AAAB in AAAAAAAAAA, every placement matches three letters before the B fails.",
+            "With n letters of text and m letters in the pattern, the worst case is about (n − m + 1) × m comparisons. For n = 10 and m = 4 that is 28. The best case, where the first letter always fails, is just n − m + 1."
+          ],
+          "table": {
+            "head": [
+              "Text length n",
+              "Pattern length m",
+              "Worst case"
+            ],
+            "rows": [
+              [
+                "10",
+                "4",
+                "28"
+              ],
+              [
+                "1,000",
+                "10",
+                "9,910"
+              ],
+              [
+                "1,000,000",
+                "10",
+                "9,999,910"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "Which is slower to search: a pattern of 10 A's in a long text of A's, or a pattern starting with a letter the text never contains?",
+            "answer": "The A's. The other fails at the first letter at every placement."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: String-searching algorithm",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/String-searching_algorithm"
+            },
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 0: Introduction",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/00-intro.pdf"
+            }
+          ]
+        },
+        {
+          "id": "why-smarter",
+          "title": "Why people look for better ways",
+          "text": [
+            "For short patterns on everyday text, brute force is fast enough. Real text is not like the worst case, and most placements fail at once. So brute force is a respectable method for small jobs.",
+            "But the worst case matters when the text is huge or when someone chooses the input on purpose. Later, in Trade Wind Cove, you will meet methods that skip ahead after a mismatch and so avoid re-reading letters."
+          ],
+          "predict": {
+            "prompt": "Why is brute force acceptable for most everyday searches?",
+            "answer": "Most placements fail on the first letter, so the average is close to the best case."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: String-searching algorithm",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/String-searching_algorithm"
+            },
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 0: Introduction",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/00-intro.pdf"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "watch-match",
+          "type": "stepsim",
+          "taughtOn": "slide",
+          "mode": "count",
+          "prompt": "Predict the total number of letter comparisons, then watch the pattern slide.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "T",
+                      "mark": null
+                    },
+                    {
+                      "value": "I",
+                      "mark": null
+                    },
+                    {
+                      "value": "D",
+                      "mark": null
+                    },
+                    {
+                      "value": "E",
+                      "mark": null
+                    },
+                    {
+                      "value": "T",
+                      "mark": null
+                    },
+                    {
+                      "value": "I",
+                      "mark": null
+                    },
+                    {
+                      "value": "D",
+                      "mark": null
+                    },
+                    {
+                      "value": "I",
+                      "mark": null
+                    },
+                    {
+                      "value": "N",
+                      "mark": null
+                    },
+                    {
+                      "value": "G",
+                      "mark": null
+                    },
+                    {
+                      "value": "S",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Text. Looking for: TIDINGS"
+                },
+                "say": "The bottle holds the message \"TIDETIDINGS\". Brute-force matching slides the pattern \"TIDINGS\" along, one place at a time, and compares letter by letter until a letter differs."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "T",
+                      "mark": "compare"
+                    },
+                    {
+                      "value": "I",
+                      "mark": "compare"
+                    },
+                    {
+                      "value": "D",
+                      "mark": "compare"
+                    },
+                    {
+                      "value": "E",
+                      "mark": "compare"
+                    },
+                    {
+                      "value": "T",
+                      "mark": null
+                    },
+                    {
+                      "value": "I",
+                      "mark": null
+                    },
+                    {
+                      "value": "D",
+                      "mark": null
+                    },
+                    {
+                      "value": "I",
+                      "mark": null
+                    },
+                    {
+                      "value": "N",
+                      "mark": null
+                    },
+                    {
+                      "value": "G",
+                      "mark": null
+                    },
+                    {
+                      "value": "S",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "0": "start"
+                  },
+                  "label": "Text. Looking for: TIDINGS"
+                },
+                "say": "Placed at position 0: it stops after 4 comparisons because a letter differs.",
+                "count": {
+                  "comparisons": 4
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "T",
+                      "mark": null
+                    },
+                    {
+                      "value": "I",
+                      "mark": "compare"
+                    },
+                    {
+                      "value": "D",
+                      "mark": null
+                    },
+                    {
+                      "value": "E",
+                      "mark": null
+                    },
+                    {
+                      "value": "T",
+                      "mark": null
+                    },
+                    {
+                      "value": "I",
+                      "mark": null
+                    },
+                    {
+                      "value": "D",
+                      "mark": null
+                    },
+                    {
+                      "value": "I",
+                      "mark": null
+                    },
+                    {
+                      "value": "N",
+                      "mark": null
+                    },
+                    {
+                      "value": "G",
+                      "mark": null
+                    },
+                    {
+                      "value": "S",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "1": "start"
+                  },
+                  "label": "Text. Looking for: TIDINGS"
+                },
+                "say": "Placed at position 1: it stops after 1 comparison because a letter differs.",
+                "count": {
+                  "comparisons": 1
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "T",
+                      "mark": null
+                    },
+                    {
+                      "value": "I",
+                      "mark": null
+                    },
+                    {
+                      "value": "D",
+                      "mark": "compare"
+                    },
+                    {
+                      "value": "E",
+                      "mark": null
+                    },
+                    {
+                      "value": "T",
+                      "mark": null
+                    },
+                    {
+                      "value": "I",
+                      "mark": null
+                    },
+                    {
+                      "value": "D",
+                      "mark": null
+                    },
+                    {
+                      "value": "I",
+                      "mark": null
+                    },
+                    {
+                      "value": "N",
+                      "mark": null
+                    },
+                    {
+                      "value": "G",
+                      "mark": null
+                    },
+                    {
+                      "value": "S",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "2": "start"
+                  },
+                  "label": "Text. Looking for: TIDINGS"
+                },
+                "say": "Placed at position 2: it stops after 1 comparison because a letter differs.",
+                "count": {
+                  "comparisons": 1
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "T",
+                      "mark": null
+                    },
+                    {
+                      "value": "I",
+                      "mark": null
+                    },
+                    {
+                      "value": "D",
+                      "mark": null
+                    },
+                    {
+                      "value": "E",
+                      "mark": "compare"
+                    },
+                    {
+                      "value": "T",
+                      "mark": null
+                    },
+                    {
+                      "value": "I",
+                      "mark": null
+                    },
+                    {
+                      "value": "D",
+                      "mark": null
+                    },
+                    {
+                      "value": "I",
+                      "mark": null
+                    },
+                    {
+                      "value": "N",
+                      "mark": null
+                    },
+                    {
+                      "value": "G",
+                      "mark": null
+                    },
+                    {
+                      "value": "S",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "3": "start"
+                  },
+                  "label": "Text. Looking for: TIDINGS"
+                },
+                "say": "Placed at position 3: it stops after 1 comparison because a letter differs.",
+                "count": {
+                  "comparisons": 1
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "T",
+                      "mark": null
+                    },
+                    {
+                      "value": "I",
+                      "mark": null
+                    },
+                    {
+                      "value": "D",
+                      "mark": null
+                    },
+                    {
+                      "value": "E",
+                      "mark": null
+                    },
+                    {
+                      "value": "T",
+                      "mark": "compare"
+                    },
+                    {
+                      "value": "I",
+                      "mark": "compare"
+                    },
+                    {
+                      "value": "D",
+                      "mark": "compare"
+                    },
+                    {
+                      "value": "I",
+                      "mark": "compare"
+                    },
+                    {
+                      "value": "N",
+                      "mark": "compare"
+                    },
+                    {
+                      "value": "G",
+                      "mark": "compare"
+                    },
+                    {
+                      "value": "S",
+                      "mark": "compare"
+                    }
+                  ],
+                  "pointers": {
+                    "4": "start"
+                  },
+                  "label": "Text. Looking for: TIDINGS"
+                },
+                "say": "Placed at position 4: all 7 letters match. Found it, after 7 comparisons here.",
+                "count": {
+                  "comparisons": 7
+                }
+              }
+            ],
+            "countQuestion": {
+              "prompt": "The pattern TIDINGS is slid along the text TIDETIDINGS. How many letter comparisons in total?",
+              "options": [
+                {
+                  "text": "14",
+                  "correct": true
+                },
+                {
+                  "text": "8"
+                },
+                {
+                  "text": "19"
+                },
+                {
+                  "text": "5"
+                }
+              ],
+              "hints": [
+                "Each placement stops at the first letter that differs. Count the letters compared at each placement.",
+                "Four placements stop after 4, 1, 1 and 1 comparisons, and the last matches all 7."
+              ],
+              "counter": "comparisons"
+            }
+          },
+          "explain": "Predict the total number of letter comparisons, then watch the pattern slide."
+        },
+        {
+          "id": "placements",
+          "type": "numeric",
+          "taughtOn": "slide",
+          "prompt": "A text has 50 letters and the pattern has 8. How many placements does brute force try at most?",
+          "answer": 43,
+          "unit": "placements",
+          "hints": [
+            "Use n − m + 1.",
+            "50 − 8 + 1."
+          ],
+          "explain": "50 − 8 + 1 = 43."
+        },
+        {
+          "id": "worst-28",
+          "type": "numeric",
+          "taughtOn": "worst-string",
+          "prompt": "What is the worst-case number of comparisons for text length 10 and pattern length 4?",
+          "answer": 28,
+          "unit": "comparisons",
+          "hints": [
+            "Use (n − m + 1) × m.",
+            "(10 − 4 + 1) × 4."
+          ],
+          "explain": "7 × 4 = 28."
+        },
+        {
+          "id": "best-case-str",
+          "type": "choice",
+          "taughtOn": "worst-string",
+          "prompt": "Which text and pattern give the best case for brute force?",
+          "options": [
+            {
+              "text": "A pattern whose first letter never appears in the text",
+              "correct": true
+            },
+            {
+              "text": "A pattern made of one repeated letter, in a text made of that same letter"
+            },
+            {
+              "text": "A pattern as long as the text"
+            },
+            {
+              "text": "A pattern that appears at the very end"
+            }
+          ],
+          "hints": [
+            "Think about what makes each placement stop after one comparison.",
+            "If the first letter always fails, each placement costs just one comparison."
+          ],
+          "explain": "Each of the n − m + 1 placements fails at its first letter, so the total is n − m + 1."
+        },
+        {
+          "id": "match-order",
+          "type": "order",
+          "taughtOn": "slide",
+          "prompt": "Put brute-force matching in order.",
+          "items": [
+            "Place the pattern at the start of the text",
+            "Compare letter by letter",
+            "Stop at the first letter that differs",
+            "Slide the pattern one place to the right",
+            "Repeat until a full match or the end of the text"
+          ],
+          "hints": [
+            "The comparing comes after placing.",
+            "Sliding comes only after a mismatch."
+          ],
+          "explain": "Place, compare, stop at a mismatch, slide, repeat."
+        },
+        {
+          "id": "worst-million",
+          "type": "numeric",
+          "taughtOn": "worst-string",
+          "prompt": "Challenge: worst case for a text of 1,000,000 letters and a pattern of 10.",
+          "answer": 9999910,
+          "unit": "comparisons",
+          "hints": [
+            "Use (n − m + 1) × m.",
+            "(1,000,000 − 10 + 1) × 10."
+          ],
+          "explain": "999,991 × 10 = 9,999,910.",
+          "challenge": true
+        },
+        {
+          "id": "everyday-ok",
+          "type": "choice",
+          "taughtOn": "why-smarter",
+          "prompt": "Challenge: why is brute force usually fine for searching a short web page?",
+          "options": [
+            {
+              "text": "Most placements fail at the first letter, so the real cost is near the best case",
+              "correct": true
+            },
+            {
+              "text": "Because the worst case never happens in any text"
+            },
+            {
+              "text": "Because computers cannot compare more than one letter"
+            },
+            {
+              "text": "Because the pattern is always short"
+            }
+          ],
+          "hints": [
+            "Think about how common the first letter of the pattern is in ordinary text.",
+            "Most placements are mismatches at once."
+          ],
+          "explain": "Ordinary text rarely resembles the worst case, so the total stays small.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "a1.2-f1",
+          "type": "quiz",
+          "taughtOn": "slide",
+          "prompt": "Brute-force matching moves the pattern...",
+          "options": [
+            {
+              "text": "One place right after a mismatch",
+              "correct": true
+            },
+            {
+              "text": "Halfway along the text"
+            },
+            {
+              "text": "To a random place"
+            },
+            {
+              "text": "To the end of the text"
+            }
+          ],
+          "explain": "It slides one place at a time."
+        },
+        {
+          "id": "a1.2-f2",
+          "type": "quiz",
+          "taughtOn": "slide",
+          "prompt": "Text of 30 letters, pattern of 6. How many placements?",
+          "options": [
+            {
+              "text": "25",
+              "correct": true
+            },
+            {
+              "text": "30"
+            },
+            {
+              "text": "24"
+            },
+            {
+              "text": "36"
+            }
+          ],
+          "explain": "30 − 6 + 1 = 25."
+        },
+        {
+          "id": "a1.2-f3",
+          "type": "predict",
+          "taughtOn": "worst-string",
+          "prompt": "When is brute-force matching slowest?",
+          "answer": "When the pattern nearly matches at every placement, such as AAAB in a text of A's."
+        },
+        {
+          "id": "a1.2-f4",
+          "type": "why",
+          "taughtOn": "why-smarter",
+          "prompt": "Better matching methods try to...",
+          "options": [
+            {
+              "text": "Skip ahead after a mismatch instead of re-reading letters",
+              "correct": true
+            },
+            {
+              "text": "Read the text backwards only"
+            },
+            {
+              "text": "Use a bigger computer"
+            },
+            {
+              "text": "Compare fewer patterns"
+            }
+          ],
+          "explain": "Re-reading letters is the waste they avoid."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Find in page",
+          "text": "Finding a short piece of text inside a long one is called string searching. The simple method, trying every starting position, is often fine for short patterns, because on ordinary text a wrong position is usually spotted after one or two characters.",
+          "source": {
+            "title": "Wikipedia: String-searching algorithm",
+            "url": "https://en.wikipedia.org/wiki/String-searching_algorithm"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You slid a pattern along a text, counted letter comparisons, and met the worst case (n − m + 1) × m.",
+          "The islanders relax. \"Our word is not in the bottle.\" Brute force found the answer, and it told you how much it cost."
+        ],
+        "mistake": {
+          "title": "Forgetting to stop at the first mismatch",
+          "text": "Brute force stops comparing as soon as one letter differs, then slides on. Counting all m letters at every placement overstates the work except in the worst case."
+        }
+      }
+    },
+    {
+      "id": "1.3",
+      "title": "Closest Lighthouses",
+      "story": "Two lighthouses are so close that their beams clash. Captain Ada wants to know which pair, and the chart has dozens of them. Kit measures them all.",
+      "everyday": {
+        "scene": "Your phone shows 40 friends on a map, and you want to find the two who live closest to each other.",
+        "question": "How many pairs of friends is that to check?",
+        "answer": "Every friend against every other: 40 × 39 ÷ 2 = 780 pairs. That is the brute-force plan for the closest-pair problem, and it is fine for 40. It is slow for 4 million."
+      },
+      "lessons": [
+        {
+          "id": "all-pairs",
+          "title": "Measure every pair",
+          "text": [
+            "The closest-pair problem: given points on a map, find the two that are nearest to each other. Brute force measures every pair, remembers the smallest distance so far, and reports the best at the end.",
+            "With n points there are n × (n − 1) ÷ 2 pairs. For 8 points that is 28, for 1,000 it is 499,500, and for a million it is nearly 500 billion. The plan is correct, and its cost grows like n × n."
+          ],
+          "terms": [
+            {
+              "term": "Pair",
+              "meaning": "Two different points, counted once whichever order you name them."
+            }
+          ],
+          "table": {
+            "head": [
+              "Points (n)",
+              "Pairs"
+            ],
+            "rows": [
+              [
+                "5",
+                "10"
+              ],
+              [
+                "8",
+                "28"
+              ],
+              [
+                "1,000",
+                "499,500"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "How many pairs can you form from 6 lighthouses?",
+            "answer": "15. 6 × 5 ÷ 2 = 15."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Closest pair of points problem",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Closest_pair_of_points_problem"
+            },
+            {
+              "title": "Wikipedia: Brute-force search",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Brute-force_search"
+            }
+          ]
+        },
+        {
+          "id": "squared",
+          "title": "Skip the square root",
+          "text": [
+            "The distance between points (x1, y1) and (x2, y2) is the square root of (x1 − x2)² + (y1 − y2)². But we only need to find which pair is closest, and the biggest-or-smallest order does not change if we skip the square root.",
+            "So compare squared distances instead. For (3,4) and (9,12), the squared distance is 100, so the real distance is 10. Squaring costs less than a square root, and in a loop that runs half a million times, it adds up."
+          ],
+          "predict": {
+            "prompt": "Which is smaller: squared distance 25 or squared distance 36?",
+            "answer": "25. The real distances are 5 and 6, and the order is the same."
+          },
+          "deeper": {
+            "title": "Why the order stays the same",
+            "text": [
+              "Squaring keeps order for numbers that are zero or bigger. A distance is never negative, so a smaller squared distance always means a smaller distance."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Closest pair of points problem",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Closest_pair_of_points_problem"
+            },
+            {
+              "title": "Wikipedia: Big O notation",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Big_O_notation"
+            }
+          ]
+        },
+        {
+          "id": "keep-best",
+          "title": "Keep the best so far",
+          "text": [
+            "The loop remembers one thing: the best pair so far and its squared distance. For each new pair, it measures, compares, and only replaces the best if the new pair is strictly closer.",
+            "It never needs to store all the distances, only the best. That small habit, keeping a running best, appears in many brute-force searches, including finding the biggest crate in the first island."
+          ],
+          "predict": {
+            "prompt": "What does the loop need to remember between pairs?",
+            "answer": "The best pair so far and its squared distance."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Closest pair of points problem",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Closest_pair_of_points_problem"
+            },
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 0: Introduction",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/00-intro.pdf"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "watch-pairs",
+          "type": "stepsim",
+          "taughtOn": "keep-best",
+          "mode": "predict",
+          "prompt": "Watch brute force measure all ten pairs, and predict whether each new pair beats the best.",
+          "script": {
+            "view": "graph",
+            "steps": [
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 30,
+                      "y": 40,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 90,
+                      "y": 140,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 140,
+                      "y": 70,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 90,
+                      "label": "D"
+                    },
+                    {
+                      "id": "E",
+                      "x": 250,
+                      "y": 150,
+                      "label": "E"
+                    }
+                  ],
+                  "edges": [],
+                  "legend": "Five lighthouses. A thin line is the pair being measured, with its squared distance. A thick line is the closest pair found so far."
+                },
+                "say": "Brute force measures every pair of lighthouses and keeps the closest. With 5 lighthouses there are 10 pairs."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 30,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "B",
+                      "x": 90,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "C",
+                      "x": 140,
+                      "y": 70,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 90,
+                      "label": "D"
+                    },
+                    {
+                      "id": "E",
+                      "x": 250,
+                      "y": 150,
+                      "label": "E"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "weight": 13600,
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "A thick line is the closest pair so far. A struck-out line is a pair that was beaten."
+                },
+                "say": "Pair 1 of 10: A and B, squared distance 13600. It is the first pair, so it is the closest so far."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 30,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "B",
+                      "x": 90,
+                      "y": 140,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 140,
+                      "y": 70,
+                      "label": "C",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 90,
+                      "label": "D"
+                    },
+                    {
+                      "id": "E",
+                      "x": 250,
+                      "y": 150,
+                      "label": "E"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "weight": 13600,
+                      "mark": "skipped"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C",
+                      "weight": 13000,
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "A thick line is the closest pair so far. A struck-out line is a pair that was beaten."
+                },
+                "say": "Pair 2 of 10: A and C, squared distance 13000. That beats 13600, so it is the new closest pair."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 30,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "B",
+                      "x": 90,
+                      "y": 140,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 140,
+                      "y": 70,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 90,
+                      "label": "D",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "E",
+                      "x": 250,
+                      "y": 150,
+                      "label": "E"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "C",
+                      "weight": 13000,
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "D",
+                      "weight": 19400
+                    }
+                  ],
+                  "legend": "A thick line is the closest pair so far. A struck-out line is a pair that was beaten."
+                },
+                "say": "Pair 3 of 10: A and D, squared distance 19400. That does not beat 13000."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 30,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "B",
+                      "x": 90,
+                      "y": 140,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 140,
+                      "y": 70,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 90,
+                      "label": "D"
+                    },
+                    {
+                      "id": "E",
+                      "x": 250,
+                      "y": 150,
+                      "label": "E",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "C",
+                      "weight": 13000,
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "E",
+                      "weight": 60500
+                    }
+                  ],
+                  "legend": "A thick line is the closest pair so far. A struck-out line is a pair that was beaten."
+                },
+                "say": "Pair 4 of 10: A and E, squared distance 60500. That does not beat 13000.",
+                "predict": {
+                  "prompt": "Next pair: A and E, squared distance 60500. The closest so far is 13000. What happens?",
+                  "options": [
+                    {
+                      "text": "The closest pair stays the same",
+                      "correct": true
+                    },
+                    {
+                      "text": "It becomes the new closest pair"
+                    }
+                  ],
+                  "hints": [
+                    "Compare the two squared distances.",
+                    "Is 60500 smaller than 13000?"
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 30,
+                      "y": 40,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 90,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "C",
+                      "x": 140,
+                      "y": 70,
+                      "label": "C",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 90,
+                      "label": "D"
+                    },
+                    {
+                      "id": "E",
+                      "x": 250,
+                      "y": 150,
+                      "label": "E"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "C",
+                      "weight": 13000,
+                      "mark": "skipped"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C",
+                      "weight": 7400,
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "A thick line is the closest pair so far. A struck-out line is a pair that was beaten."
+                },
+                "say": "Pair 5 of 10: B and C, squared distance 7400. That beats 13000, so it is the new closest pair."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 30,
+                      "y": 40,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 90,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "C",
+                      "x": 140,
+                      "y": 70,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 90,
+                      "label": "D",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "E",
+                      "x": 250,
+                      "y": 150,
+                      "label": "E"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "B",
+                      "to": "C",
+                      "weight": 7400,
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D",
+                      "weight": 7400
+                    }
+                  ],
+                  "legend": "A thick line is the closest pair so far. A struck-out line is a pair that was beaten."
+                },
+                "say": "Pair 6 of 10: B and D, squared distance 7400. That does not beat 7400."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 30,
+                      "y": 40,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 90,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "C",
+                      "x": 140,
+                      "y": 70,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 90,
+                      "label": "D"
+                    },
+                    {
+                      "id": "E",
+                      "x": 250,
+                      "y": 150,
+                      "label": "E",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "B",
+                      "to": "C",
+                      "weight": 7400,
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E",
+                      "weight": 25700
+                    }
+                  ],
+                  "legend": "A thick line is the closest pair so far. A struck-out line is a pair that was beaten."
+                },
+                "say": "Pair 7 of 10: B and E, squared distance 25700. That does not beat 7400.",
+                "predict": {
+                  "prompt": "Next pair: B and E, squared distance 25700. The closest so far is 7400. What happens?",
+                  "options": [
+                    {
+                      "text": "The closest pair stays the same",
+                      "correct": true
+                    },
+                    {
+                      "text": "It becomes the new closest pair"
+                    }
+                  ],
+                  "hints": [
+                    "Compare the two squared distances.",
+                    "Is 25700 smaller than 7400?"
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 30,
+                      "y": 40,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 90,
+                      "y": 140,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 140,
+                      "y": 70,
+                      "label": "C",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 90,
+                      "label": "D",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "E",
+                      "x": 250,
+                      "y": 150,
+                      "label": "E"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "B",
+                      "to": "C",
+                      "weight": 7400,
+                      "mark": "skipped"
+                    },
+                    {
+                      "from": "C",
+                      "to": "D",
+                      "weight": 800,
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "A thick line is the closest pair so far. A struck-out line is a pair that was beaten."
+                },
+                "say": "Pair 8 of 10: C and D, squared distance 800. That beats 7400, so it is the new closest pair."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 30,
+                      "y": 40,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 90,
+                      "y": 140,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 140,
+                      "y": 70,
+                      "label": "C",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 90,
+                      "label": "D"
+                    },
+                    {
+                      "id": "E",
+                      "x": 250,
+                      "y": 150,
+                      "label": "E",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "C",
+                      "to": "D",
+                      "weight": 800,
+                      "mark": "used"
+                    },
+                    {
+                      "from": "C",
+                      "to": "E",
+                      "weight": 18500
+                    }
+                  ],
+                  "legend": "A thick line is the closest pair so far. A struck-out line is a pair that was beaten."
+                },
+                "say": "Pair 9 of 10: C and E, squared distance 18500. That does not beat 800."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 30,
+                      "y": 40,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 90,
+                      "y": 140,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 140,
+                      "y": 70,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 90,
+                      "label": "D",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "E",
+                      "x": 250,
+                      "y": 150,
+                      "label": "E",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "C",
+                      "to": "D",
+                      "weight": 800,
+                      "mark": "used"
+                    },
+                    {
+                      "from": "D",
+                      "to": "E",
+                      "weight": 11700
+                    }
+                  ],
+                  "legend": "A thick line is the closest pair so far. A struck-out line is a pair that was beaten."
+                },
+                "say": "Pair 10 of 10: D and E, squared distance 11700. That does not beat 800.",
+                "predict": {
+                  "prompt": "Next pair: D and E, squared distance 11700. The closest so far is 800. What happens?",
+                  "options": [
+                    {
+                      "text": "The closest pair stays the same",
+                      "correct": true
+                    },
+                    {
+                      "text": "It becomes the new closest pair"
+                    }
+                  ],
+                  "hints": [
+                    "Compare the two squared distances.",
+                    "Is 11700 smaller than 800?"
+                  ]
+                }
+              }
+            ]
+          },
+          "explain": "Watch brute force measure all ten pairs, and predict whether each new pair beats the best."
+        },
+        {
+          "id": "pairs-8",
+          "type": "numeric",
+          "taughtOn": "all-pairs",
+          "prompt": "How many pairs are there among 8 lighthouses?",
+          "answer": 28,
+          "unit": "pairs",
+          "hints": [
+            "Use n × (n − 1) ÷ 2.",
+            "8 × 7 ÷ 2."
+          ],
+          "explain": "8 × 7 ÷ 2 = 28."
+        },
+        {
+          "id": "sq-dist",
+          "type": "numeric",
+          "taughtOn": "squared",
+          "prompt": "Lighthouse P is at (3,4) and lighthouse Q is at (9,12). What is the squared distance between them?",
+          "answer": 100,
+          "unit": "",
+          "hints": [
+            "Subtract the x values, square it, then do the same for y and add.",
+            "(3 − 9)² + (4 − 12)²."
+          ],
+          "explain": "(−6)² + (−8)² = 36 + 64 = 100."
+        },
+        {
+          "id": "closest-pair",
+          "type": "choice",
+          "taughtOn": "keep-best",
+          "prompt": "In the simulation, which pair of lighthouses was closest?",
+          "options": [
+            {
+              "text": "C and D",
+              "correct": true
+            },
+            {
+              "text": "A and B"
+            },
+            {
+              "text": "A and C"
+            },
+            {
+              "text": "A and D"
+            }
+          ],
+          "hints": [
+            "Look at the thick line at the end of the simulation.",
+            "The smallest squared distance is 800."
+          ],
+          "explain": "C and D had the smallest squared distance, 800."
+        },
+        {
+          "id": "why-squared",
+          "type": "choice",
+          "taughtOn": "squared",
+          "prompt": "Why can the loop compare squared distances instead of real distances?",
+          "options": [
+            {
+              "text": "Squaring keeps the order of non-negative numbers, so the closest pair is the same",
+              "correct": true
+            },
+            {
+              "text": "Squared distances are always smaller"
+            },
+            {
+              "text": "The square root is always a whole number"
+            },
+            {
+              "text": "Real distances are not allowed in a loop"
+            }
+          ],
+          "hints": [
+            "What does the loop actually need to know?",
+            "Only which pair is smallest, not the exact size."
+          ],
+          "explain": "If one distance is smaller, so is its square. The order is unchanged."
+        },
+        {
+          "id": "pairs-1000",
+          "type": "numeric",
+          "taughtOn": "all-pairs",
+          "prompt": "Challenge: how many pairs are there among 1,000 lighthouses?",
+          "answer": 499500,
+          "unit": "pairs",
+          "hints": [
+            "Use n × (n − 1) ÷ 2.",
+            "1,000 × 999 ÷ 2."
+          ],
+          "explain": "1,000 × 999 ÷ 2 = 499,500.",
+          "challenge": true
+        },
+        {
+          "id": "pairs-double",
+          "type": "numeric",
+          "taughtOn": "all-pairs",
+          "prompt": "Challenge: you double the number of lighthouses from 1,000 to 2,000. Roughly how many times more pairs are there? (Give a whole number.)",
+          "answer": 4,
+          "unit": "times",
+          "hints": [
+            "Think of n × n: what does doubling n do to it?",
+            "About four times, because 2 × 2 = 4."
+          ],
+          "explain": "1,999,000 ÷ 499,500 is about 4. Doubling n makes brute force about four times slower.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "a1.3-f1",
+          "type": "quiz",
+          "taughtOn": "all-pairs",
+          "prompt": "Pairs among 10 points?",
+          "options": [
+            {
+              "text": "45",
+              "correct": true
+            },
+            {
+              "text": "10"
+            },
+            {
+              "text": "100"
+            },
+            {
+              "text": "20"
+            }
+          ],
+          "explain": "10 × 9 ÷ 2 = 45."
+        },
+        {
+          "id": "a1.3-f2",
+          "type": "quiz",
+          "taughtOn": "squared",
+          "prompt": "Which is closer: squared distance 49 or squared distance 64?",
+          "options": [
+            {
+              "text": "49",
+              "correct": true
+            },
+            {
+              "text": "64"
+            },
+            {
+              "text": "They are equal"
+            },
+            {
+              "text": "Cannot tell without the square roots"
+            }
+          ],
+          "explain": "Smaller squared distance means smaller distance."
+        },
+        {
+          "id": "a1.3-f3",
+          "type": "predict",
+          "taughtOn": "keep-best",
+          "prompt": "What does the brute-force loop remember as it goes?",
+          "answer": "The best pair so far and its distance."
+        },
+        {
+          "id": "a1.3-f4",
+          "type": "why",
+          "taughtOn": "all-pairs",
+          "prompt": "Brute-force closest pair grows like n × n because...",
+          "options": [
+            {
+              "text": "It measures about n × (n − 1) ÷ 2 pairs",
+              "correct": true
+            },
+            {
+              "text": "It measures each point once"
+            },
+            {
+              "text": "It sorts the points first"
+            },
+            {
+              "text": "It measures only the neighbours"
+            }
+          ],
+          "explain": "Every point is paired with every other."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Nearest neighbour searches",
+          "text": "Finding the nearest point to a given spot, or the closest pair, comes up in map apps and in graphics. For small sets, checking every pair is enough. For big sets, faster methods exist, and you will meet one on Split Rock.",
+          "source": {
+            "title": "Wikipedia: Closest pair of points problem",
+            "url": "https://en.wikipedia.org/wiki/Closest_pair_of_points_problem"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You measured every pair of lighthouses, compared squared distances and kept the best so far. The cost is n × (n − 1) ÷ 2.",
+          "Ada marks the chart. \"Two beams clash, and now we know which.\" A smarter plan for huge charts waits on Split Rock."
+        ],
+        "mistake": {
+          "title": "Counting pairs twice",
+          "text": "The pair A–B and the pair B–A are the same pair. Counting both gives n × (n − 1), double the real number."
+        }
+      }
+    },
+    {
+      "id": "1.4",
+      "title": "Island Tour & Treasure Bag",
+      "story": "Fen wants one tour that visits every island exactly once, and Pia wants to fill a bag with the most valuable treasure. Both problems have a perfectly good brute-force answer, and both explode with size.",
+      "everyday": {
+        "scene": "You have six errands to run across town, and you want the shortest trip that visits each place once and gets you home.",
+        "question": "How many different orders could you try?",
+        "answer": "For 6 stops there are 60 different round trips. For 20 stops there are about 60 quadrillion. Trying them all is correct, and quickly hopeless."
+      },
+      "lessons": [
+        {
+          "id": "tour",
+          "title": "The island tour",
+          "text": [
+            "The travelling salesman problem asks for the shortest round trip that visits every town once and returns to the start. Brute force tries every order and keeps the shortest.",
+            "Fix the starting town. The other n − 1 towns can be visited in (n − 1)! orders. A tour and its reverse have the same length, so there are (n − 1)! ÷ 2 different tours. That is 12 for 5 towns, 60 for 6 and 181,440 for 10."
+          ],
+          "terms": [
+            {
+              "term": "Factorial (n!)",
+              "meaning": "n × (n − 1) × … × 1. For example 4! = 24."
+            }
+          ],
+          "table": {
+            "head": [
+              "Towns (n)",
+              "Different tours"
+            ],
+            "rows": [
+              [
+                "5",
+                "12"
+              ],
+              [
+                "6",
+                "60"
+              ],
+              [
+                "10",
+                "181,440"
+              ],
+              [
+                "20",
+                "60,822,550,204,416,000"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "A salesman visits 4 towns and returns home. How many different tours are there?",
+            "answer": "3. (4 − 1)! ÷ 2 = 3."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Travelling salesman problem",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Travelling_salesman_problem"
+            },
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 2: Backtracking",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/02-backtracking.pdf"
+            }
+          ]
+        },
+        {
+          "id": "bag",
+          "title": "The treasure bag",
+          "text": [
+            "The knapsack problem: each treasure has a weight and a value, the bag holds a fixed weight, and you want the highest total value that fits. Brute force tries every subset of the treasures.",
+            "Each treasure is either in or out, so n treasures make 2 × 2 × … × 2 = 2ⁿ subsets: 16 for 4 treasures, 1,024 for 10, and 1,073,741,824 for 30. Each subset is checked by adding up weights and values."
+          ],
+          "table": {
+            "head": [
+              "Treasures (n)",
+              "Subsets (2ⁿ)"
+            ],
+            "rows": [
+              [
+                "4",
+                "16"
+              ],
+              [
+                "10",
+                "1,024"
+              ],
+              [
+                "30",
+                "1,073,741,824"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "A bag could hold any of 5 treasures. How many different subsets are there?",
+            "answer": "32. Each treasure is in or out: 2⁵ = 32."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Knapsack problem",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Knapsack_problem"
+            },
+            {
+              "title": "Wikipedia: Subset sum problem",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Subset_sum_problem"
+            }
+          ]
+        },
+        {
+          "id": "explode",
+          "title": "When brute force explodes",
+          "text": [
+            "Both problems fall off a cliff. At a billion tours per second, 20 towns need about 1.9 years. Adding one more town multiplies the work by 20. Adding one treasure doubles the subset count.",
+            "Brute force is still the right first draft, and for small n it is fine. But these growth rates (factorial and exponential) are the reason that smarter methods, and ways of settling for a good-enough answer, exist."
+          ],
+          "predict": {
+            "prompt": "What happens to the number of subsets when you add one more treasure?",
+            "answer": "It doubles."
+          },
+          "deeper": {
+            "title": "Is there a trick?",
+            "text": [
+              "For both problems, no method is known that is fast for every input, and many experts believe none exists. You will meet this idea again in the P versus NP topic."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Travelling salesman problem",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Travelling_salesman_problem"
+            },
+            {
+              "title": "Wikipedia: Knapsack problem",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Knapsack_problem"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "watch-explode",
+          "type": "stepsim",
+          "taughtOn": "tour",
+          "mode": "watch",
+          "prompt": "Watch the number of different tours grow as towns are added.",
+          "script": {
+            "view": "bars",
+            "steps": [
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "4 cities",
+                      "value": 3
+                    }
+                  ]
+                },
+                "say": "4 cities have 3 different round tours (not counting direction or start)."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "4 cities",
+                      "value": 3
+                    },
+                    {
+                      "label": "6 cities",
+                      "value": 60
+                    }
+                  ]
+                },
+                "say": "6 cities have 60 different round tours (not counting direction or start)."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "4 cities",
+                      "value": 3
+                    },
+                    {
+                      "label": "6 cities",
+                      "value": 60
+                    },
+                    {
+                      "label": "8 cities",
+                      "value": 2520
+                    }
+                  ]
+                },
+                "say": "8 cities have 2,520 different round tours (not counting direction or start)."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "4 cities",
+                      "value": 3
+                    },
+                    {
+                      "label": "6 cities",
+                      "value": 60
+                    },
+                    {
+                      "label": "8 cities",
+                      "value": 2520
+                    },
+                    {
+                      "label": "10 cities",
+                      "value": 181440
+                    }
+                  ]
+                },
+                "say": "10 cities have 181,440 different round tours (not counting direction or start)."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "4 cities",
+                      "value": 3
+                    },
+                    {
+                      "label": "6 cities",
+                      "value": 60
+                    },
+                    {
+                      "label": "8 cities",
+                      "value": 2520
+                    },
+                    {
+                      "label": "10 cities",
+                      "value": 181440
+                    },
+                    {
+                      "label": "12 cities",
+                      "value": 19958400
+                    }
+                  ]
+                },
+                "say": "12 cities have 19,958,400 different round tours (not counting direction or start)."
+              }
+            ]
+          },
+          "explain": "Watch the number of different tours grow as towns are added."
+        },
+        {
+          "id": "tours-6",
+          "type": "numeric",
+          "taughtOn": "tour",
+          "prompt": "How many different tours are there for 6 towns (fixed start, direction ignored)?",
+          "answer": 60,
+          "unit": "tours",
+          "hints": [
+            "Use (n − 1)! ÷ 2.",
+            "5! = 120, and halve it."
+          ],
+          "explain": "5! = 120, and 120 ÷ 2 = 60."
+        },
+        {
+          "id": "subsets-10",
+          "type": "numeric",
+          "taughtOn": "bag",
+          "prompt": "How many different subsets can be made from 10 treasures?",
+          "answer": 1024,
+          "unit": "subsets",
+          "hints": [
+            "Each treasure is in or out.",
+            "2 × 2 × ... ten times."
+          ],
+          "explain": "2¹⁰ = 1,024."
+        },
+        {
+          "id": "which-growth",
+          "type": "buckets",
+          "taughtOn": "explode",
+          "prompt": "Which kind of count does each job need?",
+          "buckets": [
+            "Orders (factorial)",
+            "Subsets (2ⁿ)",
+            "Pairs (n × n)"
+          ],
+          "items": [
+            {
+              "text": "Plan a tour through every town once",
+              "bucket": "Orders (factorial)"
+            },
+            {
+              "text": "Seat n guests in a row, every way",
+              "bucket": "Orders (factorial)"
+            },
+            {
+              "text": "Choose which of n gifts go in a bag",
+              "bucket": "Subsets (2ⁿ)"
+            },
+            {
+              "text": "Decide which of n lights to switch on",
+              "bucket": "Subsets (2ⁿ)"
+            },
+            {
+              "text": "Check every pair of n students for a clash",
+              "bucket": "Pairs (n × n)"
+            },
+            {
+              "text": "Find the two closest of n lighthouses",
+              "bucket": "Pairs (n × n)"
+            }
+          ],
+          "hints": [
+            "Ask what is being chosen: an order, an in-or-out, or two things?",
+            "Orders use factorial. In-or-out choices double each time."
+          ],
+          "explain": "Arranging in order gives factorial growth. In-or-out choices give 2ⁿ. Choosing two things gives about n × n."
+        },
+        {
+          "id": "bag-best",
+          "type": "numeric",
+          "taughtOn": "bag",
+          "prompt": "The bag holds 10 kg. Treasures (weight, value): Lamp (5, 10), Rope (4, 40), Compass (6, 30), Spyglass (3, 50). What is the highest total value that fits?",
+          "answer": 90,
+          "unit": "value",
+          "hints": [
+            "Try every subset whose weights add up to 10 or less.",
+            "Look at the combination Rope and Spyglass."
+          ],
+          "explain": "Rope + Spyglass weigh 7 kg and are worth 90. Brute force checked all 16 subsets, and 10 of them fit."
+        },
+        {
+          "id": "years",
+          "type": "numeric",
+          "taughtOn": "explode",
+          "prompt": "Challenge: 20 towns have about 60,822,550,204,416,000 tours. At one billion tours per second, about how many years does it take to check them all? (Use 365.25 days per year.)",
+          "answer": 1.9,
+          "unit": "years",
+          "hints": [
+            "Divide the tours by a billion to get seconds.",
+            "Then divide by the seconds in a year, about 31.6 million."
+          ],
+          "explain": "60,822,550,204,416,000 ÷ 1,000,000,000 is about 60,822,550 seconds, which is about 1.9 years.",
+          "challenge": true,
+          "tolerance": 0.2
+        },
+        {
+          "id": "subsets-30",
+          "type": "numeric",
+          "taughtOn": "bag",
+          "prompt": "Challenge: how many subsets for 30 treasures?",
+          "answer": 1073741824,
+          "unit": "subsets",
+          "hints": [
+            "Double 1 thirty times.",
+            "2³⁰, or 1,024 × 1,024 × 1,024."
+          ],
+          "explain": "2³⁰ = 1,073,741,824.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "a1.4-f1",
+          "type": "quiz",
+          "taughtOn": "tour",
+          "prompt": "Different tours for 5 towns (fixed start, direction ignored)?",
+          "options": [
+            {
+              "text": "12",
+              "correct": true
+            },
+            {
+              "text": "24"
+            },
+            {
+              "text": "120"
+            },
+            {
+              "text": "5"
+            }
+          ],
+          "explain": "(5 − 1)! ÷ 2 = 24 ÷ 2 = 12."
+        },
+        {
+          "id": "a1.4-f2",
+          "type": "quiz",
+          "taughtOn": "bag",
+          "prompt": "Subsets of 6 treasures?",
+          "options": [
+            {
+              "text": "64",
+              "correct": true
+            },
+            {
+              "text": "12"
+            },
+            {
+              "text": "36"
+            },
+            {
+              "text": "720"
+            }
+          ],
+          "explain": "2⁶ = 64."
+        },
+        {
+          "id": "a1.4-f3",
+          "type": "predict",
+          "taughtOn": "explode",
+          "prompt": "What does adding one treasure do to the number of subsets?",
+          "answer": "It doubles it."
+        },
+        {
+          "id": "a1.4-f4",
+          "type": "why",
+          "taughtOn": "explode",
+          "prompt": "Why does brute force stop being practical for 20 towns?",
+          "options": [
+            {
+              "text": "There are about 60 quadrillion tours to check",
+              "correct": true
+            },
+            {
+              "text": "The computer cannot add"
+            },
+            {
+              "text": "Towns cannot be compared"
+            },
+            {
+              "text": "It uses too many loops of size 20"
+            }
+          ],
+          "explain": "The count of tours explodes with n."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Delivery routes",
+          "text": "Planning delivery routes is known as the vehicle routing problem, and it is NP-hard. Because of that, many real applications do not try every order. They use methods that quickly build a relatively good route, even if it is not provably the best one.",
+          "source": {
+            "title": "Wikipedia: Vehicle routing problem",
+            "url": "https://en.wikipedia.org/wiki/Vehicle_routing_problem"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You counted tours with (n − 1)! ÷ 2 and treasure subsets with 2ⁿ, and found the best bag by trying every subset.",
+          "Fen sighs at the 60 quadrillion. \"So no, I will not try them all.\" Knowing a method will not scale is as useful as knowing it works."
+        ],
+        "mistake": {
+          "title": "Calling both growth rates \"just very big\"",
+          "text": "Factorial and 2ⁿ are both explosive, but factorial is far worse: 20! is about 2.4 quintillion, while 2²⁰ is about a million."
+        }
+      }
+    },
+    {
+      "id": "1.5",
+      "title": "Bridge Walker",
+      "story": "The mayor of the isles wants a parade that crosses every bridge exactly once. Kit tries every possible walk, then discovers a shortcut that answers the question without walking at all.",
+      "everyday": {
+        "scene": "You are a postman, and you want a route that walks along every street once and never repeats a street.",
+        "question": "Do you have to try every possible route to know whether one exists?",
+        "answer": "You could, but a famous 18th-century trick lets you answer by counting how many junctions have an odd number of streets."
+      },
+      "lessons": [
+        {
+          "id": "exhaustive",
+          "title": "Try every walk",
+          "text": [
+            "Exhaustive search tries every possibility, but extends partial answers step by step and backs up when stuck. To find a walk over all bridges, start on an island, cross an unused bridge, and keep going. If you run out of bridges before finishing, back up and try another bridge.",
+            "For our five bridges, the search finds 12 walks that cross each bridge exactly once, counting different starting islands and directions separately. But it has to try partial walks that fail along the way, and on bigger maps the number of walks explodes."
+          ],
+          "terms": [
+            {
+              "term": "Exhaustive search",
+              "meaning": "Trying all possibilities, one by one, until you find what you need or run out."
+            },
+            {
+              "term": "Backtracking",
+              "meaning": "Undoing the last step and trying a different option when you are stuck."
+            }
+          ],
+          "predict": {
+            "prompt": "Kit crosses a bridge and finds no unused bridge, but some are left. What does exhaustive search do?",
+            "answer": "It backs up one step and tries a different bridge."
+          },
+          "references": [
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 2: Backtracking",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/02-backtracking.pdf"
+            },
+            {
+              "title": "Wikipedia: Brute-force search",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Brute-force_search"
+            }
+          ]
+        },
+        {
+          "id": "degree",
+          "title": "Counting bridges",
+          "text": [
+            "A bridge count is called an island's degree. Euler noticed that on a walk that crosses every bridge once, every island you pass through is entered and left, using bridges in pairs. So an island in the middle of the walk must have an even degree.",
+            "Only the starting and ending islands can have an odd degree. So a connected map has a walk over every bridge exactly once only if it has 0 or 2 islands with an odd degree. Count the degrees, and you have your answer."
+          ],
+          "terms": [
+            {
+              "term": "Degree",
+              "meaning": "The number of bridges at an island."
+            },
+            {
+              "term": "Odd degree",
+              "meaning": "A degree of 1, 3, 5 and so on."
+            }
+          ],
+          "table": {
+            "head": [
+              "Island",
+              "Bridges (degree)"
+            ],
+            "rows": [
+              [
+                "A",
+                "3"
+              ],
+              [
+                "B",
+                "2"
+              ],
+              [
+                "C",
+                "3"
+              ],
+              [
+                "D",
+                "2"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "A map has 4 islands with an odd degree. Can you cross every bridge once?",
+            "answer": "No. Only 0 or 2 odd islands allowed."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Eulerian path",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Eulerian_path"
+            },
+            {
+              "title": "Wikipedia: Graph (discrete mathematics)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"
+            }
+          ]
+        },
+        {
+          "id": "shortcut",
+          "title": "Counting beats walking",
+          "text": [
+            "Counting degrees takes one look at each island, while exhaustive search may try thousands of walks. For our map: with only 12 successful walks hidden among many partial ones, the count is much faster.",
+            "This is a good habit: before searching, ask whether a property of the problem rules answers in or out. Not every problem has such a shortcut, but when one does, it can turn an impossible search into a glance."
+          ],
+          "predict": {
+            "prompt": "Why is counting odd islands faster than searching?",
+            "answer": "It looks at each island once, instead of trying many walks."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Eulerian path",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Eulerian_path"
+            },
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 2: Backtracking",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/02-backtracking.pdf"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "watch-walk",
+          "type": "stepsim",
+          "taughtOn": "exhaustive",
+          "mode": "watch",
+          "prompt": "Watch one walk that crosses every bridge exactly once.",
+          "script": {
+            "view": "graph",
+            "steps": [
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 60,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "B",
+                      "x": 60,
+                      "y": 140,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 220,
+                      "y": 40,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 220,
+                      "y": 140,
+                      "label": "D"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C"
+                    },
+                    {
+                      "from": "C",
+                      "to": "D"
+                    },
+                    {
+                      "from": "D",
+                      "to": "A"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    }
+                  ],
+                  "legend": "Four islands and five bridges. A thick line is a bridge already crossed."
+                },
+                "say": "Kit starts on island A and wants to cross every bridge exactly once."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 60,
+                      "y": 40,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 60,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "C",
+                      "x": 220,
+                      "y": 40,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 220,
+                      "y": 140,
+                      "label": "D"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C"
+                    },
+                    {
+                      "from": "C",
+                      "to": "D"
+                    },
+                    {
+                      "from": "D",
+                      "to": "A"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    }
+                  ],
+                  "legend": "Four islands and five bridges. A thick line is a bridge already crossed."
+                },
+                "say": "Cross A–B. Bridges crossed so far: 1 of 5."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 60,
+                      "y": 40,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 60,
+                      "y": 140,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 220,
+                      "y": 40,
+                      "label": "C",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "D",
+                      "x": 220,
+                      "y": 140,
+                      "label": "D"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "C",
+                      "to": "D"
+                    },
+                    {
+                      "from": "D",
+                      "to": "A"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    }
+                  ],
+                  "legend": "Four islands and five bridges. A thick line is a bridge already crossed."
+                },
+                "say": "Cross B–C. Bridges crossed so far: 2 of 5."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 60,
+                      "y": 40,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 60,
+                      "y": 140,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 220,
+                      "y": 40,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 220,
+                      "y": 140,
+                      "label": "D",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "C",
+                      "to": "D",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "D",
+                      "to": "A"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    }
+                  ],
+                  "legend": "Four islands and five bridges. A thick line is a bridge already crossed."
+                },
+                "say": "Cross C–D. Bridges crossed so far: 3 of 5."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 60,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "B",
+                      "x": 60,
+                      "y": 140,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 220,
+                      "y": 40,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 220,
+                      "y": 140,
+                      "label": "D"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "C",
+                      "to": "D",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "D",
+                      "to": "A",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    }
+                  ],
+                  "legend": "Four islands and five bridges. A thick line is a bridge already crossed."
+                },
+                "say": "Cross D–A. Bridges crossed so far: 4 of 5."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 60,
+                      "y": 40,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 60,
+                      "y": 140,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 220,
+                      "y": 40,
+                      "label": "C",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "D",
+                      "x": 220,
+                      "y": 140,
+                      "label": "D"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "C",
+                      "to": "D",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "D",
+                      "to": "A",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "Four islands and five bridges. A thick line is a bridge already crossed."
+                },
+                "say": "Cross A–C. Bridges crossed so far: 5 of 5."
+              }
+            ]
+          },
+          "explain": "Watch one walk that crosses every bridge exactly once."
+        },
+        {
+          "id": "degree-a",
+          "type": "numeric",
+          "taughtOn": "degree",
+          "prompt": "In the five-bridge map (bridges A–B, B–C, C–D, D–A and A–C), how many bridges are at island A?",
+          "answer": 3,
+          "unit": "bridges",
+          "hints": [
+            "Count the bridges that touch A.",
+            "A–B, D–A and A–C."
+          ],
+          "explain": "A has three bridges: A–B, D–A and A–C."
+        },
+        {
+          "id": "odd-count",
+          "type": "numeric",
+          "taughtOn": "degree",
+          "prompt": "How many of the four islands have an odd number of bridges?",
+          "answer": 2,
+          "unit": "islands",
+          "hints": [
+            "A has 3 and C has 3. What about B and D?",
+            "B and D have 2 each."
+          ],
+          "explain": "A and C have 3, and B and D have 2, so 2 islands are odd. That means a walk exists, starting at one odd island and ending at the other."
+        },
+        {
+          "id": "can-cross",
+          "type": "choice",
+          "taughtOn": "degree",
+          "prompt": "A different map has islands P, Q, R, S and T and bridges P–Q, Q–R, R–S, S–P, P–R and S–T. Can a walk cross every bridge exactly once?",
+          "options": [
+            {
+              "text": "No: four islands have an odd number of bridges",
+              "correct": true
+            },
+            {
+              "text": "Yes: it has fewer than ten bridges"
+            },
+            {
+              "text": "Yes: any connected map works"
+            },
+            {
+              "text": "No: it has more than five bridges"
+            }
+          ],
+          "hints": [
+            "Count the bridges at each island.",
+            "P, R and S have 3 each, T has 1, and Q has 2."
+          ],
+          "explain": "P, R, S and T all have an odd degree: 4 odd islands, and a walk needs 0 or 2."
+        },
+        {
+          "id": "search-order",
+          "type": "order",
+          "taughtOn": "exhaustive",
+          "prompt": "Put exhaustive search for a bridge walk in order.",
+          "items": [
+            "Start on an island",
+            "Cross an unused bridge",
+            "Check whether every bridge has been crossed",
+            "If stuck, back up one step",
+            "Try a different unused bridge"
+          ],
+          "hints": [
+            "The check for finishing comes after crossing a bridge.",
+            "You only back up when you are stuck."
+          ],
+          "explain": "Start, cross, check, back up if stuck, try another bridge."
+        },
+        {
+          "id": "orders-5",
+          "type": "numeric",
+          "taughtOn": "exhaustive",
+          "prompt": "Challenge: five bridges can be crossed in 5! different orders if you ignore whether the order is a real walk. How many orders is that?",
+          "answer": 120,
+          "unit": "orders",
+          "hints": [
+            "5 × 4 × 3 × 2 × 1.",
+            "5 × 24."
+          ],
+          "explain": "5! = 120. Most of these orders are not real walks, but a very simple search would still try them.",
+          "challenge": true
+        },
+        {
+          "id": "walks-count",
+          "type": "numeric",
+          "taughtOn": "exhaustive",
+          "prompt": "Challenge: exhaustive search on the five-bridge map finds how many successful walks in total (counting each starting island and each direction separately)?",
+          "answer": 12,
+          "unit": "walks",
+          "hints": [
+            "Walks must start at A or C, the two odd islands.",
+            "Each walk and its reverse both count."
+          ],
+          "explain": "The search finds 12 walks. ABCDAC, ABCADC, ADCBAC, ADCABC and others, each starting on A or C.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "a1.5-f1",
+          "type": "quiz",
+          "taughtOn": "degree",
+          "prompt": "What is the degree of an island?",
+          "options": [
+            {
+              "text": "The number of bridges at it",
+              "correct": true
+            },
+            {
+              "text": "The number of islands"
+            },
+            {
+              "text": "Its distance from the coast"
+            },
+            {
+              "text": "The number of walks through it"
+            }
+          ],
+          "explain": "Degree counts bridges at one island."
+        },
+        {
+          "id": "a1.5-f2",
+          "type": "quiz",
+          "taughtOn": "degree",
+          "prompt": "A map has 2 odd islands. Is there a walk over every bridge exactly once (if connected)?",
+          "options": [
+            {
+              "text": "Yes, from one odd island to the other",
+              "correct": true
+            },
+            {
+              "text": "No"
+            },
+            {
+              "text": "Only if it has 2 bridges"
+            },
+            {
+              "text": "Only if it has no odd islands"
+            }
+          ],
+          "explain": "0 or 2 odd islands both allow it."
+        },
+        {
+          "id": "a1.5-f3",
+          "type": "predict",
+          "taughtOn": "exhaustive",
+          "prompt": "What does backtracking do?",
+          "answer": "Undo the last choice and try another one when stuck."
+        },
+        {
+          "id": "a1.5-f4",
+          "type": "why",
+          "taughtOn": "shortcut",
+          "prompt": "Counting degrees beats searching because...",
+          "options": [
+            {
+              "text": "It checks each island once instead of trying many walks",
+              "correct": true
+            },
+            {
+              "text": "It walks faster"
+            },
+            {
+              "text": "It ignores the bridges"
+            },
+            {
+              "text": "It uses bigger islands"
+            }
+          ],
+          "explain": "A property of the problem answers it directly."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Euler and the bridges of Königsberg",
+          "text": "The idea behind this level goes back to 1736, when Leonhard Euler showed that the seven bridges of the city of Königsberg could not all be crossed once in a single walk. His proof laid the foundations of graph theory.",
+          "source": {
+            "title": "Wikipedia: Seven Bridges of Königsberg",
+            "url": "https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You watched a walk cross every bridge, saw how exhaustive search backs up when stuck, and learned that counting odd-degree islands answers the question at a glance.",
+          "The mayor cheers. \"A parade with no repeats.\" Sometimes a bit of thinking replaces a mountain of searching."
+        ],
+        "mistake": {
+          "title": "Forgetting that the map must be connected",
+          "text": "The odd-island rule works for maps where every island can be reached from the others. Two separate groups of islands can never share one walk."
+        }
+      }
+    }
+  ]
+}

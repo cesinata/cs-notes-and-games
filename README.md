@@ -1,93 +1,65 @@
-# Courier's Atlas
+# CS Notes & Games
 
-Cozy pixel puzzles that teach how computers and the internet really work, written for students about 15 and up
-(with optional "Go deeper" parts for university level). You play Kit, a new courier. Each subject is a region on
-the atlas, with its own map, story and short levels (8–10 minutes each).
+Computer science explained, with a game to practise.
 
-Two regions so far:
+This site helps refresh computer science knowledge. Each guide explains one topic, and each level in the game practises it.
 
-- **Packet Valley** (Internet Technologies): carry one letter across a valley and learn every layer of the internet on the way.
-- **Algo Archipelago** (Algorithms and Complexity): island-hop through how to organise data, count the cost of a method, and choose a smarter one.
+## What is here
 
-It started as a way to re-learn a university networking subject and an algorithms subject. All the
-explanations, stories and puzzles are original. No course materials are included.
+- **The hub** (the pages at the root): plain-language guides, grouped by subject. Each guide starts from an everyday example, defines its terms, works through an example with labelled numbers, and ends with three check-yourself questions and a "Go deeper" section.
+- **The game** (`game/`): Courier's Atlas, a puzzle game where you play a courier. Each region matches a subject. Packet Valley covers Networks (24 levels) and Algo Archipelago covers Algorithms (2 levels so far). See [game/README.md](game/README.md).
 
-## Play it locally
+Subjects: Networks, Algorithms, Databases, Java, Advanced Databases, Machine Learning, Natural Language Processing and AI Planning. The outline lists every planned chapter. Chapters that are not written yet show "Coming soon". Run the build to see how many are ready.
 
-The game uses JavaScript modules, which browsers won't run from a file opened directly. Start a tiny
-local server from this folder instead:
+## Look at it locally
+
+From the repo root:
 
 ```
 python3 -m http.server 8000
 ```
 
-Then open http://localhost:8000 in your browser. Press Ctrl+C in the terminal to stop the server.
+Then open http://localhost:8000/ for the hub and http://localhost:8000/game/ for the game. Press Ctrl+C to stop.
 
-## Where things live on the site
+## Build the hub pages
 
-- `#/` is the main page: about the project, how a level works, and a card for each subject.
-- `#/net/` is Packet Valley and `#/algo/` is Algo Archipelago. Each has its own map, Daily Feed (`feed`) and Field Journal (`journal`).
-- Older links without a region (like `#/zone/0` or `#/feed`) are sent to the matching page under `#/net/`.
+The hub pages are generated from Markdown by a script that needs Node 22 or newer and no packages.
+
+```
+node tools/build-hub.mjs --check    check the chapters; writes nothing
+node tools/build-hub.mjs            check, then rebuild the pages
+node game/tools/check-content.mjs   check the game's content files
+```
+
+The generated files are committed, because GitHub Pages serves them as they are. Edit the files in `hub-src/`, not the generated pages. [docs/hub-architecture.md](docs/hub-architecture.md) explains the layout and how to add a chapter, and [docs/voice-guide.md](docs/voice-guide.md) sets out how pages are written.
+
+## Where things live
+
+```
+hub-src/              chapter sources and the site outline
+hub/hub.css           hub styles
+tools/build-hub.mjs   the builder
+game/                 the game
+docs/                 notes: architecture, voice, progress, game design
+index.html, subjects/, about/, 404.html   generated hub pages
+```
 
 ## Languages
 
-The game is in **English** and **Bahasa Indonesia**. Pick a language with the buttons at the top of the main page
-or a region's map. The choice is remembered on that device, and the first visit follows the browser's language.
+English first. A casual Indonesian version is planned for the hub pages, then the game's level text. The game's interface already has English and Bahasa Indonesia.
 
-- Technical terms (like *network*, *data link*, *dynamic programming*) stay in English on purpose. They are listed
-  in `content/glossary.json`, and the game marks them so a browser translator can't change them.
-- In Indonesian text, an English term is followed by its Indonesian meaning the first time, like "layer (lapisan)".
-- Indonesian files live in `content/id/`, with the same names as the English ones. They only need the lines that
-  change. Anything missing shows in English. The writing style is casual (*kamu*), short, and keeps English terms.
-- Level texts (`zone-0.json`) are being rewritten in a new format, so for now they show in English. The Indonesian version comes back after that.
-- Buttons and labels are in `content/ui.json` (English) and `content/id/ui.json` (Indonesian).
+## How this was made
 
-## What's built so far
+Claude, Anthropic's AI assistant, wrote most of the code and the first drafts of the text, working from plans by the project owner, using claude.ai and Claude Code. The project owner plans the structure and decides what each topic covers.
 
-- Main page (with one big fact per subject), region maps with fun facts, saved progress (stars) and a "Reset progress" button for each region
-- Packet Valley, Town Square: **0.1 Layer Cake** and **0.2 Encapsulation Express**
-- Packet Valley, Wire Woods: **1.1 Delay Dash**, **1.3 Signal Studio**, **1.4 Channel Limits**
-- Packet Valley, Frame Farm: **2.1 Frame Fences**, **2.2 Bug Detectives**, **2.3 CRC Mill**, **2.5 Window Waltz**
-- Packet Valley, Crowded Plaza: **3.1 ALOHA Party**, **3.2 Listen Before You Talk**, **3.4 Hidden Hills**
-- Algo Archipelago, Lighthouse Point: **0.1 Lighthouse Keeper's Toolkit** and **0.2 Growth Race**
-- A new level flow: an everyday moment, 2 to 4 story lessons (each with References and an optional "Go deeper"), the activities, then a debrief
-- Field Notes, collected in the Field Journal
-- Daily Feed: about 10 bite-size review cards a day from finished levels, with spaced repetition
-- Step Sim: runs an algorithm one step at a time, as crates, bars or a graph of nodes and edges
-- Unit player: a level can be written entirely as data (an `activities` list in its content file), using the activity types choice, order, match, buckets, numeric (with an on-screen calculator) and stepsim. A test page for all of them is at `#/sample`
-- Content checker: `node tools/check-content.mjs` checks every content file (needs Node 22 or newer, no packages)
+Each chapter lists, in its front matter, the claims on the page and where to confirm them. Not every page has been fully checked yet.
 
-## Editing the text
+This project is for people who find computer science hard to learn. Plain-language guides explain each topic, and a game makes practising easier and more fun. No course slides, exams, tutorial solutions or assignment material are included.
 
-All the words players see live in `content/`, so you can change them without touching code:
+## Report a mistake
 
-- `content/landing.json`: the main page
-- `content/ui.json`: buttons and labels. `content/glossary.json`: terms that stay in English
-- `content/id/`: the Indonesian version of any of these files
-- `content/regions.json`: the list of regions (subjects) and their descriptions
-- `content/<region>/world.json`: district names, map positions, the planned level list, and the "Did you know?" fun facts (`funFacts`, 3 to 5) shown at the top of the region page
-- `content/<region>/zone-N.json`: everything for that district's levels (Kit's job, everyday moment, lesson pages, puzzle text, hints, debrief, Field Notes, feed cards). The Read more list is built from the lesson pages' references
+If something looks wrong, email cesilianata@gmail.com with the page name and what looks wrong.
 
-`<region>` is `net` or `algo`.
+## Licences and credits
 
-If you break the JSON (a missing comma, say), the game shows an error naming the file and the problem
-instead of a blank page. Facts that need checking are marked `"verify": true` with a `"verifyNote"`.
-
-## How the code is organised
-
-```
-index.html            the page that loads the game
-css/style.css         all the styles
-js/main.js            starts the game, switches between pages by web address
-js/landing.js         the main page
-js/hub.js             a region's map and district pages
-js/engine/            shared parts: level template, saving, stars, sprites, content checks, languages (i18n.js)
-js/levels/net/        one file per Packet Valley level (index.js lists them)
-js/levels/algo/       one file per Algo Archipelago level
-content/              all player-facing text
-docs/                 design notes
-```
-
-## Credits and licences
-
-Code: MIT. Written content: CC BY 4.0. See `LICENSE` and `CREDITS.md`.
+Code: MIT. Written content: CC BY 4.0. See `LICENSE` and `CREDITS.md`. Third-party sources are linked from each page, not copied.

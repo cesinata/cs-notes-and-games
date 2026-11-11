@@ -1,0 +1,626 @@
+{
+  "zone": 7,
+  "levels": [
+    {
+      "id": "7.1",
+      "title": "Read First, Learn Later",
+      "story": "Wren shows Kit two apprentices. One reads every book in the old archive for years, then learns a new craft in a week. The other starts the craft cold. \"Who finishes first?\" asks Wren. \"The one who read first,\" says Kit.",
+      "everyday": {
+        "scene": "A new employee who has read widely picks up a new job faster than someone starting from nothing.",
+        "question": "Could a program do the same: read a huge amount first, and then learn a specific job quickly?",
+        "answer": "Yes. It is first trained on huge amounts of raw text, then trained a little more on its real job. This two-step approach is how most modern language models are built."
+      },
+      "lessons": [
+        {
+          "id": "learning-from-raw-text",
+          "title": "Learning from raw text",
+          "text": [
+            "Pretraining teaches a model language before it is given a job. It reads enormous amounts of raw text and learns to guess missing or next words. The right answers come from the text itself, so no one has to label anything.",
+            "This is called self-supervised learning: the training goal is worked out automatically from the inputs. Two common goals are guessing the next word and guessing a word that has been hidden."
+          ],
+          "terms": [
+            {
+              "term": "Pretraining",
+              "meaning": "Training on huge amounts of raw text before a specific job."
+            },
+            {
+              "term": "Self-supervised",
+              "meaning": "The right answers are taken from the data itself."
+            }
+          ],
+          "references": [
+            {
+              "title": "Hugging Face LLM course: How do Transformers work?",
+              "source": "Hugging Face course (linked, not copied)",
+              "url": "https://huggingface.co/learn/llm-course/chapter1/4"
+            },
+            {
+              "title": "Wikipedia: BERT (language model)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/BERT_(language_model)"
+            }
+          ]
+        },
+        {
+          "id": "masked-words",
+          "title": "Hiding words",
+          "text": [
+            "BERT, a model from Google published in 2018, was pretrained by hiding words. In its masked language modelling task, 15 percent of tokens are picked at random for a prediction task, and the model must guess them from the words around them.",
+            "In a 40-token text that is 6 tokens. The model can use words on both sides of a gap, so it learns to read context from both directions."
+          ],
+          "predict": {
+            "prompt": "In a 20-token sentence, about 15 percent of tokens are hidden. How many tokens is that?",
+            "answer": "3 tokens, since 15 percent of 20 is 3."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: BERT (language model)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/BERT_(language_model)"
+            },
+            {
+              "title": "BERT: Pre-training of Deep Bidirectional Transformers (arXiv:1810.04805)",
+              "source": "Research paper on arXiv (linked, not copied)",
+              "url": "https://arxiv.org/abs/1810.04805"
+            }
+          ]
+        },
+        {
+          "id": "fine-tuning",
+          "title": "Then fine-tune",
+          "text": [
+            {
+              "text": "After pretraining, the model is trained a little more on the real job, such as sorting reviews. This second step is called fine-tuning. It takes only a small amount of extra training, because pretraining has already taught the model a lot about language.",
+              "verify": false
+            },
+            "This is an example of transfer learning: knowledge from one task is reused to help with a related one. Sharing pretrained models also saves the cost of training every model from the start."
+          ],
+          "deeper": {
+            "title": "Not always a win",
+            "text": [
+              "Pretraining usually helps, but not always. One 2020 study reported that pretraining can hurt accuracy in some cases, which led its authors to suggest self-training instead."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Transfer learning",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Transfer_learning"
+            },
+            {
+              "title": "The Illustrated BERT",
+              "source": "Blog post (linked, not copied)",
+              "url": "https://jalammar.github.io/illustrated-bert/"
+            },
+            {
+              "title": "Wikipedia: BERT (language model)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/BERT_(language_model)"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "mask-40",
+          "type": "numeric",
+          "taughtOn": "masked-words",
+          "prompt": "BERT hides 15 percent of tokens. How many of a 40-token text are hidden?",
+          "answer": 6,
+          "tolerance": 0.01,
+          "calculator": false,
+          "hints": [
+            "Work out 15 percent of 40.",
+            "0.15 x 40."
+          ],
+          "explain": "0.15 x 40 = 6 tokens."
+        },
+        {
+          "id": "mask-sim",
+          "type": "stepsim",
+          "taughtOn": "learning-from-raw-text",
+          "mode": "predict",
+          "prompt": "See how a program learns from a hidden word.",
+          "explain": "A word is hidden, the model guesses, and the original word is used to check. The text supplies its own answers.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "the",
+                      "mark": null,
+                      "tag": "0"
+                    },
+                    {
+                      "value": "owl",
+                      "mark": null,
+                      "tag": "1"
+                    },
+                    {
+                      "value": "sat",
+                      "mark": null,
+                      "tag": "2"
+                    },
+                    {
+                      "value": "on",
+                      "mark": null,
+                      "tag": "3"
+                    },
+                    {
+                      "value": "the",
+                      "mark": null,
+                      "tag": "4"
+                    },
+                    {
+                      "value": "branch",
+                      "mark": null,
+                      "tag": "5"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Learning by guessing a hidden word"
+                },
+                "say": "Raw text from the wood: 'the owl sat on the branch'. No one has labelled anything. The text itself is all the training material."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "the",
+                      "mark": null,
+                      "tag": "0"
+                    },
+                    {
+                      "value": "owl",
+                      "mark": null,
+                      "tag": "1"
+                    },
+                    {
+                      "value": "sat",
+                      "mark": null,
+                      "tag": "2"
+                    },
+                    {
+                      "value": "on",
+                      "mark": null,
+                      "tag": "3"
+                    },
+                    {
+                      "value": "the",
+                      "mark": null,
+                      "tag": "4"
+                    },
+                    {
+                      "value": "[MASK]",
+                      "mark": "current",
+                      "tag": "hidden"
+                    }
+                  ],
+                  "pointers": {
+                    "5": "hidden"
+                  },
+                  "label": "Learning by guessing a hidden word"
+                },
+                "say": "Step 1: hide one word. Now the model sees 'the owl sat on the [MASK]' and must guess what was there.",
+                "predict": {
+                  "prompt": "The model sees 'the owl sat on the [MASK]'. Where is the correct answer kept?",
+                  "options": [
+                    {
+                      "text": "In the original text, the hidden word",
+                      "correct": true
+                    },
+                    {
+                      "text": "In a list written by a person",
+                      "correct": false
+                    },
+                    {
+                      "text": "In a dictionary",
+                      "correct": false
+                    },
+                    {
+                      "text": "Nowhere",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Where did the sentence come from?",
+                    "The word was only hidden, not invented."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "the",
+                      "mark": null,
+                      "tag": "0"
+                    },
+                    {
+                      "value": "owl",
+                      "mark": null,
+                      "tag": "1"
+                    },
+                    {
+                      "value": "sat",
+                      "mark": null,
+                      "tag": "2"
+                    },
+                    {
+                      "value": "on",
+                      "mark": null,
+                      "tag": "3"
+                    },
+                    {
+                      "value": "the",
+                      "mark": null,
+                      "tag": "4"
+                    },
+                    {
+                      "value": "[MASK]",
+                      "mark": "current",
+                      "tag": "hidden"
+                    }
+                  ],
+                  "pointers": {
+                    "5": "guess"
+                  },
+                  "label": "Learning by guessing a hidden word"
+                },
+                "say": "Step 2: the model guesses. At first its guesses are poor, perhaps random. That is fine, because the next step teaches it."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "the",
+                      "mark": null,
+                      "tag": "0"
+                    },
+                    {
+                      "value": "owl",
+                      "mark": null,
+                      "tag": "1"
+                    },
+                    {
+                      "value": "sat",
+                      "mark": null,
+                      "tag": "2"
+                    },
+                    {
+                      "value": "on",
+                      "mark": null,
+                      "tag": "3"
+                    },
+                    {
+                      "value": "the",
+                      "mark": null,
+                      "tag": "4"
+                    },
+                    {
+                      "value": "branch",
+                      "mark": "best",
+                      "tag": "answer"
+                    }
+                  ],
+                  "pointers": {
+                    "5": "reveal"
+                  },
+                  "label": "Learning by guessing a hidden word"
+                },
+                "say": "Step 3: compare the guess with the hidden word, 'branch'. If it was wrong, the model's numbers are adjusted so it does better next time. Repeating this over huge amounts of text teaches it a great deal about language, with no human labelling.",
+                "predict": {
+                  "prompt": "What did the program use as the right answer?",
+                  "options": [
+                    {
+                      "text": "The word it had hidden",
+                      "correct": true
+                    },
+                    {
+                      "text": "A label from a person",
+                      "correct": false
+                    },
+                    {
+                      "text": "The next sentence",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Think about where the correct word came from.",
+                    "It hid a word from the text itself."
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "train-order",
+          "type": "order",
+          "taughtOn": "fine-tuning",
+          "prompt": "Put the training steps in order.",
+          "items": [
+            "Collect huge amounts of raw text",
+            "Pretrain by guessing hidden words",
+            "Add a small set of labelled examples for the real job",
+            "Fine-tune the model on that job"
+          ],
+          "hints": [
+            "Raw text comes before anything is labelled.",
+            "Fine-tuning comes after pretraining."
+          ],
+          "explain": "First gather raw text, pretrain by guessing hidden words, then add a small labelled set and fine-tune."
+        },
+        {
+          "id": "pre-or-fine",
+          "type": "buckets",
+          "taughtOn": "fine-tuning",
+          "prompt": "Is this step pretraining or fine-tuning?",
+          "buckets": [
+            "Pretraining",
+            "Fine-tuning"
+          ],
+          "items": [
+            {
+              "text": "Guessing hidden words in huge amounts of raw text",
+              "bucket": "Pretraining"
+            },
+            {
+              "text": "Training on a few hundred labelled reviews",
+              "bucket": "Fine-tuning"
+            },
+            {
+              "text": "Needs no human labels",
+              "bucket": "Pretraining"
+            },
+            {
+              "text": "Adapts the model to a specific job",
+              "bucket": "Fine-tuning"
+            }
+          ],
+          "hints": [
+            "Which step uses labels?",
+            "Pretraining uses the text's own words."
+          ],
+          "explain": "Pretraining uses raw text with self-made answers. Fine-tuning uses a small labelled set for a specific job."
+        },
+        {
+          "id": "no-labels",
+          "type": "choice",
+          "taughtOn": "learning-from-raw-text",
+          "prompt": "Why does pretraining on hidden words need no human labels?",
+          "options": [
+            {
+              "text": "The correct answer is the word that was hidden from the text",
+              "correct": true
+            },
+            {
+              "text": "The model never checks its answers"
+            },
+            {
+              "text": "People label the words secretly"
+            },
+            {
+              "text": "It does not need answers at all"
+            }
+          ],
+          "hints": [
+            "Where does the right answer come from?",
+            "The word was only hidden."
+          ],
+          "explain": "The answer is the original word, so the text provides its own labels."
+        },
+        {
+          "id": "pre-words",
+          "type": "match",
+          "taughtOn": "learning-from-raw-text",
+          "prompt": "Match each term to its meaning.",
+          "pairs": [
+            {
+              "left": "Pretraining",
+              "right": "Training on huge amounts of raw text first"
+            },
+            {
+              "left": "Fine-tuning",
+              "right": "A little extra training for one job"
+            },
+            {
+              "left": "Masked word",
+              "right": "A hidden word the model must guess"
+            },
+            {
+              "left": "Transfer learning",
+              "right": "Reusing knowledge from one task on another"
+            }
+          ],
+          "hints": [
+            "Fine-tuning comes second.",
+            "Transfer means carrying over."
+          ],
+          "explain": "Pretraining comes first on raw text, fine-tuning adapts to a job, a masked word is hidden for guessing and transfer learning reuses what was learned."
+        },
+        {
+          "id": "why-pretrain",
+          "type": "choice",
+          "taughtOn": "fine-tuning",
+          "prompt": "Why not train a fresh model from scratch for every job?",
+          "options": [
+            {
+              "text": "It needs far more labelled examples and effort than starting from a pretrained model",
+              "correct": true
+            },
+            {
+              "text": "Fresh models cannot learn"
+            },
+            {
+              "text": "Pretrained models cannot be changed"
+            },
+            {
+              "text": "Labels are free"
+            }
+          ],
+          "hints": [
+            "What does a pretrained model already know?",
+            "Labelled data costs people time."
+          ],
+          "explain": "A pretrained model already knows a lot about language, so a small labelled set is enough for fine-tuning. Training from scratch needs much more."
+        },
+        {
+          "id": "mask-20",
+          "type": "numeric",
+          "taughtOn": "masked-words",
+          "prompt": "Challenge: BERT hides 15 percent of tokens. In a 20-token text, how many is that?",
+          "answer": 3,
+          "tolerance": 0.01,
+          "calculator": false,
+          "hints": [
+            "0.15 x 20.",
+            "15 percent of 20."
+          ],
+          "explain": "0.15 x 20 = 3 tokens.",
+          "challenge": true
+        },
+        {
+          "id": "always-better",
+          "type": "choice",
+          "taughtOn": "fine-tuning",
+          "prompt": "Challenge: is pretraining always better than training from scratch?",
+          "options": [
+            {
+              "text": "No. It usually helps, but one study found cases where it hurt accuracy",
+              "correct": true
+            },
+            {
+              "text": "Yes, always"
+            },
+            {
+              "text": "No, because it uses labels"
+            },
+            {
+              "text": "Yes, because it is bigger"
+            }
+          ],
+          "hints": [
+            "Is 'always' a safe word in science?",
+            "The deeper box mentions a 2020 study."
+          ],
+          "explain": "Pretraining usually helps, but there are reports of cases where it hurts accuracy, so it is not a guarantee.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m7.1-f1",
+          "type": "quiz",
+          "taughtOn": "learning-from-raw-text",
+          "prompt": "What is pretraining?",
+          "options": [
+            {
+              "text": "Training on huge amounts of raw text before a specific job",
+              "correct": true
+            },
+            {
+              "text": "Testing a model"
+            },
+            {
+              "text": "Labelling data by hand"
+            },
+            {
+              "text": "Deleting text"
+            }
+          ],
+          "explain": "It teaches the model about language in general."
+        },
+        {
+          "id": "m7.1-f2",
+          "type": "why",
+          "taughtOn": "masked-words",
+          "prompt": "In BERT's masked language modelling, about how many tokens are hidden?",
+          "options": [
+            {
+              "text": "15 percent",
+              "correct": true
+            },
+            {
+              "text": "1 percent"
+            },
+            {
+              "text": "50 percent"
+            },
+            {
+              "text": "All of them"
+            }
+          ],
+          "explain": "The model guesses them from the words around them."
+        },
+        {
+          "id": "m7.1-f3",
+          "type": "quiz",
+          "taughtOn": "fine-tuning",
+          "prompt": "What is fine-tuning?",
+          "options": [
+            {
+              "text": "Extra training on a small labelled set for one job",
+              "correct": true
+            },
+            {
+              "text": "Hiding words"
+            },
+            {
+              "text": "Training from scratch"
+            },
+            {
+              "text": "Removing stop words"
+            }
+          ],
+          "explain": "It adapts the pretrained model to a job."
+        },
+        {
+          "id": "m7.1-f4",
+          "type": "predict",
+          "taughtOn": "masked-words",
+          "prompt": "How many of 100 tokens are hidden if 15 percent are masked?",
+          "answer": "15."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Self-supervised learning",
+          "text": "Many popular language models are trained on large amounts of raw text in a self-supervised way, where the training goal is computed automatically from the inputs.",
+          "source": {
+            "title": "Hugging Face LLM course: How do Transformers work?",
+            "url": "https://huggingface.co/learn/llm-course/chapter1/4"
+          }
+        },
+        {
+          "title": "BERT",
+          "text": "BERT is a language model developed at Google AI and published in 2018. It is pretrained with masked language modelling and then fine-tuned for specific tasks.",
+          "source": {
+            "title": "Wikipedia: BERT (language model)",
+            "url": "https://en.wikipedia.org/wiki/BERT_(language_model)"
+          }
+        },
+        {
+          "title": "Transfer learning",
+          "text": "Transfer learning reuses knowledge learned on one task to boost performance on a related task.",
+          "source": {
+            "title": "Wikipedia: Transfer learning",
+            "url": "https://en.wikipedia.org/wiki/Transfer_learning"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You saw how a model learns from raw text by guessing hidden words, then adapts to a job with a small labelled set. That two-step recipe is behind most modern language models.",
+          "Wren shuts the old archive door. \"Read widely first. Then learn the craft.\""
+        ],
+        "mistake": {
+          "title": "Thinking pretraining needs labels",
+          "text": "Pretraining uses the text itself for answers, which is why it can use huge amounts of text. The labels are only needed for the small fine-tuning step."
+        }
+      }
+    }
+  ]
+}

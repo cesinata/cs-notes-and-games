@@ -1,0 +1,1283 @@
+{
+  "zone": 3,
+  "levels": [
+    {
+      "id": "3.1",
+      "title": "Name the Parts",
+      "story": "In a hollow of Wordwood, Wren has pinned a label on every word: this one is a thing, this one is an action. \"Tagging,\" says Wren. \"Do it by hand for a day and you'll see why a program struggles with it.\"",
+      "everyday": {
+        "scene": "A voice assistant hears 'book a table' and 'read this book'. The first 'book' is a verb and the second is a noun, and the right answer depends on it.",
+        "question": "Why does a program need to know whether a word is a noun or a verb?",
+        "answer": "The job of a word changes its meaning and how it should be handled. Labelling each word with its part of speech is the first step towards understanding a sentence."
+      },
+      "lessons": [
+        {
+          "id": "what-tagging-is",
+          "title": "Labelling every word",
+          "text": [
+            "Part-of-speech tagging gives each word in a sentence a label for its job: noun, verb, adjective, determiner and so on. In 'a sleepy owl watches', the tags are determiner, adjective, noun, verb.",
+            "Tag sets differ. Some are very fine and some use only a handful of tags. We use four plain ones: NOUN for things, VERB for actions, ADJ for describing words, and DET for words like 'a' and 'the'."
+          ],
+          "table": {
+            "head": [
+              "Tag",
+              "Job",
+              "Example"
+            ],
+            "rows": [
+              [
+                "NOUN",
+                "Names a thing or creature",
+                "owl, wood"
+              ],
+              [
+                "VERB",
+                "Names an action",
+                "watches, crouch"
+              ],
+              [
+                "ADJ",
+                "Describes a noun",
+                "sleepy, quiet"
+              ],
+              [
+                "DET",
+                "Points out or counts a noun",
+                "a, the"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Part-of-speech tagging",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Part-of-speech_tagging"
+            },
+            {
+              "title": "NLTK book, chapter 5: Categorizing and Tagging Words",
+              "source": "NLTK book (linked, not copied)",
+              "url": "https://www.nltk.org/book/ch05.html"
+            }
+          ]
+        },
+        {
+          "id": "same-word-two-tags",
+          "title": "One word, two tags",
+          "text": [
+            "Tagging is harder than looking words up, because many words can have more than one tag. 'Duck' can be a bird or an action. 'Can' can be 'is able to' or a tin.",
+            "A simple tagger gives each word the tag it had most often in a tagged text. The table shows made-up counts from a small tagged text. It works for many words but fails when the less common job is the one in use."
+          ],
+          "table": {
+            "head": [
+              "Word",
+              "Seen as NOUN",
+              "Seen as VERB"
+            ],
+            "rows": [
+              [
+                "duck",
+                "8",
+                "2"
+              ],
+              [
+                "walk",
+                "3",
+                "7"
+              ],
+              [
+                "can",
+                "4",
+                "6"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Part-of-speech tagging",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Part-of-speech_tagging"
+            },
+            {
+              "title": "NLTK book, chapter 5: Categorizing and Tagging Words",
+              "source": "NLTK book (linked, not copied)",
+              "url": "https://www.nltk.org/book/ch05.html"
+            }
+          ]
+        },
+        {
+          "id": "use-the-neighbours",
+          "title": "Let the neighbours help",
+          "text": [
+            "Neighbouring words give strong clues. After 'the' or 'a', a noun or adjective is likely. After 'can', a verb is likely. 'The duck can duck' reads sensibly because 'can' signals a verb next.",
+            {
+              "text": "Better taggers use these clues. Some are built on hidden Markov models, which count how often tags follow one another and use those counts to pick a tag for a word in context. The next level covers them.",
+              "verify": false
+            }
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Part-of-speech tagging",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Part-of-speech_tagging"
+            },
+            {
+              "title": "Wikipedia: Hidden Markov model",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Hidden_Markov_model"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "tag-sentence",
+          "type": "buckets",
+          "taughtOn": "what-tagging-is",
+          "prompt": "In 'A sleepy owl watches the quiet wood', what is each word?",
+          "buckets": [
+            "NOUN",
+            "VERB",
+            "ADJ",
+            "DET"
+          ],
+          "items": [
+            {
+              "text": "a",
+              "bucket": "DET"
+            },
+            {
+              "text": "sleepy",
+              "bucket": "ADJ"
+            },
+            {
+              "text": "owl",
+              "bucket": "NOUN"
+            },
+            {
+              "text": "watches",
+              "bucket": "VERB"
+            },
+            {
+              "text": "the",
+              "bucket": "DET"
+            },
+            {
+              "text": "quiet",
+              "bucket": "ADJ"
+            },
+            {
+              "text": "wood",
+              "bucket": "NOUN"
+            }
+          ],
+          "hints": [
+            "Nouns name things. Verbs name actions.",
+            "Describing words sit before the noun they describe."
+          ],
+          "explain": "'A' and 'the' are determiners, 'sleepy' and 'quiet' describe, 'owl' and 'wood' are things, and 'watches' is the action."
+        },
+        {
+          "id": "why-ambiguous",
+          "type": "choice",
+          "taughtOn": "same-word-two-tags",
+          "prompt": "Why can't a tagger just look each word up in a list of tags?",
+          "options": [
+            {
+              "text": "Many words can be more than one part of speech",
+              "correct": true
+            },
+            {
+              "text": "Words have no tags"
+            },
+            {
+              "text": "Computers cannot store lists"
+            },
+            {
+              "text": "Every word is always a noun"
+            }
+          ],
+          "hints": [
+            "Think about 'duck' and 'can'.",
+            "One word may have several jobs."
+          ],
+          "explain": "A word like 'duck' can be a noun or a verb. The right tag depends on the sentence."
+        },
+        {
+          "id": "duck-noun",
+          "type": "numeric",
+          "taughtOn": "same-word-two-tags",
+          "prompt": "'Duck' was a noun 8 times out of 10. What percentage of the time was it a noun?",
+          "answer": 80,
+          "calculator": false,
+          "hints": [
+            "Divide 8 by 10 and multiply by 100.",
+            "8 / 10 = 0.8."
+          ],
+          "explain": "8 out of 10 is 80 percent."
+        },
+        {
+          "id": "tag-sim",
+          "type": "stepsim",
+          "taughtOn": "same-word-two-tags",
+          "mode": "predict",
+          "prompt": "Watch a baseline tagger work through a sentence.",
+          "explain": "The baseline picks each word's most common tag. It gets 3 out of 4 right here, and misses on the less common use of 'duck'.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "the"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "duck"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "can"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "duck"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Tags the baseline picks"
+                },
+                "say": "Sentence: 'the duck can duck'. A baseline tagger gives each word the tag it had most often in a small tagged text. Each box will show the tag it picks."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "DET",
+                      "mark": "best",
+                      "tag": "the"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "duck"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "can"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "duck"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "the"
+                  },
+                  "label": "Tags the baseline picks"
+                },
+                "say": "'The' was tagged DET (a determiner) all 20 times in the text. The baseline says DET, and that is right."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "DET",
+                      "mark": "best",
+                      "tag": "the"
+                    },
+                    {
+                      "value": "NOUN",
+                      "mark": "best",
+                      "tag": "duck"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "can"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "duck"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "duck"
+                  },
+                  "label": "Tags the baseline picks"
+                },
+                "say": "'Duck' was a noun 8 times and a verb 2 times, so the baseline says NOUN. In this sentence the first 'duck' is the bird, so that is right.",
+                "predict": {
+                  "prompt": "'Duck' was a noun 8 times and a verb 2 times. What tag does the baseline give it?",
+                  "options": [
+                    {
+                      "text": "NOUN",
+                      "correct": true
+                    },
+                    {
+                      "text": "VERB",
+                      "correct": false
+                    },
+                    {
+                      "text": "DET",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Pick the tag it had more often.",
+                    "8 beats 2."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "DET",
+                      "mark": "best",
+                      "tag": "the"
+                    },
+                    {
+                      "value": "NOUN",
+                      "mark": "best",
+                      "tag": "duck"
+                    },
+                    {
+                      "value": "VERB",
+                      "mark": "best",
+                      "tag": "can"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "duck"
+                    }
+                  ],
+                  "pointers": {
+                    "2": "can"
+                  },
+                  "label": "Tags the baseline picks"
+                },
+                "say": "'Can' was a verb 6 times and a noun 4 times, so the baseline says VERB. Here it means 'is able to', so that is right again."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "DET",
+                      "mark": "best",
+                      "tag": "the"
+                    },
+                    {
+                      "value": "NOUN",
+                      "mark": "best",
+                      "tag": "duck"
+                    },
+                    {
+                      "value": "VERB",
+                      "mark": "best",
+                      "tag": "can"
+                    },
+                    {
+                      "value": "NOUN",
+                      "mark": "compare",
+                      "tag": "duck"
+                    }
+                  ],
+                  "pointers": {
+                    "3": "duck"
+                  },
+                  "label": "Tags the baseline picks"
+                },
+                "say": "The last 'duck' is something the bird can do: crouch. It is a verb here, but the baseline still says NOUN because that is its most common tag. One mistake in four words.",
+                "predict": {
+                  "prompt": "The baseline tagged 3 of 4 words correctly. What is its accuracy on this sentence?",
+                  "options": [
+                    {
+                      "text": "75 percent",
+                      "correct": true
+                    },
+                    {
+                      "text": "50 percent",
+                      "correct": false
+                    },
+                    {
+                      "text": "25 percent",
+                      "correct": false
+                    },
+                    {
+                      "text": "100 percent",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Divide correct words by total words.",
+                    "3 / 4."
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "baseline-acc",
+          "type": "numeric",
+          "taughtOn": "same-word-two-tags",
+          "prompt": "A baseline tagger gets 7 of the 8 words in a sentence right. What is its accuracy, as a percentage?",
+          "answer": 87.5,
+          "tolerance": 0.1,
+          "calculator": false,
+          "hints": [
+            "Divide correct by total.",
+            "7 / 8 = 0.875."
+          ],
+          "explain": "7 out of 8 is 0.875, or 87.5 percent."
+        },
+        {
+          "id": "tag-jobs",
+          "type": "match",
+          "taughtOn": "what-tagging-is",
+          "prompt": "Match each tag to its job.",
+          "pairs": [
+            {
+              "left": "NOUN",
+              "right": "Names a thing or creature"
+            },
+            {
+              "left": "VERB",
+              "right": "Names an action"
+            },
+            {
+              "left": "ADJ",
+              "right": "Describes a noun"
+            },
+            {
+              "left": "DET",
+              "right": "Points out or counts a noun"
+            }
+          ],
+          "hints": [
+            "Think of 'owl', 'watch', 'sleepy', 'the'.",
+            "A determiner points at a noun."
+          ],
+          "explain": "A noun names a thing, a verb an action, an adjective describes a noun and a determiner points one out."
+        },
+        {
+          "id": "can-clue",
+          "type": "choice",
+          "taughtOn": "use-the-neighbours",
+          "prompt": "In 'The owl can walk', what clue tells you 'walk' is a verb?",
+          "options": [
+            {
+              "text": "It comes straight after 'can'",
+              "correct": true
+            },
+            {
+              "text": "It has four letters"
+            },
+            {
+              "text": "It is the last word"
+            },
+            {
+              "text": "Nothing helps"
+            }
+          ],
+          "hints": [
+            "Which word comes just before 'walk'?",
+            "'Can' is usually followed by an action."
+          ],
+          "explain": "A word right after 'can' is usually a verb. Neighbours make good clues."
+        },
+        {
+          "id": "context-gain",
+          "type": "choice",
+          "taughtOn": "use-the-neighbours",
+          "prompt": "Challenge: a baseline tagger says NOUN for both 'duck's in 'the duck can duck'. How would a neighbour-aware tagger improve this?",
+          "options": [
+            {
+              "text": "It would notice that a word after 'can' is likely a verb",
+              "correct": true
+            },
+            {
+              "text": "It would ignore the word 'duck'"
+            },
+            {
+              "text": "It would use a longer word list"
+            },
+            {
+              "text": "It would count the letters"
+            }
+          ],
+          "hints": [
+            "Look at the word before the last 'duck'.",
+            "'Can' signals a verb next."
+          ],
+          "explain": "A tagger that looks at neighbours can see that a word after 'can' is likely a verb, so it would tag the last 'duck' as a verb.",
+          "challenge": true
+        },
+        {
+          "id": "ambiguous-words",
+          "type": "numeric",
+          "taughtOn": "same-word-two-tags",
+          "prompt": "Challenge: in the table, how many of the three words ('duck', 'walk', 'can') were seen with both tags?",
+          "answer": 3,
+          "calculator": false,
+          "hints": [
+            "Check each row for two non-zero counts.",
+            "All three rows have both a noun and a verb count."
+          ],
+          "explain": "Every word in the table has both a noun count and a verb count, so all 3 are ambiguous.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m3.1-f1",
+          "type": "quiz",
+          "taughtOn": "what-tagging-is",
+          "prompt": "What does part-of-speech tagging do?",
+          "options": [
+            {
+              "text": "Labels each word with its job in the sentence",
+              "correct": true
+            },
+            {
+              "text": "Translates the sentence"
+            },
+            {
+              "text": "Counts the words"
+            },
+            {
+              "text": "Removes stop words"
+            }
+          ],
+          "explain": "Typical tags are noun, verb and adjective."
+        },
+        {
+          "id": "m3.1-f2",
+          "type": "why",
+          "taughtOn": "same-word-two-tags",
+          "prompt": "Why is tagging harder than a word list?",
+          "options": [
+            {
+              "text": "Words can have more than one tag",
+              "correct": true
+            },
+            {
+              "text": "Words have no tags"
+            },
+            {
+              "text": "Tags change every day"
+            },
+            {
+              "text": "Lists are too long"
+            }
+          ],
+          "explain": "'Duck' can be a bird or an action."
+        },
+        {
+          "id": "m3.1-f3",
+          "type": "quiz",
+          "taughtOn": "use-the-neighbours",
+          "prompt": "What often follows 'can'?",
+          "options": [
+            {
+              "text": "A verb",
+              "correct": true
+            },
+            {
+              "text": "A noun"
+            },
+            {
+              "text": "A full stop"
+            },
+            {
+              "text": "Nothing"
+            }
+          ],
+          "explain": "Neighbouring words are strong clues."
+        },
+        {
+          "id": "m3.1-f4",
+          "type": "predict",
+          "taughtOn": "same-word-two-tags",
+          "prompt": "A tagger gets 9 of 10 words right. What is its accuracy?",
+          "answer": "90 percent."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Why tagging is hard",
+          "text": "Part-of-speech tagging is harder than looking up words, because some words can represent more than one part of speech at different times.",
+          "source": {
+            "title": "Wikipedia: Part-of-speech tagging",
+            "url": "https://en.wikipedia.org/wiki/Part-of-speech_tagging"
+          }
+        },
+        {
+          "title": "Many tag sets",
+          "text": "Tag sets vary: some systems use many fine-grained tags, and others use a smaller number.",
+          "source": {
+            "title": "Wikipedia: Part-of-speech tagging",
+            "url": "https://en.wikipedia.org/wiki/Part-of-speech_tagging"
+          }
+        },
+        {
+          "title": "Why tags help",
+          "text": "Word classes such as nouns and verbs are useful categories for many language processing tasks.",
+          "source": {
+            "title": "NLTK book, chapter 5: Categorizing and Tagging Words",
+            "url": "https://www.nltk.org/book/ch05.html"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You gave words tags like noun and verb, saw that one word can have two tags, and watched a most-common-tag baseline get a sentence mostly right and miss the unusual use.",
+          "Wren steps back from the labelled branches. \"A tag is a guess about a word's job. A good guess uses the words around it.\""
+        ],
+        "mistake": {
+          "title": "Trusting a word's usual tag",
+          "text": "A word's most common tag is only a guess. The sentence around it decides which job it has this time."
+        }
+      }
+    },
+    {
+      "id": "3.2",
+      "title": "Hidden Weather",
+      "story": "Warden Wren lives in a cabin with no windows. Kit stands outside and watches what Wren wears each morning. \"A cloak means rain, probably. A hat means sun, probably. From the clothes, can you guess the weather I can't see?\"",
+      "everyday": {
+        "scene": "A friend says 'I'm fine' in a flat voice, and you suspect they are not. You are guessing something hidden, their mood, from something you can see, their voice.",
+        "question": "How can you work out the most likely hidden story behind a row of clues?",
+        "answer": "Give each hidden possibility a chance, work out how likely each clue is under each one, and find the best chain. That is the idea behind a hidden Markov model."
+      },
+      "lessons": [
+        {
+          "id": "hidden-and-seen",
+          "title": "Hidden and seen",
+          "text": [
+            "A hidden Markov model, or HMM, has hidden states you cannot see and observations you can. The weather is hidden. Wren's clothes are seen. Two sets of chances drive it: transitions, how one hidden state follows another, and emissions, how likely each sight is in each state.",
+            "In tagging, the hidden states are parts of speech and the observations are the words. The model asks which chain of tags best explains the sentence."
+          ],
+          "terms": [
+            {
+              "term": "Hidden state",
+              "meaning": "Something the model cannot observe, like the weather."
+            },
+            {
+              "term": "Observation",
+              "meaning": "Something it can see, like Wren's clothes."
+            }
+          ],
+          "table": {
+            "head": [
+              "From",
+              "To Rainy",
+              "To Sunny"
+            ],
+            "rows": [
+              [
+                "Rainy",
+                "0.7",
+                "0.3"
+              ],
+              [
+                "Sunny",
+                "0.2",
+                "0.8"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Hidden Markov model",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Hidden_Markov_model"
+            },
+            {
+              "title": "Wikipedia: Part-of-speech tagging",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Part-of-speech_tagging"
+            }
+          ]
+        },
+        {
+          "id": "score-one-path",
+          "title": "Scoring one path",
+          "text": [
+            "One guess for three days, such as Rainy, Sunny, Sunny, gets a score. Multiply the chance of the first state, the chance of the first clue in it, then for each later day the chance of moving to the next state and of its clue.",
+            "For cloak, hat, hat: 0.4 x 0.6 for day one, 0.3 x 0.6 for day two and 0.8 x 0.6 for day three. The product is about 0.0207. Rainy, Rainy, Rainy scores only 0.0012."
+          ],
+          "table": {
+            "head": [
+              "State",
+              "Cloak",
+              "Hat",
+              "Nothing special"
+            ],
+            "rows": [
+              [
+                "Rainy",
+                "0.6",
+                "0.1",
+                "0.3"
+              ],
+              [
+                "Sunny",
+                "0.1",
+                "0.6",
+                "0.3"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "Starting chances are 0.4 for Rainy and 0.6 for Sunny. A cloak has chance 0.6 in rain. What is the score for starting Rainy and seeing a cloak?",
+            "answer": "0.4 x 0.6, which is 0.24."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Hidden Markov model",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Hidden_Markov_model"
+            },
+            {
+              "title": "Wikipedia: Viterbi algorithm",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Viterbi_algorithm"
+            }
+          ]
+        },
+        {
+          "id": "viterbi",
+          "title": "Finding the best path",
+          "text": [
+            "With 2 states over 3 days there are 8 possible paths, and over 10 days there are 1,024. Checking each one does not scale. The Viterbi algorithm keeps just the best score reaching each state on each day, and then traces back.",
+            "That is dynamic programming: store the best partial answers and build on them. It gives the single most likely path of hidden states."
+          ],
+          "deeper": {
+            "title": "Why tagging likes it",
+            "text": [
+              {
+                "text": "An HMM tagger runs the same steps with tags as states and words as clues, and the Viterbi algorithm can find the best chain of tags.",
+                "verify": false
+              }
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Viterbi algorithm",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Viterbi_algorithm"
+            },
+            {
+              "title": "Wikipedia: Hidden Markov model",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Hidden_Markov_model"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "day1-score",
+          "type": "numeric",
+          "taughtOn": "score-one-path",
+          "prompt": "Day 1 is a cloak. Rainy starts at 0.4 and a cloak in rain has chance 0.6. What is Rainy's day-1 score?",
+          "answer": 0.24,
+          "tolerance": 0.001,
+          "calculator": false,
+          "hints": [
+            "Multiply start chance by clue chance.",
+            "0.4 x 0.6."
+          ],
+          "explain": "0.4 x 0.6 = 0.24."
+        },
+        {
+          "id": "hidden-or-seen",
+          "type": "buckets",
+          "taughtOn": "hidden-and-seen",
+          "prompt": "In the weather story, is each thing hidden or seen?",
+          "buckets": [
+            "Hidden",
+            "Seen"
+          ],
+          "items": [
+            {
+              "text": "Whether it is raining",
+              "bucket": "Hidden"
+            },
+            {
+              "text": "Wren wearing a cloak",
+              "bucket": "Seen"
+            },
+            {
+              "text": "Whether it is sunny",
+              "bucket": "Hidden"
+            },
+            {
+              "text": "Wren wearing a hat",
+              "bucket": "Seen"
+            }
+          ],
+          "hints": [
+            "Kit can only see Wren's clothes.",
+            "The weather is inside the cabin's walls."
+          ],
+          "explain": "The weather is the hidden state. Wren's cloak and hat are what Kit can see."
+        },
+        {
+          "id": "viterbi-sim",
+          "type": "stepsim",
+          "taughtOn": "viterbi",
+          "mode": "predict",
+          "prompt": "Follow Viterbi day by day.",
+          "explain": "On each day, Viterbi keeps the best score for each state, then traces back. The best weather chain is Rainy, Sunny, Sunny.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "cloak",
+                      "mark": null,
+                      "tag": "day 1"
+                    },
+                    {
+                      "value": "hat",
+                      "mark": null,
+                      "tag": "day 2"
+                    },
+                    {
+                      "value": "hat",
+                      "mark": null,
+                      "tag": "day 3"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Viterbi, day by day"
+                },
+                "say": "Kit sees what Wren wears on three days: a cloak, then a hat, then a hat. The weather is hidden. Wren wants the most likely weather for each day."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "0.24",
+                      "mark": "best",
+                      "tag": "Rainy"
+                    },
+                    {
+                      "value": "0.06",
+                      "mark": null,
+                      "tag": "Sunny"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "day 1"
+                  },
+                  "label": "Viterbi, day by day"
+                },
+                "say": "Day 1, cloak. Rainy: start 0.4 times cloak-in-rain 0.6 is 0.24. Sunny: start 0.6 times cloak-in-sun 0.1 is 0.06.",
+                "predict": {
+                  "prompt": "Rainy starts at 0.4, and a cloak in rain has chance 0.6. What is the day-1 score for Rainy?",
+                  "options": [
+                    {
+                      "text": "0.24",
+                      "correct": true
+                    },
+                    {
+                      "text": "0.40",
+                      "correct": false
+                    },
+                    {
+                      "text": "0.60",
+                      "correct": false
+                    },
+                    {
+                      "text": "1.00",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Multiply the two numbers.",
+                    "0.4 x 0.6."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "0.0168",
+                      "mark": null,
+                      "tag": "Rainy"
+                    },
+                    {
+                      "value": "0.0432",
+                      "mark": "best",
+                      "tag": "Sunny"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "day 2"
+                  },
+                  "label": "Viterbi, day by day"
+                },
+                "say": "Day 2, hat. For each state, keep the best way of getting there. Sunny: from Sunny is 0.06 x 0.8 = 0.048, from Rainy is 0.24 x 0.3 = 0.072. Keep 0.072, then multiply by the hat chance 0.6 to get 0.0432. Rainy: 0.24 x 0.7 x 0.1 = 0.0168.",
+                "predict": {
+                  "prompt": "Which state scores higher on day 2?",
+                  "options": [
+                    {
+                      "text": "Sunny, 0.0432",
+                      "correct": true
+                    },
+                    {
+                      "text": "Rainy, 0.0168",
+                      "correct": false
+                    },
+                    {
+                      "text": "They tie",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Compare 0.0432 with 0.0168.",
+                    "The bigger one wins."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "0.0012",
+                      "mark": null,
+                      "tag": "Rainy"
+                    },
+                    {
+                      "value": "0.0207",
+                      "mark": "best",
+                      "tag": "Sunny"
+                    }
+                  ],
+                  "pointers": {
+                    "2": "day 3"
+                  },
+                  "label": "Viterbi, day by day"
+                },
+                "say": "Day 3, hat again. Sunny comes to 0.0432 x 0.8 x 0.6 = 0.0207. Rainy comes to 0.0168 x 0.7 x 0.1 = 0.0012. Sunny is far ahead.",
+                "predict": {
+                  "prompt": "Which state has the best score on day 3?",
+                  "options": [
+                    {
+                      "text": "Sunny",
+                      "correct": true
+                    },
+                    {
+                      "text": "Rainy",
+                      "correct": false
+                    },
+                    {
+                      "text": "They tie",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Compare 0.0207 with 0.0012.",
+                    "Sunny is much larger."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "Rainy",
+                      "mark": "used",
+                      "tag": "day 1"
+                    },
+                    {
+                      "value": "Sunny",
+                      "mark": "used",
+                      "tag": "day 2"
+                    },
+                    {
+                      "value": "Sunny",
+                      "mark": "used",
+                      "tag": "day 3"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Viterbi, day by day"
+                },
+                "say": "Trace back from the best final state, following which state each best score came from. The most likely weather is Rainy, Sunny, Sunny. The score is 0.0207."
+              }
+            ]
+          }
+        },
+        {
+          "id": "path-score",
+          "type": "numeric",
+          "taughtOn": "score-one-path",
+          "prompt": "Score the path Rainy, Sunny, Sunny for cloak, hat, hat: 0.4 x 0.6 x 0.3 x 0.6 x 0.8 x 0.6. What is it to 4 places?",
+          "answer": 0.0207,
+          "tolerance": 0.0002,
+          "calculator": false,
+          "hints": [
+            "Multiply all six numbers.",
+            "0.24 x 0.18 x 0.48."
+          ],
+          "explain": "0.4 x 0.6 x 0.3 x 0.6 x 0.8 x 0.6 = 0.020736, about 0.0207."
+        },
+        {
+          "id": "path-count",
+          "type": "numeric",
+          "taughtOn": "viterbi",
+          "prompt": "With 2 hidden states and 3 days, how many different paths are there?",
+          "answer": 8,
+          "calculator": false,
+          "hints": [
+            "Each day has 2 choices.",
+            "2 x 2 x 2."
+          ],
+          "explain": "Two choices on each of three days gives 2 x 2 x 2 = 8 paths."
+        },
+        {
+          "id": "viterbi-order",
+          "type": "order",
+          "taughtOn": "viterbi",
+          "prompt": "Put the Viterbi steps in order.",
+          "items": [
+            "Score each state on day 1",
+            "For each later day keep the best score reaching each state",
+            "Pick the best state on the last day",
+            "Trace back to find the whole path"
+          ],
+          "hints": [
+            "You must score day 1 first.",
+            "Tracing back comes at the end."
+          ],
+          "explain": "Score day 1, then each later day keeping the best way to reach each state, pick the best final state and trace back."
+        },
+        {
+          "id": "hmm-words",
+          "type": "match",
+          "taughtOn": "hidden-and-seen",
+          "prompt": "Match each idea to its meaning.",
+          "pairs": [
+            {
+              "left": "Transition",
+              "right": "How one hidden state follows another"
+            },
+            {
+              "left": "Emission",
+              "right": "How likely a clue is in a given hidden state"
+            },
+            {
+              "left": "Hidden state",
+              "right": "Something the model cannot see"
+            },
+            {
+              "left": "Observation",
+              "right": "Something the model can see"
+            }
+          ],
+          "hints": [
+            "Transitions are between states.",
+            "Emissions connect a state to what you see."
+          ],
+          "explain": "A transition moves between hidden states, an emission links a state to a clue, the hidden state is unseen and an observation is seen."
+        },
+        {
+          "id": "tagging-hmm",
+          "type": "choice",
+          "taughtOn": "hidden-and-seen",
+          "prompt": "In an HMM tagger, what are the hidden states?",
+          "options": [
+            {
+              "text": "The parts of speech",
+              "correct": true
+            },
+            {
+              "text": "The words"
+            },
+            {
+              "text": "The letters"
+            },
+            {
+              "text": "The sentence length"
+            }
+          ],
+          "hints": [
+            "Which things can you not see in the text?",
+            "Words are seen."
+          ],
+          "explain": "The tags are hidden. The words are the observations."
+        },
+        {
+          "id": "rrr-score",
+          "type": "numeric",
+          "taughtOn": "score-one-path",
+          "prompt": "Challenge: score Rainy, Rainy, Rainy for cloak, hat, hat: 0.4 x 0.6 x 0.7 x 0.1 x 0.7 x 0.1, to 5 places.",
+          "answer": 0.00118,
+          "tolerance": 2e-05,
+          "calculator": false,
+          "hints": [
+            "Multiply the six numbers.",
+            "0.24 x 0.07 x 0.07."
+          ],
+          "explain": "0.4 x 0.6 x 0.7 x 0.1 x 0.7 x 0.1 = 0.001176, about 0.00118.",
+          "challenge": true
+        },
+        {
+          "id": "viterbi-why",
+          "type": "choice",
+          "taughtOn": "viterbi",
+          "prompt": "Challenge: why does Viterbi beat checking every path, over 10 days?",
+          "options": [
+            {
+              "text": "It only keeps the best score for each state each day instead of 1,024 full paths",
+              "correct": true
+            },
+            {
+              "text": "It guesses at random"
+            },
+            {
+              "text": "It looks at the hat only"
+            },
+            {
+              "text": "It removes the cloak"
+            }
+          ],
+          "hints": [
+            "How many paths are there over 10 days?",
+            "Keeping best partial scores avoids repeating work."
+          ],
+          "explain": "Viterbi stores the best partial result per state per day, so it avoids scoring every full path separately.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m3.2-f1",
+          "type": "quiz",
+          "taughtOn": "hidden-and-seen",
+          "prompt": "In an HMM, what is a hidden state?",
+          "options": [
+            {
+              "text": "Something the model cannot see directly",
+              "correct": true
+            },
+            {
+              "text": "A secret key"
+            },
+            {
+              "text": "A word"
+            },
+            {
+              "text": "A typo"
+            }
+          ],
+          "explain": "The weather is hidden. Wren's clothes are seen."
+        },
+        {
+          "id": "m3.2-f2",
+          "type": "why",
+          "taughtOn": "viterbi",
+          "prompt": "What does the Viterbi algorithm find?",
+          "options": [
+            {
+              "text": "The most likely sequence of hidden states",
+              "correct": true
+            },
+            {
+              "text": "The shortest sentence"
+            },
+            {
+              "text": "The rarest word"
+            },
+            {
+              "text": "The first state"
+            }
+          ],
+          "explain": "It uses dynamic programming."
+        },
+        {
+          "id": "m3.2-f3",
+          "type": "quiz",
+          "taughtOn": "hidden-and-seen",
+          "prompt": "In tagging, what are the observations?",
+          "options": [
+            {
+              "text": "The words",
+              "correct": true
+            },
+            {
+              "text": "The tags"
+            },
+            {
+              "text": "The letters"
+            },
+            {
+              "text": "The sentences"
+            }
+          ],
+          "explain": "The tags are hidden."
+        },
+        {
+          "id": "m3.2-f4",
+          "type": "predict",
+          "taughtOn": "viterbi",
+          "prompt": "How many paths are there for 2 states over 4 days?",
+          "answer": "16, since 2 x 2 x 2 x 2."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Hidden Markov models",
+          "text": "A hidden Markov model describes a system whose states cannot be seen directly but produce observations that can be.",
+          "source": {
+            "title": "Wikipedia: Hidden Markov model",
+            "url": "https://en.wikipedia.org/wiki/Hidden_Markov_model"
+          }
+        },
+        {
+          "title": "Viterbi",
+          "text": "The Viterbi algorithm is a dynamic programming algorithm that finds the most likely sequence of hidden events that would explain a sequence of observed events.",
+          "source": {
+            "title": "Wikipedia: Viterbi algorithm",
+            "url": "https://en.wikipedia.org/wiki/Viterbi_algorithm"
+          }
+        },
+        {
+          "title": "In tagging",
+          "text": "In part-of-speech tagging with an HMM, the hidden states are the underlying parts of speech and the observed sequence is the words.",
+          "source": {
+            "title": "Wikipedia: Hidden Markov model",
+            "url": "https://en.wikipedia.org/wiki/Hidden_Markov_model"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You met hidden states and observations, scored a whole path by multiplying chances, and used Viterbi to find the best chain without checking every path.",
+          "Wren peeks out of the cabin. \"A cloak on day one, hats after. So rain, then sun. You were right.\""
+        ],
+        "mistake": {
+          "title": "Picking each day's best guess alone",
+          "text": "The best weather for one day may not fit the best chain. Viterbi looks at the whole sequence so each guess agrees with its neighbours."
+        }
+      }
+    }
+  ]
+}

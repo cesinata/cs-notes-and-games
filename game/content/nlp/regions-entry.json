@@ -1,0 +1,10 @@
+{
+  "id": "nlp",
+  "name": "Wordwood",
+  "subject": "Natural Language Processing",
+  "description": "Wander a wood where the trees are words and the paths are sentences: how computers split and tidy text, count what comes next, sort and tag it, remember context, give words a place on a map and weigh every word against the rest.",
+  "bigFact": "Standard attention in a transformer compares every word with every other word, so doubling the length of a text makes that work grow four times.",
+  "sprite": "house",
+  "world": "nlp/world.json",
+  "dir": "nlp/"
+}

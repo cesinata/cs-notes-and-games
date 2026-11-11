@@ -1,0 +1,10 @@
+{
+  "id": "java",
+  "name": "Blueprint Borough",
+  "subject": "Java",
+  "description": "Walk through a town of blueprints: how a Java program runs, how it stores values, makes decisions, repeats steps, and builds objects from classes.",
+  "bigFact": "In Java, 7 / 2 is 3, not 3.5, when both numbers are whole. The fraction is thrown away.",
+  "sprite": "hut",
+  "world": "java/world.json",
+  "dir": "java/"
+}

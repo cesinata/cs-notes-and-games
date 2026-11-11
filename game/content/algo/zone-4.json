@@ -1,0 +1,5244 @@
+{
+  "zone": 4,
+  "levels": [
+    {
+      "id": "4.1",
+      "title": "Merge Market",
+      "story": "At the Merge Market, two stalls each keep their goods sorted by price. Printer Pell shows Kit how to combine them into one sorted line without ever starting again from scratch.",
+      "everyday": {
+        "scene": "Two friends each hold a stack of exam papers sorted by name. You have to put them into one sorted stack.",
+        "question": "Do you need to look through every paper each time?",
+        "answer": "No. You only compare the top paper of each stack, take the earlier one, and repeat. That simple move is called merging."
+      },
+      "lessons": [
+        {
+          "id": "merge",
+          "title": "Merging two sorted rows",
+          "text": [
+            "Merging combines two sorted rows into one. Look at the front crate of each row, move the smaller to the output, and repeat. When one row is empty, move everything left in the other row.",
+            "Each comparison puts one crate into the output, so merging rows of sizes m and n takes at most m + n − 1 comparisons. The final merge in our example, 4 crates and 4, took 7."
+          ],
+          "terms": [
+            {
+              "term": "Merge",
+              "meaning": "Combine two sorted rows into one sorted row."
+            }
+          ],
+          "predict": {
+            "prompt": "Two sorted rows of 5 crates each are merged. At most how many comparisons?",
+            "answer": "9. That is 5 + 5 − 1."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Merge sort",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Merge_sort"
+            },
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 1: Recursion",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/01-recursion.pdf"
+            }
+          ]
+        },
+        {
+          "id": "split-merge",
+          "title": "Split, then merge",
+          "text": [
+            "Mergesort uses divide and conquer. Split the row into two halves, sort each half by calling mergesort on it, then merge the two sorted halves. A row of one crate is already sorted, which is the base case.",
+            "Our eight crates split into 4 and 4, then 2 and 2, then 1 and 1. Merging back up takes 7 merges, with 17 comparisons in total, far under the 28 comparisons of a one-by-one method like selection sort."
+          ],
+          "terms": [
+            {
+              "term": "Divide and conquer",
+              "meaning": "Split a problem into smaller copies, solve each, and combine the answers."
+            }
+          ],
+          "predict": {
+            "prompt": "What is the base case of mergesort?",
+            "answer": "A row of one crate (or none): it is already sorted."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Merge sort",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Merge_sort"
+            },
+            {
+              "title": "Wikipedia: Divide-and-conquer algorithm",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Divide-and-conquer_algorithm"
+            }
+          ]
+        },
+        {
+          "id": "levels",
+          "title": "Why it is fast",
+          "text": [
+            "Halving 1,024 crates takes 10 levels to reach single crates. Each level of merging touches every crate once, so each level costs about n item-moves. The total is about n × log₂ n.",
+            "For 1,024 crates, that is about 10,240 item-moves. Selection sort needs about 523,776 comparisons. As n grows the gap widens: n log n grows much slower than n × n."
+          ],
+          "table": {
+            "head": [
+              "Crates (n)",
+              "Levels (log₂ n)",
+              "About n × log₂ n"
+            ],
+            "rows": [
+              [
+                "8",
+                "3",
+                "24"
+              ],
+              [
+                "1,024",
+                "10",
+                "10,240"
+              ],
+              [
+                "1,048,576",
+                "20",
+                "20,971,520"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "Doubling the number of crates adds how many levels?",
+            "answer": "One."
+          },
+          "deeper": {
+            "title": "Memory cost",
+            "text": [
+              "Merging usually needs extra room to hold the output, about as big as the row. This is the price mergesort pays for its steady speed."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Merge sort",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Merge_sort"
+            },
+            {
+              "title": "Wikipedia: Time complexity",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Time_complexity"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "watch-merge",
+          "type": "stepsim",
+          "taughtOn": "merge",
+          "mode": "predict",
+          "prompt": "Watch two sorted halves merge, and predict which crate goes to the output each time.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 3,
+                      "mark": null
+                    },
+                    {
+                      "value": 27,
+                      "mark": null
+                    },
+                    {
+                      "value": 38,
+                      "mark": null
+                    },
+                    {
+                      "value": 43,
+                      "mark": null
+                    },
+                    {
+                      "value": 9,
+                      "mark": null
+                    },
+                    {
+                      "value": 10,
+                      "mark": null
+                    },
+                    {
+                      "value": 21,
+                      "mark": null
+                    },
+                    {
+                      "value": 82,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "0": "left front",
+                    "4": "right front"
+                  },
+                  "label": "Two sorted halves, side by side"
+                },
+                "say": "Two sorted halves: 3, 27, 38, 43 and 9, 10, 21, 82. To merge them, compare the two front crates, and move the smaller one to the output."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 3,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 27,
+                      "mark": null
+                    },
+                    {
+                      "value": 38,
+                      "mark": null
+                    },
+                    {
+                      "value": 43,
+                      "mark": null
+                    },
+                    {
+                      "value": 9,
+                      "mark": null
+                    },
+                    {
+                      "value": 10,
+                      "mark": null
+                    },
+                    {
+                      "value": 21,
+                      "mark": null
+                    },
+                    {
+                      "value": 82,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "0": "left front",
+                    "4": "right front"
+                  },
+                  "label": "Two sorted halves. \"out\" means already moved to the output"
+                },
+                "say": "3 against 9: the smaller one, 3, goes to the output. Output so far: 3."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 3,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 27,
+                      "mark": null
+                    },
+                    {
+                      "value": 38,
+                      "mark": null
+                    },
+                    {
+                      "value": 43,
+                      "mark": null
+                    },
+                    {
+                      "value": 9,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 10,
+                      "mark": null
+                    },
+                    {
+                      "value": 21,
+                      "mark": null
+                    },
+                    {
+                      "value": 82,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "1": "left front",
+                    "4": "right front"
+                  },
+                  "label": "Two sorted halves. \"out\" means already moved to the output"
+                },
+                "say": "27 against 9: the smaller one, 9, goes to the output. Output so far: 3, 9.",
+                "predict": {
+                  "prompt": "The front crates are 27 (left) and 9 (right). Which goes to the output next?",
+                  "options": [
+                    {
+                      "text": "9",
+                      "correct": true
+                    },
+                    {
+                      "text": "27"
+                    },
+                    {
+                      "text": "3"
+                    },
+                    {
+                      "text": "38"
+                    }
+                  ],
+                  "hints": [
+                    "Look only at the two front crates.",
+                    "The smaller one goes first, so the output stays in order."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 3,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 27,
+                      "mark": null
+                    },
+                    {
+                      "value": 38,
+                      "mark": null
+                    },
+                    {
+                      "value": 43,
+                      "mark": null
+                    },
+                    {
+                      "value": 9,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 10,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 21,
+                      "mark": null
+                    },
+                    {
+                      "value": 82,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "1": "left front",
+                    "5": "right front"
+                  },
+                  "label": "Two sorted halves. \"out\" means already moved to the output"
+                },
+                "say": "27 against 10: the smaller one, 10, goes to the output. Output so far: 3, 9, 10.",
+                "predict": {
+                  "prompt": "The front crates are 27 (left) and 10 (right). Which goes to the output next?",
+                  "options": [
+                    {
+                      "text": "10",
+                      "correct": true
+                    },
+                    {
+                      "text": "27"
+                    },
+                    {
+                      "text": "3"
+                    },
+                    {
+                      "text": "38"
+                    }
+                  ],
+                  "hints": [
+                    "Look only at the two front crates.",
+                    "The smaller one goes first, so the output stays in order."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 3,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 27,
+                      "mark": null
+                    },
+                    {
+                      "value": 38,
+                      "mark": null
+                    },
+                    {
+                      "value": 43,
+                      "mark": null
+                    },
+                    {
+                      "value": 9,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 10,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 21,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 82,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "1": "left front",
+                    "6": "right front"
+                  },
+                  "label": "Two sorted halves. \"out\" means already moved to the output"
+                },
+                "say": "27 against 21: the smaller one, 21, goes to the output. Output so far: 3, 9, 10, 21.",
+                "predict": {
+                  "prompt": "The front crates are 27 (left) and 21 (right). Which goes to the output next?",
+                  "options": [
+                    {
+                      "text": "21",
+                      "correct": true
+                    },
+                    {
+                      "text": "27"
+                    },
+                    {
+                      "text": "3"
+                    },
+                    {
+                      "text": "38"
+                    }
+                  ],
+                  "hints": [
+                    "Look only at the two front crates.",
+                    "The smaller one goes first, so the output stays in order."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 3,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 27,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 38,
+                      "mark": null
+                    },
+                    {
+                      "value": 43,
+                      "mark": null
+                    },
+                    {
+                      "value": 9,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 10,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 21,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 82,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "1": "left front",
+                    "7": "right front"
+                  },
+                  "label": "Two sorted halves. \"out\" means already moved to the output"
+                },
+                "say": "27 against 82: the smaller one, 27, goes to the output. Output so far: 3, 9, 10, 21, 27.",
+                "predict": {
+                  "prompt": "The front crates are 27 (left) and 82 (right). Which goes to the output next?",
+                  "options": [
+                    {
+                      "text": "27",
+                      "correct": true
+                    },
+                    {
+                      "text": "82"
+                    },
+                    {
+                      "text": "3"
+                    },
+                    {
+                      "text": "38"
+                    }
+                  ],
+                  "hints": [
+                    "Look only at the two front crates.",
+                    "The smaller one goes first, so the output stays in order."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 3,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 27,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 38,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 43,
+                      "mark": null
+                    },
+                    {
+                      "value": 9,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 10,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 21,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 82,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "2": "left front",
+                    "7": "right front"
+                  },
+                  "label": "Two sorted halves. \"out\" means already moved to the output"
+                },
+                "say": "38 against 82: the smaller one, 38, goes to the output. Output so far: 3, 9, 10, 21, 27, 38.",
+                "predict": {
+                  "prompt": "The front crates are 38 (left) and 82 (right). Which goes to the output next?",
+                  "options": [
+                    {
+                      "text": "38",
+                      "correct": true
+                    },
+                    {
+                      "text": "82"
+                    },
+                    {
+                      "text": "3"
+                    },
+                    {
+                      "text": "27"
+                    }
+                  ],
+                  "hints": [
+                    "Look only at the two front crates.",
+                    "The smaller one goes first, so the output stays in order."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 3,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 27,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 38,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 43,
+                      "mark": "best"
+                    },
+                    {
+                      "value": 9,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 10,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 21,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 82,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "3": "left front",
+                    "7": "right front"
+                  },
+                  "label": "Two sorted halves. \"out\" means already moved to the output"
+                },
+                "say": "43 against 82: the smaller one, 43, goes to the output. Output so far: 3, 9, 10, 21, 27, 38, 43.",
+                "predict": {
+                  "prompt": "The front crates are 43 (left) and 82 (right). Which goes to the output next?",
+                  "options": [
+                    {
+                      "text": "43",
+                      "correct": true
+                    },
+                    {
+                      "text": "82"
+                    },
+                    {
+                      "text": "3"
+                    },
+                    {
+                      "text": "27"
+                    }
+                  ],
+                  "hints": [
+                    "Look only at the two front crates.",
+                    "The smaller one goes first, so the output stays in order."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 3,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 27,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 38,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 43,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 9,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 10,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 21,
+                      "mark": null,
+                      "tag": "out"
+                    },
+                    {
+                      "value": 82,
+                      "mark": "best"
+                    }
+                  ],
+                  "pointers": {
+                    "7": "right front"
+                  },
+                  "label": "Two sorted halves. \"out\" means already moved to the output"
+                },
+                "say": "One half is empty, so the rest of the other half, starting with 82, goes straight to the output. Output so far: 3, 9, 10, 21, 27, 38, 43, 82."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 3,
+                      "mark": null
+                    },
+                    {
+                      "value": 9,
+                      "mark": null
+                    },
+                    {
+                      "value": 10,
+                      "mark": null
+                    },
+                    {
+                      "value": 21,
+                      "mark": null
+                    },
+                    {
+                      "value": 27,
+                      "mark": null
+                    },
+                    {
+                      "value": 38,
+                      "mark": null
+                    },
+                    {
+                      "value": 43,
+                      "mark": null
+                    },
+                    {
+                      "value": 82,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Merged"
+                },
+                "say": "Merged: 3, 9, 10, 21, 27, 38, 43, 82. It took 7 comparisons."
+              }
+            ]
+          },
+          "explain": "Watch two sorted halves merge, and predict which crate goes to the output each time."
+        },
+        {
+          "id": "count-merges",
+          "type": "stepsim",
+          "taughtOn": "split-merge",
+          "mode": "count",
+          "prompt": "Predict the total number of comparisons mergesort makes on these eight crates, then watch it count.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 38,
+                      "mark": null
+                    },
+                    {
+                      "value": 27,
+                      "mark": null
+                    },
+                    {
+                      "value": 43,
+                      "mark": null
+                    },
+                    {
+                      "value": 3,
+                      "mark": null
+                    },
+                    {
+                      "value": 9,
+                      "mark": null
+                    },
+                    {
+                      "value": 82,
+                      "mark": null
+                    },
+                    {
+                      "value": 10,
+                      "mark": null
+                    },
+                    {
+                      "value": 21,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Unsorted crates"
+                },
+                "say": "Mergesort splits the row in halves again and again until single crates remain, then merges them back in order. Each step below is one merge."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 27,
+                      "mark": "new"
+                    },
+                    {
+                      "value": 38,
+                      "mark": "new"
+                    },
+                    {
+                      "value": 43,
+                      "mark": null
+                    },
+                    {
+                      "value": 3,
+                      "mark": null
+                    },
+                    {
+                      "value": 9,
+                      "mark": null
+                    },
+                    {
+                      "value": 82,
+                      "mark": null
+                    },
+                    {
+                      "value": 10,
+                      "mark": null
+                    },
+                    {
+                      "value": 21,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "After merging positions 0 to 1"
+                },
+                "say": "Merge 38 with 27: 1 comparison. Result: 27, 38.",
+                "count": {
+                  "comparisons": 1
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 27,
+                      "mark": null
+                    },
+                    {
+                      "value": 38,
+                      "mark": null
+                    },
+                    {
+                      "value": 3,
+                      "mark": "new"
+                    },
+                    {
+                      "value": 43,
+                      "mark": "new"
+                    },
+                    {
+                      "value": 9,
+                      "mark": null
+                    },
+                    {
+                      "value": 82,
+                      "mark": null
+                    },
+                    {
+                      "value": 10,
+                      "mark": null
+                    },
+                    {
+                      "value": 21,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "After merging positions 2 to 3"
+                },
+                "say": "Merge 43 with 3: 1 comparison. Result: 3, 43.",
+                "count": {
+                  "comparisons": 1
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 3,
+                      "mark": "new"
+                    },
+                    {
+                      "value": 27,
+                      "mark": "new"
+                    },
+                    {
+                      "value": 38,
+                      "mark": "new"
+                    },
+                    {
+                      "value": 43,
+                      "mark": "new"
+                    },
+                    {
+                      "value": 9,
+                      "mark": null
+                    },
+                    {
+                      "value": 82,
+                      "mark": null
+                    },
+                    {
+                      "value": 10,
+                      "mark": null
+                    },
+                    {
+                      "value": 21,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "After merging positions 0 to 3"
+                },
+                "say": "Merge 27, 38 with 3, 43: 3 comparisons. Result: 3, 27, 38, 43.",
+                "count": {
+                  "comparisons": 3
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 3,
+                      "mark": null
+                    },
+                    {
+                      "value": 27,
+                      "mark": null
+                    },
+                    {
+                      "value": 38,
+                      "mark": null
+                    },
+                    {
+                      "value": 43,
+                      "mark": null
+                    },
+                    {
+                      "value": 9,
+                      "mark": "new"
+                    },
+                    {
+                      "value": 82,
+                      "mark": "new"
+                    },
+                    {
+                      "value": 10,
+                      "mark": null
+                    },
+                    {
+                      "value": 21,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "After merging positions 4 to 5"
+                },
+                "say": "Merge 9 with 82: 1 comparison. Result: 9, 82.",
+                "count": {
+                  "comparisons": 1
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 3,
+                      "mark": null
+                    },
+                    {
+                      "value": 27,
+                      "mark": null
+                    },
+                    {
+                      "value": 38,
+                      "mark": null
+                    },
+                    {
+                      "value": 43,
+                      "mark": null
+                    },
+                    {
+                      "value": 9,
+                      "mark": null
+                    },
+                    {
+                      "value": 82,
+                      "mark": null
+                    },
+                    {
+                      "value": 10,
+                      "mark": "new"
+                    },
+                    {
+                      "value": 21,
+                      "mark": "new"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "After merging positions 6 to 7"
+                },
+                "say": "Merge 10 with 21: 1 comparison. Result: 10, 21.",
+                "count": {
+                  "comparisons": 1
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 3,
+                      "mark": null
+                    },
+                    {
+                      "value": 27,
+                      "mark": null
+                    },
+                    {
+                      "value": 38,
+                      "mark": null
+                    },
+                    {
+                      "value": 43,
+                      "mark": null
+                    },
+                    {
+                      "value": 9,
+                      "mark": "new"
+                    },
+                    {
+                      "value": 10,
+                      "mark": "new"
+                    },
+                    {
+                      "value": 21,
+                      "mark": "new"
+                    },
+                    {
+                      "value": 82,
+                      "mark": "new"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "After merging positions 4 to 7"
+                },
+                "say": "Merge 9, 82 with 10, 21: 3 comparisons. Result: 9, 10, 21, 82.",
+                "count": {
+                  "comparisons": 3
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 3,
+                      "mark": "new"
+                    },
+                    {
+                      "value": 9,
+                      "mark": "new"
+                    },
+                    {
+                      "value": 10,
+                      "mark": "new"
+                    },
+                    {
+                      "value": 21,
+                      "mark": "new"
+                    },
+                    {
+                      "value": 27,
+                      "mark": "new"
+                    },
+                    {
+                      "value": 38,
+                      "mark": "new"
+                    },
+                    {
+                      "value": 43,
+                      "mark": "new"
+                    },
+                    {
+                      "value": 82,
+                      "mark": "new"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "After merging positions 0 to 7"
+                },
+                "say": "Merge 3, 27, 38, 43 with 9, 10, 21, 82: 7 comparisons. Result: 3, 9, 10, 21, 27, 38, 43, 82.",
+                "count": {
+                  "comparisons": 7
+                }
+              }
+            ],
+            "countQuestion": {
+              "prompt": "Mergesort sorts 38, 27, 43, 3, 9, 82, 10, 21. About how many comparisons will it make in total?",
+              "options": [
+                {
+                  "text": "17",
+                  "correct": true
+                },
+                {
+                  "text": "28"
+                },
+                {
+                  "text": "8"
+                },
+                {
+                  "text": "10"
+                }
+              ],
+              "hints": [
+                "Each merge of m and n crates needs at most m + n − 1 comparisons.",
+                "There are 7 merges in all, and they add up to well under 28."
+              ],
+              "counter": "comparisons"
+            }
+          },
+          "explain": "Predict the total number of comparisons mergesort makes on these eight crates, then watch it count."
+        },
+        {
+          "id": "merge-5-5",
+          "type": "numeric",
+          "taughtOn": "merge",
+          "prompt": "Two sorted rows with 5 crates each are merged. What is the most comparisons needed?",
+          "answer": 9,
+          "unit": "comparisons",
+          "hints": [
+            "Each comparison moves one crate, except the last.",
+            "5 + 5 − 1."
+          ],
+          "explain": "The last crate needs no comparison: 5 + 5 − 1 = 9."
+        },
+        {
+          "id": "levels-1024",
+          "type": "numeric",
+          "taughtOn": "levels",
+          "prompt": "How many levels of halving take 1,024 crates down to single crates?",
+          "answer": 10,
+          "unit": "levels",
+          "hints": [
+            "1,024 → 512 → 256 → ...",
+            "2¹⁰ = 1,024."
+          ],
+          "explain": "1,024 = 2¹⁰, so 10 halvings."
+        },
+        {
+          "id": "moves-1024",
+          "type": "numeric",
+          "taughtOn": "levels",
+          "prompt": "Each level of merging moves all 1,024 crates once. About how many item-moves in total?",
+          "answer": 10240,
+          "unit": "moves",
+          "hints": [
+            "Levels × crates.",
+            "10 × 1,024."
+          ],
+          "explain": "10 × 1,024 = 10,240."
+        },
+        {
+          "id": "ms-order",
+          "type": "order",
+          "taughtOn": "split-merge",
+          "prompt": "Put mergesort in order.",
+          "items": [
+            "If the row has one crate, stop",
+            "Split the row into two halves",
+            "Sort the left half",
+            "Sort the right half",
+            "Merge the two sorted halves"
+          ],
+          "hints": [
+            "The stopping check comes first.",
+            "You can only merge halves that are already sorted."
+          ],
+          "explain": "Base case, split, sort each half, merge."
+        },
+        {
+          "id": "moves-million",
+          "type": "numeric",
+          "taughtOn": "levels",
+          "prompt": "Challenge: about how many item-moves for 1,048,576 crates (2²⁰)? Multiply levels by crates.",
+          "answer": 20971520,
+          "unit": "moves",
+          "hints": [
+            "2²⁰ crates need 20 levels.",
+            "20 × 1,048,576."
+          ],
+          "explain": "20 × 1,048,576 = 20,971,520.",
+          "challenge": true
+        },
+        {
+          "id": "extra-room",
+          "type": "choice",
+          "taughtOn": "levels",
+          "prompt": "Challenge: what does mergesort usually need that selection sort does not?",
+          "options": [
+            {
+              "text": "Extra space to hold the merged output",
+              "correct": true
+            },
+            {
+              "text": "A sorted input"
+            },
+            {
+              "text": "A random pivot"
+            },
+            {
+              "text": "A bigger comparison"
+            }
+          ],
+          "hints": [
+            "Where does the merged row go?",
+            "The output row needs room alongside the two halves."
+          ],
+          "explain": "Merging usually needs a spare area about as big as the row, while selection sort swaps in place.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "a4.1-f1",
+          "type": "quiz",
+          "taughtOn": "merge",
+          "prompt": "To merge two sorted rows you compare...",
+          "options": [
+            {
+              "text": "The front crate of each row",
+              "correct": true
+            },
+            {
+              "text": "The biggest crates"
+            },
+            {
+              "text": "Every pair of crates"
+            },
+            {
+              "text": "The middle crates"
+            }
+          ],
+          "explain": "Only the two fronts."
+        },
+        {
+          "id": "a4.1-f2",
+          "type": "quiz",
+          "taughtOn": "levels",
+          "prompt": "Levels of halving for 16 crates?",
+          "options": [
+            {
+              "text": "4",
+              "correct": true
+            },
+            {
+              "text": "16"
+            },
+            {
+              "text": "8"
+            },
+            {
+              "text": "2"
+            }
+          ],
+          "explain": "16 → 8 → 4 → 2 → 1: four halvings."
+        },
+        {
+          "id": "a4.1-f3",
+          "type": "predict",
+          "taughtOn": "split-merge",
+          "prompt": "What are the three steps of mergesort?",
+          "answer": "Split in halves, sort each half, merge the sorted halves."
+        },
+        {
+          "id": "a4.1-f4",
+          "type": "why",
+          "taughtOn": "levels",
+          "prompt": "Mergesort is about n × log₂ n because...",
+          "options": [
+            {
+              "text": "There are log₂ n levels, each moving n crates",
+              "correct": true
+            },
+            {
+              "text": "It compares every pair"
+            },
+            {
+              "text": "It sorts in one pass"
+            },
+            {
+              "text": "It uses a pivot"
+            }
+          ],
+          "explain": "Levels times work per level."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Merging in the real world",
+          "text": "Merging is useful whenever sorted pieces must be combined, for example when a big file is too large for memory: it is sorted in pieces that fit, and the sorted pieces are then merged.",
+          "source": {
+            "title": "Wikipedia: External sorting",
+            "url": "https://en.wikipedia.org/wiki/External_sorting"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You merged two sorted halves by comparing fronts, saw mergesort split and merge its way to a sorted row, and linked its cost to log₂ n levels of n item-moves.",
+          "Pell stamps the crate. \"One stack, in order.\" Next, a faster-looking method with a risk."
+        ],
+        "mistake": {
+          "title": "Merging rows that are not sorted",
+          "text": "Merging only works if both halves are already sorted. That is why mergesort sorts each half before merging."
+        }
+      }
+    },
+    {
+      "id": "4.2",
+      "title": "Pivot Point",
+      "story": "Dock Clerk Dot is back, and this time she sorts a whole warehouse by picking a pivot crate and splitting the pile around it. It works astonishingly fast, unless the pivot is unlucky.",
+      "everyday": {
+        "scene": "You sort a pile of books by height: you pick one book, put shorter ones left, taller ones right, then do the same to each pile.",
+        "question": "What if the book you pick is always the shortest one?",
+        "answer": "Then one pile is empty every time, and you hardly make progress. How good the split is decides everything."
+      },
+      "lessons": [
+        {
+          "id": "quick-idea",
+          "title": "Partition, then repeat",
+          "text": [
+            "Quicksort is divide and conquer with the hard work done before the split. Choose a pivot, partition the row so smaller crates sit on its left and bigger on its right, and the pivot is in its final place. Then sort the left part and the right part the same way.",
+            "There is no merging at the end, because partitioning already put the pieces in the right places. Our eight crates 35, 12, 48, 7, 29, 20, 41, 16 take 18 comparisons in total, using the last crate of each part as the pivot."
+          ],
+          "terms": [
+            {
+              "term": "Pivot",
+              "meaning": "The crate everything else is compared to in one partition."
+            }
+          ],
+          "predict": {
+            "prompt": "After a partition, where is the pivot?",
+            "answer": "In its final sorted position."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Quicksort",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Quicksort"
+            },
+            {
+              "title": "VisuAlgo: sorting animations",
+              "source": "VisuAlgo (linked only)",
+              "url": "https://visualgo.net/en/sorting"
+            }
+          ]
+        },
+        {
+          "id": "good-split",
+          "title": "Good and bad splits",
+          "text": [
+            "If every pivot lands near the middle, the row halves each time. There are about log₂ n levels, each costing about n comparisons, so quicksort needs about n × log₂ n. This is the good case.",
+            "If the pivot always lands at an end, one side is empty, and each level removes only one crate. That is n − 1 comparisons, then n − 2, and so on: n × (n − 1) ÷ 2 in total, which is 45 for 10 crates. With the last crate as pivot, an already sorted row is exactly this bad case."
+          ],
+          "table": {
+            "head": [
+              "Row",
+              "Last-crate pivot",
+              "Comparisons for 10 crates"
+            ],
+            "rows": [
+              [
+                "Already sorted",
+                "Always the biggest",
+                "45"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "A row is already sorted, and the pivot is always the last crate. How does the partition split?",
+            "answer": "Everything is smaller than the pivot, so the left side holds all the other crates and the right side is empty."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Quicksort",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Quicksort"
+            },
+            {
+              "title": "Wikipedia: Time complexity",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Time_complexity"
+            }
+          ]
+        },
+        {
+          "id": "pick-pivot",
+          "title": "Choosing a pivot",
+          "text": [
+            "Because bad luck is costly, real programs choose pivots more carefully: a random crate, or the middle of the first, middle and last. A random pivot makes the bad case very unlikely, whatever order the crates arrive in.",
+            "Quicksort's average cost is about n × log₂ n, and it sorts in place without needing extra space for the whole row. That is why it has been popular, even though mergesort has a better worst case."
+          ],
+          "predict": {
+            "prompt": "Why choose the pivot at random instead of always the last crate?",
+            "answer": "So that no particular input order can reliably make it slow."
+          },
+          "deeper": {
+            "title": "Equal values",
+            "text": [
+              "Rows with many equal crates can make a simple partition unbalanced. Careful versions handle equal crates separately."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Quicksort",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Quicksort"
+            },
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 1: Recursion",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/01-recursion.pdf"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "watch-quick",
+          "type": "stepsim",
+          "taughtOn": "quick-idea",
+          "mode": "predict",
+          "prompt": "Watch quicksort on eight crates, and predict each pivot.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 35,
+                      "mark": null
+                    },
+                    {
+                      "value": 12,
+                      "mark": null
+                    },
+                    {
+                      "value": 48,
+                      "mark": null
+                    },
+                    {
+                      "value": 7,
+                      "mark": null
+                    },
+                    {
+                      "value": 29,
+                      "mark": null
+                    },
+                    {
+                      "value": 20,
+                      "mark": null
+                    },
+                    {
+                      "value": 41,
+                      "mark": null
+                    },
+                    {
+                      "value": 16,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Unsorted crates"
+                },
+                "say": "Quicksort: pick a pivot (the last crate), partition so smaller crates are on its left and bigger on its right, then do the same to each side. The pivot is then in its final place."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 12,
+                      "mark": null
+                    },
+                    {
+                      "value": 7,
+                      "mark": null
+                    },
+                    {
+                      "value": 16,
+                      "mark": "best",
+                      "tag": "done"
+                    },
+                    {
+                      "value": 35,
+                      "mark": null
+                    },
+                    {
+                      "value": 29,
+                      "mark": null
+                    },
+                    {
+                      "value": 20,
+                      "mark": null
+                    },
+                    {
+                      "value": 41,
+                      "mark": null
+                    },
+                    {
+                      "value": 48,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "2": "pivot"
+                  },
+                  "label": "Pivots in their final place are marked \"done\""
+                },
+                "say": "Part 35, 12, 48, 7, 29, 20, 41, 16: the pivot 16 lands at position 2. 7 comparisons.",
+                "predict": {
+                  "prompt": "The next part to sort is 35, 12, 48, 7, 29, 20, 41, 16. Which crate is its pivot (the last one in the part)?",
+                  "options": [
+                    {
+                      "text": "16",
+                      "correct": true
+                    },
+                    {
+                      "text": "35"
+                    },
+                    {
+                      "text": "12"
+                    },
+                    {
+                      "text": "48"
+                    }
+                  ],
+                  "hints": [
+                    "The rule: the pivot is the last crate of the part.",
+                    "Look at the right end of 35, 12, 48, 7, 29, 20, 41, 16."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 7,
+                      "mark": "best",
+                      "tag": "done"
+                    },
+                    {
+                      "value": 12,
+                      "mark": null
+                    },
+                    {
+                      "value": 16,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 35,
+                      "mark": null
+                    },
+                    {
+                      "value": 29,
+                      "mark": null
+                    },
+                    {
+                      "value": 20,
+                      "mark": null
+                    },
+                    {
+                      "value": 41,
+                      "mark": null
+                    },
+                    {
+                      "value": 48,
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {
+                    "0": "pivot"
+                  },
+                  "label": "Pivots in their final place are marked \"done\""
+                },
+                "say": "Part 12, 7: the pivot 7 lands at position 0. 1 comparison."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 7,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 12,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 16,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 35,
+                      "mark": null
+                    },
+                    {
+                      "value": 29,
+                      "mark": null
+                    },
+                    {
+                      "value": 20,
+                      "mark": null
+                    },
+                    {
+                      "value": 41,
+                      "mark": null
+                    },
+                    {
+                      "value": 48,
+                      "mark": "best",
+                      "tag": "done"
+                    }
+                  ],
+                  "pointers": {
+                    "7": "pivot"
+                  },
+                  "label": "Pivots in their final place are marked \"done\""
+                },
+                "say": "Part 35, 29, 20, 41, 48: the pivot 48 lands at position 7. 4 comparisons.",
+                "predict": {
+                  "prompt": "The next part to sort is 35, 29, 20, 41, 48. Which crate is its pivot (the last one in the part)?",
+                  "options": [
+                    {
+                      "text": "48",
+                      "correct": true
+                    },
+                    {
+                      "text": "35"
+                    },
+                    {
+                      "text": "29"
+                    },
+                    {
+                      "text": "20"
+                    }
+                  ],
+                  "hints": [
+                    "The rule: the pivot is the last crate of the part.",
+                    "Look at the right end of 35, 29, 20, 41, 48."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 7,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 12,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 16,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 35,
+                      "mark": null
+                    },
+                    {
+                      "value": 29,
+                      "mark": null
+                    },
+                    {
+                      "value": 20,
+                      "mark": null
+                    },
+                    {
+                      "value": 41,
+                      "mark": "best",
+                      "tag": "done"
+                    },
+                    {
+                      "value": 48,
+                      "mark": null,
+                      "tag": "done"
+                    }
+                  ],
+                  "pointers": {
+                    "6": "pivot"
+                  },
+                  "label": "Pivots in their final place are marked \"done\""
+                },
+                "say": "Part 35, 29, 20, 41: the pivot 41 lands at position 6. 3 comparisons.",
+                "predict": {
+                  "prompt": "The next part to sort is 35, 29, 20, 41. Which crate is its pivot (the last one in the part)?",
+                  "options": [
+                    {
+                      "text": "41",
+                      "correct": true
+                    },
+                    {
+                      "text": "35"
+                    },
+                    {
+                      "text": "29"
+                    },
+                    {
+                      "text": "20"
+                    }
+                  ],
+                  "hints": [
+                    "The rule: the pivot is the last crate of the part.",
+                    "Look at the right end of 35, 29, 20, 41."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 7,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 12,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 16,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 20,
+                      "mark": "best",
+                      "tag": "done"
+                    },
+                    {
+                      "value": 29,
+                      "mark": null
+                    },
+                    {
+                      "value": 35,
+                      "mark": null
+                    },
+                    {
+                      "value": 41,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 48,
+                      "mark": null,
+                      "tag": "done"
+                    }
+                  ],
+                  "pointers": {
+                    "3": "pivot"
+                  },
+                  "label": "Pivots in their final place are marked \"done\""
+                },
+                "say": "Part 35, 29, 20: the pivot 20 lands at position 3. 2 comparisons.",
+                "predict": {
+                  "prompt": "The next part to sort is 35, 29, 20. Which crate is its pivot (the last one in the part)?",
+                  "options": [
+                    {
+                      "text": "20",
+                      "correct": true
+                    },
+                    {
+                      "text": "35"
+                    },
+                    {
+                      "text": "29"
+                    }
+                  ],
+                  "hints": [
+                    "The rule: the pivot is the last crate of the part.",
+                    "Look at the right end of 35, 29, 20."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 7,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 12,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 16,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 20,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 29,
+                      "mark": null
+                    },
+                    {
+                      "value": 35,
+                      "mark": "best",
+                      "tag": "done"
+                    },
+                    {
+                      "value": 41,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 48,
+                      "mark": null,
+                      "tag": "done"
+                    }
+                  ],
+                  "pointers": {
+                    "5": "pivot"
+                  },
+                  "label": "Pivots in their final place are marked \"done\""
+                },
+                "say": "Part 29, 35: the pivot 35 lands at position 5. 1 comparison."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 7,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 12,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 16,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 20,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 29,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 35,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 41,
+                      "mark": null,
+                      "tag": "done"
+                    },
+                    {
+                      "value": 48,
+                      "mark": null,
+                      "tag": "done"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Sorted"
+                },
+                "say": "Sorted: 7, 12, 16, 20, 29, 35, 41, 48. Total comparisons: 18."
+              }
+            ]
+          },
+          "explain": "Watch quicksort on eight crates, and predict each pivot."
+        },
+        {
+          "id": "qs-total",
+          "type": "numeric",
+          "taughtOn": "quick-idea",
+          "prompt": "Quicksort (last crate as pivot) sorts 35, 12, 48, 7, 29, 20, 41, 16. How many comparisons in total? (Check the last step of the simulation.)",
+          "answer": 18,
+          "unit": "comparisons",
+          "hints": [
+            "Add the comparisons of every partition.",
+            "The simulation shows each part's count."
+          ],
+          "explain": "A script added up all partitions: 18 comparisons."
+        },
+        {
+          "id": "qs-sorted-10",
+          "type": "numeric",
+          "taughtOn": "good-split",
+          "prompt": "The last crate is the pivot, and the row 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 is already sorted. How many comparisons does quicksort make?",
+          "answer": 45,
+          "unit": "comparisons",
+          "hints": [
+            "Each partition leaves one side empty.",
+            "9 + 8 + 7 + ... + 1."
+          ],
+          "explain": "The parts have 10, 9, 8, ... crates: 9 + 8 + ... + 1 = 45."
+        },
+        {
+          "id": "good-bad",
+          "type": "buckets",
+          "taughtOn": "good-split",
+          "prompt": "With the last crate as the pivot, which inputs make quicksort fast and which make it slow?",
+          "buckets": [
+            "Fast",
+            "Slow"
+          ],
+          "items": [
+            {
+              "text": "A row in a well-shuffled order",
+              "bucket": "Fast"
+            },
+            {
+              "text": "A row in a random order that has no pattern",
+              "bucket": "Fast"
+            },
+            {
+              "text": "A row already sorted from small to big",
+              "bucket": "Slow"
+            },
+            {
+              "text": "A row sorted from big to small",
+              "bucket": "Slow"
+            }
+          ],
+          "hints": [
+            "What does the last crate look like in a sorted row?",
+            "In sorted or reverse-sorted rows, the last crate is the biggest or the smallest."
+          ],
+          "explain": "When the last crate is the biggest or smallest, one side is empty each time. A shuffled row usually gives better splits."
+        },
+        {
+          "id": "why-random",
+          "type": "choice",
+          "taughtOn": "pick-pivot",
+          "prompt": "Why choose the pivot at random?",
+          "options": [
+            {
+              "text": "So no input order can reliably give bad splits",
+              "correct": true
+            },
+            {
+              "text": "Because random numbers are faster to compare"
+            },
+            {
+              "text": "Because it removes the need for partitioning"
+            },
+            {
+              "text": "Because it makes the row sorted"
+            }
+          ],
+          "hints": [
+            "Think about who might choose the input order.",
+            "Anyone who knows \"last crate\" can build a bad row."
+          ],
+          "explain": "A random pivot makes the bad case very unlikely, whatever the input."
+        },
+        {
+          "id": "qs-1000",
+          "type": "numeric",
+          "taughtOn": "good-split",
+          "prompt": "Challenge: how many comparisons does last-crate quicksort make on an already sorted row of 1,000 crates?",
+          "answer": 499500,
+          "unit": "comparisons",
+          "hints": [
+            "n × (n − 1) ÷ 2.",
+            "1,000 × 999 ÷ 2."
+          ],
+          "explain": "1,000 × 999 ÷ 2 = 499,500.",
+          "challenge": true
+        },
+        {
+          "id": "qs-depth",
+          "type": "numeric",
+          "taughtOn": "good-split",
+          "prompt": "Challenge: with the last crate as the pivot, a sorted row of 10 crates makes how many levels of partitioning (parts of 2 or more crates)?",
+          "answer": 9,
+          "unit": "levels",
+          "hints": [
+            "Each level removes one crate.",
+            "Parts of sizes 10, 9, 8, ... down to 2."
+          ],
+          "explain": "The parts have 10, 9, ... 2 crates: 9 levels.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "a4.2-f1",
+          "type": "quiz",
+          "taughtOn": "quick-idea",
+          "prompt": "After partitioning, quicksort...",
+          "options": [
+            {
+              "text": "Sorts each side separately",
+              "correct": true
+            },
+            {
+              "text": "Merges the sides"
+            },
+            {
+              "text": "Stops"
+            },
+            {
+              "text": "Sorts only the left side"
+            }
+          ],
+          "explain": "Each side is a smaller copy of the problem."
+        },
+        {
+          "id": "a4.2-f2",
+          "type": "quiz",
+          "taughtOn": "good-split",
+          "prompt": "Quicksort is slowest when pivots...",
+          "options": [
+            {
+              "text": "Land at the ends",
+              "correct": true
+            },
+            {
+              "text": "Land in the middle"
+            },
+            {
+              "text": "Are random"
+            },
+            {
+              "text": "Are equal to the average"
+            }
+          ],
+          "explain": "One empty side means little is removed."
+        },
+        {
+          "id": "a4.2-f3",
+          "type": "predict",
+          "taughtOn": "pick-pivot",
+          "prompt": "How can a program avoid quicksort's worst case?",
+          "answer": "Choose the pivot at random or from a few crates, rather than always the last."
+        },
+        {
+          "id": "a4.2-f4",
+          "type": "why",
+          "taughtOn": "good-split",
+          "prompt": "A sorted row is slow for last-crate quicksort because...",
+          "options": [
+            {
+              "text": "The last crate is always the biggest, so one side is empty",
+              "correct": true
+            },
+            {
+              "text": "It has too many crates"
+            },
+            {
+              "text": "It is already done"
+            },
+            {
+              "text": "It has equal crates"
+            }
+          ],
+          "explain": "One crate is removed per level."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Quicksort in libraries",
+          "text": "Quicksort, or a variant such as introsort, is used in the standard library sorts of some languages, for example in some C++ implementations. Introsort starts with quicksort and switches to heapsort when the recursion gets too deep, which protects it against bad luck.",
+          "source": {
+            "title": "Wikipedia: Introsort",
+            "url": "https://en.wikipedia.org/wiki/Introsort"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You watched quicksort partition and repeat, saw that a pivot at the end of a sorted row is the worst case, and met the idea of choosing pivots at random.",
+          "Dot grins. \"Fast on average, risky if careless.\" The next level gives a way to describe all these costs."
+        ],
+        "mistake": {
+          "title": "Calling quicksort always fast",
+          "text": "Its average is about n × log₂ n, but with unlucky pivots it takes about n × n ÷ 2 comparisons. Both numbers are correct, for different inputs."
+        }
+      }
+    },
+    {
+      "id": "4.3",
+      "title": "Master's Riddle",
+      "story": "A wise old sailor won't give Kit the key to the harbour until Kit can answer a riddle: if a plan splits its job into pieces, how much work is the plan in total? There is a tidy rule for it.",
+      "everyday": {
+        "scene": "A manager splits a job between 2 helpers, each doing half. Each helper does the same, and splitting and joining costs a little work at each step.",
+        "question": "How would you work out the total?",
+        "answer": "Draw the helpers as a tree, add the work on each level, then add the levels. The Master Theorem is a shortcut for exactly that sum."
+      },
+      "lessons": [
+        {
+          "id": "recurrence",
+          "title": "A plan as an equation",
+          "text": [
+            "A divide-and-conquer plan can be written as a recurrence: T(n) = a × T(n/b) + f(n). It reads: to solve size n, solve a smaller copies each of size n/b, and then spend f(n) on splitting and combining.",
+            "Mergesort has a = 2 pieces, each half the size (b = 2), and spends about n on merging, so T(n) = 2T(n/2) + n. Binary search has a = 1, b = 2, and constant work: T(n) = T(n/2) + 1."
+          ],
+          "terms": [
+            {
+              "term": "Recurrence",
+              "meaning": "An equation that gives the cost of a problem using the cost of smaller ones."
+            }
+          ],
+          "table": {
+            "head": [
+              "Plan",
+              "a",
+              "b",
+              "Work f(n)"
+            ],
+            "rows": [
+              [
+                "Mergesort",
+                "2",
+                "2",
+                "n"
+              ],
+              [
+                "Binary search",
+                "1",
+                "2",
+                "1"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "Mergesort splits into how many pieces, each what fraction of the size?",
+            "answer": "Two pieces, each half the size."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Master theorem (analysis of algorithms)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Master_theorem_(analysis_of_algorithms)"
+            },
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 1: Recursion",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/01-recursion.pdf"
+            }
+          ]
+        },
+        {
+          "id": "tree-sum",
+          "title": "Add the levels",
+          "text": [
+            "Draw the recursion as a tree. Level k has aᵏ pieces, each of size n/bᵏ. For mergesort, level k has 2ᵏ pieces of size n/2ᵏ, and the work is n on every level. With log₂ n levels, the total is about n log₂ n.",
+            "If the pieces multiply faster than they shrink, the bottom level dominates the total. If the combining work shrinks level by level, the top dominates. If every level costs the same, you add up equal levels."
+          ],
+          "predict": {
+            "prompt": "If every level of the tree costs the same, how do you get the total?",
+            "answer": "Multiply the cost of one level by the number of levels."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Master theorem (analysis of algorithms)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Master_theorem_(analysis_of_algorithms)"
+            },
+            {
+              "title": "Wikipedia: Divide-and-conquer algorithm",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Divide-and-conquer_algorithm"
+            }
+          ]
+        },
+        {
+          "id": "three-cases",
+          "title": "The three cases",
+          "text": [
+            "When the combining work is n^d (n to the power d), compare a with b^d. If a < b^d, the top of the tree dominates: Θ(n^d). If a = b^d, every level costs the same: Θ(n^d log n). If a > b^d, the bottom dominates: Θ(n^(log_b a)).",
+            "Check: T(n) = 4T(n/2) + n has a = 4 and b^d = 2, so a is bigger: Θ(n²). T(n) = 2T(n/2) + n has a = 2 = b^d: Θ(n log n). T(n) = 2T(n/2) + n² has a = 2 < 4: Θ(n²)."
+          ],
+          "table": {
+            "head": [
+              "Recurrence",
+              "a vs b^d",
+              "Result"
+            ],
+            "rows": [
+              [
+                "T(n) = 2T(n/2) + n",
+                "2 vs 2",
+                "Θ(n log n)"
+              ],
+              [
+                "T(n) = 4T(n/2) + n",
+                "4 vs 2",
+                "Θ(n²)"
+              ],
+              [
+                "T(n) = 2T(n/2) + n²",
+                "2 vs 4",
+                "Θ(n²)"
+              ],
+              [
+                "T(n) = T(n/2) + 1",
+                "1 vs 1",
+                "Θ(log n)"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "In T(n) = 3T(n/2) + n, is a bigger than, equal to, or smaller than b^d?",
+            "answer": "Bigger: 3 is more than 2¹ = 2."
+          },
+          "deeper": {
+            "title": "The fine print",
+            "text": [
+              "This simple form covers work of the shape n^d. The full theorem handles more general work, and has a few conditions. It also does not cover every recurrence, for example when the pieces are not all the same fraction of n."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Master theorem (analysis of algorithms)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Master_theorem_(analysis_of_algorithms)"
+            },
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 1: Recursion",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/01-recursion.pdf"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "watch-levels",
+          "type": "stepsim",
+          "taughtOn": "tree-sum",
+          "mode": "watch",
+          "prompt": "Watch the work on each level of mergesort's tree, for n = 16.",
+          "script": {
+            "view": "bars",
+            "steps": [
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Level 0",
+                      "value": 0
+                    }
+                  ]
+                },
+                "say": "Mergesort on 16 crates: T(n) = 2T(n/2) + n. Each bar is the total work on one level."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Level 0: 1 piece of 16",
+                      "value": 16
+                    }
+                  ]
+                },
+                "say": "Level 0: 1 piece of 16: the work at this level is 16."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Level 0: 1 piece of 16",
+                      "value": 16
+                    },
+                    {
+                      "label": "Level 1: 2 pieces of 8",
+                      "value": 16
+                    }
+                  ]
+                },
+                "say": "Level 1: 2 pieces of 8: the work at this level is 16."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Level 0: 1 piece of 16",
+                      "value": 16
+                    },
+                    {
+                      "label": "Level 1: 2 pieces of 8",
+                      "value": 16
+                    },
+                    {
+                      "label": "Level 2: 4 pieces of 4",
+                      "value": 16
+                    }
+                  ]
+                },
+                "say": "Level 2: 4 pieces of 4: the work at this level is 16."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Level 0: 1 piece of 16",
+                      "value": 16
+                    },
+                    {
+                      "label": "Level 1: 2 pieces of 8",
+                      "value": 16
+                    },
+                    {
+                      "label": "Level 2: 4 pieces of 4",
+                      "value": 16
+                    },
+                    {
+                      "label": "Level 3: 8 pieces of 2",
+                      "value": 16
+                    }
+                  ]
+                },
+                "say": "Level 3: 8 pieces of 2: the work at this level is 16."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Level 0: 1 piece of 16",
+                      "value": 16
+                    },
+                    {
+                      "label": "Level 1: 2 pieces of 8",
+                      "value": 16
+                    },
+                    {
+                      "label": "Level 2: 4 pieces of 4",
+                      "value": 16
+                    },
+                    {
+                      "label": "Level 3: 8 pieces of 2",
+                      "value": 16
+                    },
+                    {
+                      "label": "Level 4: 16 pieces of 1",
+                      "value": 16
+                    }
+                  ]
+                },
+                "say": "Level 4: 16 pieces of 1: the work at this level is 16."
+              }
+            ]
+          },
+          "explain": "Watch the work on each level of mergesort's tree, for n = 16."
+        },
+        {
+          "id": "watch-levels-4",
+          "type": "stepsim",
+          "taughtOn": "tree-sum",
+          "mode": "watch",
+          "prompt": "Now watch the work on each level when a = 4, for n = 16: T(n) = 4T(n/2) + n.",
+          "script": {
+            "view": "bars",
+            "steps": [
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Level 0",
+                      "value": 0
+                    }
+                  ]
+                },
+                "say": "Four pieces of half the size, plus n work. Each bar is the total work on one level."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Level 0: 1 piece of 16",
+                      "value": 16
+                    }
+                  ]
+                },
+                "say": "Level 0: 1 piece of 16: the work at this level is 16."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Level 0: 1 piece of 16",
+                      "value": 16
+                    },
+                    {
+                      "label": "Level 1: 4 pieces of 8",
+                      "value": 32
+                    }
+                  ]
+                },
+                "say": "Level 1: 4 pieces of 8: the work at this level is 32."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Level 0: 1 piece of 16",
+                      "value": 16
+                    },
+                    {
+                      "label": "Level 1: 4 pieces of 8",
+                      "value": 32
+                    },
+                    {
+                      "label": "Level 2: 16 pieces of 4",
+                      "value": 64
+                    }
+                  ]
+                },
+                "say": "Level 2: 16 pieces of 4: the work at this level is 64."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Level 0: 1 piece of 16",
+                      "value": 16
+                    },
+                    {
+                      "label": "Level 1: 4 pieces of 8",
+                      "value": 32
+                    },
+                    {
+                      "label": "Level 2: 16 pieces of 4",
+                      "value": 64
+                    },
+                    {
+                      "label": "Level 3: 64 pieces of 2",
+                      "value": 128
+                    }
+                  ]
+                },
+                "say": "Level 3: 64 pieces of 2: the work at this level is 128."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Level 0: 1 piece of 16",
+                      "value": 16
+                    },
+                    {
+                      "label": "Level 1: 4 pieces of 8",
+                      "value": 32
+                    },
+                    {
+                      "label": "Level 2: 16 pieces of 4",
+                      "value": 64
+                    },
+                    {
+                      "label": "Level 3: 64 pieces of 2",
+                      "value": 128
+                    },
+                    {
+                      "label": "Level 4: 256 pieces of 1",
+                      "value": 256
+                    }
+                  ]
+                },
+                "say": "Level 4: 256 pieces of 1: the work at this level is 256."
+              }
+            ]
+          },
+          "explain": "Now watch the work on each level when a = 4, for n = 16: T(n) = 4T(n/2) + n."
+        },
+        {
+          "id": "levels-1024-m",
+          "type": "numeric",
+          "taughtOn": "tree-sum",
+          "prompt": "How many times can you halve 1,024 down to 1? That is the number of levels beyond the top of the tree.",
+          "answer": 10,
+          "unit": "levels",
+          "hints": [
+            "1,024 = 2 to what power?",
+            "2¹⁰."
+          ],
+          "explain": "1,024 = 2¹⁰, so 10 halvings."
+        },
+        {
+          "id": "t16",
+          "type": "numeric",
+          "taughtOn": "tree-sum",
+          "prompt": "With T(n) = 2T(n/2) + n and T(1) = 1, what is T(16)?",
+          "answer": 80,
+          "unit": "",
+          "hints": [
+            "Build up: T(2) = 2 × 1 + 2.",
+            "T(4) = 2 × T(2) + 4, T(8) = 2 × T(4) + 8, T(16) = 2 × T(8) + 16."
+          ],
+          "explain": "T(2) = 4, T(4) = 12, T(8) = 32, T(16) = 80. That is n log₂ n + n = 64 + 16."
+        },
+        {
+          "id": "match-rec",
+          "type": "match",
+          "taughtOn": "three-cases",
+          "prompt": "Match each recurrence to its growth.",
+          "pairs": [
+            {
+              "left": "T(n) = T(n/2) + 1",
+              "right": "Θ(log n)"
+            },
+            {
+              "left": "T(n) = 2T(n/2) + n",
+              "right": "Θ(n log n)"
+            },
+            {
+              "left": "T(n) = 4T(n/2) + n",
+              "right": "Θ(n²)"
+            },
+            {
+              "left": "T(n) = 2T(n/2) + 1",
+              "right": "Θ(n)"
+            },
+            {
+              "left": "T(n) = 8T(n/2) + n²",
+              "right": "Θ(n³)"
+            }
+          ],
+          "hints": [
+            "Compare a with b^d, where b^d is b to the power d.",
+            "If a is bigger, the answer is n to the log of a in base b."
+          ],
+          "explain": "Compare a with b^d: smaller gives n^d, equal gives n^d log n, bigger gives n^(log_b a)."
+        },
+        {
+          "id": "case-3-2",
+          "type": "choice",
+          "taughtOn": "three-cases",
+          "prompt": "What is the growth of T(n) = 3T(n/2) + n?",
+          "options": [
+            {
+              "text": "Θ(n^(log₂ 3)), about n^1.58",
+              "correct": true
+            },
+            {
+              "text": "Θ(n log n)"
+            },
+            {
+              "text": "Θ(n)"
+            },
+            {
+              "text": "Θ(n²)"
+            }
+          ],
+          "hints": [
+            "Compare a = 3 with b^d = 2.",
+            "a is bigger, so the answer is n to the log₂ 3."
+          ],
+          "explain": "a = 3 is bigger than 2, so it is Θ(n^(log₂ 3)). log₂ 3 is about 1.58."
+        },
+        {
+          "id": "t16-4",
+          "type": "numeric",
+          "taughtOn": "tree-sum",
+          "prompt": "Challenge: with T(n) = 4T(n/2) + n and T(1) = 1, what is T(16)?",
+          "answer": 496,
+          "unit": "",
+          "hints": [
+            "T(2) = 4 × 1 + 2.",
+            "Then T(4), T(8), T(16) the same way."
+          ],
+          "explain": "T(2) = 6, T(4) = 28, T(8) = 120, T(16) = 496.",
+          "challenge": true
+        },
+        {
+          "id": "case-top",
+          "type": "choice",
+          "taughtOn": "three-cases",
+          "prompt": "Challenge: T(n) = T(n/2) + n. What is its growth?",
+          "options": [
+            {
+              "text": "Θ(n)",
+              "correct": true
+            },
+            {
+              "text": "Θ(log n)"
+            },
+            {
+              "text": "Θ(n log n)"
+            },
+            {
+              "text": "Θ(n²)"
+            }
+          ],
+          "hints": [
+            "Compare a = 1 with b^d = 2.",
+            "a is smaller, so the top level dominates."
+          ],
+          "explain": "a = 1 is smaller than b^d = 2, so the work at the top, n, dominates: Θ(n).",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "a4.3-f1",
+          "type": "quiz",
+          "taughtOn": "recurrence",
+          "prompt": "In T(n) = a × T(n/b) + f(n), a is...",
+          "options": [
+            {
+              "text": "The number of smaller pieces",
+              "correct": true
+            },
+            {
+              "text": "The size of each piece"
+            },
+            {
+              "text": "The work to combine"
+            },
+            {
+              "text": "The number of levels"
+            }
+          ],
+          "explain": "a pieces, each of size n/b."
+        },
+        {
+          "id": "a4.3-f2",
+          "type": "quiz",
+          "taughtOn": "three-cases",
+          "prompt": "T(n) = 2T(n/2) + n has growth...",
+          "options": [
+            {
+              "text": "Θ(n log n)",
+              "correct": true
+            },
+            {
+              "text": "Θ(n)"
+            },
+            {
+              "text": "Θ(n²)"
+            },
+            {
+              "text": "Θ(log n)"
+            }
+          ],
+          "explain": "a = b^d, so each level costs the same."
+        },
+        {
+          "id": "a4.3-f3",
+          "type": "predict",
+          "taughtOn": "three-cases",
+          "prompt": "If a < b^d, which part of the tree dominates the total?",
+          "answer": "The top: the splitting and combining work at the first levels."
+        },
+        {
+          "id": "a4.3-f4",
+          "type": "why",
+          "taughtOn": "tree-sum",
+          "prompt": "In mergesort every level costs n because...",
+          "options": [
+            {
+              "text": "The pieces double while their sizes halve",
+              "correct": true
+            },
+            {
+              "text": "Each piece costs n"
+            },
+            {
+              "text": "There is only one level"
+            },
+            {
+              "text": "Merging is free"
+            }
+          ],
+          "explain": "2ᵏ pieces of size n/2ᵏ always add to n."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Why the shortcut exists",
+          "text": "Without the shortcut, analysing a divide-and-conquer method means drawing its tree and adding up levels each time. The Master Theorem lets people classify most simple plans from just the three numbers a, b and d.",
+          "source": {
+            "title": "Wikipedia: Master theorem (analysis of algorithms)",
+            "url": "https://en.wikipedia.org/wiki/Master_theorem_(analysis_of_algorithms)"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You wrote plans as recurrences, added up tree levels, and used the three cases from comparing a with b^d.",
+          "The old sailor hands over the key. \"You asked how much work, and you can answer before running a thing.\" Next, the same ideas on trees."
+        ],
+        "mistake": {
+          "title": "Comparing a with b instead of b^d",
+          "text": "The comparison is between the number of pieces a and b raised to the power d of the combining work, not b alone."
+        }
+      }
+    },
+    {
+      "id": "4.4",
+      "title": "Treewalker",
+      "story": "A family tree of ferries is carved on a rock: one first ferry at the top, with children below. Ferry Master Fen asks Kit to read it in three different orders, each useful for a different job.",
+      "everyday": {
+        "scene": "A company chart has a boss at the top, managers under the boss, and teams under managers. You want to print a list of everyone.",
+        "question": "In what order would you list them?",
+        "answer": "It depends: boss first, then each team (preorder), or each team first and the boss last (postorder). The three tree orders do each of these."
+      },
+      "lessons": [
+        {
+          "id": "tree-words",
+          "title": "A tree and its branches",
+          "text": [
+            "A binary tree has a root at the top. Each node has at most two children, a left one and a right one. A node with no children is a leaf. The height is the number of steps on the longest path from the root down to a leaf.",
+            "Every branch under a node is itself a smaller tree. That makes trees a natural fit for recursion: to handle a tree, handle the root, then the left tree, then the right tree. Our tree has 7 nodes and height 3."
+          ],
+          "terms": [
+            {
+              "term": "Root",
+              "meaning": "The top node."
+            },
+            {
+              "term": "Leaf",
+              "meaning": "A node with no children."
+            },
+            {
+              "term": "Height",
+              "meaning": "Steps on the longest path from the root down to a leaf."
+            }
+          ],
+          "predict": {
+            "prompt": "A tree has just one node. What is its height?",
+            "answer": "0. The longest path has no steps."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Binary tree",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Binary_tree"
+            },
+            {
+              "title": "Wikipedia: Tree traversal",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Tree_traversal"
+            }
+          ]
+        },
+        {
+          "id": "three-orders",
+          "title": "Three ways to walk",
+          "text": [
+            "Preorder visits the node, then its left tree, then its right tree. Inorder visits the left tree, then the node, then the right tree. Postorder visits the left tree, then the right tree, then the node. Only the moment of the visit changes.",
+            "On our tree: preorder A, B, D, G, E, C, F; inorder G, D, B, E, A, C, F; postorder G, D, E, B, F, C, A. Each walk visits every node exactly once."
+          ],
+          "table": {
+            "head": [
+              "Walk",
+              "Order of the three parts",
+              "Result on our tree"
+            ],
+            "rows": [
+              [
+                "Preorder",
+                "node, left, right",
+                "A, B, D, G, E, C, F"
+              ],
+              [
+                "Inorder",
+                "left, node, right",
+                "G, D, B, E, A, C, F"
+              ],
+              [
+                "Postorder",
+                "left, right, node",
+                "G, D, E, B, F, C, A"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "In which walk does the root come last?",
+            "answer": "Postorder."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Tree traversal",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Tree_traversal"
+            },
+            {
+              "title": "Wikipedia: Binary tree",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Binary_tree"
+            }
+          ]
+        },
+        {
+          "id": "why-order",
+          "title": "Which walk for which job",
+          "text": [
+            "Preorder is good for copying a tree, because each parent appears before its children. Postorder is good for deleting or totalling a tree, because children are handled before their parent. Inorder, on a search tree (smaller left, bigger right), lists values in sorted order.",
+            "Counting the nodes or finding the height is recursive too. The height of a tree is 1 plus the larger of its two subtree heights, and an empty tree has height −1. Each node is visited once, so the work grows with the number of nodes."
+          ],
+          "predict": {
+            "prompt": "Which walk lists a search tree in sorted order?",
+            "answer": "Inorder."
+          },
+          "deeper": {
+            "title": "No recursion needed?",
+            "text": [
+              "A stack can replace the recursion. A recursive call is really a stack of waiting calls, so every tree walk can be done with an explicit stack."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Tree traversal",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Tree_traversal"
+            },
+            {
+              "title": "Wikipedia: Recursion (computer science)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Recursion_(computer_science)"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "watch-pre",
+          "type": "stepsim",
+          "taughtOn": "three-orders",
+          "mode": "predict",
+          "prompt": "Watch a preorder walk, and predict which island comes next.",
+          "script": {
+            "view": "graph",
+            "steps": [
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 150,
+                      "y": 20,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 80,
+                      "y": 70,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 220,
+                      "y": 70,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 40,
+                      "y": 120,
+                      "label": "D"
+                    },
+                    {
+                      "id": "E",
+                      "x": 120,
+                      "y": 120,
+                      "label": "E"
+                    },
+                    {
+                      "id": "F",
+                      "x": 260,
+                      "y": 120,
+                      "label": "F"
+                    },
+                    {
+                      "id": "G",
+                      "x": 20,
+                      "y": 165,
+                      "label": "G"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "G"
+                    }
+                  ],
+                  "directed": true,
+                  "legend": "The top island is the root. Arrows point to children, left child on the left. A ticked island has been visited."
+                },
+                "say": "Preorder: visit the island, then walk its left branch, then its right branch. Each branch is a smaller tree, so the same rule applies inside it."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 150,
+                      "y": 20,
+                      "label": "A",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "B",
+                      "x": 80,
+                      "y": 70,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 220,
+                      "y": 70,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 40,
+                      "y": 120,
+                      "label": "D"
+                    },
+                    {
+                      "id": "E",
+                      "x": 120,
+                      "y": 120,
+                      "label": "E"
+                    },
+                    {
+                      "id": "F",
+                      "x": 260,
+                      "y": 120,
+                      "label": "F"
+                    },
+                    {
+                      "id": "G",
+                      "x": 20,
+                      "y": 165,
+                      "label": "G"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "G"
+                    }
+                  ],
+                  "directed": true,
+                  "legend": "The top island is the root. Arrows point to children, left child on the left. A ticked island has been visited."
+                },
+                "say": "Visit A."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 150,
+                      "y": 20,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 80,
+                      "y": 70,
+                      "label": "B",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "C",
+                      "x": 220,
+                      "y": 70,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 40,
+                      "y": 120,
+                      "label": "D"
+                    },
+                    {
+                      "id": "E",
+                      "x": 120,
+                      "y": 120,
+                      "label": "E"
+                    },
+                    {
+                      "id": "F",
+                      "x": 260,
+                      "y": 120,
+                      "label": "F"
+                    },
+                    {
+                      "id": "G",
+                      "x": 20,
+                      "y": 165,
+                      "label": "G"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "G"
+                    }
+                  ],
+                  "directed": true,
+                  "legend": "The top island is the root. Arrows point to children, left child on the left. A ticked island has been visited."
+                },
+                "say": "Visit B.",
+                "predict": {
+                  "prompt": "Preorder so far: A. Which island is visited next?",
+                  "options": [
+                    {
+                      "text": "B",
+                      "correct": true
+                    },
+                    {
+                      "text": "A"
+                    },
+                    {
+                      "text": "C"
+                    },
+                    {
+                      "text": "D"
+                    }
+                  ],
+                  "hints": [
+                    "Rule: finish the current island's left branch before its right branch.",
+                    "After A, go to its left child if it has one; otherwise back up to the nearest right child not yet visited."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 150,
+                      "y": 20,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 80,
+                      "y": 70,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 220,
+                      "y": 70,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 40,
+                      "y": 120,
+                      "label": "D",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "E",
+                      "x": 120,
+                      "y": 120,
+                      "label": "E"
+                    },
+                    {
+                      "id": "F",
+                      "x": 260,
+                      "y": 120,
+                      "label": "F"
+                    },
+                    {
+                      "id": "G",
+                      "x": 20,
+                      "y": 165,
+                      "label": "G"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "G"
+                    }
+                  ],
+                  "directed": true,
+                  "legend": "The top island is the root. Arrows point to children, left child on the left. A ticked island has been visited."
+                },
+                "say": "Visit D.",
+                "predict": {
+                  "prompt": "Preorder so far: A, B. Which island is visited next?",
+                  "options": [
+                    {
+                      "text": "D",
+                      "correct": true
+                    },
+                    {
+                      "text": "A"
+                    },
+                    {
+                      "text": "B"
+                    },
+                    {
+                      "text": "C"
+                    }
+                  ],
+                  "hints": [
+                    "Rule: finish the current island's left branch before its right branch.",
+                    "After B, go to its left child if it has one; otherwise back up to the nearest right child not yet visited."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 150,
+                      "y": 20,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 80,
+                      "y": 70,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 220,
+                      "y": 70,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 40,
+                      "y": 120,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 120,
+                      "y": 120,
+                      "label": "E"
+                    },
+                    {
+                      "id": "F",
+                      "x": 260,
+                      "y": 120,
+                      "label": "F"
+                    },
+                    {
+                      "id": "G",
+                      "x": 20,
+                      "y": 165,
+                      "label": "G",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "G"
+                    }
+                  ],
+                  "directed": true,
+                  "legend": "The top island is the root. Arrows point to children, left child on the left. A ticked island has been visited."
+                },
+                "say": "Visit G.",
+                "predict": {
+                  "prompt": "Preorder so far: A, B, D. Which island is visited next?",
+                  "options": [
+                    {
+                      "text": "G",
+                      "correct": true
+                    },
+                    {
+                      "text": "A"
+                    },
+                    {
+                      "text": "B"
+                    },
+                    {
+                      "text": "C"
+                    }
+                  ],
+                  "hints": [
+                    "Rule: finish the current island's left branch before its right branch.",
+                    "After D, go to its left child if it has one; otherwise back up to the nearest right child not yet visited."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 150,
+                      "y": 20,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 80,
+                      "y": 70,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 220,
+                      "y": 70,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 40,
+                      "y": 120,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 120,
+                      "y": 120,
+                      "label": "E",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "F",
+                      "x": 260,
+                      "y": 120,
+                      "label": "F"
+                    },
+                    {
+                      "id": "G",
+                      "x": 20,
+                      "y": 165,
+                      "label": "G",
+                      "mark": "visited"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "G"
+                    }
+                  ],
+                  "directed": true,
+                  "legend": "The top island is the root. Arrows point to children, left child on the left. A ticked island has been visited."
+                },
+                "say": "Visit E.",
+                "predict": {
+                  "prompt": "Preorder so far: A, B, D, G. Which island is visited next?",
+                  "options": [
+                    {
+                      "text": "E",
+                      "correct": true
+                    },
+                    {
+                      "text": "A"
+                    },
+                    {
+                      "text": "B"
+                    },
+                    {
+                      "text": "C"
+                    }
+                  ],
+                  "hints": [
+                    "Rule: finish the current island's left branch before its right branch.",
+                    "After G, go to its left child if it has one; otherwise back up to the nearest right child not yet visited."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 150,
+                      "y": 20,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 80,
+                      "y": 70,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 220,
+                      "y": 70,
+                      "label": "C",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "D",
+                      "x": 40,
+                      "y": 120,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 120,
+                      "y": 120,
+                      "label": "E",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "F",
+                      "x": 260,
+                      "y": 120,
+                      "label": "F"
+                    },
+                    {
+                      "id": "G",
+                      "x": 20,
+                      "y": 165,
+                      "label": "G",
+                      "mark": "visited"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "G"
+                    }
+                  ],
+                  "directed": true,
+                  "legend": "The top island is the root. Arrows point to children, left child on the left. A ticked island has been visited."
+                },
+                "say": "Visit C.",
+                "predict": {
+                  "prompt": "Preorder so far: A, B, D, G, E. Which island is visited next?",
+                  "options": [
+                    {
+                      "text": "C",
+                      "correct": true
+                    },
+                    {
+                      "text": "A"
+                    },
+                    {
+                      "text": "B"
+                    },
+                    {
+                      "text": "D"
+                    }
+                  ],
+                  "hints": [
+                    "Rule: finish the current island's left branch before its right branch.",
+                    "After E, go to its left child if it has one; otherwise back up to the nearest right child not yet visited."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 150,
+                      "y": 20,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 80,
+                      "y": 70,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 220,
+                      "y": 70,
+                      "label": "C",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D",
+                      "x": 40,
+                      "y": 120,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 120,
+                      "y": 120,
+                      "label": "E",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "F",
+                      "x": 260,
+                      "y": 120,
+                      "label": "F",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "G",
+                      "x": 20,
+                      "y": 165,
+                      "label": "G",
+                      "mark": "visited"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "G"
+                    }
+                  ],
+                  "directed": true,
+                  "legend": "The top island is the root. Arrows point to children, left child on the left. A ticked island has been visited."
+                },
+                "say": "Visit F.",
+                "predict": {
+                  "prompt": "Preorder so far: A, B, D, G, E, C. Which island is visited next?",
+                  "options": [
+                    {
+                      "text": "F",
+                      "correct": true
+                    },
+                    {
+                      "text": "A"
+                    },
+                    {
+                      "text": "B"
+                    },
+                    {
+                      "text": "C"
+                    }
+                  ],
+                  "hints": [
+                    "Rule: finish the current island's left branch before its right branch.",
+                    "After C, go to its left child if it has one; otherwise back up to the nearest right child not yet visited."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 150,
+                      "y": 20,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 80,
+                      "y": 70,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 220,
+                      "y": 70,
+                      "label": "C",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D",
+                      "x": 40,
+                      "y": 120,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 120,
+                      "y": 120,
+                      "label": "E",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "F",
+                      "x": 260,
+                      "y": 120,
+                      "label": "F",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "G",
+                      "x": 20,
+                      "y": 165,
+                      "label": "G",
+                      "mark": "visited"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "C",
+                      "to": "F"
+                    },
+                    {
+                      "from": "D",
+                      "to": "G"
+                    }
+                  ],
+                  "directed": true,
+                  "legend": "The top island is the root. Arrows point to children, left child on the left. A ticked island has been visited."
+                },
+                "say": "Done. Preorder: A, B, D, G, E, C, F."
+              }
+            ]
+          },
+          "explain": "Watch a preorder walk, and predict which island comes next."
+        },
+        {
+          "id": "match-walks",
+          "type": "match",
+          "taughtOn": "three-orders",
+          "prompt": "Match each walk to its result on the tree.",
+          "pairs": [
+            {
+              "left": "Preorder",
+              "right": "A, B, D, G, E, C, F"
+            },
+            {
+              "left": "Inorder",
+              "right": "G, D, B, E, A, C, F"
+            },
+            {
+              "left": "Postorder",
+              "right": "G, D, E, B, F, C, A"
+            }
+          ],
+          "hints": [
+            "In preorder, the root comes first.",
+            "In postorder, the root comes last."
+          ],
+          "explain": "Preorder starts with the root A, postorder ends with it, and inorder has it with the left tree before it and the right tree after it."
+        },
+        {
+          "id": "post-order",
+          "type": "order",
+          "taughtOn": "three-orders",
+          "prompt": "Put the islands in postorder.",
+          "items": [
+            "G",
+            "D",
+            "E",
+            "B",
+            "F",
+            "C",
+            "A"
+          ],
+          "hints": [
+            "Finish both children before the node.",
+            "The root A is last."
+          ],
+          "explain": "Postorder is G, D, E, B, F, C, A."
+        },
+        {
+          "id": "tree-height",
+          "type": "numeric",
+          "taughtOn": "tree-words",
+          "prompt": "What is the height of the tree (steps on the longest path from the root down to a leaf)?",
+          "answer": 3,
+          "unit": "steps",
+          "hints": [
+            "Follow the longest branch: A, B, D, ...",
+            "A → B → D → G."
+          ],
+          "explain": "The longest path A → B → D → G has 3 steps."
+        },
+        {
+          "id": "delete-order",
+          "type": "choice",
+          "taughtOn": "why-order",
+          "prompt": "To delete a tree safely, you want each node removed only after its children. Which walk fits?",
+          "options": [
+            {
+              "text": "Postorder",
+              "correct": true
+            },
+            {
+              "text": "Preorder"
+            },
+            {
+              "text": "Inorder"
+            },
+            {
+              "text": "Any walk works equally"
+            }
+          ],
+          "hints": [
+            "Which walk visits the node last?",
+            "Children first, parent last."
+          ],
+          "explain": "Postorder handles the children before the parent."
+        },
+        {
+          "id": "perfect-31",
+          "type": "numeric",
+          "taughtOn": "tree-words",
+          "prompt": "Challenge: a tree where every node has two children until the bottom, and the height is 4, has 1 + 2 + 4 + 8 + 16 nodes. How many?",
+          "answer": 31,
+          "unit": "nodes",
+          "hints": [
+            "Add the nodes on each level.",
+            "1 + 2 + 4 + 8 + 16."
+          ],
+          "explain": "1 + 2 + 4 + 8 + 16 = 31, which is 2⁵ − 1.",
+          "challenge": true
+        },
+        {
+          "id": "bst-inorder",
+          "type": "choice",
+          "taughtOn": "why-order",
+          "prompt": "Challenge: in a search tree, smaller values are in the left tree and bigger in the right. Which walk lists the values from smallest to biggest?",
+          "options": [
+            {
+              "text": "Inorder",
+              "correct": true
+            },
+            {
+              "text": "Preorder"
+            },
+            {
+              "text": "Postorder"
+            },
+            {
+              "text": "None of them"
+            }
+          ],
+          "hints": [
+            "The left tree holds smaller values.",
+            "Visit left, then the node, then right."
+          ],
+          "explain": "Inorder visits smaller values first (left), then the node, then bigger values (right).",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "a4.4-f1",
+          "type": "quiz",
+          "taughtOn": "three-orders",
+          "prompt": "Postorder visits the node...",
+          "options": [
+            {
+              "text": "After both its subtrees",
+              "correct": true
+            },
+            {
+              "text": "Before both subtrees"
+            },
+            {
+              "text": "Between its subtrees"
+            },
+            {
+              "text": "Never"
+            }
+          ],
+          "explain": "Left, right, then the node."
+        },
+        {
+          "id": "a4.4-f2",
+          "type": "quiz",
+          "taughtOn": "tree-words",
+          "prompt": "A node with no children is a...",
+          "options": [
+            {
+              "text": "Leaf",
+              "correct": true
+            },
+            {
+              "text": "Root"
+            },
+            {
+              "text": "Branch"
+            },
+            {
+              "text": "Height"
+            }
+          ],
+          "explain": "Leaves are the ends of the tree."
+        },
+        {
+          "id": "a4.4-f3",
+          "type": "predict",
+          "taughtOn": "why-order",
+          "prompt": "Which walk lists a search tree in sorted order?",
+          "answer": "Inorder."
+        },
+        {
+          "id": "a4.4-f4",
+          "type": "why",
+          "taughtOn": "why-order",
+          "prompt": "Postorder suits deleting a tree because...",
+          "options": [
+            {
+              "text": "Children are handled before the parent",
+              "correct": true
+            },
+            {
+              "text": "The parent is handled first"
+            },
+            {
+              "text": "It skips leaves"
+            },
+            {
+              "text": "It visits nodes twice"
+            }
+          ],
+          "explain": "You never remove a parent while children still need it."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Trees inside programs",
+          "text": "A web page is stored as a tree of elements, and so is a folder structure on a computer. Walking these trees in a chosen order is a daily job for programs.",
+          "source": {
+            "title": "Wikipedia: Tree (abstract data type)",
+            "url": "https://en.wikipedia.org/wiki/Tree_(abstract_data_type)"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You learned the words root, leaf and height, walked a tree in preorder, inorder and postorder, and matched each walk to a job.",
+          "Fen traces the carvings with a finger. \"Boss first, or boss last.\" The Master's key opens the next rock."
+        ],
+        "mistake": {
+          "title": "Mixing up the walks",
+          "text": "The name says where the node goes: pre means before its subtrees, post means after, and in means between."
+        }
+      }
+    },
+    {
+      "id": "4.5",
+      "title": "Sorting Can't Go Faster",
+      "story": "Printer Pell has a sign over the door: \"Nobody can sort by comparing in fewer than about n × log n steps.\" Kit wants to know how anyone can be so sure of something nobody has found.",
+      "everyday": {
+        "scene": "You play twenty questions with only yes-or-no questions, to find which of 1,000 items someone is thinking of.",
+        "question": "What is the fewest questions that always works?",
+        "answer": "Ten, because 2¹⁰ is just over 1,000: each question at best halves the options. Sorting is the same game, with n! possible orders instead of 1,000 items."
+      },
+      "lessons": [
+        {
+          "id": "decision-tree",
+          "title": "Sorting is a guessing game",
+          "text": [
+            "A sorting method that only compares crates asks yes-or-no questions: is this crate lighter than that one? Draw every possible run of questions as a tree. Each path ends in one final order of the crates.",
+            "n crates can be arranged in n! (n factorial) different orders, and the method must be able to end in any of them. So the tree needs at least n! leaves. Three crates have 6 orders, four have 24, five have 120."
+          ],
+          "terms": [
+            {
+              "term": "n! (factorial)",
+              "meaning": "n × (n − 1) × ... × 1: the number of ways to arrange n things."
+            },
+            {
+              "term": "Leaf",
+              "meaning": "A final answer: one possible sorted order."
+            }
+          ],
+          "predict": {
+            "prompt": "How many different orders can 4 crates be in?",
+            "answer": "24. That is 4 × 3 × 2 × 1."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Comparison sort",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Comparison_sort"
+            },
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 0: Introduction",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/00-intro.pdf"
+            }
+          ]
+        },
+        {
+          "id": "lower-bound",
+          "title": "The least you must ask",
+          "text": [
+            "A tree where each question has two answers has at most 2ᵏ leaves after k questions. To have n! leaves you need 2ᵏ ≥ n!, so k ≥ log₂(n!). The worst-case number of comparisons can never be lower than that.",
+            "That works out to 3 comparisons for 3 crates, 7 for 5, 22 for 10, and about 8,530 for 1,000. It is a proof about every possible comparison method, not only the ones we know."
+          ],
+          "table": {
+            "head": [
+              "Crates (n)",
+              "Orders (n!)",
+              "At least this many comparisons"
+            ],
+            "rows": [
+              [
+                "3",
+                "6",
+                "3"
+              ],
+              [
+                "4",
+                "24",
+                "5"
+              ],
+              [
+                "5",
+                "120",
+                "7"
+              ],
+              [
+                "8",
+                "40,320",
+                "16"
+              ],
+              [
+                "10",
+                "3,628,800",
+                "22"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "A comparison sort has 2 answers per question. What is the most leaves it can reach after 3 questions?",
+            "answer": "8, which is 2³."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Comparison sort",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Comparison_sort"
+            },
+            {
+              "title": "Wikipedia: Big O notation",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Big_O_notation"
+            }
+          ]
+        },
+        {
+          "id": "n-log-n",
+          "title": "Why n log n",
+          "text": [
+            "The value log₂(n!) grows like n × log₂ n. So every method that sorts by comparing needs about n log n comparisons in the worst case. Mergesort uses about that many, so it cannot be beaten by more than a small factor.",
+            "The bound is only about comparing. A method that never compares two crates, such as tallying how many crates have each weight, is not covered, and you will meet such methods in Trade Wind Cove."
+          ],
+          "predict": {
+            "prompt": "Does the n log n bound apply to a method that never compares crates with each other?",
+            "answer": "No. The bound only covers methods that sort by comparing."
+          },
+          "deeper": {
+            "title": "Why n!?",
+            "text": [
+              "n! is at least (n/2) to the power n/2 for large n. Taking log₂ of that gives about (n/2) × log₂(n/2), which grows like n log n."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Comparison sort",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Comparison_sort"
+            },
+            {
+              "title": "Wikipedia: Merge sort",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Merge_sort"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "watch-bound",
+          "type": "stepsim",
+          "taughtOn": "lower-bound",
+          "mode": "watch",
+          "prompt": "Watch the least number of comparisons grow as crates are added.",
+          "script": {
+            "view": "bars",
+            "steps": [
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "3 crates",
+                      "value": 3
+                    }
+                  ]
+                },
+                "say": "Three crates can be in 6 different orders. Every order needs its own ending, so a sorting plan that only compares needs at least 3 yes-or-no comparisons in the worst case."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "3 crates",
+                      "value": 3
+                    },
+                    {
+                      "label": "4 crates",
+                      "value": 5
+                    }
+                  ]
+                },
+                "say": "4 crates have 24 possible orders, so at least 5 comparisons are needed in the worst case."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "3 crates",
+                      "value": 3
+                    },
+                    {
+                      "label": "4 crates",
+                      "value": 5
+                    },
+                    {
+                      "label": "5 crates",
+                      "value": 7
+                    }
+                  ]
+                },
+                "say": "5 crates have 120 possible orders, so at least 7 comparisons are needed in the worst case."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "3 crates",
+                      "value": 3
+                    },
+                    {
+                      "label": "4 crates",
+                      "value": 5
+                    },
+                    {
+                      "label": "5 crates",
+                      "value": 7
+                    },
+                    {
+                      "label": "6 crates",
+                      "value": 10
+                    }
+                  ]
+                },
+                "say": "6 crates have 720 possible orders, so at least 10 comparisons are needed in the worst case."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "3 crates",
+                      "value": 3
+                    },
+                    {
+                      "label": "4 crates",
+                      "value": 5
+                    },
+                    {
+                      "label": "5 crates",
+                      "value": 7
+                    },
+                    {
+                      "label": "6 crates",
+                      "value": 10
+                    },
+                    {
+                      "label": "8 crates",
+                      "value": 16
+                    }
+                  ]
+                },
+                "say": "8 crates have 40,320 possible orders, so at least 16 comparisons are needed in the worst case."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "3 crates",
+                      "value": 3
+                    },
+                    {
+                      "label": "4 crates",
+                      "value": 5
+                    },
+                    {
+                      "label": "5 crates",
+                      "value": 7
+                    },
+                    {
+                      "label": "6 crates",
+                      "value": 10
+                    },
+                    {
+                      "label": "8 crates",
+                      "value": 16
+                    },
+                    {
+                      "label": "10 crates",
+                      "value": 22
+                    }
+                  ]
+                },
+                "say": "10 crates have 3,628,800 possible orders, so at least 22 comparisons are needed in the worst case."
+              }
+            ]
+          },
+          "explain": "Watch the least number of comparisons grow as crates are added."
+        },
+        {
+          "id": "orders-4",
+          "type": "numeric",
+          "taughtOn": "decision-tree",
+          "prompt": "How many different orders can 4 crates be in?",
+          "answer": 24,
+          "unit": "orders",
+          "hints": [
+            "4 choices for the first, 3 for the second, ...",
+            "4 × 3 × 2 × 1."
+          ],
+          "explain": "4! = 24."
+        },
+        {
+          "id": "lb-5",
+          "type": "numeric",
+          "taughtOn": "lower-bound",
+          "prompt": "What is the least number of comparisons that any comparison-based method needs, in the worst case, to sort 5 crates?",
+          "answer": 7,
+          "unit": "comparisons",
+          "hints": [
+            "5 crates have 120 orders.",
+            "Find the smallest k with 2ᵏ ≥ 120."
+          ],
+          "explain": "2⁶ = 64 is too small, and 2⁷ = 128 is enough, so 7."
+        },
+        {
+          "id": "three-crates",
+          "type": "choice",
+          "taughtOn": "decision-tree",
+          "prompt": "Three crates have 6 possible orders. After 2 yes-or-no comparisons, at most how many different outcomes can a method tell apart?",
+          "options": [
+            {
+              "text": "4",
+              "correct": true
+            },
+            {
+              "text": "2"
+            },
+            {
+              "text": "6"
+            },
+            {
+              "text": "8"
+            }
+          ],
+          "hints": [
+            "Each comparison doubles the number of outcomes it can separate.",
+            "2 × 2."
+          ],
+          "explain": "Two questions give at most 2 × 2 = 4 outcomes, which is fewer than 6, so 3 comparisons are needed."
+        },
+        {
+          "id": "does-it-apply",
+          "type": "buckets",
+          "taughtOn": "n-log-n",
+          "prompt": "Does the n log n lower bound apply?",
+          "buckets": [
+            "Applies",
+            "Does not apply"
+          ],
+          "items": [
+            {
+              "text": "Mergesort",
+              "bucket": "Applies"
+            },
+            {
+              "text": "Quicksort",
+              "bucket": "Applies"
+            },
+            {
+              "text": "Selection sort",
+              "bucket": "Applies"
+            },
+            {
+              "text": "Sorting ages by tallying how many people have each age",
+              "bucket": "Does not apply"
+            },
+            {
+              "text": "Any method that sorts by comparing crates two at a time",
+              "bucket": "Applies"
+            },
+            {
+              "text": "Putting each exam paper in a pigeonhole numbered by its score",
+              "bucket": "Does not apply"
+            }
+          ],
+          "hints": [
+            "Does the method compare two crates with each other?",
+            "Tallying and pigeonholes use the value directly, with no comparisons between crates."
+          ],
+          "explain": "The bound covers every method that learns the order only by comparing crates. Tallying and pigeonholes look at the value itself."
+        },
+        {
+          "id": "lb-10",
+          "type": "numeric",
+          "taughtOn": "lower-bound",
+          "prompt": "Challenge: what is the least number of comparisons needed in the worst case for 10 crates?",
+          "answer": 22,
+          "unit": "comparisons",
+          "hints": [
+            "10! = 3,628,800.",
+            "Find the smallest k with 2ᵏ ≥ 3,628,800."
+          ],
+          "explain": "2²¹ = 2,097,152 is too small and 2²² = 4,194,304 is enough: 22.",
+          "challenge": true
+        },
+        {
+          "id": "lb-1000",
+          "type": "numeric",
+          "taughtOn": "lower-bound",
+          "prompt": "Challenge: about how many comparisons at least for 1,000 crates? (Use log₂(1,000!) ≈ 8,530. Round to the nearest hundred.)",
+          "answer": 8500,
+          "unit": "comparisons",
+          "hints": [
+            "Use the sum of log₂ of 1 to 1,000.",
+            "It is a bit under n × log₂ n = 9,966."
+          ],
+          "explain": "log₂(1,000!) is about 8,530, a bit under 1,000 × 9.97.",
+          "challenge": true,
+          "tolerance": 100
+        }
+      ],
+      "feed": [
+        {
+          "id": "a4.5-f1",
+          "type": "quiz",
+          "taughtOn": "decision-tree",
+          "prompt": "How many orders can 3 crates be in?",
+          "options": [
+            {
+              "text": "6",
+              "correct": true
+            },
+            {
+              "text": "3"
+            },
+            {
+              "text": "9"
+            },
+            {
+              "text": "12"
+            }
+          ],
+          "explain": "3 × 2 × 1 = 6."
+        },
+        {
+          "id": "a4.5-f2",
+          "type": "quiz",
+          "taughtOn": "lower-bound",
+          "prompt": "At least how many comparisons to sort 4 crates in the worst case?",
+          "options": [
+            {
+              "text": "5",
+              "correct": true
+            },
+            {
+              "text": "4"
+            },
+            {
+              "text": "3"
+            },
+            {
+              "text": "24"
+            }
+          ],
+          "explain": "24 orders need 2ᵏ ≥ 24, so k = 5."
+        },
+        {
+          "id": "a4.5-f3",
+          "type": "predict",
+          "taughtOn": "n-log-n",
+          "prompt": "Does the n log n bound apply to tally-based sorting?",
+          "answer": "No. It only covers methods that sort by comparing crates."
+        },
+        {
+          "id": "a4.5-f4",
+          "type": "why",
+          "taughtOn": "lower-bound",
+          "prompt": "The bound uses log₂ because...",
+          "options": [
+            {
+              "text": "Each yes-or-no comparison at best halves the possible orders",
+              "correct": true
+            },
+            {
+              "text": "Computers use base 2 for everything"
+            },
+            {
+              "text": "Sorting is always done twice"
+            },
+            {
+              "text": "Crates come in pairs"
+            }
+          ],
+          "explain": "Two answers per question means at most 2ᵏ outcomes."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Proofs about all methods",
+          "text": "This is one of the few places in computing where we can say that no method, known or unknown, beats a certain cost, as long as the method sorts only by comparing.",
+          "source": {
+            "title": "Wikipedia: Comparison sort",
+            "url": "https://en.wikipedia.org/wiki/Comparison_sort"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You treated sorting as a guessing game with n! outcomes, worked out the least comparisons for small n, and saw why mergesort's n log n cannot be beaten by any comparison method.",
+          "Pell takes down the sign and hangs a new one: \"...unless you stop comparing.\" Trade Wind Cove has that story."
+        ],
+        "mistake": {
+          "title": "Reading the bound as \"sorting is slow\"",
+          "text": "The bound says comparison sorts need about n log n in the worst case. That is already fast. It also does not rule out methods that sort without comparing."
+        }
+      }
+    },
+    {
+      "id": "4.6",
+      "title": "Bonus: Closest Lighthouses II",
+      "story": "Back on Brute Bay, Captain Ada has hundreds of thousands of lighthouses on a new chart, and checking every pair would take all year. Kit now knows a better way: split the chart in two.",
+      "everyday": {
+        "scene": "You are looking for the two closest houses among a million on a map. You cut the map down the middle, find the closest pair on each side, then check only the houses near the cut.",
+        "question": "Why only the houses near the cut?",
+        "answer": "Anything far from the cut cannot beat the best pair already found on its own side. That is divide and conquer for the closest-pair problem."
+      },
+      "lessons": [
+        {
+          "id": "split-chart",
+          "title": "Split, solve, combine",
+          "text": [
+            "Sort the points by x, and split them into a left half and a right half. Solve each half by calling the same method on it. A pair of two or three points is the base case, checked by brute force. Then combine: the best pair is either the best on the left, the best on the right, or a pair with one point on each side.",
+            "Call the better of the two half-answers d. The crossing pair is the new part, and the clever bit of the method is checking it cheaply."
+          ],
+          "predict": {
+            "prompt": "The closest pair overall must be in one of which three places?",
+            "answer": "Inside the left half, inside the right half, or crossing the dividing line."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Closest pair of points problem",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Closest_pair_of_points_problem"
+            },
+            {
+              "title": "Wikipedia: Divide-and-conquer algorithm",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Divide-and-conquer_algorithm"
+            }
+          ]
+        },
+        {
+          "id": "strip",
+          "title": "Only look near the line",
+          "text": [
+            "A crossing pair can only beat d if both points are within d of the dividing line. So keep only the points in the narrow strip around the line. In our chart that strip holds 4 of the 8 points.",
+            {
+              "text": "Inside the strip, sort by y. Each point only needs to be compared with the next few points above it: a small constant number. So the combine step costs about n, not n × n.",
+              "verify": false
+            }
+          ],
+          "terms": [
+            {
+              "term": "Strip",
+              "meaning": "The points within distance d of the dividing line."
+            }
+          ],
+          "predict": {
+            "prompt": "Why can a point far from the dividing line be ignored in the combine step?",
+            "answer": "A crossing pair with that point would be longer than d, so it cannot beat the best pair already found."
+          },
+          "deeper": {
+            "title": "Why only a few rivals",
+            "text": [
+              "Within the strip, any point only has a few possible rivals above it, because crowding more points into the same small box would put two of them closer than d on one side."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Closest pair of points problem",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Closest_pair_of_points_problem"
+            },
+            {
+              "title": "Algorithms, by Jeff Erickson, chapter 1: Recursion",
+              "source": "Free book (CC BY 4.0)",
+              "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/book/01-recursion.pdf"
+            }
+          ]
+        },
+        {
+          "id": "dc-cost",
+          "title": "The cost",
+          "text": [
+            "The cost follows T(n) = 2T(n/2) + n: two halves, plus about n work to combine. By the Master Theorem that is Θ(n log n). That is a huge saving over the brute-force n × (n − 1) ÷ 2.",
+            "For 1,000 points, brute force makes 499,500 comparisons, while n log₂ n is about 9,966. For a million points, brute force needs nearly 500 billion; n log₂ n is about 20 million."
+          ],
+          "table": {
+            "head": [
+              "Points (n)",
+              "Brute force pairs",
+              "About n × log₂ n"
+            ],
+            "rows": [
+              [
+                "1,000",
+                "499,500",
+                "9,966"
+              ],
+              [
+                "1,000,000",
+                "499,999,500,000",
+                "19,931,569"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "Does the combine step cost about n or about n × n?",
+            "answer": "About n: each strip point is compared with only a few others."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Closest pair of points problem",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Closest_pair_of_points_problem"
+            },
+            {
+              "title": "Wikipedia: Master theorem (analysis of algorithms)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Master_theorem_(analysis_of_algorithms)"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "watch-closest",
+          "type": "stepsim",
+          "taughtOn": "split-chart",
+          "mode": "predict",
+          "prompt": "Watch the divide-and-conquer plan on eight lighthouses, and predict each step.",
+          "script": {
+            "view": "graph",
+            "steps": [
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "L1",
+                      "x": 50,
+                      "y": 155,
+                      "label": "L1"
+                    },
+                    {
+                      "id": "L2",
+                      "x": 70,
+                      "y": 105,
+                      "label": "L2"
+                    },
+                    {
+                      "id": "L3",
+                      "x": 100,
+                      "y": 35,
+                      "label": "L3"
+                    },
+                    {
+                      "id": "L4",
+                      "x": 110,
+                      "y": 145,
+                      "label": "L4"
+                    },
+                    {
+                      "id": "R1",
+                      "x": 140,
+                      "y": 45,
+                      "label": "R1"
+                    },
+                    {
+                      "id": "R2",
+                      "x": 190,
+                      "y": 135,
+                      "label": "R2"
+                    },
+                    {
+                      "id": "R3",
+                      "x": 260,
+                      "y": 135,
+                      "label": "R3"
+                    },
+                    {
+                      "id": "R4",
+                      "x": 270,
+                      "y": 85,
+                      "label": "R4"
+                    }
+                  ],
+                  "edges": [],
+                  "legend": "L1 to L4 are the left half, and R1 to R4 the right half, split at the middle of the x order. The weight on a line is the squared distance."
+                },
+                "say": "Eight lighthouses, sorted from left to right and split into two halves of four: L1 to L4 on the left and R1 to R4 on the right."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "L1",
+                      "x": 50,
+                      "y": 155,
+                      "label": "L1",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "L2",
+                      "x": 70,
+                      "y": 105,
+                      "label": "L2",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "L3",
+                      "x": 100,
+                      "y": 35,
+                      "label": "L3"
+                    },
+                    {
+                      "id": "L4",
+                      "x": 110,
+                      "y": 145,
+                      "label": "L4"
+                    },
+                    {
+                      "id": "R1",
+                      "x": 140,
+                      "y": 45,
+                      "label": "R1"
+                    },
+                    {
+                      "id": "R2",
+                      "x": 190,
+                      "y": 135,
+                      "label": "R2"
+                    },
+                    {
+                      "id": "R3",
+                      "x": 260,
+                      "y": 135,
+                      "label": "R3"
+                    },
+                    {
+                      "id": "R4",
+                      "x": 270,
+                      "y": 85,
+                      "label": "R4"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "L1",
+                      "to": "L2",
+                      "weight": 2900,
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "L1 to L4 are the left half, and R1 to R4 the right half, split at the middle of the x order. The weight on a line is the squared distance."
+                },
+                "say": "Solve the left half on its own: the closest pair is L1 and L2, squared distance 2900.",
+                "predict": {
+                  "prompt": "Which pair is closest inside the left half (L1 to L4)?",
+                  "options": [
+                    {
+                      "text": "L1 and L2",
+                      "correct": true
+                    },
+                    {
+                      "text": "L1 and L3"
+                    },
+                    {
+                      "text": "L1 and L4"
+                    },
+                    {
+                      "text": "L2 and L3"
+                    }
+                  ],
+                  "hints": [
+                    "Compare the squared distances of the six pairs in the left half.",
+                    "The closest pair is the two dots nearest each other."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "L1",
+                      "x": 50,
+                      "y": 155,
+                      "label": "L1"
+                    },
+                    {
+                      "id": "L2",
+                      "x": 70,
+                      "y": 105,
+                      "label": "L2"
+                    },
+                    {
+                      "id": "L3",
+                      "x": 100,
+                      "y": 35,
+                      "label": "L3"
+                    },
+                    {
+                      "id": "L4",
+                      "x": 110,
+                      "y": 145,
+                      "label": "L4"
+                    },
+                    {
+                      "id": "R1",
+                      "x": 140,
+                      "y": 45,
+                      "label": "R1"
+                    },
+                    {
+                      "id": "R2",
+                      "x": 190,
+                      "y": 135,
+                      "label": "R2"
+                    },
+                    {
+                      "id": "R3",
+                      "x": 260,
+                      "y": 135,
+                      "label": "R3",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "R4",
+                      "x": 270,
+                      "y": 85,
+                      "label": "R4",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "R3",
+                      "to": "R4",
+                      "weight": 2600,
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "L1 to L4 are the left half, and R1 to R4 the right half, split at the middle of the x order. The weight on a line is the squared distance."
+                },
+                "say": "Solve the right half the same way: the closest pair is R3 and R4, squared distance 2600."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "L1",
+                      "x": 50,
+                      "y": 155,
+                      "label": "L1"
+                    },
+                    {
+                      "id": "L2",
+                      "x": 70,
+                      "y": 105,
+                      "label": "L2"
+                    },
+                    {
+                      "id": "L3",
+                      "x": 100,
+                      "y": 35,
+                      "label": "L3"
+                    },
+                    {
+                      "id": "L4",
+                      "x": 110,
+                      "y": 145,
+                      "label": "L4"
+                    },
+                    {
+                      "id": "R1",
+                      "x": 140,
+                      "y": 45,
+                      "label": "R1"
+                    },
+                    {
+                      "id": "R2",
+                      "x": 190,
+                      "y": 135,
+                      "label": "R2"
+                    },
+                    {
+                      "id": "R3",
+                      "x": 260,
+                      "y": 135,
+                      "label": "R3"
+                    },
+                    {
+                      "id": "R4",
+                      "x": 270,
+                      "y": 85,
+                      "label": "R4"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "L1",
+                      "to": "L2",
+                      "weight": 2900,
+                      "mark": "skipped"
+                    },
+                    {
+                      "from": "R3",
+                      "to": "R4",
+                      "weight": 2600,
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "L1 to L4 are the left half, and R1 to R4 the right half, split at the middle of the x order. The weight on a line is the squared distance."
+                },
+                "say": "The better of the two is squared distance 2600. Call it d². But the true closest pair might have one lighthouse on each side of the dividing line.",
+                "predict": {
+                  "prompt": "Which squared distance is the best so far, d²?",
+                  "options": [
+                    {
+                      "text": "2600",
+                      "correct": true
+                    },
+                    {
+                      "text": "2900"
+                    },
+                    {
+                      "text": "5500"
+                    },
+                    {
+                      "text": "2601"
+                    }
+                  ],
+                  "hints": [
+                    "Take the smaller of the two halves' best.",
+                    "The two are 2900 and 2600."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "L1",
+                      "x": 50,
+                      "y": 155,
+                      "label": "L1"
+                    },
+                    {
+                      "id": "L2",
+                      "x": 70,
+                      "y": 105,
+                      "label": "L2",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "L3",
+                      "x": 100,
+                      "y": 35,
+                      "label": "L3",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "L4",
+                      "x": 110,
+                      "y": 145,
+                      "label": "L4",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "R1",
+                      "x": 140,
+                      "y": 45,
+                      "label": "R1",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "R2",
+                      "x": 190,
+                      "y": 135,
+                      "label": "R2"
+                    },
+                    {
+                      "id": "R3",
+                      "x": 260,
+                      "y": 135,
+                      "label": "R3"
+                    },
+                    {
+                      "id": "R4",
+                      "x": 270,
+                      "y": 85,
+                      "label": "R4"
+                    }
+                  ],
+                  "edges": [],
+                  "legend": "L1 to L4 are the left half, and R1 to R4 the right half, split at the middle of the x order. The weight on a line is the squared distance."
+                },
+                "say": "Only lighthouses whose horizontal gap to the dividing line is less than d can be in a closer crossing pair. Here that is L2, L3, L4, R1.",
+                "predict": {
+                  "prompt": "How many lighthouses are in this strip near the dividing line?",
+                  "options": [
+                    {
+                      "text": "4",
+                      "correct": true
+                    },
+                    {
+                      "text": "5"
+                    },
+                    {
+                      "text": "3"
+                    },
+                    {
+                      "text": "8"
+                    }
+                  ],
+                  "hints": [
+                    "Count lighthouses whose x is close to the dividing line.",
+                    "The dividing line is at x = 100. A lighthouse is in the strip if its gap squared is less than d² = 2600."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "L1",
+                      "x": 50,
+                      "y": 155,
+                      "label": "L1"
+                    },
+                    {
+                      "id": "L2",
+                      "x": 70,
+                      "y": 105,
+                      "label": "L2"
+                    },
+                    {
+                      "id": "L3",
+                      "x": 100,
+                      "y": 35,
+                      "label": "L3",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "L4",
+                      "x": 110,
+                      "y": 145,
+                      "label": "L4"
+                    },
+                    {
+                      "id": "R1",
+                      "x": 140,
+                      "y": 45,
+                      "label": "R1",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "R2",
+                      "x": 190,
+                      "y": 135,
+                      "label": "R2"
+                    },
+                    {
+                      "id": "R3",
+                      "x": 260,
+                      "y": 135,
+                      "label": "R3"
+                    },
+                    {
+                      "id": "R4",
+                      "x": 270,
+                      "y": 85,
+                      "label": "R4"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "L3",
+                      "to": "R1",
+                      "weight": 1700,
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "L1 to L4 are the left half, and R1 to R4 the right half, split at the middle of the x order. The weight on a line is the squared distance."
+                },
+                "say": "Check the strip pairs: L3 and R1 cross the line with squared distance 1700, which beats 2600. That is the closest pair overall."
+              }
+            ]
+          },
+          "explain": "Watch the divide-and-conquer plan on eight lighthouses, and predict each step."
+        },
+        {
+          "id": "brute-8",
+          "type": "numeric",
+          "taughtOn": "dc-cost",
+          "prompt": "How many pairs would brute force check for these eight lighthouses?",
+          "answer": 28,
+          "unit": "pairs",
+          "hints": [
+            "n × (n − 1) ÷ 2.",
+            "8 × 7 ÷ 2."
+          ],
+          "explain": "8 × 7 ÷ 2 = 28."
+        },
+        {
+          "id": "brute-1000",
+          "type": "numeric",
+          "taughtOn": "dc-cost",
+          "prompt": "How many pairs would brute force check for 1,000 lighthouses?",
+          "answer": 499500,
+          "unit": "pairs",
+          "hints": [
+            "n × (n − 1) ÷ 2.",
+            "1,000 × 999 ÷ 2."
+          ],
+          "explain": "1,000 × 999 ÷ 2 = 499,500."
+        },
+        {
+          "id": "nlogn-1000",
+          "type": "numeric",
+          "taughtOn": "dc-cost",
+          "prompt": "About how many steps is n × log₂ n for 1,000 lighthouses? (log₂ 1,000 is about 10.)",
+          "answer": 10000,
+          "unit": "steps",
+          "hints": [
+            "Multiply n by 10.",
+            "1,000 × 10."
+          ],
+          "explain": "About 1,000 × 10 = 10,000, compared with 499,500 pairs.",
+          "tolerancePercent": 5
+        },
+        {
+          "id": "which-place",
+          "type": "choice",
+          "taughtOn": "split-chart",
+          "prompt": "The closest pair overall has one lighthouse on each side of the dividing line. Which part of the method finds it?",
+          "options": [
+            {
+              "text": "The check of the strip near the line",
+              "correct": true
+            },
+            {
+              "text": "Solving the left half"
+            },
+            {
+              "text": "Solving the right half"
+            },
+            {
+              "text": "Sorting by x"
+            }
+          ],
+          "hints": [
+            "A crossing pair is in neither half on its own.",
+            "The strip is where crossing pairs live."
+          ],
+          "explain": "Each half only sees its own pairs. The strip step is what catches a crossing pair."
+        },
+        {
+          "id": "dc-order",
+          "type": "order",
+          "taughtOn": "split-chart",
+          "prompt": "Put the divide-and-conquer method in order.",
+          "items": [
+            "Sort the points by x",
+            "Split into a left half and a right half",
+            "Solve each half on its own",
+            "Keep the better of the two answers, d",
+            "Check the strip near the line for a closer crossing pair"
+          ],
+          "hints": [
+            "You solve the halves before you compare them.",
+            "The strip depends on d, so d comes first."
+          ],
+          "explain": "Sort, split, solve both halves, take d, check the strip."
+        },
+        {
+          "id": "strip-why",
+          "type": "choice",
+          "taughtOn": "strip",
+          "prompt": "Challenge: why can the method ignore points far from the dividing line?",
+          "options": [
+            {
+              "text": "A crossing pair using them would be longer than d",
+              "correct": true
+            },
+            {
+              "text": "They are always the closest pair"
+            },
+            {
+              "text": "They have already been sorted"
+            },
+            {
+              "text": "They cannot be on the chart"
+            }
+          ],
+          "hints": [
+            "What does d tell you?",
+            "A pair must be closer than d to matter."
+          ],
+          "explain": "If a point is more than d from the line, any partner across the line is more than d away.",
+          "challenge": true
+        },
+        {
+          "id": "million-pairs",
+          "type": "numeric",
+          "taughtOn": "dc-cost",
+          "prompt": "Challenge: about how many pairs does brute force check for a million lighthouses? (Round to the nearest billion.)",
+          "answer": 500000000000,
+          "unit": "pairs",
+          "hints": [
+            "n × (n − 1) ÷ 2 is close to n × n ÷ 2.",
+            "1,000,000 × 1,000,000 ÷ 2."
+          ],
+          "explain": "The exact number is 499,999,500,000, nearly 500 billion.",
+          "challenge": true,
+          "tolerancePercent": 1
+        }
+      ],
+      "feed": [
+        {
+          "id": "a4.6-f1",
+          "type": "quiz",
+          "taughtOn": "split-chart",
+          "prompt": "The closest pair overall can be...",
+          "options": [
+            {
+              "text": "In the left half, the right half, or crossing the line",
+              "correct": true
+            },
+            {
+              "text": "Only in the left half"
+            },
+            {
+              "text": "Only crossing the line"
+            },
+            {
+              "text": "Only in the strip"
+            }
+          ],
+          "explain": "All three places must be checked."
+        },
+        {
+          "id": "a4.6-f2",
+          "type": "quiz",
+          "taughtOn": "dc-cost",
+          "prompt": "Divide-and-conquer closest pair costs about...",
+          "options": [
+            {
+              "text": "n × log₂ n",
+              "correct": true
+            },
+            {
+              "text": "n × n"
+            },
+            {
+              "text": "n"
+            },
+            {
+              "text": "log₂ n"
+            }
+          ],
+          "explain": "T(n) = 2T(n/2) + n."
+        },
+        {
+          "id": "a4.6-f3",
+          "type": "predict",
+          "taughtOn": "strip",
+          "prompt": "Which points go in the strip?",
+          "answer": "Those within distance d of the dividing line, where d is the best distance found in the halves."
+        },
+        {
+          "id": "a4.6-f4",
+          "type": "why",
+          "taughtOn": "strip",
+          "prompt": "The strip step is cheap because...",
+          "options": [
+            {
+              "text": "Each strip point needs comparing with only a few others",
+              "correct": true
+            },
+            {
+              "text": "It skips sorting"
+            },
+            {
+              "text": "The strip is always empty"
+            },
+            {
+              "text": "It uses brute force on everything"
+            }
+          ],
+          "explain": "A small constant number of rivals per point."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Beating brute force",
+          "text": "This closest-pair method is a standard example of divide and conquer turning an n × n search into n log n.",
+          "source": {
+            "title": "Wikipedia: Closest pair of points problem",
+            "url": "https://en.wikipedia.org/wiki/Closest_pair_of_points_problem"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You split a chart, solved each half, and checked only a narrow strip for a crossing pair, bringing the cost from about n × n down to about n log n.",
+          "Ada rolls up the chart. \"A year of checking, down to an afternoon.\" Brute force found the answer first, and divide and conquer found it fast."
+        ],
+        "mistake": {
+          "title": "Forgetting the crossing pairs",
+          "text": "The best pair of each half is not always the best overall. Without the strip check, a closer pair across the dividing line would be missed."
+        }
+      }
+    }
+  ]
+}

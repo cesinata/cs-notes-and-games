@@ -1,0 +1,4140 @@
+{
+  "zone": 1,
+  "levels": [
+    {
+      "id": "1.1",
+      "title": "Fan Out",
+      "story": "Rowan unrolls a map of seven clearings joined by trails. \"One cabin, one waterfall, lots of paths,\" says Rowan. \"Which way first?\" Kit grins. \"All of them, a little at a time.\"",
+      "everyday": {
+        "scene": "When you lose a key at home, you check the nearest places first, then the places a little further away. That ring-by-ring habit has a name in planning.",
+        "question": "How can a program explore every route without getting lost?",
+        "answer": "It keeps a to-do list of places to visit next. Always taking the oldest entry makes it explore in widening rings, which is called breadth-first search."
+      },
+      "lessons": [
+        {
+          "id": "states-and-moves",
+          "title": "Places and moves",
+          "text": [
+            "Planning turns into searching. Each possible situation is a state, drawn as a dot. Each action that turns one state into another is a line between two dots. Searching means walking this map of states, starting at the initial state, until you land on a goal state.",
+            "In Kit's wood the states are clearings and the actions are paths. Kit stands at S, the cabin clearing, and the goal is G, the waterfall."
+          ],
+          "terms": [
+            {
+              "term": "State",
+              "meaning": "One possible situation of the world."
+            },
+            {
+              "term": "Search",
+              "meaning": "Exploring the map of states to find a goal state."
+            }
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: State-space search",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/State-space_search"
+            },
+            {
+              "title": "Wikipedia: Automated planning and scheduling",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Automated_planning_and_scheduling"
+            }
+          ]
+        },
+        {
+          "id": "ring-by-ring",
+          "title": "Ring by ring",
+          "text": [
+            "Breadth-first search keeps a queue called the frontier: places seen but not yet explored. It takes the oldest entry, looks at its neighbours, and adds any new ones to the back.",
+            "So the search spreads in rings: everything one step away, then everything two steps away, and so on. The first time it reaches the goal, no shorter route exists. On Kit's map it visits S, A, B, C, D, E and then G, and the shortest route is 3 steps: S, B, E, G."
+          ],
+          "terms": [
+            {
+              "term": "Frontier",
+              "meaning": "The places seen but not yet explored."
+            },
+            {
+              "term": "Queue",
+              "meaning": "A list where the oldest entry is taken first."
+            }
+          ],
+          "table": {
+            "head": [
+              "Order taken",
+              "Clearing",
+              "Frontier afterwards"
+            ],
+            "rows": [
+              [
+                "1",
+                "S",
+                "A, B"
+              ],
+              [
+                "2",
+                "A",
+                "B, C, D"
+              ],
+              [
+                "3",
+                "B",
+                "C, D, E"
+              ],
+              [
+                "4",
+                "C",
+                "D, E"
+              ],
+              [
+                "5",
+                "D",
+                "E"
+              ],
+              [
+                "6",
+                "E",
+                "G"
+              ],
+              [
+                "7",
+                "G",
+                "empty"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Breadth-first search",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Breadth-first_search"
+            },
+            {
+              "title": "Red Blob Games: Introduction to the A* algorithm",
+              "source": "Interactive tutorial (linked, not copied)",
+              "url": "https://www.redblobgames.com/pathfinding/a-star/introduction.html"
+            }
+          ]
+        },
+        {
+          "id": "diving-deep",
+          "title": "Diving deep",
+          "text": [
+            "Depth-first search uses a stack instead: it takes the newest entry, so it follows one trail all the way down before trying another. Its first answer may be longer than the best one.",
+            "If it tries neighbours in alphabetical order, it finds the waterfall by S, A, D, E, G: 4 steps, though 3 were possible. Meanwhile the tree of choices grows quickly: with 3 moves per state there are 3, 9, 27, 81 and 243 states at depths 1 to 5."
+          ],
+          "terms": [
+            {
+              "term": "Stack",
+              "meaning": "A list where the newest entry is taken first."
+            }
+          ],
+          "deeper": {
+            "title": "Why guidance matters",
+            "text": [
+              "Because the number of states grows exponentially with depth, searching blindly gets out of hand even on small problems. The next level adds a guess about distance to cut the work down."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Depth-first search",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Depth-first_search"
+            },
+            {
+              "title": "Wikipedia: Breadth-first search",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Breadth-first_search"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "bfs-steps",
+          "type": "order",
+          "taughtOn": "ring-by-ring",
+          "prompt": "Put the steps of breadth-first search in order.",
+          "items": [
+            "Put the start on the frontier",
+            "Take the oldest entry off the frontier",
+            "Check whether it is the goal",
+            "Add its new neighbours to the back of the frontier",
+            "Repeat until the goal is found"
+          ],
+          "hints": [
+            "The frontier must hold something before you can take from it.",
+            "Checking comes before adding neighbours."
+          ],
+          "explain": "Start the frontier, take the oldest entry, test it, add its new neighbours, and repeat."
+        },
+        {
+          "id": "bfs-sim",
+          "type": "stepsim",
+          "taughtOn": "ring-by-ring",
+          "mode": "predict",
+          "prompt": "Watch breadth-first search spread through the wood.",
+          "explain": "The frontier is a queue, so older entries go first. The search finishes every clearing at one distance before it moves to the next.",
+          "script": {
+            "view": "graph",
+            "steps": [
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 30,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "A",
+                      "x": 90,
+                      "y": 40,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 90,
+                      "y": 140,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 160,
+                      "y": 20,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 75,
+                      "label": "D"
+                    },
+                    {
+                      "id": "E",
+                      "x": 190,
+                      "y": 140,
+                      "label": "E"
+                    },
+                    {
+                      "id": "G",
+                      "x": 265,
+                      "y": 95,
+                      "label": "G"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "A"
+                    },
+                    {
+                      "from": "S",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "A",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "D",
+                      "to": "E"
+                    },
+                    {
+                      "from": "E",
+                      "to": "G"
+                    }
+                  ],
+                  "legend": "S = cabin, G = waterfall"
+                },
+                "say": "Kit stands at S, the cabin clearing. The only entry on the frontier is S. G, far right, is the waterfall. Every dot is a clearing and every line is a path."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 30,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "A",
+                      "x": 90,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "B",
+                      "x": 90,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "C",
+                      "x": 160,
+                      "y": 20,
+                      "label": "C"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 75,
+                      "label": "D"
+                    },
+                    {
+                      "id": "E",
+                      "x": 190,
+                      "y": 140,
+                      "label": "E"
+                    },
+                    {
+                      "id": "G",
+                      "x": 265,
+                      "y": 95,
+                      "label": "G"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "A"
+                    },
+                    {
+                      "from": "S",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "A",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "D",
+                      "to": "E"
+                    },
+                    {
+                      "from": "E",
+                      "to": "G"
+                    }
+                  ],
+                  "legend": "S = cabin, G = waterfall"
+                },
+                "say": "Take the oldest entry, S. Add its new neighbours to the back of the frontier. The frontier is now: A, B."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 30,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "A",
+                      "x": 90,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "B",
+                      "x": 90,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "C",
+                      "x": 160,
+                      "y": 20,
+                      "label": "C",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 75,
+                      "label": "D",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "E",
+                      "x": 190,
+                      "y": 140,
+                      "label": "E"
+                    },
+                    {
+                      "id": "G",
+                      "x": 265,
+                      "y": 95,
+                      "label": "G"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "A"
+                    },
+                    {
+                      "from": "S",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "A",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "D",
+                      "to": "E"
+                    },
+                    {
+                      "from": "E",
+                      "to": "G"
+                    }
+                  ],
+                  "legend": "S = cabin, G = waterfall"
+                },
+                "say": "Take the oldest entry, A. Add its new neighbours to the back of the frontier. The frontier is now: B, C, D.",
+                "predict": {
+                  "prompt": "The frontier now holds B, C and D. Which clearing does breadth-first search take next?",
+                  "options": [
+                    {
+                      "text": "B, the oldest entry",
+                      "correct": true
+                    },
+                    {
+                      "text": "D, the newest entry",
+                      "correct": false
+                    },
+                    {
+                      "text": "C, because it is closest to the top",
+                      "correct": false
+                    },
+                    {
+                      "text": "G, because it is the goal",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "The frontier works like a queue: first in, first out.",
+                    "B went in before C and D."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 30,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "A",
+                      "x": 90,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 90,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "C",
+                      "x": 160,
+                      "y": 20,
+                      "label": "C",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 75,
+                      "label": "D",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "E",
+                      "x": 190,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "G",
+                      "x": 265,
+                      "y": 95,
+                      "label": "G"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "A"
+                    },
+                    {
+                      "from": "S",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "A",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "D",
+                      "to": "E"
+                    },
+                    {
+                      "from": "E",
+                      "to": "G"
+                    }
+                  ],
+                  "legend": "S = cabin, G = waterfall"
+                },
+                "say": "Take the oldest entry, B. Add its new neighbours to the back of the frontier. The frontier is now: C, D, E."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 30,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "A",
+                      "x": 90,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 90,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 160,
+                      "y": 20,
+                      "label": "C",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 75,
+                      "label": "D",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "E",
+                      "x": 190,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "G",
+                      "x": 265,
+                      "y": 95,
+                      "label": "G"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "A"
+                    },
+                    {
+                      "from": "S",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "A",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "D",
+                      "to": "E"
+                    },
+                    {
+                      "from": "E",
+                      "to": "G"
+                    }
+                  ],
+                  "legend": "S = cabin, G = waterfall"
+                },
+                "say": "Take the oldest entry, C. Add its new neighbours to the back of the frontier. The frontier is now: D, E."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 30,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "A",
+                      "x": 90,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 90,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 160,
+                      "y": 20,
+                      "label": "C",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 75,
+                      "label": "D",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "E",
+                      "x": 190,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "G",
+                      "x": 265,
+                      "y": 95,
+                      "label": "G"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "A"
+                    },
+                    {
+                      "from": "S",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "A",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "D",
+                      "to": "E"
+                    },
+                    {
+                      "from": "E",
+                      "to": "G"
+                    }
+                  ],
+                  "legend": "S = cabin, G = waterfall"
+                },
+                "say": "Take the oldest entry, D. Add its new neighbours to the back of the frontier. The frontier is now: E.",
+                "predict": {
+                  "prompt": "Which clearing will be taken after D?",
+                  "options": [
+                    {
+                      "text": "E",
+                      "correct": true
+                    },
+                    {
+                      "text": "G",
+                      "correct": false
+                    },
+                    {
+                      "text": "C",
+                      "correct": false
+                    },
+                    {
+                      "text": "S",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Look at what the frontier holds after D is taken.",
+                    "E was added when B was explored."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 30,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "A",
+                      "x": 90,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 90,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 160,
+                      "y": 20,
+                      "label": "C",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 75,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 190,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "G",
+                      "x": 265,
+                      "y": 95,
+                      "label": "G",
+                      "mark": "queued"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "A"
+                    },
+                    {
+                      "from": "S",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "A",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E"
+                    },
+                    {
+                      "from": "D",
+                      "to": "E"
+                    },
+                    {
+                      "from": "E",
+                      "to": "G"
+                    }
+                  ],
+                  "legend": "S = cabin, G = waterfall"
+                },
+                "say": "Take the oldest entry, E. Add its new neighbours to the back of the frontier. The frontier is now: G."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 30,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "A",
+                      "x": 90,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 90,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 160,
+                      "y": 20,
+                      "label": "C",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D",
+                      "x": 160,
+                      "y": 75,
+                      "label": "D",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E",
+                      "x": 190,
+                      "y": 140,
+                      "label": "E",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "G",
+                      "x": 265,
+                      "y": 95,
+                      "label": "G",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "A"
+                    },
+                    {
+                      "from": "S",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "A",
+                      "to": "D"
+                    },
+                    {
+                      "from": "B",
+                      "to": "E",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "D",
+                      "to": "E"
+                    },
+                    {
+                      "from": "E",
+                      "to": "G",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "S = cabin, G = waterfall"
+                },
+                "say": "The oldest entry is G, the waterfall. Goal reached, and no shorter route exists, because every clearing closer than G was explored first."
+              }
+            ]
+          }
+        },
+        {
+          "id": "frontier-size",
+          "type": "numeric",
+          "taughtOn": "ring-by-ring",
+          "prompt": "After the search has taken S and then A, how many clearings are waiting on the frontier?",
+          "answer": 3,
+          "calculator": false,
+          "hints": [
+            "Look at the table: the frontier after the second row.",
+            "The frontier then holds B, C and D."
+          ],
+          "explain": "After S and A the frontier holds B, C and D: 3 clearings."
+        },
+        {
+          "id": "shortest-steps",
+          "type": "numeric",
+          "taughtOn": "ring-by-ring",
+          "prompt": "What is the smallest number of steps from S to G on Kit's map?",
+          "answer": 3,
+          "calculator": false,
+          "hints": [
+            "Follow S, then B, then E, then G.",
+            "Count the paths walked, not the clearings."
+          ],
+          "explain": "S to B, B to E and E to G are 3 paths, so the shortest route is 3 steps."
+        },
+        {
+          "id": "bfs-or-dfs",
+          "type": "buckets",
+          "taughtOn": "diving-deep",
+          "prompt": "Does each statement describe breadth-first or depth-first search?",
+          "buckets": [
+            "Breadth-first",
+            "Depth-first"
+          ],
+          "items": [
+            {
+              "text": "Uses a queue, taking the oldest entry first",
+              "bucket": "Breadth-first"
+            },
+            {
+              "text": "Uses a stack, taking the newest entry first",
+              "bucket": "Depth-first"
+            },
+            {
+              "text": "Explores in rings of equal distance",
+              "bucket": "Breadth-first"
+            },
+            {
+              "text": "Dives down one trail before trying another",
+              "bucket": "Depth-first"
+            },
+            {
+              "text": "Finds a shortest route when every step costs the same",
+              "bucket": "Breadth-first"
+            }
+          ],
+          "hints": [
+            "A queue is first in, first out.",
+            "A stack is last in, first out."
+          ],
+          "explain": "Breadth-first uses a queue and spreads in rings. Depth-first uses a stack and dives."
+        },
+        {
+          "id": "tree-depth-4",
+          "type": "numeric",
+          "taughtOn": "diving-deep",
+          "prompt": "Each state has 3 moves. How many states are there at depth 4?",
+          "answer": 81,
+          "calculator": false,
+          "hints": [
+            "Multiply by 3 for every step down.",
+            "3 x 3 x 3 x 3."
+          ],
+          "explain": "3 x 3 x 3 x 3 = 81 states at depth 4."
+        },
+        {
+          "id": "search-words",
+          "type": "match",
+          "taughtOn": "states-and-moves",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "State",
+              "right": "One possible situation of the world"
+            },
+            {
+              "left": "Frontier",
+              "right": "Places seen but not yet explored"
+            },
+            {
+              "left": "Queue",
+              "right": "The oldest entry is taken first"
+            },
+            {
+              "left": "Stack",
+              "right": "The newest entry is taken first"
+            }
+          ],
+          "hints": [
+            "One of these is a list that grows as you explore.",
+            "First in first out is a queue."
+          ],
+          "explain": "A state is a situation, the frontier holds what is waiting, a queue serves the oldest and a stack serves the newest."
+        },
+        {
+          "id": "why-shortest",
+          "type": "choice",
+          "taughtOn": "ring-by-ring",
+          "prompt": "Why can breadth-first search be sure the first route it finds is the shortest?",
+          "options": [
+            {
+              "text": "It finishes every clearing at one distance before any clearing further away",
+              "correct": true
+            },
+            {
+              "text": "It always picks the closest-looking path"
+            },
+            {
+              "text": "It never visits the same place twice"
+            },
+            {
+              "text": "It looks at the goal first"
+            }
+          ],
+          "hints": [
+            "Think about the rings.",
+            "A farther clearing is only taken after all the nearer ones."
+          ],
+          "explain": "Because it explores in rings of increasing distance, the first arrival at the goal uses the fewest steps."
+        },
+        {
+          "id": "tree-depth-10",
+          "type": "numeric",
+          "taughtOn": "diving-deep",
+          "prompt": "Challenge: each state has 3 moves. How many states are there at depth 10?",
+          "answer": 59049,
+          "calculator": false,
+          "hints": [
+            "Multiply by 3 ten times.",
+            "3 to the power 10. Depth 5 has 243, so square that."
+          ],
+          "explain": "3 x 3 x ... ten times = 59,049 states at depth 10.",
+          "challenge": true
+        },
+        {
+          "id": "dfs-longer",
+          "type": "choice",
+          "taughtOn": "diving-deep",
+          "prompt": "Challenge: depth-first search found a 4-step route on Kit's map, but 3 steps were possible. What does this show?",
+          "options": [
+            {
+              "text": "The first route a depth-first search finds may not be the shortest",
+              "correct": true
+            },
+            {
+              "text": "Depth-first search is broken"
+            },
+            {
+              "text": "A 4-step route does not reach the waterfall"
+            },
+            {
+              "text": "Breadth-first search would also give 4 steps"
+            }
+          ],
+          "hints": [
+            "Compare 4 with the shortest route you found earlier.",
+            "Depth-first search takes the newest entry, not the nearest."
+          ],
+          "explain": "Depth-first search follows one trail to the end, so it can find a longer route first. Breadth-first search would give the 3-step route.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m1.1-f1",
+          "type": "quiz",
+          "taughtOn": "ring-by-ring",
+          "prompt": "Which entry does breadth-first search take next?",
+          "options": [
+            {
+              "text": "The oldest on the frontier",
+              "correct": true
+            },
+            {
+              "text": "The newest on the frontier"
+            },
+            {
+              "text": "The closest to the goal"
+            },
+            {
+              "text": "A random one"
+            }
+          ],
+          "explain": "The frontier is a queue, so older entries go first."
+        },
+        {
+          "id": "m1.1-f2",
+          "type": "why",
+          "taughtOn": "diving-deep",
+          "prompt": "What does depth-first search use to remember where to go next?",
+          "options": [
+            {
+              "text": "A stack",
+              "correct": true
+            },
+            {
+              "text": "A queue"
+            },
+            {
+              "text": "A map"
+            },
+            {
+              "text": "A clock"
+            }
+          ],
+          "explain": "It takes the newest entry, which is what a stack does."
+        },
+        {
+          "id": "m1.1-f3",
+          "type": "quiz",
+          "taughtOn": "ring-by-ring",
+          "prompt": "With equal step costs, which search finds a shortest route first?",
+          "options": [
+            {
+              "text": "Breadth-first search",
+              "correct": true
+            },
+            {
+              "text": "Depth-first search"
+            },
+            {
+              "text": "Both, always"
+            },
+            {
+              "text": "Neither"
+            }
+          ],
+          "explain": "It explores in rings of increasing distance."
+        },
+        {
+          "id": "m1.1-f4",
+          "type": "predict",
+          "taughtOn": "diving-deep",
+          "prompt": "3 moves per state: how many states at depth 3?",
+          "answer": "27, because 3 x 3 x 3 = 27."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Breadth-first search",
+          "text": "Breadth-first search explores all the nodes at the present depth before moving on to the next depth level, using a queue to keep track of what is waiting.",
+          "source": {
+            "title": "Wikipedia: Breadth-first search",
+            "url": "https://en.wikipedia.org/wiki/Breadth-first_search"
+          }
+        },
+        {
+          "title": "Depth-first search",
+          "text": "Depth-first search explores as far as possible along each branch before backtracking, using a stack. It does not generally find shortest paths.",
+          "source": {
+            "title": "Wikipedia: Depth-first search",
+            "url": "https://en.wikipedia.org/wiki/Depth-first_search"
+          }
+        },
+        {
+          "title": "State-space search",
+          "text": "In state-space search the states form a graph, and two states are connected if some operation can turn the first into the second.",
+          "source": {
+            "title": "Wikipedia: State-space search",
+            "url": "https://en.wikipedia.org/wiki/State-space_search"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You treated a planning problem as a map of states, followed the frontier through breadth-first search, and compared it with a depth-first search that dives. You also saw how fast the tree of choices grows.",
+          "Rowan squints at the map. \"Seven clearings is easy. What if there were a million?\" Kit rings the bell. \"Then I would want a hint about which way to look.\""
+        ],
+        "mistake": {
+          "title": "Thinking the first answer is the best",
+          "text": "A depth-first search can stop at the first goal it reaches, which may be a long way round. Breadth-first search checks nearer places first, so its first goal is a shortest one."
+        }
+      }
+    },
+    {
+      "id": "1.2",
+      "title": "Guess the Distance",
+      "story": "A fallen log blocks the straight trail. \"Breadth-first looks everywhere,\" says Rowan. \"Try looking where the goal is.\" Kit holds up a hand with the fingers apart and squints at the waterfall. \"About four blocks that way.\"",
+      "everyday": {
+        "scene": "On a bushwalk you glance at the peak and head roughly towards it, instead of exploring every side equally.",
+        "question": "How can a program search towards the goal, not all around it?",
+        "answer": "It adds a guess of the distance still to go to the distance already walked, and explores the lowest total first. That is A* search."
+      },
+      "lessons": [
+        {
+          "id": "walked-plus-guessed",
+          "title": "Walked plus guessed",
+          "text": [
+            "A* gives every frontier cell a score, f = g + h. The number g is the cost already spent to get there. The number h is a guess of the cost still to go. A* always explores the cell with the lowest f.",
+            "In Kit's grid, Kit starts at A2 and wants E2. At the start g is 0 and h is 4, so f is 4. Each time Kit steps, g rises by 1."
+          ],
+          "terms": [
+            {
+              "term": "g",
+              "meaning": "The cost of the path so far, from the start to this cell."
+            },
+            {
+              "term": "h",
+              "meaning": "A guess of the cost still to go, from this cell to the goal."
+            },
+            {
+              "term": "f",
+              "meaning": "g plus h: the score A* uses to choose what to explore."
+            }
+          ],
+          "table": {
+            "head": [
+              "Cell taken",
+              "g",
+              "h",
+              "f"
+            ],
+            "rows": [
+              [
+                "A2",
+                "0",
+                "4",
+                "4"
+              ],
+              [
+                "B2",
+                "1",
+                "3",
+                "4"
+              ],
+              [
+                "B3",
+                "2",
+                "4",
+                "6"
+              ],
+              [
+                "C3",
+                "3",
+                "3",
+                "6"
+              ],
+              [
+                "D3",
+                "4",
+                "2",
+                "6"
+              ],
+              [
+                "E3",
+                "5",
+                "1",
+                "6"
+              ],
+              [
+                "E2",
+                "6",
+                "0",
+                "6"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: A* search algorithm",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/A*_search_algorithm"
+            },
+            {
+              "title": "Red Blob Games: Introduction to the A* algorithm",
+              "source": "Interactive tutorial (linked, not copied)",
+              "url": "https://www.redblobgames.com/pathfinding/a-star/introduction.html"
+            }
+          ]
+        },
+        {
+          "id": "counting-blocks",
+          "title": "Counting blocks",
+          "text": [
+            "On a grid where you can only move along rows and columns, a handy guess is the Manhattan distance: the columns apart plus the rows apart. From B3 to E2 it is 3 + 1 = 4.",
+            "The guess ignores obstacles. The log at C2 forces Kit to walk further than the guess says, and that is fine. A guess that is too low only makes A* a little less sure of itself. With this guide A* looked at 7 cells before reaching E2. Breadth-first search had to look at all 14."
+          ],
+          "predict": {
+            "prompt": "What is the Manhattan distance from A2 to E2?",
+            "answer": "4, because the cells are 4 columns apart and in the same row."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Taxicab geometry",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Taxicab_geometry"
+            },
+            {
+              "title": "Red Blob Games: Introduction to the A* algorithm",
+              "source": "Interactive tutorial (linked, not copied)",
+              "url": "https://www.redblobgames.com/pathfinding/a-star/introduction.html"
+            }
+          ]
+        },
+        {
+          "id": "never-promise-too-much",
+          "title": "Never promise too much",
+          "text": [
+            "A guess is admissible if it never overestimates the true cost to the goal. With an admissible guess, A* returns a cheapest route. A guess that is too big can mislead it.",
+            "Picture a path straight from S to G costing 10, and another through M costing 2 + 2 = 4. If the guess says M is 20 from G, then M scores 2 + 20 = 22, and A* takes the cost-10 path. The best route was hidden by the overestimate."
+          ],
+          "terms": [
+            {
+              "term": "Admissible",
+              "meaning": "A guess that is never higher than the real cost still to go."
+            }
+          ],
+          "deeper": {
+            "title": "Honest guesses",
+            "text": [
+              {
+                "text": "A guess of 0 everywhere is admissible too, but it gives no hint, so A* then explores all the cheapest cells first, like a plain cost-ordered search."
+              }
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Admissible heuristic",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Admissible_heuristic"
+            },
+            {
+              "title": "Wikipedia: A* search algorithm",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/A*_search_algorithm"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "manhattan-b3",
+          "type": "numeric",
+          "taughtOn": "counting-blocks",
+          "prompt": "What is the Manhattan distance from B3 to E2?",
+          "answer": 4,
+          "calculator": false,
+          "hints": [
+            "Count the columns apart, then the rows apart.",
+            "3 columns plus 1 row."
+          ],
+          "explain": "B3 is 3 columns and 1 row from E2, so the distance is 3 + 1 = 4."
+        },
+        {
+          "id": "astar-sim",
+          "type": "stepsim",
+          "taughtOn": "walked-plus-guessed",
+          "mode": "predict",
+          "prompt": "Watch A* choose its next cell using f = g + h.",
+          "explain": "A* kept exploring the cell with the lowest score. Along the bottom row f stayed at 6, because each step added 1 to g and took 1 off h. It reached E2 after 7 cells, against 14 for breadth-first search.",
+          "script": {
+            "view": "graph",
+            "steps": [
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A1",
+                      "x": 30,
+                      "y": 30,
+                      "label": "A1"
+                    },
+                    {
+                      "id": "B1",
+                      "x": 90,
+                      "y": 30,
+                      "label": "B1"
+                    },
+                    {
+                      "id": "C1",
+                      "x": 150,
+                      "y": 30,
+                      "label": "C1"
+                    },
+                    {
+                      "id": "D1",
+                      "x": 210,
+                      "y": 30,
+                      "label": "D1"
+                    },
+                    {
+                      "id": "E1",
+                      "x": 270,
+                      "y": 30,
+                      "label": "E1"
+                    },
+                    {
+                      "id": "A2",
+                      "x": 30,
+                      "y": 90,
+                      "label": "A2",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "B2",
+                      "x": 90,
+                      "y": 90,
+                      "label": "B2"
+                    },
+                    {
+                      "id": "D2",
+                      "x": 210,
+                      "y": 90,
+                      "label": "D2"
+                    },
+                    {
+                      "id": "E2",
+                      "x": 270,
+                      "y": 90,
+                      "label": "E2"
+                    },
+                    {
+                      "id": "A3",
+                      "x": 30,
+                      "y": 150,
+                      "label": "A3"
+                    },
+                    {
+                      "id": "B3",
+                      "x": 90,
+                      "y": 150,
+                      "label": "B3"
+                    },
+                    {
+                      "id": "C3",
+                      "x": 150,
+                      "y": 150,
+                      "label": "C3"
+                    },
+                    {
+                      "id": "D3",
+                      "x": 210,
+                      "y": 150,
+                      "label": "D3"
+                    },
+                    {
+                      "id": "E3",
+                      "x": 270,
+                      "y": 150,
+                      "label": "E3"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A1",
+                      "to": "B1"
+                    },
+                    {
+                      "from": "A1",
+                      "to": "A2"
+                    },
+                    {
+                      "from": "B1",
+                      "to": "C1"
+                    },
+                    {
+                      "from": "B1",
+                      "to": "B2"
+                    },
+                    {
+                      "from": "C1",
+                      "to": "D1"
+                    },
+                    {
+                      "from": "D1",
+                      "to": "E1"
+                    },
+                    {
+                      "from": "D1",
+                      "to": "D2"
+                    },
+                    {
+                      "from": "E1",
+                      "to": "E2"
+                    },
+                    {
+                      "from": "A2",
+                      "to": "B2"
+                    },
+                    {
+                      "from": "A2",
+                      "to": "A3"
+                    },
+                    {
+                      "from": "B2",
+                      "to": "B3"
+                    },
+                    {
+                      "from": "D2",
+                      "to": "E2"
+                    },
+                    {
+                      "from": "D2",
+                      "to": "D3"
+                    },
+                    {
+                      "from": "E2",
+                      "to": "E3"
+                    },
+                    {
+                      "from": "A3",
+                      "to": "B3"
+                    },
+                    {
+                      "from": "B3",
+                      "to": "C3"
+                    },
+                    {
+                      "from": "C3",
+                      "to": "D3"
+                    },
+                    {
+                      "from": "D3",
+                      "to": "E3"
+                    }
+                  ],
+                  "legend": "Cell names: letter = column, number = row"
+                },
+                "say": "Kit starts at A2 and wants to reach E2. The log at C2 blocks the straight path, so that cell is missing. For every cell the score is f = g + h, where g is the steps already taken and h is the Manhattan distance to E2."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A1",
+                      "x": 30,
+                      "y": 30,
+                      "label": "A1",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "B1",
+                      "x": 90,
+                      "y": 30,
+                      "label": "B1"
+                    },
+                    {
+                      "id": "C1",
+                      "x": 150,
+                      "y": 30,
+                      "label": "C1"
+                    },
+                    {
+                      "id": "D1",
+                      "x": 210,
+                      "y": 30,
+                      "label": "D1"
+                    },
+                    {
+                      "id": "E1",
+                      "x": 270,
+                      "y": 30,
+                      "label": "E1"
+                    },
+                    {
+                      "id": "A2",
+                      "x": 30,
+                      "y": 90,
+                      "label": "A2",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "B2",
+                      "x": 90,
+                      "y": 90,
+                      "label": "B2",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "D2",
+                      "x": 210,
+                      "y": 90,
+                      "label": "D2"
+                    },
+                    {
+                      "id": "E2",
+                      "x": 270,
+                      "y": 90,
+                      "label": "E2"
+                    },
+                    {
+                      "id": "A3",
+                      "x": 30,
+                      "y": 150,
+                      "label": "A3",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "B3",
+                      "x": 90,
+                      "y": 150,
+                      "label": "B3"
+                    },
+                    {
+                      "id": "C3",
+                      "x": 150,
+                      "y": 150,
+                      "label": "C3"
+                    },
+                    {
+                      "id": "D3",
+                      "x": 210,
+                      "y": 150,
+                      "label": "D3"
+                    },
+                    {
+                      "id": "E3",
+                      "x": 270,
+                      "y": 150,
+                      "label": "E3"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A1",
+                      "to": "B1"
+                    },
+                    {
+                      "from": "A1",
+                      "to": "A2"
+                    },
+                    {
+                      "from": "B1",
+                      "to": "C1"
+                    },
+                    {
+                      "from": "B1",
+                      "to": "B2"
+                    },
+                    {
+                      "from": "C1",
+                      "to": "D1"
+                    },
+                    {
+                      "from": "D1",
+                      "to": "E1"
+                    },
+                    {
+                      "from": "D1",
+                      "to": "D2"
+                    },
+                    {
+                      "from": "E1",
+                      "to": "E2"
+                    },
+                    {
+                      "from": "A2",
+                      "to": "B2"
+                    },
+                    {
+                      "from": "A2",
+                      "to": "A3"
+                    },
+                    {
+                      "from": "B2",
+                      "to": "B3"
+                    },
+                    {
+                      "from": "D2",
+                      "to": "E2"
+                    },
+                    {
+                      "from": "D2",
+                      "to": "D3"
+                    },
+                    {
+                      "from": "E2",
+                      "to": "E3"
+                    },
+                    {
+                      "from": "A3",
+                      "to": "B3"
+                    },
+                    {
+                      "from": "B3",
+                      "to": "C3"
+                    },
+                    {
+                      "from": "C3",
+                      "to": "D3"
+                    },
+                    {
+                      "from": "D3",
+                      "to": "E3"
+                    }
+                  ],
+                  "legend": "Cell names: letter = column, number = row"
+                },
+                "say": "Take the lowest score: A2 with g = 0, h = 4, f = 4. Frontier now: A1 (f = 6), A3 (f = 6), B2 (f = 4)."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A1",
+                      "x": 30,
+                      "y": 30,
+                      "label": "A1",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "B1",
+                      "x": 90,
+                      "y": 30,
+                      "label": "B1",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "C1",
+                      "x": 150,
+                      "y": 30,
+                      "label": "C1"
+                    },
+                    {
+                      "id": "D1",
+                      "x": 210,
+                      "y": 30,
+                      "label": "D1"
+                    },
+                    {
+                      "id": "E1",
+                      "x": 270,
+                      "y": 30,
+                      "label": "E1"
+                    },
+                    {
+                      "id": "A2",
+                      "x": 30,
+                      "y": 90,
+                      "label": "A2",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B2",
+                      "x": 90,
+                      "y": 90,
+                      "label": "B2",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "D2",
+                      "x": 210,
+                      "y": 90,
+                      "label": "D2"
+                    },
+                    {
+                      "id": "E2",
+                      "x": 270,
+                      "y": 90,
+                      "label": "E2"
+                    },
+                    {
+                      "id": "A3",
+                      "x": 30,
+                      "y": 150,
+                      "label": "A3",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "B3",
+                      "x": 90,
+                      "y": 150,
+                      "label": "B3",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "C3",
+                      "x": 150,
+                      "y": 150,
+                      "label": "C3"
+                    },
+                    {
+                      "id": "D3",
+                      "x": 210,
+                      "y": 150,
+                      "label": "D3"
+                    },
+                    {
+                      "id": "E3",
+                      "x": 270,
+                      "y": 150,
+                      "label": "E3"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A1",
+                      "to": "B1"
+                    },
+                    {
+                      "from": "A1",
+                      "to": "A2"
+                    },
+                    {
+                      "from": "B1",
+                      "to": "C1"
+                    },
+                    {
+                      "from": "B1",
+                      "to": "B2"
+                    },
+                    {
+                      "from": "C1",
+                      "to": "D1"
+                    },
+                    {
+                      "from": "D1",
+                      "to": "E1"
+                    },
+                    {
+                      "from": "D1",
+                      "to": "D2"
+                    },
+                    {
+                      "from": "E1",
+                      "to": "E2"
+                    },
+                    {
+                      "from": "A2",
+                      "to": "B2"
+                    },
+                    {
+                      "from": "A2",
+                      "to": "A3"
+                    },
+                    {
+                      "from": "B2",
+                      "to": "B3"
+                    },
+                    {
+                      "from": "D2",
+                      "to": "E2"
+                    },
+                    {
+                      "from": "D2",
+                      "to": "D3"
+                    },
+                    {
+                      "from": "E2",
+                      "to": "E3"
+                    },
+                    {
+                      "from": "A3",
+                      "to": "B3"
+                    },
+                    {
+                      "from": "B3",
+                      "to": "C3"
+                    },
+                    {
+                      "from": "C3",
+                      "to": "D3"
+                    },
+                    {
+                      "from": "D3",
+                      "to": "E3"
+                    }
+                  ],
+                  "legend": "Cell names: letter = column, number = row"
+                },
+                "say": "Take the lowest score: B2 with g = 1, h = 3, f = 4. Frontier now: A1 (f = 6), A3 (f = 6), B1 (f = 6), B3 (f = 6).",
+                "predict": {
+                  "prompt": "B2 has g = 1 and h = 3, so f = 4. After exploring B2 the best frontier scores are 6. Which is B3's score?",
+                  "options": [
+                    {
+                      "text": "6 (g = 2, h = 4)",
+                      "correct": true
+                    },
+                    {
+                      "text": "4",
+                      "correct": false
+                    },
+                    {
+                      "text": "5",
+                      "correct": false
+                    },
+                    {
+                      "text": "2",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "g is the number of steps taken so far to reach B3.",
+                    "h is the Manhattan distance from B3 to E2: 3 across and 1 up."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A1",
+                      "x": 30,
+                      "y": 30,
+                      "label": "A1",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "B1",
+                      "x": 90,
+                      "y": 30,
+                      "label": "B1",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "C1",
+                      "x": 150,
+                      "y": 30,
+                      "label": "C1"
+                    },
+                    {
+                      "id": "D1",
+                      "x": 210,
+                      "y": 30,
+                      "label": "D1"
+                    },
+                    {
+                      "id": "E1",
+                      "x": 270,
+                      "y": 30,
+                      "label": "E1"
+                    },
+                    {
+                      "id": "A2",
+                      "x": 30,
+                      "y": 90,
+                      "label": "A2",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B2",
+                      "x": 90,
+                      "y": 90,
+                      "label": "B2",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D2",
+                      "x": 210,
+                      "y": 90,
+                      "label": "D2"
+                    },
+                    {
+                      "id": "E2",
+                      "x": 270,
+                      "y": 90,
+                      "label": "E2"
+                    },
+                    {
+                      "id": "A3",
+                      "x": 30,
+                      "y": 150,
+                      "label": "A3",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "B3",
+                      "x": 90,
+                      "y": 150,
+                      "label": "B3",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "C3",
+                      "x": 150,
+                      "y": 150,
+                      "label": "C3",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "D3",
+                      "x": 210,
+                      "y": 150,
+                      "label": "D3"
+                    },
+                    {
+                      "id": "E3",
+                      "x": 270,
+                      "y": 150,
+                      "label": "E3"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A1",
+                      "to": "B1"
+                    },
+                    {
+                      "from": "A1",
+                      "to": "A2"
+                    },
+                    {
+                      "from": "B1",
+                      "to": "C1"
+                    },
+                    {
+                      "from": "B1",
+                      "to": "B2"
+                    },
+                    {
+                      "from": "C1",
+                      "to": "D1"
+                    },
+                    {
+                      "from": "D1",
+                      "to": "E1"
+                    },
+                    {
+                      "from": "D1",
+                      "to": "D2"
+                    },
+                    {
+                      "from": "E1",
+                      "to": "E2"
+                    },
+                    {
+                      "from": "A2",
+                      "to": "B2"
+                    },
+                    {
+                      "from": "A2",
+                      "to": "A3"
+                    },
+                    {
+                      "from": "B2",
+                      "to": "B3"
+                    },
+                    {
+                      "from": "D2",
+                      "to": "E2"
+                    },
+                    {
+                      "from": "D2",
+                      "to": "D3"
+                    },
+                    {
+                      "from": "E2",
+                      "to": "E3"
+                    },
+                    {
+                      "from": "A3",
+                      "to": "B3"
+                    },
+                    {
+                      "from": "B3",
+                      "to": "C3"
+                    },
+                    {
+                      "from": "C3",
+                      "to": "D3"
+                    },
+                    {
+                      "from": "D3",
+                      "to": "E3"
+                    }
+                  ],
+                  "legend": "Cell names: letter = column, number = row"
+                },
+                "say": "Take the lowest score: B3 with g = 2, h = 4, f = 6. Frontier now: A1 (f = 6), A3 (f = 6), B1 (f = 6), C3 (f = 6)."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A1",
+                      "x": 30,
+                      "y": 30,
+                      "label": "A1",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "B1",
+                      "x": 90,
+                      "y": 30,
+                      "label": "B1",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "C1",
+                      "x": 150,
+                      "y": 30,
+                      "label": "C1"
+                    },
+                    {
+                      "id": "D1",
+                      "x": 210,
+                      "y": 30,
+                      "label": "D1"
+                    },
+                    {
+                      "id": "E1",
+                      "x": 270,
+                      "y": 30,
+                      "label": "E1"
+                    },
+                    {
+                      "id": "A2",
+                      "x": 30,
+                      "y": 90,
+                      "label": "A2",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B2",
+                      "x": 90,
+                      "y": 90,
+                      "label": "B2",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D2",
+                      "x": 210,
+                      "y": 90,
+                      "label": "D2"
+                    },
+                    {
+                      "id": "E2",
+                      "x": 270,
+                      "y": 90,
+                      "label": "E2"
+                    },
+                    {
+                      "id": "A3",
+                      "x": 30,
+                      "y": 150,
+                      "label": "A3",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "B3",
+                      "x": 90,
+                      "y": 150,
+                      "label": "B3",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C3",
+                      "x": 150,
+                      "y": 150,
+                      "label": "C3",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "D3",
+                      "x": 210,
+                      "y": 150,
+                      "label": "D3",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "E3",
+                      "x": 270,
+                      "y": 150,
+                      "label": "E3"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A1",
+                      "to": "B1"
+                    },
+                    {
+                      "from": "A1",
+                      "to": "A2"
+                    },
+                    {
+                      "from": "B1",
+                      "to": "C1"
+                    },
+                    {
+                      "from": "B1",
+                      "to": "B2"
+                    },
+                    {
+                      "from": "C1",
+                      "to": "D1"
+                    },
+                    {
+                      "from": "D1",
+                      "to": "E1"
+                    },
+                    {
+                      "from": "D1",
+                      "to": "D2"
+                    },
+                    {
+                      "from": "E1",
+                      "to": "E2"
+                    },
+                    {
+                      "from": "A2",
+                      "to": "B2"
+                    },
+                    {
+                      "from": "A2",
+                      "to": "A3"
+                    },
+                    {
+                      "from": "B2",
+                      "to": "B3"
+                    },
+                    {
+                      "from": "D2",
+                      "to": "E2"
+                    },
+                    {
+                      "from": "D2",
+                      "to": "D3"
+                    },
+                    {
+                      "from": "E2",
+                      "to": "E3"
+                    },
+                    {
+                      "from": "A3",
+                      "to": "B3"
+                    },
+                    {
+                      "from": "B3",
+                      "to": "C3"
+                    },
+                    {
+                      "from": "C3",
+                      "to": "D3"
+                    },
+                    {
+                      "from": "D3",
+                      "to": "E3"
+                    }
+                  ],
+                  "legend": "Cell names: letter = column, number = row"
+                },
+                "say": "Take the lowest score: C3 with g = 3, h = 3, f = 6. Frontier now: A1 (f = 6), A3 (f = 6), B1 (f = 6), D3 (f = 6).",
+                "predict": {
+                  "prompt": "C3 is next. Roughly how will f change as Kit walks along the bottom row towards E3?",
+                  "options": [
+                    {
+                      "text": "It stays at 6: g goes up by 1 and h goes down by 1",
+                      "correct": true
+                    },
+                    {
+                      "text": "It goes up each step",
+                      "correct": false
+                    },
+                    {
+                      "text": "It drops to 0",
+                      "correct": false
+                    },
+                    {
+                      "text": "It cannot be known",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Each step along the row adds one to g.",
+                    "Each step towards E2 takes one off h."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A1",
+                      "x": 30,
+                      "y": 30,
+                      "label": "A1",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "B1",
+                      "x": 90,
+                      "y": 30,
+                      "label": "B1",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "C1",
+                      "x": 150,
+                      "y": 30,
+                      "label": "C1"
+                    },
+                    {
+                      "id": "D1",
+                      "x": 210,
+                      "y": 30,
+                      "label": "D1"
+                    },
+                    {
+                      "id": "E1",
+                      "x": 270,
+                      "y": 30,
+                      "label": "E1"
+                    },
+                    {
+                      "id": "A2",
+                      "x": 30,
+                      "y": 90,
+                      "label": "A2",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B2",
+                      "x": 90,
+                      "y": 90,
+                      "label": "B2",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D2",
+                      "x": 210,
+                      "y": 90,
+                      "label": "D2",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "E2",
+                      "x": 270,
+                      "y": 90,
+                      "label": "E2"
+                    },
+                    {
+                      "id": "A3",
+                      "x": 30,
+                      "y": 150,
+                      "label": "A3",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "B3",
+                      "x": 90,
+                      "y": 150,
+                      "label": "B3",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C3",
+                      "x": 150,
+                      "y": 150,
+                      "label": "C3",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D3",
+                      "x": 210,
+                      "y": 150,
+                      "label": "D3",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "E3",
+                      "x": 270,
+                      "y": 150,
+                      "label": "E3",
+                      "mark": "queued"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A1",
+                      "to": "B1"
+                    },
+                    {
+                      "from": "A1",
+                      "to": "A2"
+                    },
+                    {
+                      "from": "B1",
+                      "to": "C1"
+                    },
+                    {
+                      "from": "B1",
+                      "to": "B2"
+                    },
+                    {
+                      "from": "C1",
+                      "to": "D1"
+                    },
+                    {
+                      "from": "D1",
+                      "to": "E1"
+                    },
+                    {
+                      "from": "D1",
+                      "to": "D2"
+                    },
+                    {
+                      "from": "E1",
+                      "to": "E2"
+                    },
+                    {
+                      "from": "A2",
+                      "to": "B2"
+                    },
+                    {
+                      "from": "A2",
+                      "to": "A3"
+                    },
+                    {
+                      "from": "B2",
+                      "to": "B3"
+                    },
+                    {
+                      "from": "D2",
+                      "to": "E2"
+                    },
+                    {
+                      "from": "D2",
+                      "to": "D3"
+                    },
+                    {
+                      "from": "E2",
+                      "to": "E3"
+                    },
+                    {
+                      "from": "A3",
+                      "to": "B3"
+                    },
+                    {
+                      "from": "B3",
+                      "to": "C3"
+                    },
+                    {
+                      "from": "C3",
+                      "to": "D3"
+                    },
+                    {
+                      "from": "D3",
+                      "to": "E3"
+                    }
+                  ],
+                  "legend": "Cell names: letter = column, number = row"
+                },
+                "say": "Take the lowest score: D3 with g = 4, h = 2, f = 6. Frontier now: A1 (f = 6), A3 (f = 6), B1 (f = 6), D2 (f = 6), E3 (f = 6)."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A1",
+                      "x": 30,
+                      "y": 30,
+                      "label": "A1",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "B1",
+                      "x": 90,
+                      "y": 30,
+                      "label": "B1",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "C1",
+                      "x": 150,
+                      "y": 30,
+                      "label": "C1"
+                    },
+                    {
+                      "id": "D1",
+                      "x": 210,
+                      "y": 30,
+                      "label": "D1"
+                    },
+                    {
+                      "id": "E1",
+                      "x": 270,
+                      "y": 30,
+                      "label": "E1"
+                    },
+                    {
+                      "id": "A2",
+                      "x": 30,
+                      "y": 90,
+                      "label": "A2",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B2",
+                      "x": 90,
+                      "y": 90,
+                      "label": "B2",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D2",
+                      "x": 210,
+                      "y": 90,
+                      "label": "D2",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "E2",
+                      "x": 270,
+                      "y": 90,
+                      "label": "E2",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "A3",
+                      "x": 30,
+                      "y": 150,
+                      "label": "A3",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "B3",
+                      "x": 90,
+                      "y": 150,
+                      "label": "B3",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C3",
+                      "x": 150,
+                      "y": 150,
+                      "label": "C3",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D3",
+                      "x": 210,
+                      "y": 150,
+                      "label": "D3",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E3",
+                      "x": 270,
+                      "y": 150,
+                      "label": "E3",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A1",
+                      "to": "B1"
+                    },
+                    {
+                      "from": "A1",
+                      "to": "A2"
+                    },
+                    {
+                      "from": "B1",
+                      "to": "C1"
+                    },
+                    {
+                      "from": "B1",
+                      "to": "B2"
+                    },
+                    {
+                      "from": "C1",
+                      "to": "D1"
+                    },
+                    {
+                      "from": "D1",
+                      "to": "E1"
+                    },
+                    {
+                      "from": "D1",
+                      "to": "D2"
+                    },
+                    {
+                      "from": "E1",
+                      "to": "E2"
+                    },
+                    {
+                      "from": "A2",
+                      "to": "B2"
+                    },
+                    {
+                      "from": "A2",
+                      "to": "A3"
+                    },
+                    {
+                      "from": "B2",
+                      "to": "B3"
+                    },
+                    {
+                      "from": "D2",
+                      "to": "E2"
+                    },
+                    {
+                      "from": "D2",
+                      "to": "D3"
+                    },
+                    {
+                      "from": "E2",
+                      "to": "E3"
+                    },
+                    {
+                      "from": "A3",
+                      "to": "B3"
+                    },
+                    {
+                      "from": "B3",
+                      "to": "C3"
+                    },
+                    {
+                      "from": "C3",
+                      "to": "D3"
+                    },
+                    {
+                      "from": "D3",
+                      "to": "E3"
+                    }
+                  ],
+                  "legend": "Cell names: letter = column, number = row"
+                },
+                "say": "Take the lowest score: E3 with g = 5, h = 1, f = 6. Frontier now: A1 (f = 6), A3 (f = 6), B1 (f = 6), D2 (f = 6), E2 (f = 6)."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A1",
+                      "x": 30,
+                      "y": 30,
+                      "label": "A1"
+                    },
+                    {
+                      "id": "B1",
+                      "x": 90,
+                      "y": 30,
+                      "label": "B1"
+                    },
+                    {
+                      "id": "C1",
+                      "x": 150,
+                      "y": 30,
+                      "label": "C1"
+                    },
+                    {
+                      "id": "D1",
+                      "x": 210,
+                      "y": 30,
+                      "label": "D1"
+                    },
+                    {
+                      "id": "E1",
+                      "x": 270,
+                      "y": 30,
+                      "label": "E1"
+                    },
+                    {
+                      "id": "A2",
+                      "x": 30,
+                      "y": 90,
+                      "label": "A2",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B2",
+                      "x": 90,
+                      "y": 90,
+                      "label": "B2",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D2",
+                      "x": 210,
+                      "y": 90,
+                      "label": "D2"
+                    },
+                    {
+                      "id": "E2",
+                      "x": 270,
+                      "y": 90,
+                      "label": "E2",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "A3",
+                      "x": 30,
+                      "y": 150,
+                      "label": "A3"
+                    },
+                    {
+                      "id": "B3",
+                      "x": 90,
+                      "y": 150,
+                      "label": "B3",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C3",
+                      "x": 150,
+                      "y": 150,
+                      "label": "C3",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "D3",
+                      "x": 210,
+                      "y": 150,
+                      "label": "D3",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "E3",
+                      "x": 270,
+                      "y": 150,
+                      "label": "E3",
+                      "mark": "visited"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A1",
+                      "to": "B1"
+                    },
+                    {
+                      "from": "A1",
+                      "to": "A2"
+                    },
+                    {
+                      "from": "B1",
+                      "to": "C1"
+                    },
+                    {
+                      "from": "B1",
+                      "to": "B2"
+                    },
+                    {
+                      "from": "C1",
+                      "to": "D1"
+                    },
+                    {
+                      "from": "D1",
+                      "to": "E1"
+                    },
+                    {
+                      "from": "D1",
+                      "to": "D2"
+                    },
+                    {
+                      "from": "E1",
+                      "to": "E2"
+                    },
+                    {
+                      "from": "A2",
+                      "to": "B2",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A2",
+                      "to": "A3"
+                    },
+                    {
+                      "from": "B2",
+                      "to": "B3",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "D2",
+                      "to": "E2"
+                    },
+                    {
+                      "from": "D2",
+                      "to": "D3"
+                    },
+                    {
+                      "from": "E2",
+                      "to": "E3",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "A3",
+                      "to": "B3"
+                    },
+                    {
+                      "from": "B3",
+                      "to": "C3",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "C3",
+                      "to": "D3",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "D3",
+                      "to": "E3",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "Cell names: letter = column, number = row"
+                },
+                "say": "The lowest score on the frontier is E2 itself, with g = 6, h = 0 and f = 6. Goal reached after looking at just 7 cells. Breadth-first search had to look at all 14."
+              }
+            ]
+          }
+        },
+        {
+          "id": "f-of-b3",
+          "type": "numeric",
+          "taughtOn": "walked-plus-guessed",
+          "prompt": "Kit reaches B3 after 2 steps, and h is the Manhattan distance to E2. What is f?",
+          "answer": 6,
+          "calculator": false,
+          "hints": [
+            "f = g + h. Here g is 2.",
+            "h is 4, from the last question."
+          ],
+          "explain": "g is 2 and h is 4, so f = 2 + 4 = 6."
+        },
+        {
+          "id": "astar-steps",
+          "type": "order",
+          "taughtOn": "walked-plus-guessed",
+          "prompt": "Put the steps of A* in order.",
+          "items": [
+            "Score each frontier cell with f = g + h",
+            "Take the cell with the lowest f",
+            "Check whether it is the goal",
+            "Add its new neighbours to the frontier",
+            "Repeat until the goal is taken"
+          ],
+          "hints": [
+            "You need scores before you can pick one.",
+            "The goal test comes right after taking a cell."
+          ],
+          "explain": "A* scores the frontier, takes the lowest, tests it, adds its neighbours, and repeats."
+        },
+        {
+          "id": "admissible-facts",
+          "type": "buckets",
+          "taughtOn": "never-promise-too-much",
+          "prompt": "Is each statement about admissible guesses true or false?",
+          "buckets": [
+            "True",
+            "False"
+          ],
+          "items": [
+            {
+              "text": "It never guesses higher than the real cost to the goal",
+              "bucket": "True"
+            },
+            {
+              "text": "It must be exactly right every time",
+              "bucket": "False"
+            },
+            {
+              "text": "A guess of 0 for every cell is admissible",
+              "bucket": "True"
+            },
+            {
+              "text": "A guess of 100 for every cell is admissible on a small grid",
+              "bucket": "False"
+            },
+            {
+              "text": "Used with A*, it gives a cheapest route",
+              "bucket": "True"
+            }
+          ],
+          "hints": [
+            "Admissible means never too high.",
+            "It is allowed to guess low."
+          ],
+          "explain": "An admissible guess may be low but is never too high. With one, A* returns a cheapest route."
+        },
+        {
+          "id": "overestimate-sim",
+          "type": "stepsim",
+          "taughtOn": "never-promise-too-much",
+          "mode": "predict",
+          "prompt": "See what an overestimate does to A*.",
+          "explain": "With the bad guess for M, A* took the cost-10 path. With an honest guess of 2 it found the cost-4 path through M.",
+          "script": {
+            "view": "graph",
+            "steps": [
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 40,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "M",
+                      "x": 150,
+                      "y": 40,
+                      "label": "M"
+                    },
+                    {
+                      "id": "G",
+                      "x": 260,
+                      "y": 90,
+                      "label": "G"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "M",
+                      "weight": 2
+                    },
+                    {
+                      "from": "M",
+                      "to": "G",
+                      "weight": 2
+                    },
+                    {
+                      "from": "S",
+                      "to": "G",
+                      "weight": 10
+                    }
+                  ]
+                },
+                "say": "Kit is at S and wants G. Three paths exist: S to M costs 2, M to G costs 2, and S to G straight costs 10. The best route is through M, total 4. Suppose a bad guess says M is 20 steps from G (the true answer is 2)."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 40,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "M",
+                      "x": 150,
+                      "y": 40,
+                      "label": "M",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "G",
+                      "x": 260,
+                      "y": 90,
+                      "label": "G",
+                      "mark": "queued"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "M",
+                      "weight": 2
+                    },
+                    {
+                      "from": "M",
+                      "to": "G",
+                      "weight": 2
+                    },
+                    {
+                      "from": "S",
+                      "to": "G",
+                      "weight": 10
+                    }
+                  ]
+                },
+                "say": "Explore S. M gets f = g + h = 2 + 20 = 22. G gets f = 10 + 0 = 10.",
+                "predict": {
+                  "prompt": "Which entry has the lowest f, so A* takes it next?",
+                  "options": [
+                    {
+                      "text": "G, with f = 10",
+                      "correct": true
+                    },
+                    {
+                      "text": "M, with f = 22",
+                      "correct": false
+                    },
+                    {
+                      "text": "Neither, they are tied",
+                      "correct": false
+                    },
+                    {
+                      "text": "S, again",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Compare 10 and 22.",
+                    "A* takes the smallest score."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 40,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "M",
+                      "x": 150,
+                      "y": 40,
+                      "label": "M",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "G",
+                      "x": 260,
+                      "y": 90,
+                      "label": "G",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "M",
+                      "weight": 2
+                    },
+                    {
+                      "from": "M",
+                      "to": "G",
+                      "weight": 2
+                    },
+                    {
+                      "from": "S",
+                      "to": "G",
+                      "weight": 10,
+                      "mark": "used"
+                    }
+                  ]
+                },
+                "say": "A* takes G and stops. It reports a route of cost 10. The overestimate hid M, so the cost-4 route was never tried."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 40,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "M",
+                      "x": 150,
+                      "y": 40,
+                      "label": "M",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "G",
+                      "x": 260,
+                      "y": 90,
+                      "label": "G",
+                      "mark": "queued"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "M",
+                      "weight": 2
+                    },
+                    {
+                      "from": "M",
+                      "to": "G",
+                      "weight": 2
+                    },
+                    {
+                      "from": "S",
+                      "to": "G",
+                      "weight": 10
+                    }
+                  ]
+                },
+                "say": "Now suppose the guess for M is honest: 2. M gets f = 2 + 2 = 4, which beats G's 10. A* explores M first."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 40,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "M",
+                      "x": 150,
+                      "y": 40,
+                      "label": "M",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "G",
+                      "x": 260,
+                      "y": 90,
+                      "label": "G",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "M",
+                      "weight": 2,
+                      "mark": "used"
+                    },
+                    {
+                      "from": "M",
+                      "to": "G",
+                      "weight": 2,
+                      "mark": "used"
+                    },
+                    {
+                      "from": "S",
+                      "to": "G",
+                      "weight": 10
+                    }
+                  ]
+                },
+                "say": "G now has f = 4 through M, and A* takes it. The route costs 4, the best one. An honest guess never hides the best route."
+              }
+            ]
+          }
+        },
+        {
+          "id": "extra-cost",
+          "type": "numeric",
+          "taughtOn": "never-promise-too-much",
+          "prompt": "The bad guess made A* return a route of cost 10, but the best route costs 4. How much extra does the bad guess cost?",
+          "answer": 6,
+          "calculator": false,
+          "hints": [
+            "Subtract the best cost from the cost A* returned.",
+            "10 - 4."
+          ],
+          "explain": "10 - 4 = 6 extra."
+        },
+        {
+          "id": "astar-letters",
+          "type": "match",
+          "taughtOn": "walked-plus-guessed",
+          "prompt": "Match each letter or word to its meaning.",
+          "pairs": [
+            {
+              "left": "g",
+              "right": "Cost spent so far"
+            },
+            {
+              "left": "h",
+              "right": "Guess of cost still to go"
+            },
+            {
+              "left": "f",
+              "right": "g plus h, the score"
+            },
+            {
+              "left": "Frontier",
+              "right": "Cells seen but not yet explored"
+            }
+          ],
+          "hints": [
+            "f is built from the other two letters.",
+            "h stands for the guess."
+          ],
+          "explain": "g is the cost so far, h is the guess to go, f adds them, and the frontier holds cells still to explore."
+        },
+        {
+          "id": "cells-saved",
+          "type": "numeric",
+          "taughtOn": "counting-blocks",
+          "prompt": "Challenge: A* looked at 7 cells and breadth-first search looked at all 14. How many cells did A* skip?",
+          "answer": 7,
+          "calculator": false,
+          "hints": [
+            "Subtract the smaller number from the bigger one.",
+            "14 - 7."
+          ],
+          "explain": "14 - 7 = 7 cells skipped. A* looked only along its final route.",
+          "challenge": true
+        },
+        {
+          "id": "honest-m",
+          "type": "choice",
+          "taughtOn": "never-promise-too-much",
+          "prompt": "Challenge: the guess for M is changed to the honest value 2. What does A* do?",
+          "options": [
+            {
+              "text": "It explores M first (f = 4) and finds the cost-4 route",
+              "correct": true
+            },
+            {
+              "text": "It still takes the cost-10 path"
+            },
+            {
+              "text": "It explores G first"
+            },
+            {
+              "text": "It cannot find any route"
+            }
+          ],
+          "hints": [
+            "Work out M's new f: g is 2 and h is 2.",
+            "Compare it with G's score of 10."
+          ],
+          "explain": "M now scores 2 + 2 = 4, below G's 10, so A* explores M first and finds the cost-4 route.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m1.2-f1",
+          "type": "quiz",
+          "taughtOn": "walked-plus-guessed",
+          "prompt": "In A*, what does f stand for?",
+          "options": [
+            {
+              "text": "g plus h, the cost so far plus the guess to go",
+              "correct": true
+            },
+            {
+              "text": "The final cost"
+            },
+            {
+              "text": "The first cell"
+            },
+            {
+              "text": "The fastest route"
+            }
+          ],
+          "explain": "A* explores the lowest f first."
+        },
+        {
+          "id": "m1.2-f2",
+          "type": "why",
+          "taughtOn": "never-promise-too-much",
+          "prompt": "What makes a guess admissible?",
+          "options": [
+            {
+              "text": "It never overestimates the real cost to go",
+              "correct": true
+            },
+            {
+              "text": "It is always exactly right"
+            },
+            {
+              "text": "It is always 0"
+            },
+            {
+              "text": "It ignores the goal"
+            }
+          ],
+          "explain": "Too-high guesses can hide the best route."
+        },
+        {
+          "id": "m1.2-f3",
+          "type": "quiz",
+          "taughtOn": "counting-blocks",
+          "prompt": "On a grid with 4-way moves, which guess is common?",
+          "options": [
+            {
+              "text": "Manhattan distance",
+              "correct": true
+            },
+            {
+              "text": "The number of walls"
+            },
+            {
+              "text": "The square of the distance"
+            },
+            {
+              "text": "A random number"
+            }
+          ],
+          "explain": "It counts columns apart plus rows apart."
+        },
+        {
+          "id": "m1.2-f4",
+          "type": "predict",
+          "taughtOn": "counting-blocks",
+          "prompt": "Manhattan distance from B3 to E2?",
+          "answer": "4, because 3 columns plus 1 row."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "A* search",
+          "text": "A* picks the path that minimises f(n) = g(n) + h(n), where g is the cost so far and h is a heuristic estimate of the cost still to go.",
+          "source": {
+            "title": "Wikipedia: A* search algorithm",
+            "url": "https://en.wikipedia.org/wiki/A*_search_algorithm"
+          }
+        },
+        {
+          "title": "Admissible heuristics",
+          "text": "A heuristic is admissible if it never overestimates the cost of reaching the goal, so it acts as a lower bound.",
+          "source": {
+            "title": "Wikipedia: Admissible heuristic",
+            "url": "https://en.wikipedia.org/wiki/Admissible_heuristic"
+          }
+        },
+        {
+          "title": "Manhattan distance",
+          "text": "Taxicab or Manhattan distance adds the absolute differences of the coordinates. The name comes from a city with a rectangular grid of streets.",
+          "source": {
+            "title": "Wikipedia: Taxicab geometry",
+            "url": "https://en.wikipedia.org/wiki/Taxicab_geometry"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You scored cells with f = g + h, used Manhattan distance as a guess, watched A* look at half as many cells as breadth-first search, and saw how an overestimate can hide the best route.",
+          "Rowan taps the log. \"A guess that is too bold costs you the best path.\" Kit nods. \"So guess low, but guess well.\""
+        ],
+        "mistake": {
+          "title": "Guessing high to be safe",
+          "text": "A guess higher than the true cost can make A* skip the best route. A guess that is too low is safe, only less helpful."
+        }
+      }
+    },
+    {
+      "id": "1.3",
+      "title": "Never the Same Spot Twice",
+      "story": "Kit follows a trail and arrives, for the third time, at the same fallen tree. \"We are going in circles,\" says Rowan. \"Mark where you have been.\" Kit ties a ribbon on the trunk.",
+      "everyday": {
+        "scene": "In a big shopping centre you can walk past the same fountain again and again. A pocket map with a tick on every place you have visited stops that.",
+        "question": "How does a search avoid going round in circles?",
+        "answer": "It keeps a list of every state it has seen, and only adds a state to its to-do list the first time it finds it."
+      },
+      "lessons": [
+        {
+          "id": "loops-waste-effort",
+          "title": "Loops waste effort",
+          "text": [
+            "Many states can be reached by more than one route, and some routes loop back. A search that forgets where it has been keeps exploring the same states again.",
+            "On a grid where you can step up, down, left or right, there are 4 routes of length 1, 16 of length 2 and 1,024 of length 5. Yet only 61 different cells lie within 5 steps of the start."
+          ],
+          "table": {
+            "head": [
+              "Steps",
+              "Routes of that length",
+              "Different cells within that many steps"
+            ],
+            "rows": [
+              [
+                "1",
+                "4",
+                "5"
+              ],
+              [
+                "2",
+                "16",
+                "13"
+              ],
+              [
+                "3",
+                "64",
+                "25"
+              ],
+              [
+                "5",
+                "1,024",
+                "61"
+              ],
+              [
+                "10",
+                "1,048,576",
+                "221"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Graph traversal",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Graph_traversal"
+            },
+            {
+              "title": "Wikipedia: State-space search",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/State-space_search"
+            }
+          ]
+        },
+        {
+          "id": "reached-set",
+          "title": "A reached set",
+          "text": [
+            "The fix is a reached set: a list of every state already seen. When the search finds a neighbour, it adds it to the frontier only if it is not in the reached set yet.",
+            "Each state is then explored at most once, so the work depends on the number of states, not the number of routes. On the loop map in the sim, 7 neighbour checks are skipped because the state was already reached."
+          ],
+          "terms": [
+            {
+              "term": "Reached set",
+              "meaning": "Every state the search has already seen."
+            },
+            {
+              "term": "Repeated state",
+              "meaning": "A state reached again by another route."
+            }
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Graph traversal",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Graph_traversal"
+            },
+            {
+              "title": "Red Blob Games: Introduction to the A* algorithm",
+              "source": "Interactive tutorial (linked, not copied)",
+              "url": "https://www.redblobgames.com/pathfinding/a-star/introduction.html"
+            }
+          ]
+        },
+        {
+          "id": "when-costs-differ",
+          "title": "When costs differ",
+          "text": [
+            "When every step costs the same, the first route to a state is a shortest one, so skipping later arrivals is safe. When steps have different costs, a later route might be cheaper.",
+            "Then the search remembers the cheapest cost found so far for each state. It adds a state again only when a new route beats that cost."
+          ],
+          "deeper": {
+            "title": "Both cases in one rule",
+            "text": [
+              "A single rule covers both: add a neighbour if it has never been reached, or if the new route is cheaper than the best one so far."
+            ]
+          },
+          "references": [
+            {
+              "title": "Red Blob Games: Introduction to the A* algorithm",
+              "source": "Interactive tutorial (linked, not copied)",
+              "url": "https://www.redblobgames.com/pathfinding/a-star/introduction.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "cells-three",
+          "type": "numeric",
+          "taughtOn": "loops-waste-effort",
+          "prompt": "On a grid with 4 moves from each cell, how many different cells lie within 3 steps of the start (including the start)?",
+          "answer": 25,
+          "calculator": false,
+          "hints": [
+            "Look at the table, or count the rings: 1 + 4 + 8 + 12.",
+            "Each ring adds 4 more cells than the one before."
+          ],
+          "explain": "1 + 4 + 8 + 12 = 25 cells, even though there are 64 routes of length 3."
+        },
+        {
+          "id": "reached-sim",
+          "type": "stepsim",
+          "taughtOn": "reached-set",
+          "mode": "predict",
+          "prompt": "Watch a search skip states it has already reached.",
+          "explain": "A state is added to the frontier only once. Every other arrival at it is skipped.",
+          "script": {
+            "view": "graph",
+            "steps": [
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 35,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "A",
+                      "x": 110,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "B",
+                      "x": 110,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "C",
+                      "x": 190,
+                      "y": 90,
+                      "label": "C"
+                    },
+                    {
+                      "id": "G",
+                      "x": 265,
+                      "y": 90,
+                      "label": "G"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "A"
+                    },
+                    {
+                      "from": "S",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C"
+                    },
+                    {
+                      "from": "C",
+                      "to": "G"
+                    }
+                  ],
+                  "legend": "S = start, G = goal"
+                },
+                "say": "Take S. Neighbours: added A, B. Reached set: S, A, B."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 35,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "A",
+                      "x": 110,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "B",
+                      "x": 110,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "C",
+                      "x": 190,
+                      "y": 90,
+                      "label": "C",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "G",
+                      "x": 265,
+                      "y": 90,
+                      "label": "G"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "A"
+                    },
+                    {
+                      "from": "S",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C"
+                    },
+                    {
+                      "from": "C",
+                      "to": "G"
+                    }
+                  ],
+                  "legend": "S = start, G = goal"
+                },
+                "say": "Take A. Neighbours: added C; skipped B, S (already reached). Reached set: S, A, B, C.",
+                "predict": {
+                  "prompt": "A's neighbours are B, C and S. B and S are already in the reached set. What happens to them?",
+                  "options": [
+                    {
+                      "text": "They are skipped, and only C is added",
+                      "correct": true
+                    },
+                    {
+                      "text": "All three are added again",
+                      "correct": false
+                    },
+                    {
+                      "text": "The search stops",
+                      "correct": false
+                    },
+                    {
+                      "text": "Only S is skipped",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Each state is explored at most once.",
+                    "A state in the reached set is not added to the frontier again."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 35,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "A",
+                      "x": 110,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 110,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "C",
+                      "x": 190,
+                      "y": 90,
+                      "label": "C",
+                      "mark": "queued"
+                    },
+                    {
+                      "id": "G",
+                      "x": 265,
+                      "y": 90,
+                      "label": "G"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "A"
+                    },
+                    {
+                      "from": "S",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C"
+                    },
+                    {
+                      "from": "C",
+                      "to": "G"
+                    }
+                  ],
+                  "legend": "S = start, G = goal"
+                },
+                "say": "Take B. Neighbours: none new; skipped A, C, S (already reached). Reached set: S, A, B, C."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 35,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "A",
+                      "x": 110,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 110,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 190,
+                      "y": 90,
+                      "label": "C",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "G",
+                      "x": 265,
+                      "y": 90,
+                      "label": "G",
+                      "mark": "queued"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "A"
+                    },
+                    {
+                      "from": "S",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C"
+                    },
+                    {
+                      "from": "C",
+                      "to": "G"
+                    }
+                  ],
+                  "legend": "S = start, G = goal"
+                },
+                "say": "Take C. Neighbours: added G; skipped A, B (already reached). Reached set: S, A, B, C, G."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "S",
+                      "x": 35,
+                      "y": 90,
+                      "label": "S",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "A",
+                      "x": 110,
+                      "y": 40,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 110,
+                      "y": 140,
+                      "label": "B",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "C",
+                      "x": 190,
+                      "y": 90,
+                      "label": "C",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "G",
+                      "x": 265,
+                      "y": 90,
+                      "label": "G",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "S",
+                      "to": "A",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "S",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "A",
+                      "to": "C",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C"
+                    },
+                    {
+                      "from": "C",
+                      "to": "G",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "S = start, G = goal"
+                },
+                "say": "Take G. Goal reached. Over the whole search, 7 neighbour checks were skipped because the state was already in the reached set. Reached set: S, A, B, C, G."
+              }
+            ]
+          }
+        },
+        {
+          "id": "skipped-checks",
+          "type": "numeric",
+          "taughtOn": "reached-set",
+          "prompt": "Over the whole search on the loop map, how many neighbour checks were skipped because the state was already reached?",
+          "answer": 7,
+          "calculator": false,
+          "hints": [
+            "Add up the skipped states in each step.",
+            "A skipped 2, B skipped 3 and C skipped 2."
+          ],
+          "explain": "A skipped 2, B skipped 3 and C skipped 2, so 7 checks were skipped."
+        },
+        {
+          "id": "graph-search-steps",
+          "type": "order",
+          "taughtOn": "reached-set",
+          "prompt": "Put the steps of a search with a reached set in order.",
+          "items": [
+            "Put the start on the frontier and in the reached set",
+            "Take an entry off the frontier",
+            "Look at each neighbour of that entry",
+            "Skip any neighbour already in the reached set",
+            "Add each new neighbour to the frontier and the reached set"
+          ],
+          "hints": [
+            "The start must be recorded first.",
+            "Skip before adding."
+          ],
+          "explain": "Record the start, take an entry, check each neighbour, skip reached ones, and add the rest."
+        },
+        {
+          "id": "reached-facts",
+          "type": "buckets",
+          "taughtOn": "reached-set",
+          "prompt": "Is each statement about a reached set true or false?",
+          "buckets": [
+            "True",
+            "False"
+          ],
+          "items": [
+            {
+              "text": "It records every state the search has already seen",
+              "bucket": "True"
+            },
+            {
+              "text": "It lets the same state be explored many times",
+              "bucket": "False"
+            },
+            {
+              "text": "A neighbour already in it is not added again",
+              "bucket": "True"
+            },
+            {
+              "text": "It makes the work depend on the number of states",
+              "bucket": "True"
+            },
+            {
+              "text": "It is only needed when there are no loops",
+              "bucket": "False"
+            }
+          ],
+          "hints": [
+            "The reached set stops repeats.",
+            "Loops are exactly where repeats happen."
+          ],
+          "explain": "A reached set remembers every state seen, so each is explored at most once."
+        },
+        {
+          "id": "equal-costs-safe",
+          "type": "choice",
+          "taughtOn": "when-costs-differ",
+          "prompt": "Why is skipping a later arrival safe when every step costs the same?",
+          "options": [
+            {
+              "text": "The first arrival used the fewest steps, so a later one cannot be better",
+              "correct": true
+            },
+            {
+              "text": "Later arrivals are always wrong"
+            },
+            {
+              "text": "Skipping saves memory"
+            },
+            {
+              "text": "The goal is already known"
+            }
+          ],
+          "hints": [
+            "Think about which route reaches the state first.",
+            "With equal costs, fewer steps means lower cost."
+          ],
+          "explain": "In a breadth-first search the first arrival takes the fewest steps, so any later route is at best equal."
+        },
+        {
+          "id": "repeat-words",
+          "type": "match",
+          "taughtOn": "reached-set",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Reached set",
+              "right": "Every state already seen"
+            },
+            {
+              "left": "Frontier",
+              "right": "States seen but not yet explored"
+            },
+            {
+              "left": "Repeated state",
+              "right": "A state reached again by another route"
+            },
+            {
+              "left": "Cheaper route later",
+              "right": "A reason to add a state again when costs differ"
+            }
+          ],
+          "hints": [
+            "The reached set records history.",
+            "The last one only matters when step costs differ."
+          ],
+          "explain": "The reached set is the history, the frontier is the waiting list, a repeat is a second arrival, and a cheaper later route can justify re-adding a state."
+        },
+        {
+          "id": "cells-ten",
+          "type": "numeric",
+          "taughtOn": "loops-waste-effort",
+          "prompt": "Challenge: how many different cells lie within 10 steps of the start on a 4-move grid?",
+          "answer": 221,
+          "calculator": false,
+          "hints": [
+            "The count within d steps is 2 x d x (d + 1) + 1.",
+            "2 x 10 x 11 + 1."
+          ],
+          "explain": "2 x 10 x 11 + 1 = 221 cells, though 4 to the power 10 is 1,048,576 routes.",
+          "challenge": true
+        },
+        {
+          "id": "never-stops",
+          "type": "choice",
+          "taughtOn": "loops-waste-effort",
+          "prompt": "Challenge: a search with no check for repeated states runs on a map with a loop and no reachable goal. What happens?",
+          "options": [
+            {
+              "text": "It keeps going round the loop and never stops",
+              "correct": true
+            },
+            {
+              "text": "It stops and says there is no plan"
+            },
+            {
+              "text": "It finds a plan at once"
+            },
+            {
+              "text": "It skips the loop by itself"
+            }
+          ],
+          "hints": [
+            "Nothing tells it that it has been here before.",
+            "It keeps finding new routes round the loop."
+          ],
+          "explain": "Without a reached set the search keeps generating longer and longer routes round the loop, so it never finishes.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m1.3-f1",
+          "type": "quiz",
+          "taughtOn": "reached-set",
+          "prompt": "What does a reached set record?",
+          "options": [
+            {
+              "text": "Every state the search has already seen",
+              "correct": true
+            },
+            {
+              "text": "The cost of the best route"
+            },
+            {
+              "text": "The goal"
+            },
+            {
+              "text": "The number of moves left"
+            }
+          ],
+          "explain": "It stops the search going back over old ground."
+        },
+        {
+          "id": "m1.3-f2",
+          "type": "why",
+          "taughtOn": "when-costs-differ",
+          "prompt": "When might a search add a reached state again?",
+          "options": [
+            {
+              "text": "When a new route to it is cheaper",
+              "correct": true
+            },
+            {
+              "text": "Never"
+            },
+            {
+              "text": "Always"
+            },
+            {
+              "text": "When the goal is far"
+            }
+          ],
+          "explain": "With unequal costs a later route can be better."
+        },
+        {
+          "id": "m1.3-f3",
+          "type": "quiz",
+          "taughtOn": "loops-waste-effort",
+          "prompt": "Why do loops cause trouble for search?",
+          "options": [
+            {
+              "text": "The search can keep re-exploring the same states",
+              "correct": true
+            },
+            {
+              "text": "They make the goal vanish"
+            },
+            {
+              "text": "They add costs"
+            },
+            {
+              "text": "They remove neighbours"
+            }
+          ],
+          "explain": "Without a record, it cannot tell it is going round."
+        },
+        {
+          "id": "m1.3-f4",
+          "type": "predict",
+          "taughtOn": "loops-waste-effort",
+          "prompt": "How many different cells lie within 3 steps on a 4-move grid?",
+          "answer": "25 cells, although there are 64 routes of length 3."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Revisiting nodes",
+          "text": "Graph traversal may visit some vertices more than once, so it is usually necessary to remember which vertices have already been explored.",
+          "source": {
+            "title": "Wikipedia: Graph traversal",
+            "url": "https://en.wikipedia.org/wiki/Graph_traversal"
+          }
+        },
+        {
+          "title": "Reached set",
+          "text": "A common pattern is to keep a frontier of places to explore and a set of places already reached, adding a neighbour only if it has not been reached.",
+          "source": {
+            "title": "Red Blob Games: Introduction to the A* algorithm",
+            "url": "https://www.redblobgames.com/pathfinding/a-star/introduction.html"
+          }
+        },
+        {
+          "title": "Route planners",
+          "text": "A search has to remember which places it has already explored, so that it revisits them as little as possible and cannot go round in circles forever. In planning, the set of states already reached plays that part.",
+          "source": {
+            "title": "Wikipedia: Graph traversal",
+            "url": "https://en.wikipedia.org/wiki/Graph_traversal"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You saw how routes multiply while the number of different states stays small, added a reached set so each state is explored once, and learned the extra rule needed when step costs differ.",
+          "Rowan counts the ribbons. \"One per clearing, no more.\" Kit smiles. \"And no more circles.\""
+        ],
+        "mistake": {
+          "title": "Trusting a search that never checks for repeats",
+          "text": "A search with no record of what it has seen can loop forever, or waste time on the same states. A reached set keeps the work to the number of states."
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,234 @@
+{
+  "title": "Waypoint Woods",
+  "tagline": "Follow Ranger Rowan along forest trails where Kit plans each step to a goal: how a program searches for, describes and guesses its way to a plan.",
+  "funFacts": [
+    {
+      "text": "STRIPS, the way of writing actions that most planning languages grew from, was developed in 1971 at SRI International."
+    },
+    {
+      "text": "The planning language PDDL was first developed in 1998, mainly so that an international planning competition could be held."
+    },
+    {
+      "text": "The FF planner, which guesses distance by ignoring what each action deletes, was the most successful automatic planner at the AIPS-2000 planning competition."
+    },
+    {
+      "text": "Manhattan distance is named after the grid of streets in Manhattan: it adds up the blocks you must walk along rows and columns."
+    }
+  ],
+  "listHeading": "Trails",
+  "mapStyle": "islands",
+  "starRules": "3 stars: no mistakes and no hints. 2 stars: up to 2 mistakes. 1 star: you finished.",
+  "journal": {
+    "title": "Field Journal",
+    "intro": "Every level unlocks Field Notes: where the idea shows up in the apps and systems you use today. Finish a level to read its notes.",
+    "lockedText": "Finish {level} to read this note.",
+    "hubText": "{count} of {total} Field Notes collected"
+  },
+  "feed": {
+    "title": "Daily Feed",
+    "intro": "Bite-size cards from the trails you've finished. About 10 cards, then you're done for today.",
+    "hubReady": "{count} cards ready",
+    "hubDone": "Done for today. More cards tomorrow.",
+    "hubCaughtUp": "All caught up",
+    "hubEmpty": "Finish a level to fill your feed.",
+    "streak": "{days}-day streak",
+    "start": "Start today's feed",
+    "empty": "Your feed is empty for now. Finish a level at the Trailhead and its cards will show up here.",
+    "caughtUp": "Cards you know well wait a few days before coming back. That gap is what makes them stick.",
+    "labels": {
+      "quiz": "Quick question",
+      "predict": "Predict, then flip",
+      "why": "Why?",
+      "note": "Field Note"
+    },
+    "flip": "Flip the card",
+    "selfCheck": "Was your answer close?",
+    "gotIt": "Yes, I got it",
+    "notYet": "Not quite",
+    "next": "Next card",
+    "swipeTip": "On a phone, you can also swipe left.",
+    "comesBack": "This card will come back later so it sticks.",
+    "doneTitle": "Done for today",
+    "doneText": "You got {right} of {total} right. Cards you missed will come back soon. The rest will wait a few days, so they stick.",
+    "doneTextPerfect": "You got all {total} right. These cards will now wait a few days before coming back, so they stick.",
+    "streakFirst": "That's day 1. Come back tomorrow for day 2.",
+    "streakMore": "{days} days in a row.",
+    "backToMap": "Back to map",
+    "emptyButton": "Go to the Trailhead"
+  },
+  "sim": {
+    "next": "Next step",
+    "back": "Back",
+    "stepOf": "Step {i} of {n}",
+    "runToEnd": "Run to the end",
+    "finish": "Continue",
+    "counted": "You predicted {guess}. It took {actual}.",
+    "revealed": "Here's what happens:",
+    "counter": "{name} so far: {value}"
+  },
+  "zones": [
+    {
+      "id": 0,
+      "name": "Trailhead",
+      "topic": "What planning is",
+      "file": "zone-0.json",
+      "map": {
+        "x": 30,
+        "y": 150,
+        "sprite": "house",
+        "roof": "#B5523B"
+      },
+      "levels": [
+        {
+          "id": "0.1",
+          "title": "Find the Steps",
+          "core": true
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "Crossroads Glade",
+      "topic": "Searching for a plan",
+      "file": "zone-1.json",
+      "map": {
+        "x": 72,
+        "y": 108,
+        "sprite": "house",
+        "roof": "#C9802F"
+      },
+      "levels": [
+        {
+          "id": "1.1",
+          "title": "Fan Out",
+          "core": true
+        },
+        {
+          "id": "1.2",
+          "title": "Guess the Distance",
+          "core": true
+        },
+        {
+          "id": "1.3",
+          "title": "Never the Same Spot Twice",
+          "core": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Signpost Hollow",
+      "topic": "Describing problems with STRIPS and PDDL",
+      "file": "zone-2.json",
+      "map": {
+        "x": 45,
+        "y": 66,
+        "sprite": "hut",
+        "roof": "#3E7039"
+      },
+      "levels": [
+        {
+          "id": "2.1",
+          "title": "Facts and Moves",
+          "core": true
+        },
+        {
+          "id": "2.2",
+          "title": "Write the Domain",
+          "core": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Lantern Ridge",
+      "topic": "Heuristics",
+      "file": "zone-3.json",
+      "map": {
+        "x": 100,
+        "y": 38,
+        "sprite": "house",
+        "roof": "#9C6B3F"
+      },
+      "levels": [
+        {
+          "id": "3.1",
+          "title": "Good Guess, Bad Guess",
+          "core": true
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Shortcut Spring",
+      "topic": "Delete relaxation",
+      "file": "zone-4.json",
+      "map": {
+        "x": 152,
+        "y": 70,
+        "sprite": "hut",
+        "roof": "#3D6B95"
+      },
+      "levels": [
+        {
+          "id": "4.1",
+          "title": "Ignore the Deletes",
+          "core": true
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Sparse Grove",
+      "topic": "Width-based planning",
+      "file": "zone-5.json",
+      "map": {
+        "x": 192,
+        "y": 118,
+        "sprite": "house",
+        "roof": "#7D5A9E"
+      },
+      "levels": [
+        {
+          "id": "5.1",
+          "title": "Few New Facts",
+          "core": true
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Deep Woods",
+      "topic": "Plan and goal recognition, and learning to act",
+      "file": null,
+      "map": {
+        "x": 236,
+        "y": 70,
+        "sprite": "hut",
+        "roof": "#5E9A4B"
+      },
+      "levels": [
+        {
+          "id": "6.1",
+          "title": "Spot the Goal",
+          "core": true
+        },
+        {
+          "id": "6.2",
+          "title": "Learn by Trying",
+          "core": false
+        }
+      ]
+    }
+  ],
+  "finale": {
+    "name": "The Summit Trail",
+    "topic": "Pick the right planning tool for each problem, with no hints",
+    "map": {
+      "x": 280,
+      "y": 118,
+      "sprite": "tower",
+      "roof": "#F2B84B"
+    }
+  }
+}

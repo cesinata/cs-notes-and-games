@@ -1,0 +1,1070 @@
+{
+  "zone": 1,
+  "levels": [
+    {
+      "id": "1.1",
+      "title": "Plan the Route",
+      "story": "Dara hands Kit a slip: \"Fetch every crate heavier than 40 kilos from Quay 3.\" Clerk Cobb in the Route Office taps it. \"Writing the request is the easy part,\" he says. \"Deciding the route is the real work.\"",
+      "everyday": {
+        "scene": "You ask a map app for the way to a friend's house. It does not just draw any road. It tries several routes, guesses how long each will take, and shows you the quickest.",
+        "question": "What does a database do when you send it a question in SQL?",
+        "answer": "SQL says what you want, not how to get it. The database checks the question, works out several ways to answer it, estimates what each costs, and runs the cheapest."
+      },
+      "lessons": [
+        {
+          "id": "four-stages",
+          "title": "From SQL to rows",
+          "text": [
+            "A query passes through stages. The parser checks the syntax and builds a query tree. The rewriter applies stored rules, such as expanding a view. The planner creates a plan. The executor runs that plan and hands back the rows.",
+            "You write what you want. The database decides how. Every query you send passes through these stages, in this order. They are PostgreSQL's names for them."
+          ],
+          "terms": [
+            {
+              "term": "Query plan",
+              "meaning": "The chosen list of steps the database will run."
+            },
+            {
+              "term": "Planner",
+              "meaning": "The stage that chooses the plan."
+            }
+          ],
+          "references": [
+            {
+              "title": "PostgreSQL documentation: The Path of a Query",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/query-path.html"
+            },
+            {
+              "title": "PostgreSQL documentation: Using EXPLAIN",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/using-explain.html"
+            }
+          ]
+        },
+        {
+          "id": "many-paths",
+          "title": "Many ways, one plan",
+          "text": [
+            "The planner builds the possible paths that give the same result. If a table has an index, one path scans the whole table and another uses the index. It estimates the cost of each path and keeps the cheapest.",
+            "Those estimates come from statistics about the data, which are only samples. So a plan is only as good as its guesses."
+          ],
+          "predict": {
+            "prompt": "Path A costs 700, path B costs 450 and path C costs 520. Which one does the planner choose?",
+            "answer": "Path B, because it has the lowest estimated cost."
+          },
+          "references": [
+            {
+              "title": "PostgreSQL documentation: The Path of a Query",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/query-path.html"
+            },
+            {
+              "title": "PostgreSQL documentation: Using EXPLAIN",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/using-explain.html"
+            }
+          ]
+        },
+        {
+          "id": "read-a-plan",
+          "title": "Reading a plan",
+          "text": [
+            "Databases will show you the plan. PostgreSQL uses EXPLAIN and SQLite uses EXPLAIN QUERY PLAN. The table below is real SQLite output for a table of 200 parcels.",
+            "SCAN means every row is looked at. SEARCH means the database jumps to the rows it needs, using an index or the primary key. After the index idx_w was created, the same question changed from SCAN to SEARCH."
+          ],
+          "table": {
+            "head": [
+              "Question and setup",
+              "Plan line"
+            ],
+            "rows": [
+              [
+                "WHERE weight = 7, no index",
+                "SCAN parcels"
+              ],
+              [
+                "WHERE weight = 7, index idx_w",
+                "SEARCH parcels USING INDEX idx_w (weight=?)"
+              ],
+              [
+                "WHERE id = 7 (the primary key)",
+                "SEARCH parcels USING INTEGER PRIMARY KEY (rowid=?)"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "SQLite documentation: EXPLAIN QUERY PLAN",
+              "source": "SQLite documentation (linked, not copied)",
+              "url": "https://www.sqlite.org/eqp.html"
+            },
+            {
+              "title": "PostgreSQL documentation: Using EXPLAIN",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/using-explain.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "stage-order",
+          "type": "order",
+          "taughtOn": "four-stages",
+          "prompt": "Put the stages of a query in the order they happen.",
+          "items": [
+            "The parser checks the syntax",
+            "The rewriter applies rules",
+            "The planner picks a plan",
+            "The executor runs the plan"
+          ],
+          "hints": [
+            "Checking the words comes first, running comes last.",
+            "The planner decides before the executor acts."
+          ],
+          "explain": "The parser, the rewriter, the planner and then the executor: check, adjust, decide, run."
+        },
+        {
+          "id": "stage-job",
+          "type": "match",
+          "taughtOn": "four-stages",
+          "prompt": "Match each stage to its job.",
+          "pairs": [
+            {
+              "left": "Parser",
+              "right": "Checks the SQL and builds a query tree"
+            },
+            {
+              "left": "Rewriter",
+              "right": "Applies rules, such as expanding a view"
+            },
+            {
+              "left": "Planner",
+              "right": "Chooses the cheapest path"
+            },
+            {
+              "left": "Executor",
+              "right": "Runs the plan and returns rows"
+            }
+          ],
+          "hints": [
+            "Choosing happens before running.",
+            "The first stage cares about whether the SQL is written correctly."
+          ],
+          "explain": "Each stage has one job: check, adjust, choose, run."
+        },
+        {
+          "id": "pipeline-sim",
+          "type": "stepsim",
+          "taughtOn": "four-stages",
+          "mode": "predict",
+          "prompt": "Follow one query through the four stages.",
+          "explain": "The planner chooses and the executor runs. Only the executor produces rows.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "Parser",
+                      "mark": null,
+                      "tag": "stage 1"
+                    },
+                    {
+                      "value": "Rewriter",
+                      "mark": null,
+                      "tag": "stage 2"
+                    },
+                    {
+                      "value": "Planner",
+                      "mark": null,
+                      "tag": "stage 3"
+                    },
+                    {
+                      "value": "Executor",
+                      "mark": null,
+                      "tag": "stage 4"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "The four stages of a query"
+                },
+                "say": "A query is on its way: SELECT * FROM crates WHERE weight > 40. It will pass through four stages, left to right."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "Parser",
+                      "mark": "best",
+                      "tag": "stage 1"
+                    },
+                    {
+                      "value": "Rewriter",
+                      "mark": null,
+                      "tag": "stage 2"
+                    },
+                    {
+                      "value": "Planner",
+                      "mark": null,
+                      "tag": "stage 3"
+                    },
+                    {
+                      "value": "Executor",
+                      "mark": null,
+                      "tag": "stage 4"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "checking"
+                  },
+                  "label": "The four stages of a query"
+                },
+                "say": "The parser checks that the SQL is written correctly and builds a query tree."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "Parser",
+                      "mark": null,
+                      "tag": "stage 1"
+                    },
+                    {
+                      "value": "Rewriter",
+                      "mark": "best",
+                      "tag": "stage 2"
+                    },
+                    {
+                      "value": "Planner",
+                      "mark": null,
+                      "tag": "stage 3"
+                    },
+                    {
+                      "value": "Executor",
+                      "mark": null,
+                      "tag": "stage 4"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "rules"
+                  },
+                  "label": "The four stages of a query"
+                },
+                "say": "The rewriter applies stored rules, for example swapping a view for the tables behind it."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "Parser",
+                      "mark": null,
+                      "tag": "stage 1"
+                    },
+                    {
+                      "value": "Rewriter",
+                      "mark": null,
+                      "tag": "stage 2"
+                    },
+                    {
+                      "value": "Planner",
+                      "mark": "best",
+                      "tag": "stage 3"
+                    },
+                    {
+                      "value": "Executor",
+                      "mark": null,
+                      "tag": "stage 4"
+                    }
+                  ],
+                  "pointers": {
+                    "2": "choosing"
+                  },
+                  "label": "The four stages of a query"
+                },
+                "say": "The planner lists the possible paths, such as scanning the whole table or using an index, and estimates the cost of each.",
+                "predict": {
+                  "prompt": "The planner has two paths: A costs 700 and B costs 450. Which does it hand on?",
+                  "options": [
+                    {
+                      "text": "Path B, the cheaper one",
+                      "correct": true
+                    },
+                    {
+                      "text": "Path A, the dearer one",
+                      "correct": false
+                    },
+                    {
+                      "text": "Both, side by side",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "The planner wants the cheapest path.",
+                    "450 is less than 700."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "Parser",
+                      "mark": null,
+                      "tag": "stage 1"
+                    },
+                    {
+                      "value": "Rewriter",
+                      "mark": null,
+                      "tag": "stage 2"
+                    },
+                    {
+                      "value": "Planner",
+                      "mark": null,
+                      "tag": "stage 3"
+                    },
+                    {
+                      "value": "Executor",
+                      "mark": "best",
+                      "tag": "stage 4"
+                    }
+                  ],
+                  "pointers": {
+                    "3": "running"
+                  },
+                  "label": "The four stages of a query"
+                },
+                "say": "The executor runs the chosen plan, step by step, and returns the rows.",
+                "predict": {
+                  "prompt": "Which stage actually produces the rows you see?",
+                  "options": [
+                    {
+                      "text": "The executor",
+                      "correct": true
+                    },
+                    {
+                      "text": "The parser",
+                      "correct": false
+                    },
+                    {
+                      "text": "The rewriter",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "One stage runs the plan.",
+                    "The planner only chooses. Something else carries it out."
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cheapest",
+          "type": "numeric",
+          "taughtOn": "many-paths",
+          "prompt": "The planner has three paths costing 700, 450 and 520. What is the cost of the plan it keeps?",
+          "answer": 450,
+          "calculator": false,
+          "hints": [
+            "It keeps the cheapest.",
+            "Which of the three numbers is smallest?"
+          ],
+          "explain": "The planner keeps the path with the lowest estimated cost, which is 450."
+        },
+        {
+          "id": "scan-or-search",
+          "type": "buckets",
+          "taughtOn": "read-a-plan",
+          "prompt": "Does each plan line mean every row is looked at, or that the database jumps to the rows it needs?",
+          "buckets": [
+            "Looks at every row",
+            "Jumps to the rows"
+          ],
+          "items": [
+            {
+              "text": "SCAN parcels",
+              "bucket": "Looks at every row"
+            },
+            {
+              "text": "SEARCH parcels USING INDEX idx_w (weight=?)",
+              "bucket": "Jumps to the rows"
+            },
+            {
+              "text": "SEARCH parcels USING INTEGER PRIMARY KEY (rowid=?)",
+              "bucket": "Jumps to the rows"
+            },
+            {
+              "text": "SCAN crates",
+              "bucket": "Looks at every row"
+            },
+            {
+              "text": "SEARCH crates USING INDEX idx_owner (owner=?)",
+              "bucket": "Jumps to the rows"
+            }
+          ],
+          "hints": [
+            "SCAN reads the whole table. SEARCH goes straight to rows.",
+            "The word at the start of the line is the clue."
+          ],
+          "explain": "SCAN walks every row. SEARCH uses an index or the primary key to jump to the rows it needs."
+        },
+        {
+          "id": "sql-says",
+          "type": "choice",
+          "taughtOn": "four-stages",
+          "prompt": "What does a SQL query tell the database?",
+          "options": [
+            {
+              "text": "What result you want, not the steps to get it",
+              "correct": true
+            },
+            {
+              "text": "Exactly which index to use"
+            },
+            {
+              "text": "The order to read the pages"
+            },
+            {
+              "text": "How to store the table"
+            }
+          ],
+          "hints": [
+            "SQL is declarative.",
+            "The planner works out the steps."
+          ],
+          "explain": "You describe the result, and the planner chooses the steps."
+        },
+        {
+          "id": "why-estimates",
+          "type": "choice",
+          "taughtOn": "many-paths",
+          "prompt": "Why does the planner use cost estimates rather than trying every path?",
+          "options": [
+            {
+              "text": "Trying every path would cost more than the query itself",
+              "correct": true
+            },
+            {
+              "text": "Estimates are always exact"
+            },
+            {
+              "text": "The executor cannot run more than one path"
+            },
+            {
+              "text": "It would delete the table"
+            }
+          ],
+          "hints": [
+            "What would trying every path involve?",
+            "The goal is to save work, not to add it."
+          ],
+          "explain": "Estimates let the planner choose without doing the work. They can be wrong, because they come from sampled statistics."
+        },
+        {
+          "id": "after-index",
+          "type": "choice",
+          "taughtOn": "read-a-plan",
+          "prompt": "After CREATE INDEX on weight, what changed in the plan for WHERE weight = 7?",
+          "options": [
+            {
+              "text": "SCAN parcels became SEARCH parcels USING INDEX idx_w",
+              "correct": true
+            },
+            {
+              "text": "Nothing changed"
+            },
+            {
+              "text": "The table was deleted"
+            },
+            {
+              "text": "The plan now says SCAN twice"
+            }
+          ],
+          "hints": [
+            "Look at the first two rows of the table.",
+            "The index gives the planner a cheaper path."
+          ],
+          "explain": "With the index available, the planner chose SEARCH over SCAN.",
+          "challenge": true
+        },
+        {
+          "id": "stale-stats",
+          "type": "choice",
+          "taughtOn": "many-paths",
+          "prompt": "Challenge: the statistics about a table are badly out of date. What is the risk?",
+          "options": [
+            {
+              "text": "The cost guesses can be wrong, so the planner may pick a slower path",
+              "correct": true
+            },
+            {
+              "text": "The query will refuse to run"
+            },
+            {
+              "text": "The index is deleted"
+            },
+            {
+              "text": "The parser stops working"
+            }
+          ],
+          "hints": [
+            "Where do the estimates come from?",
+            "Bad inputs make bad guesses."
+          ],
+          "explain": "The planner works from estimates. If the statistics are stale, its guesses can be off, and it may choose a slower plan.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d1.1-f1",
+          "type": "quiz",
+          "taughtOn": "four-stages",
+          "prompt": "Which stage runs the chosen plan?",
+          "options": [
+            {
+              "text": "The executor",
+              "correct": true
+            },
+            {
+              "text": "The parser"
+            },
+            {
+              "text": "The rewriter"
+            },
+            {
+              "text": "The planner"
+            }
+          ],
+          "explain": "The planner chooses, the executor runs."
+        },
+        {
+          "id": "d1.1-f2",
+          "type": "quiz",
+          "taughtOn": "read-a-plan",
+          "prompt": "In a SQLite plan, what does SCAN mean?",
+          "options": [
+            {
+              "text": "Every row is looked at",
+              "correct": true
+            },
+            {
+              "text": "An index was used"
+            },
+            {
+              "text": "The table was empty"
+            },
+            {
+              "text": "The query was rejected"
+            }
+          ],
+          "explain": "SCAN walks the whole table. SEARCH jumps to rows."
+        },
+        {
+          "id": "d1.1-f3",
+          "type": "why",
+          "taughtOn": "many-paths",
+          "prompt": "How does the planner pick between paths?",
+          "options": [
+            {
+              "text": "It estimates their costs and takes the cheapest",
+              "correct": true
+            },
+            {
+              "text": "It picks the first one"
+            },
+            {
+              "text": "It flips a coin"
+            },
+            {
+              "text": "It runs them all"
+            }
+          ],
+          "explain": "Cost estimates let it choose without running every path."
+        },
+        {
+          "id": "d1.1-f4",
+          "type": "predict",
+          "taughtOn": "read-a-plan",
+          "prompt": "A table has an index on weight. Would you expect WHERE weight = 7 to say SCAN or SEARCH?",
+          "answer": "SEARCH, using the index. Without the index it would say SCAN."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "The planner shows its work",
+          "text": "PostgreSQL's EXPLAIN command shows the plan the planner chose, with its cost estimates, without you changing the query.",
+          "source": {
+            "title": "PostgreSQL: Using EXPLAIN",
+            "url": "https://www.postgresql.org/docs/current/using-explain.html"
+          }
+        },
+        {
+          "title": "Plans change with indexes",
+          "text": "In SQLite, adding an index can change the plan for the same query from SCAN to SEARCH.",
+          "source": {
+            "title": "SQLite: EXPLAIN QUERY PLAN",
+            "url": "https://www.sqlite.org/eqp.html"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You followed a query through the parser, the rewriter, the planner and the executor, saw why the planner estimates costs, and read real SCAN and SEARCH plan lines.",
+          "Cobb stamps the slip. \"Choose the route first, then walk it.\""
+        ],
+        "mistake": {
+          "title": "Thinking the database runs your SQL line by line",
+          "text": "SQL describes the result you want. The planner chooses the steps, and the executor runs them. The steps can change when an index is added, even if your SQL does not."
+        }
+      }
+    },
+    {
+      "id": "1.2",
+      "title": "Cost of a Crossing",
+      "story": "Cobb points at two quays. \"Quay A holds 40 crates of manifests. Quay B holds 200 crates of cargo. To match each manifest line to its cargo, I could walk all of B for every single line. Or I could be smarter.\"",
+      "everyday": {
+        "scene": "You have a list of 40 guests and a box of 200 name tags. You could look through the whole box for every guest. Or you could pin the tags into alphabetical pigeonholes first and go straight to the right one.",
+        "question": "How does the effort change as the lists grow?",
+        "answer": "Checking every tag for every guest multiplies the two sizes. Smarter methods, like pigeonholes, touch each list about once."
+      },
+      "lessons": [
+        {
+          "id": "count-pages",
+          "title": "Cost is counting pages",
+          "text": [
+            "A plan's cost is a score, mostly counting page reads. PostgreSQL scores a full table scan as pages x seq_page_cost, plus rows x cpu_tuple_cost. By default those two settings are 1.0 and 0.01.",
+            "A table of 500 pages and 20,000 rows scores 500 + 200 = 700. A page fetched out of order scores more: random_page_cost is 4.0 by default, so 100 scattered pages score 400."
+          ],
+          "terms": [
+            {
+              "term": "Cost",
+              "meaning": "A score for a plan, mostly counting page reads."
+            }
+          ],
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Using EXPLAIN",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/using-explain.html"
+            },
+            {
+              "title": "PostgreSQL documentation: Planner Cost Constants",
+              "source": "PostgreSQL documentation (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/runtime-config-query.html"
+            }
+          ]
+        },
+        {
+          "id": "nested-loops",
+          "title": "Nested loops",
+          "text": [
+            "A nested loop join takes each row of the outer table R and scans the inner table S for matches. Read cost: pages of R, plus rows of R times pages of S. A block version loads a chunk of R into memory and scans S once per chunk. Here a chunk is one page of R.",
+            "With R of 40 pages and 1,000 rows, and S of 200 pages, the two costs are in the table."
+          ],
+          "terms": [
+            {
+              "term": "Outer table",
+              "meaning": "The table whose rows drive the loop."
+            },
+            {
+              "term": "Inner table",
+              "meaning": "The table scanned again for each row or chunk."
+            }
+          ],
+          "table": {
+            "head": [
+              "Method",
+              "Page reads",
+              "Total"
+            ],
+            "rows": [
+              [
+                "Row by row",
+                "40 + 1,000 x 200",
+                "200,040"
+              ],
+              [
+                "A page of R at a time",
+                "40 + 40 x 200",
+                "8,040"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Nested loop join",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Nested_loop_join"
+            },
+            {
+              "title": "Wikipedia: Hash join",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Hash_join"
+            }
+          ]
+        },
+        {
+          "id": "hash-join",
+          "title": "Hash join",
+          "text": [
+            "A hash join reads the smaller table into a hash table in memory, then reads the other table once and looks each row up. If the hash table fits in memory, each table is read once: 40 + 200 = 240 page reads here.",
+            "It needs an equality join, one that uses =. Typically it beats nested loops, except when the probe side is very small."
+          ],
+          "deeper": {
+            "title": "When memory is too small",
+            "text": [
+              {
+                "text": "If the hash table does not fit in memory, the Grace hash join first splits both tables into partitions with a hash function and writes them out to disk. It then loads each matching pair of partitions into memory, builds a hash table for the smaller one and looks up the other.",
+                "verify": false
+              }
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Hash join",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Hash_join"
+            },
+            {
+              "title": "Wikipedia: Nested loop join",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Nested_loop_join"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "scan-cost",
+          "type": "numeric",
+          "taughtOn": "count-pages",
+          "prompt": "With seq_page_cost 1.0 and cpu_tuple_cost 0.01, what is the cost of scanning a table of 500 pages and 20,000 rows?",
+          "answer": 700,
+          "calculator": false,
+          "hints": [
+            "pages x 1.0, plus rows x 0.01.",
+            "500 + 200."
+          ],
+          "explain": "500 x 1.0 = 500, and 20,000 x 0.01 = 200. The total is 700."
+        },
+        {
+          "id": "random-cost",
+          "type": "numeric",
+          "taughtOn": "count-pages",
+          "prompt": "With random_page_cost 4.0, what is the cost of fetching 100 pages out of order, counting only the page fetches?",
+          "answer": 400,
+          "calculator": false,
+          "hints": [
+            "Each page scores 4.0.",
+            "100 x 4."
+          ],
+          "explain": "100 x 4.0 = 400, four times as much as reading the same 100 pages in order."
+        },
+        {
+          "id": "nl-row",
+          "type": "numeric",
+          "taughtOn": "nested-loops",
+          "prompt": "R has 25 pages and 500 rows. S has 80 pages. Row by row, how many page reads does a nested loop join need?",
+          "answer": 40025,
+          "calculator": false,
+          "hints": [
+            "Pages of R, plus rows of R times pages of S.",
+            "25 + 500 x 80."
+          ],
+          "explain": "25 + 500 x 80 = 40,025 page reads."
+        },
+        {
+          "id": "nl-page",
+          "type": "numeric",
+          "taughtOn": "nested-loops",
+          "prompt": "The same tables, but now one page of R at a time. How many page reads?",
+          "answer": 2025,
+          "calculator": false,
+          "hints": [
+            "Pages of R, plus pages of R times pages of S.",
+            "25 + 25 x 80."
+          ],
+          "explain": "25 + 25 x 80 = 2,025 page reads, far fewer than row by row."
+        },
+        {
+          "id": "hash-cost",
+          "type": "numeric",
+          "taughtOn": "hash-join",
+          "prompt": "The same tables, joined with a hash join whose hash table fits in memory. How many page reads?",
+          "answer": 105,
+          "calculator": false,
+          "hints": [
+            "Each table is read once.",
+            "25 + 80."
+          ],
+          "explain": "25 + 80 = 105 page reads. Each table is read once."
+        },
+        {
+          "id": "join-words",
+          "type": "match",
+          "taughtOn": "nested-loops",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Outer table",
+              "right": "The table whose rows drive the loop"
+            },
+            {
+              "left": "Inner table",
+              "right": "The table scanned again and again"
+            },
+            {
+              "left": "Hash table",
+              "right": "Built in memory from one table, then looked up"
+            },
+            {
+              "left": "Equality join",
+              "right": "A join that matches values with ="
+            },
+            {
+              "left": "Cost",
+              "right": "A score, mostly counting page reads"
+            }
+          ],
+          "hints": [
+            "Outer drives. Inner is scanned.",
+            "An equality join uses ="
+          ],
+          "explain": "The outer table drives the loop, the inner table is rescanned, the hash table is built once, equality joins use =, and cost is a score."
+        },
+        {
+          "id": "which-join",
+          "type": "buckets",
+          "taughtOn": "hash-join",
+          "prompt": "Is each statement about a nested loop join or a hash join?",
+          "buckets": [
+            "Nested loop",
+            "Hash join"
+          ],
+          "items": [
+            {
+              "text": "Needs the join to use =",
+              "bucket": "Hash join"
+            },
+            {
+              "text": "Works for any join condition",
+              "bucket": "Nested loop"
+            },
+            {
+              "text": "Builds an in-memory table first",
+              "bucket": "Hash join"
+            },
+            {
+              "text": "Scans the inner table again for each row or chunk",
+              "bucket": "Nested loop"
+            },
+            {
+              "text": "Reads each table about once if the hash table fits in memory",
+              "bucket": "Hash join"
+            },
+            {
+              "text": "Cost grows with outer rows x inner pages",
+              "bucket": "Nested loop"
+            }
+          ],
+          "hints": [
+            "Hash join builds a table. Nested loop rescans.",
+            "Only one of them needs an equality join."
+          ],
+          "explain": "Nested loops are general but can be costly. Hash joins are cheap, but need an equality join."
+        },
+        {
+          "id": "hash-steps",
+          "type": "order",
+          "taughtOn": "hash-join",
+          "prompt": "Put the steps of a hash join in order.",
+          "items": [
+            "Read the smaller table into a hash table",
+            "Read the other table, row by row",
+            "Look each row's key up in the hash table",
+            "Output the matching pairs"
+          ],
+          "hints": [
+            "The hash table has to exist before anything is looked up.",
+            "The lookups come before the output."
+          ],
+          "explain": "Build the hash table, read the other table, look up each key, and output the matches."
+        },
+        {
+          "id": "why-page-loop",
+          "type": "choice",
+          "taughtOn": "nested-loops",
+          "prompt": "Why is the page-at-a-time loop cheaper than row-by-row?",
+          "options": [
+            {
+              "text": "It scans the inner table far fewer times",
+              "correct": true
+            },
+            {
+              "text": "It skips the outer table"
+            },
+            {
+              "text": "It reads fewer rows"
+            },
+            {
+              "text": "It uses an index"
+            }
+          ],
+          "hints": [
+            "Look at the second number in each sum.",
+            "40 scans of S instead of 1,000."
+          ],
+          "explain": "The inner table is scanned once per page of R instead of once per row, which saves a lot of reads."
+        },
+        {
+          "id": "swap-diff",
+          "type": "numeric",
+          "taughtOn": "nested-loops",
+          "prompt": "Challenge: using one page at a time, how many fewer page reads does it take with the 40-page table R as the outer table than with the 200-page table S as the outer?",
+          "answer": 160,
+          "calculator": false,
+          "hints": [
+            "Work out the cost with S outside: 200 + 200 x 40.",
+            "Compare with 8,040."
+          ],
+          "explain": "With S outside it costs 200 + 200 x 40 = 8,200. With R outside it is 8,040, so R outside saves 160.",
+          "challenge": true
+        },
+        {
+          "id": "small-probe",
+          "type": "choice",
+          "taughtOn": "hash-join",
+          "prompt": "Challenge: when is a nested loop likely to beat a hash join?",
+          "options": [
+            {
+              "text": "When the probe side is very small",
+              "correct": true
+            },
+            {
+              "text": "When both tables are huge"
+            },
+            {
+              "text": "When the join is an equality join"
+            },
+            {
+              "text": "Never"
+            }
+          ],
+          "hints": [
+            "Re-read the end of the hash join lesson.",
+            "A tiny table makes the loop cheap."
+          ],
+          "explain": "Hash joins are typically more efficient than nested loops, except when the probe side is very small.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d1.2-f1",
+          "type": "quiz",
+          "taughtOn": "count-pages",
+          "prompt": "What is the planner's cost mostly counting?",
+          "options": [
+            {
+              "text": "Page reads",
+              "correct": true
+            },
+            {
+              "text": "Lines of SQL"
+            },
+            {
+              "text": "Column names"
+            },
+            {
+              "text": "Users online"
+            }
+          ],
+          "explain": "Pages read from storage are the main cost."
+        },
+        {
+          "id": "d1.2-f2",
+          "type": "quiz",
+          "taughtOn": "nested-loops",
+          "prompt": "In a nested loop join, which table is scanned again for each row or chunk?",
+          "options": [
+            {
+              "text": "The inner table",
+              "correct": true
+            },
+            {
+              "text": "The outer table"
+            },
+            {
+              "text": "Both tables"
+            },
+            {
+              "text": "Neither"
+            }
+          ],
+          "explain": "The outer table drives the loop. The inner table is rescanned."
+        },
+        {
+          "id": "d1.2-f3",
+          "type": "why",
+          "taughtOn": "hash-join",
+          "prompt": "What kind of join does a hash join need?",
+          "options": [
+            {
+              "text": "An equality join",
+              "correct": true
+            },
+            {
+              "text": "Any join"
+            },
+            {
+              "text": "A less-than join"
+            },
+            {
+              "text": "A join with no condition"
+            }
+          ],
+          "explain": "A hash join looks keys up, so it needs =."
+        },
+        {
+          "id": "d1.2-f4",
+          "type": "predict",
+          "taughtOn": "count-pages",
+          "prompt": "A table has 300 pages and 12,000 rows. With the default settings, what is the scan cost?",
+          "answer": "420. That is 300 x 1.0 plus 12,000 x 0.01."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Cost settings",
+          "text": "PostgreSQL's planner scores a page read in order as 1.0 by default and a page read out of order as 4.0.",
+          "source": {
+            "title": "PostgreSQL: Planner Cost Constants",
+            "url": "https://www.postgresql.org/docs/current/runtime-config-query.html"
+          }
+        },
+        {
+          "title": "Hash joins",
+          "text": "A hash join builds hash tables from the tuples of one or both tables, and then probes them. It needs an equality condition.",
+          "source": {
+            "title": "Wikipedia: Hash join",
+            "url": "https://en.wikipedia.org/wiki/Hash_join"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You counted page reads to cost a table scan, compared row-by-row and page-by-page nested loops, and saw a hash join read each table once.",
+          "Cobb nods at the hash table. \"Build once, look up many.\""
+        ],
+        "mistake": {
+          "title": "Comparing joins by the number of rows alone",
+          "text": "Cost is about page reads, and the way the tables are visited matters. The same join can need 200,040 page reads or 240, depending on the method."
+        }
+      }
+    }
+  ]
+}

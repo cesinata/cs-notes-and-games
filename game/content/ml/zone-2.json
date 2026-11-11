@@ -1,0 +1,799 @@
+{
+  "zone": 2,
+  "levels": [
+    {
+      "id": "2.1",
+      "title": "Twenty Questions",
+      "story": "Fenn stands at the gate with a chalkboard. \"Do I water the field today? I ask myself a few questions: is the soil dry, is it raining. A computer can build that list of questions from my old notes, if I tell it which question to ask first.\"",
+      "everyday": {
+        "scene": "A doctor's clinic asks you a few questions at the desk, and each answer decides what question comes next. A flowchart on the wall guides the staff.",
+        "question": "How can a computer build a list of questions like that from old records?",
+        "answer": "It tries each question on the records, keeps the one that sorts the answers best, and repeats inside each group. The result is a decision tree."
+      },
+      "lessons": [
+        {
+          "id": "ask-questions",
+          "title": "A tree of questions",
+          "text": [
+            "A decision tree is a chain of yes-or-no style questions. Each answer sends an example down a branch. At the end of a branch is a leaf, which gives the prediction.",
+            "The table is Fenn's ten past days, with the answer in the last column: was it right to water? The best first question is not obvious by eye, and a computer can score every question."
+          ],
+          "terms": [
+            {
+              "term": "Leaf",
+              "meaning": "The end of a branch, where the tree gives its answer."
+            },
+            {
+              "term": "Split",
+              "meaning": "A question that divides the examples into groups."
+            }
+          ],
+          "table": {
+            "head": [
+              "Sky",
+              "Wind",
+              "Soil",
+              "Water?"
+            ],
+            "rows": [
+              [
+                "Sunny",
+                "Calm",
+                "Dry",
+                "Yes"
+              ],
+              [
+                "Sunny",
+                "Windy",
+                "Dry",
+                "Yes"
+              ],
+              [
+                "Sunny",
+                "Calm",
+                "Damp",
+                "No"
+              ],
+              [
+                "Cloudy",
+                "Calm",
+                "Dry",
+                "Yes"
+              ],
+              [
+                "Cloudy",
+                "Windy",
+                "Damp",
+                "No"
+              ],
+              [
+                "Rainy",
+                "Calm",
+                "Damp",
+                "No"
+              ],
+              [
+                "Rainy",
+                "Windy",
+                "Damp",
+                "No"
+              ],
+              [
+                "Cloudy",
+                "Calm",
+                "Dry",
+                "Yes"
+              ],
+              [
+                "Rainy",
+                "Windy",
+                "Dry",
+                "No"
+              ],
+              [
+                "Rainy",
+                "Calm",
+                "Damp",
+                "No"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Decision tree learning",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Decision_tree_learning"
+            },
+            {
+              "title": "scikit-learn user guide: Decision Trees",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/tree.html"
+            }
+          ]
+        },
+        {
+          "id": "pure-splits",
+          "title": "Pure groups",
+          "text": [
+            "A good question makes each group less mixed. A group that is all Yes or all No is pure. Entropy measures how mixed a group is: 0 for pure, and 1 for an even split between two classes.",
+            "Information gain is the entropy before a split minus the weighted average entropy after it. The question with the biggest gain goes first. The ten days start at 0.97. The table shows the gain for each question."
+          ],
+          "table": {
+            "head": [
+              "Question",
+              "Information gain"
+            ],
+            "rows": [
+              [
+                "Soil",
+                "0.61"
+              ],
+              [
+                "Sky",
+                "0.42"
+              ],
+              [
+                "Wind",
+                "0.05"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "Which question should go at the top of the tree?",
+            "answer": "Soil, because it has the biggest gain."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Entropy (information theory)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Entropy_(information_theory)"
+            },
+            {
+              "title": "Wikipedia: Information gain (decision tree)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Information_gain_(decision_tree)"
+            }
+          ]
+        },
+        {
+          "id": "grow-and-stop",
+          "title": "Grow, then stop",
+          "text": [
+            "After the first split, the same method runs inside each group. Here the damp group is already pure. The dry group still has one No, so a second question about rain finishes the job.",
+            "A tree allowed to grow without limit can end up with a leaf for nearly every example. That memorises noise, which is called overfitting. Limits such as a maximum depth keep trees simple."
+          ],
+          "deeper": {
+            "title": "Another score",
+            "text": [
+              {
+                "text": "Many tree builders use Gini impurity instead of entropy. It is another way to score how mixed a group is, and the CART algorithm uses it for classification trees.",
+                "verify": false
+              }
+            ]
+          },
+          "references": [
+            {
+              "title": "scikit-learn user guide: Decision Trees",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/tree.html"
+            },
+            {
+              "title": "Wikipedia: Decision tree learning",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Decision_tree_learning"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "entropy-even",
+          "type": "numeric",
+          "taughtOn": "pure-splits",
+          "prompt": "Five of Fenn's days were Yes and five were No. What is the entropy of that group? (0 means pure, 1 means an even split.)",
+          "answer": 1,
+          "calculator": false,
+          "hints": [
+            "An even split between two classes is the most mixed it can be.",
+            "The entropy is the top of the scale."
+          ],
+          "explain": "An even split of two classes has entropy 1, the most mixed possible."
+        },
+        {
+          "id": "first-question",
+          "type": "choice",
+          "taughtOn": "pure-splits",
+          "prompt": "Which question gives the biggest information gain on Fenn's ten days?",
+          "options": [
+            {
+              "text": "Is the soil dry?",
+              "correct": true
+            },
+            {
+              "text": "Is it windy?"
+            },
+            {
+              "text": "Is the sky sunny?"
+            },
+            {
+              "text": "Is the row number even?"
+            }
+          ],
+          "hints": [
+            "Check the gain table.",
+            "Soil is 0.61. The others are lower."
+          ],
+          "explain": "Soil has the biggest gain, 0.61. Wind has only 0.05 because windy and calm days are about equally mixed."
+        },
+        {
+          "id": "tree-sim",
+          "type": "stepsim",
+          "taughtOn": "grow-and-stop",
+          "mode": "predict",
+          "prompt": "Walk a new day down the tree.",
+          "explain": "Each question narrows the options until a leaf gives the answer. This day had dry soil and no rain, so the tree says water.",
+          "script": {
+            "view": "graph",
+            "steps": [
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "q1",
+                      "x": 150,
+                      "y": 30,
+                      "label": "Soil?"
+                    },
+                    {
+                      "id": "d",
+                      "x": 80,
+                      "y": 90,
+                      "label": "No"
+                    },
+                    {
+                      "id": "q2",
+                      "x": 220,
+                      "y": 90,
+                      "label": "Rain?"
+                    },
+                    {
+                      "id": "r",
+                      "x": 180,
+                      "y": 150,
+                      "label": "No"
+                    },
+                    {
+                      "id": "n",
+                      "x": 260,
+                      "y": 150,
+                      "label": "Yes"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "q1",
+                      "to": "d"
+                    },
+                    {
+                      "from": "q1",
+                      "to": "q2"
+                    },
+                    {
+                      "from": "q2",
+                      "to": "r"
+                    },
+                    {
+                      "from": "q2",
+                      "to": "n"
+                    }
+                  ],
+                  "legend": "Left of a question: damp soil or rain. Right: dry soil or no rain."
+                },
+                "say": "This is the finished tree. A new day arrives: dry soil and a cloudy sky. Follow the questions down from the top."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "q1",
+                      "x": 150,
+                      "y": 30,
+                      "label": "Soil?",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "d",
+                      "x": 80,
+                      "y": 90,
+                      "label": "No"
+                    },
+                    {
+                      "id": "q2",
+                      "x": 220,
+                      "y": 90,
+                      "label": "Rain?"
+                    },
+                    {
+                      "id": "r",
+                      "x": 180,
+                      "y": 150,
+                      "label": "No"
+                    },
+                    {
+                      "id": "n",
+                      "x": 260,
+                      "y": 150,
+                      "label": "Yes"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "q1",
+                      "to": "d"
+                    },
+                    {
+                      "from": "q1",
+                      "to": "q2"
+                    },
+                    {
+                      "from": "q2",
+                      "to": "r"
+                    },
+                    {
+                      "from": "q2",
+                      "to": "n"
+                    }
+                  ],
+                  "legend": "Left of a question: damp soil or rain. Right: dry soil or no rain."
+                },
+                "say": "The first question is about the soil. This day has dry soil.",
+                "predict": {
+                  "prompt": "The soil is dry. Which branch does the day follow?",
+                  "options": [
+                    {
+                      "text": "Right, to the Rain? question",
+                      "correct": true
+                    },
+                    {
+                      "text": "Left, straight to No",
+                      "correct": false
+                    },
+                    {
+                      "text": "Back up",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Damp soil goes left to a leaf. Dry soil needs one more question.",
+                    "Dry means the day carries on to Rain?."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "q1",
+                      "x": 150,
+                      "y": 30,
+                      "label": "Soil?",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "d",
+                      "x": 80,
+                      "y": 90,
+                      "label": "No"
+                    },
+                    {
+                      "id": "q2",
+                      "x": 220,
+                      "y": 90,
+                      "label": "Rain?",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "r",
+                      "x": 180,
+                      "y": 150,
+                      "label": "No"
+                    },
+                    {
+                      "id": "n",
+                      "x": 260,
+                      "y": 150,
+                      "label": "Yes"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "q1",
+                      "to": "d"
+                    },
+                    {
+                      "from": "q1",
+                      "to": "q2",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "q2",
+                      "to": "r"
+                    },
+                    {
+                      "from": "q2",
+                      "to": "n"
+                    }
+                  ],
+                  "legend": "Left of a question: damp soil or rain. Right: dry soil or no rain."
+                },
+                "say": "The second question asks about rain. The sky is cloudy, not rainy.",
+                "predict": {
+                  "prompt": "The sky is cloudy. Which leaf does the day reach?",
+                  "options": [
+                    {
+                      "text": "Yes, water the field",
+                      "correct": true
+                    },
+                    {
+                      "text": "No, do not water",
+                      "correct": false
+                    },
+                    {
+                      "text": "Neither",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Only a rainy day goes left, to No.",
+                    "Cloudy is not rainy, so it goes right."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "q1",
+                      "x": 150,
+                      "y": 30,
+                      "label": "Soil?",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "d",
+                      "x": 80,
+                      "y": 90,
+                      "label": "No"
+                    },
+                    {
+                      "id": "q2",
+                      "x": 220,
+                      "y": 90,
+                      "label": "Rain?",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "r",
+                      "x": 180,
+                      "y": 150,
+                      "label": "No"
+                    },
+                    {
+                      "id": "n",
+                      "x": 260,
+                      "y": 150,
+                      "label": "Yes",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "q1",
+                      "to": "d"
+                    },
+                    {
+                      "from": "q1",
+                      "to": "q2",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "q2",
+                      "to": "r"
+                    },
+                    {
+                      "from": "q2",
+                      "to": "n",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "Left of a question: damp soil or rain. Right: dry soil or no rain."
+                },
+                "say": "The day reaches a leaf. The tree says Yes: water the field."
+              }
+            ]
+          }
+        },
+        {
+          "id": "pure-or-mixed",
+          "type": "buckets",
+          "taughtOn": "pure-splits",
+          "prompt": "Is each group pure or mixed?",
+          "buckets": [
+            "Pure",
+            "Mixed"
+          ],
+          "items": [
+            {
+              "text": "5 Yes and 0 No",
+              "bucket": "Pure"
+            },
+            {
+              "text": "3 Yes and 3 No",
+              "bucket": "Mixed"
+            },
+            {
+              "text": "0 Yes and 5 No",
+              "bucket": "Pure"
+            },
+            {
+              "text": "4 Yes and 1 No",
+              "bucket": "Mixed"
+            },
+            {
+              "text": "7 Yes and 0 No",
+              "bucket": "Pure"
+            }
+          ],
+          "hints": [
+            "Pure means every example has the same label.",
+            "Any group with both labels is mixed."
+          ],
+          "explain": "Pure groups have only one label. Groups with both labels are mixed, even if one label is rare."
+        },
+        {
+          "id": "damp-group",
+          "type": "numeric",
+          "taughtOn": "grow-and-stop",
+          "prompt": "After asking about soil, the damp group has 5 days and all of them are No. What is its entropy?",
+          "answer": 0,
+          "calculator": false,
+          "hints": [
+            "Is the group pure?",
+            "A pure group has no mixing."
+          ],
+          "explain": "A group where every day is No is pure, so its entropy is 0."
+        },
+        {
+          "id": "grow-order",
+          "type": "order",
+          "taughtOn": "grow-and-stop",
+          "prompt": "Put the steps of growing a tree in order.",
+          "items": [
+            "Score every question on the current group",
+            "Split on the best question",
+            "Repeat inside each new group",
+            "Stop when groups are pure or a limit is reached"
+          ],
+          "hints": [
+            "Score before you split.",
+            "Stopping comes last."
+          ],
+          "explain": "Score the questions, split on the best, repeat inside each group, and stop at pure groups or a limit."
+        },
+        {
+          "id": "tree-words",
+          "type": "match",
+          "taughtOn": "ask-questions",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Leaf",
+              "right": "Where a branch ends in a prediction"
+            },
+            {
+              "left": "Split",
+              "right": "A question that divides examples"
+            },
+            {
+              "left": "Entropy",
+              "right": "How mixed a group is"
+            },
+            {
+              "left": "Information gain",
+              "right": "How much a split reduces mixing"
+            }
+          ],
+          "hints": [
+            "Entropy is about one group, gain about a split.",
+            "A leaf is the end of a path."
+          ],
+          "explain": "Leaves predict, splits divide, entropy measures mixing, and gain measures how much a split helps."
+        },
+        {
+          "id": "overfit-tree",
+          "type": "choice",
+          "taughtOn": "grow-and-stop",
+          "prompt": "Why limit how deep a tree can grow?",
+          "options": [
+            {
+              "text": "A tree with a leaf for almost every example memorises noise",
+              "correct": true
+            },
+            {
+              "text": "Deep trees cannot make predictions"
+            },
+            {
+              "text": "Shallow trees need more data"
+            },
+            {
+              "text": "It makes the entropy larger"
+            }
+          ],
+          "hints": [
+            "What happens if every example gets its own leaf?",
+            "That fits the training days perfectly but may fail on new days."
+          ],
+          "explain": "An unlimited tree can fit noise in the training data. That is overfitting, so depth is limited."
+        },
+        {
+          "id": "count-leaves",
+          "type": "numeric",
+          "taughtOn": "ask-questions",
+          "prompt": "In the tree from the simulation, how many leaves are there?",
+          "answer": 3,
+          "calculator": false,
+          "hints": [
+            "A leaf has no questions below it.",
+            "The two Rain? answers give two leaves, and the damp soil answer gives one."
+          ],
+          "explain": "The tree has three leaves: Damp gives No, rainy gives No, and not rainy gives Yes."
+        },
+        {
+          "id": "weighted-after",
+          "type": "numeric",
+          "taughtOn": "pure-splits",
+          "prompt": "Challenge: after asking about soil, the damp group (5 days) has entropy 0 and the dry group (5 days) has entropy 0.72. What is the weighted average entropy after the split?",
+          "answer": 0.36,
+          "tolerance": 0.005,
+          "calculator": false,
+          "hints": [
+            "Each group is half of the days.",
+            "0.5 x 0 + 0.5 x 0.72"
+          ],
+          "explain": "Half the days are in each group, so the weighted entropy is 0.5 x 0 + 0.5 x 0.72, about 0.36. The gain is 0.97 - 0.36 = 0.61.",
+          "challenge": true
+        },
+        {
+          "id": "wind-useless",
+          "type": "choice",
+          "taughtOn": "pure-splits",
+          "prompt": "Challenge: why is Wind a poor first question for these days?",
+          "options": [
+            {
+              "text": "Windy and calm days are both a mix of Yes and No",
+              "correct": true
+            },
+            {
+              "text": "Wind is not a number"
+            },
+            {
+              "text": "Wind has too few values"
+            },
+            {
+              "text": "Windy days are always Yes"
+            }
+          ],
+          "hints": [
+            "Look at the gain: it is only 0.05.",
+            "A question helps only if it makes groups purer."
+          ],
+          "explain": "Splitting on wind leaves both groups about as mixed as before, so the gain is tiny.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m2.1-f1",
+          "type": "quiz",
+          "taughtOn": "pure-splits",
+          "prompt": "What is the entropy of a pure group?",
+          "options": [
+            {
+              "text": "0",
+              "correct": true
+            },
+            {
+              "text": "1"
+            },
+            {
+              "text": "0.5"
+            },
+            {
+              "text": "It cannot be measured"
+            }
+          ],
+          "explain": "A group with a single label has no mixing, so its entropy is 0."
+        },
+        {
+          "id": "m2.1-f2",
+          "type": "quiz",
+          "taughtOn": "pure-splits",
+          "prompt": "Which question goes first in a decision tree?",
+          "options": [
+            {
+              "text": "The one with the biggest information gain",
+              "correct": true
+            },
+            {
+              "text": "The one that is asked the most often"
+            },
+            {
+              "text": "The first column of the table"
+            },
+            {
+              "text": "The one with most values"
+            }
+          ],
+          "explain": "The first split is the one that reduces mixing the most."
+        },
+        {
+          "id": "m2.1-f3",
+          "type": "why",
+          "taughtOn": "grow-and-stop",
+          "prompt": "Why can a very deep tree do badly on new data?",
+          "options": [
+            {
+              "text": "It memorised noise in the training data",
+              "correct": true
+            },
+            {
+              "text": "It runs out of memory"
+            },
+            {
+              "text": "It ignores the features"
+            },
+            {
+              "text": "Its leaves are too pure"
+            }
+          ],
+          "explain": "Overfitting means fitting noise, which does not repeat in new data."
+        },
+        {
+          "id": "m2.1-f4",
+          "type": "predict",
+          "taughtOn": "pure-splits",
+          "prompt": "A group has 6 Yes and 0 No. What is its entropy?",
+          "answer": "0. The group is pure."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Entropy and trees",
+          "text": "Decision tree builders such as ID3, C4.5 and C5.0 use information gain, which is based on entropy, to choose splits.",
+          "source": {
+            "title": "Wikipedia: Decision tree learning",
+            "url": "https://en.wikipedia.org/wiki/Decision_tree_learning"
+          }
+        },
+        {
+          "title": "Overfitting in trees",
+          "text": "scikit-learn's guide says decision-tree learners can create over-complex trees that do not generalise well, and suggests limits such as a maximum depth.",
+          "source": {
+            "title": "scikit-learn: Decision Trees",
+            "url": "https://scikit-learn.org/stable/modules/tree.html"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You scored questions by entropy and information gain, put the best one at the top, and watched a tree turn a new day into a Yes or a No.",
+          "Fenn chalks the three leaves on the gate. \"Three answers, two questions.\""
+        ],
+        "mistake": {
+          "title": "Asking the question that sounds sensible instead of scoring it",
+          "text": "A tree builder tries every question and keeps the one that makes groups purest. A question can sound useful and still barely help."
+        }
+      }
+    }
+  ]
+}
