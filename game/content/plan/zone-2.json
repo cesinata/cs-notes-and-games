@@ -1,0 +1,1316 @@
+{
+  "zone": 2,
+  "levels": [
+    {
+      "id": "2.1",
+      "title": "Facts and Moves",
+      "story": "At the dock, Rowan hands Kit two parcels. Parcel p must go to the Dock and parcel q must come back to the Cabin. \"Write the world as a list of facts,\" says Rowan. \"Then every move is: what must be true, what becomes true, what stops being true.\"",
+      "everyday": {
+        "scene": "A recipe says what you need before a step, such as flour on the bench, and what is different afterwards: dough made, flour used. STRIPS writes actions down in the same way.",
+        "question": "How can a computer be told what each action does?",
+        "answer": "It is told what facts must be true first, which facts the action makes true, and which it makes false."
+      },
+      "lessons": [
+        {
+          "id": "a-world-of-facts",
+          "title": "A world of facts",
+          "text": [
+            "STRIPS describes a world as a set of facts that are true right now. Anything not listed is taken to be false. Kit's world has facts like 'Kit at Cabin', 'p at Cabin' and 'q at Dock'.",
+            "The goal is a set of facts too: 'p at Dock' and 'q at Cabin'. A state is a goal state when it contains every goal fact. Facts such as 'Kit has p' describe the parcel being carried."
+          ],
+          "terms": [
+            {
+              "term": "Fact",
+              "meaning": "A statement that is true in the current state."
+            },
+            {
+              "term": "State",
+              "meaning": "The set of facts that are true right now."
+            }
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: STRIPS",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Stanford_Research_Institute_Problem_Solver"
+            },
+            {
+              "title": "Wikipedia: Automated planning and scheduling",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Automated_planning_and_scheduling"
+            }
+          ]
+        },
+        {
+          "id": "three-lists",
+          "title": "Three lists per action",
+          "text": [
+            "Each action has three lists. Its preconditions are the facts that must already be true. Its add list holds the facts that become true. Its delete list holds the facts that stop being true.",
+            "The new state is the old state, minus the delete list, plus the add list. Take 'pick p at Cabin'. It needs Kit at Cabin and p at Cabin, adds Kit has p, and deletes p at Cabin."
+          ],
+          "terms": [
+            {
+              "term": "Precondition",
+              "meaning": "A fact that must be true before the action can run."
+            },
+            {
+              "term": "Add list",
+              "meaning": "Facts that become true afterwards."
+            },
+            {
+              "term": "Delete list",
+              "meaning": "Facts that stop being true afterwards."
+            }
+          ],
+          "table": {
+            "head": [
+              "Action",
+              "Needs",
+              "Adds",
+              "Deletes"
+            ],
+            "rows": [
+              [
+                "move Cabin to Bridge",
+                "Kit at Cabin",
+                "Kit at Bridge",
+                "Kit at Cabin"
+              ],
+              [
+                "pick p at Cabin",
+                "Kit at Cabin, p at Cabin",
+                "Kit has p",
+                "p at Cabin"
+              ],
+              [
+                "drop p at Dock",
+                "Kit at Dock, Kit has p",
+                "p at Dock",
+                "Kit has p"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: STRIPS",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Stanford_Research_Institute_Problem_Solver"
+            },
+            {
+              "title": "The FF Planning System: Fast Plan Generation Through Heuristic Search (arXiv:1106.0675)",
+              "source": "Research paper on arXiv (linked, not copied)",
+              "url": "https://arxiv.org/abs/1106.0675"
+            }
+          ]
+        },
+        {
+          "id": "plan-through-states",
+          "title": "A plan is a path through states",
+          "text": [
+            "A plan is a list of actions where each one's preconditions are true when its turn comes, and the last state contains every goal fact. Kit's shortest plan for the two parcels has 8 actions.",
+            "Kit can stand in 3 places, and each parcel can be at one of 3 places or in Kit's hands. That makes 3 x 4 x 4 = 48 different states, and all 48 can be reached. Searching them blindly is slow, which is why the next levels add guidance."
+          ],
+          "deeper": {
+            "title": "Blocks world",
+            "text": [
+              "Planning researchers often use a 'blocks world', with blocks stacked on a table, to test ideas. Kit's parcels play the same role: a small world that shows how facts, actions and plans fit together."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: STRIPS",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Stanford_Research_Institute_Problem_Solver"
+            },
+            {
+              "title": "Wikipedia: Blocks world",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Blocks_world"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "start-facts",
+          "type": "numeric",
+          "taughtOn": "a-world-of-facts",
+          "prompt": "How many facts are true in Kit's starting state?",
+          "answer": 3,
+          "calculator": false,
+          "hints": [
+            "Count the facts listed at the start of the sim.",
+            "Kit at Cabin, p at Cabin and q at Dock."
+          ],
+          "explain": "Three facts are true: Kit at Cabin, p at Cabin and q at Dock."
+        },
+        {
+          "id": "plan-sim",
+          "type": "stepsim",
+          "taughtOn": "three-lists",
+          "mode": "predict",
+          "prompt": "Watch the facts change as Kit's plan runs.",
+          "explain": "Each action checks its preconditions, deletes some facts and adds others. After 8 actions both goal facts are true.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "Kit at Cabin",
+                      "mark": null
+                    },
+                    {
+                      "value": "p at Cabin",
+                      "mark": null
+                    },
+                    {
+                      "value": "q at Dock",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Facts true now (new ones outlined)"
+                },
+                "say": "The start. Three facts are true: Kit at the Cabin, p at the Cabin and q at the Dock. Any fact not listed is false. The goal is 'p at Dock' and 'q at Cabin'."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "Kit at Cabin",
+                      "mark": null
+                    },
+                    {
+                      "value": "Kit has p",
+                      "mark": "new"
+                    },
+                    {
+                      "value": "q at Dock",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Facts true now (new ones outlined)"
+                },
+                "say": "pick p at Cabin. Needs: Kit at Cabin, p at Cabin. Adds: Kit has p. Deletes: p at Cabin.",
+                "predict": {
+                  "prompt": "The action 'pick p at Cabin' needs Kit at the Cabin and p at the Cabin. Which fact is false afterwards?",
+                  "options": [
+                    {
+                      "text": "p at Cabin",
+                      "correct": true
+                    },
+                    {
+                      "text": "Kit at Cabin",
+                      "correct": false
+                    },
+                    {
+                      "text": "q at Dock",
+                      "correct": false
+                    },
+                    {
+                      "text": "Kit has p",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Look at the delete list of the action.",
+                    "Once Kit holds p, it is no longer lying at the Cabin."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "Kit at Bridge",
+                      "mark": "new"
+                    },
+                    {
+                      "value": "Kit has p",
+                      "mark": null
+                    },
+                    {
+                      "value": "q at Dock",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Facts true now (new ones outlined)"
+                },
+                "say": "move Cabin to Bridge. Needs: Kit at Cabin. Adds: Kit at Bridge. Deletes: Kit at Cabin."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "Kit at Dock",
+                      "mark": "new"
+                    },
+                    {
+                      "value": "Kit has p",
+                      "mark": null
+                    },
+                    {
+                      "value": "q at Dock",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Facts true now (new ones outlined)"
+                },
+                "say": "move Bridge to Dock. Needs: Kit at Bridge. Adds: Kit at Dock. Deletes: Kit at Bridge.",
+                "predict": {
+                  "prompt": "Kit now stands at the Dock holding p. Which action can run next to make 'p at Dock' true?",
+                  "options": [
+                    {
+                      "text": "drop p at Dock",
+                      "correct": true
+                    },
+                    {
+                      "text": "pick q at Dock",
+                      "correct": false
+                    },
+                    {
+                      "text": "move Dock to Bridge",
+                      "correct": false
+                    },
+                    {
+                      "text": "drop q at Cabin",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "The goal fact is 'p at Dock'.",
+                    "Which action adds 'p at Dock'?"
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "Kit at Dock",
+                      "mark": null
+                    },
+                    {
+                      "value": "p at Dock",
+                      "mark": "new"
+                    },
+                    {
+                      "value": "q at Dock",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Facts true now (new ones outlined)"
+                },
+                "say": "drop p at Dock. Needs: Kit at Dock, Kit has p. Adds: p at Dock. Deletes: Kit has p."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "Kit at Dock",
+                      "mark": null
+                    },
+                    {
+                      "value": "p at Dock",
+                      "mark": null
+                    },
+                    {
+                      "value": "Kit has q",
+                      "mark": "new"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Facts true now (new ones outlined)"
+                },
+                "say": "pick q at Dock. Needs: Kit at Dock, q at Dock. Adds: Kit has q. Deletes: q at Dock."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "Kit at Bridge",
+                      "mark": "new"
+                    },
+                    {
+                      "value": "p at Dock",
+                      "mark": null
+                    },
+                    {
+                      "value": "Kit has q",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Facts true now (new ones outlined)"
+                },
+                "say": "move Dock to Bridge. Needs: Kit at Dock. Adds: Kit at Bridge. Deletes: Kit at Dock."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "Kit at Cabin",
+                      "mark": "new"
+                    },
+                    {
+                      "value": "p at Dock",
+                      "mark": null
+                    },
+                    {
+                      "value": "Kit has q",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Facts true now (new ones outlined)"
+                },
+                "say": "move Bridge to Cabin. Needs: Kit at Bridge. Adds: Kit at Cabin. Deletes: Kit at Bridge."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "Kit at Cabin",
+                      "mark": null
+                    },
+                    {
+                      "value": "p at Dock",
+                      "mark": null
+                    },
+                    {
+                      "value": "q at Cabin",
+                      "mark": "new"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Facts true now (new ones outlined)"
+                },
+                "say": "drop q at Cabin. Needs: Kit at Cabin, Kit has q. Adds: q at Cabin. Deletes: Kit has q. Both goal facts are true now. The plan has 8 actions."
+              }
+            ]
+          }
+        },
+        {
+          "id": "after-pick",
+          "type": "choice",
+          "taughtOn": "three-lists",
+          "prompt": "Kit is at the Cabin, p is at the Cabin, q is at the Dock. After 'pick p at Cabin', which facts are true?",
+          "options": [
+            {
+              "text": "Kit at Cabin, Kit has p, q at Dock",
+              "correct": true
+            },
+            {
+              "text": "Kit at Cabin, p at Cabin, Kit has p, q at Dock"
+            },
+            {
+              "text": "Kit has p, q at Dock"
+            },
+            {
+              "text": "Kit at Cabin, p at Cabin, q at Dock"
+            }
+          ],
+          "hints": [
+            "Remove the delete list, then add the add list.",
+            "The delete list holds 'p at Cabin'."
+          ],
+          "explain": "'p at Cabin' is deleted and 'Kit has p' is added. Everything else stays: Kit at Cabin, Kit has p, q at Dock."
+        },
+        {
+          "id": "strips-words",
+          "type": "match",
+          "taughtOn": "three-lists",
+          "prompt": "Match each STRIPS word to its meaning.",
+          "pairs": [
+            {
+              "left": "Precondition",
+              "right": "A fact that must be true before the action can run"
+            },
+            {
+              "left": "Add list",
+              "right": "Facts that become true afterwards"
+            },
+            {
+              "left": "Delete list",
+              "right": "Facts that stop being true afterwards"
+            },
+            {
+              "left": "State",
+              "right": "The set of facts true right now"
+            }
+          ],
+          "hints": [
+            "Two of them describe what an action changes.",
+            "A state is a snapshot."
+          ],
+          "explain": "Preconditions must hold first, the add and delete lists describe the change, and the state is the set of true facts."
+        },
+        {
+          "id": "pick-parts",
+          "type": "buckets",
+          "taughtOn": "three-lists",
+          "prompt": "For 'pick p at Cabin', put each fact in the right group. (p at Cabin is needed first, too.)",
+          "buckets": [
+            "Needed and kept",
+            "Becomes true",
+            "Becomes false",
+            "Not involved"
+          ],
+          "items": [
+            {
+              "text": "Kit at Cabin",
+              "bucket": "Needed and kept"
+            },
+            {
+              "text": "Kit has p",
+              "bucket": "Becomes true"
+            },
+            {
+              "text": "p at Cabin",
+              "bucket": "Becomes false"
+            },
+            {
+              "text": "q at Dock",
+              "bucket": "Not involved"
+            }
+          ],
+          "hints": [
+            "Kit stays at the Cabin while picking up.",
+            "Once Kit holds p, it is no longer lying on the ground."
+          ],
+          "explain": "Kit stays at the Cabin (needed and kept), Kit has p becomes true, p at Cabin becomes false, and q at Dock is not touched."
+        },
+        {
+          "id": "deliver-p",
+          "type": "order",
+          "taughtOn": "plan-through-states",
+          "prompt": "Put the actions that deliver parcel p to the Dock in order.",
+          "items": [
+            "pick p at Cabin",
+            "move Cabin to Bridge",
+            "move Bridge to Dock",
+            "drop p at Dock"
+          ],
+          "hints": [
+            "p starts at the Cabin, and Kit must be with it.",
+            "Kit must be at the Dock before dropping."
+          ],
+          "explain": "Pick up p at the Cabin, cross the Bridge to the Dock, and drop it there. Each action's preconditions are set up by the one before."
+        },
+        {
+          "id": "why-no-drop",
+          "type": "choice",
+          "taughtOn": "three-lists",
+          "prompt": "Why can Kit not 'drop p at Dock' at the very start?",
+          "options": [
+            {
+              "text": "Its preconditions, Kit at Dock and Kit has p, are not true",
+              "correct": true
+            },
+            {
+              "text": "Dropping is never allowed"
+            },
+            {
+              "text": "p is already at the Dock"
+            },
+            {
+              "text": "The Dock does not exist"
+            }
+          ],
+          "hints": [
+            "Check the action's 'Needs' column.",
+            "At the start Kit is at the Cabin and holds nothing."
+          ],
+          "explain": "The action needs Kit at Dock and Kit has p. At the start, neither is true."
+        },
+        {
+          "id": "plan-length",
+          "type": "numeric",
+          "taughtOn": "plan-through-states",
+          "prompt": "How many actions are in Kit's shortest plan for both parcels?",
+          "answer": 8,
+          "calculator": false,
+          "hints": [
+            "Count the actions in the sim.",
+            "Pick p, two moves, drop p, pick q, two moves, drop q."
+          ],
+          "explain": "The shortest plan is 8 actions."
+        },
+        {
+          "id": "state-count",
+          "type": "numeric",
+          "taughtOn": "plan-through-states",
+          "prompt": "Challenge: Kit can stand in 3 places, and each of the 2 parcels can be at one of 3 places or in Kit's hands. How many different states are there?",
+          "answer": 48,
+          "calculator": false,
+          "hints": [
+            "Multiply the choices: Kit, then p, then q.",
+            "3 x 4 x 4."
+          ],
+          "explain": "3 x 4 x 4 = 48 states.",
+          "challenge": true
+        },
+        {
+          "id": "closed-world",
+          "type": "choice",
+          "taughtOn": "a-world-of-facts",
+          "prompt": "Challenge: a fact is not in the state's list. How does STRIPS treat it?",
+          "options": [
+            {
+              "text": "As false",
+              "correct": true
+            },
+            {
+              "text": "As unknown"
+            },
+            {
+              "text": "As true"
+            },
+            {
+              "text": "As an error"
+            }
+          ],
+          "hints": [
+            "Only facts that are true are listed.",
+            "Anything not listed counts as the opposite."
+          ],
+          "explain": "STRIPS takes every fact not listed as false.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m2.1-f1",
+          "type": "quiz",
+          "taughtOn": "three-lists",
+          "prompt": "What are the three parts of a STRIPS action?",
+          "options": [
+            {
+              "text": "Preconditions, add list, delete list",
+              "correct": true
+            },
+            {
+              "text": "Name, cost, time"
+            },
+            {
+              "text": "Start, goal, plan"
+            },
+            {
+              "text": "State, fact, goal"
+            }
+          ],
+          "explain": "Needs, adds and deletes."
+        },
+        {
+          "id": "m2.1-f2",
+          "type": "why",
+          "taughtOn": "three-lists",
+          "prompt": "How is the new state worked out?",
+          "options": [
+            {
+              "text": "Old state, minus the delete list, plus the add list",
+              "correct": true
+            },
+            {
+              "text": "Only the add list"
+            },
+            {
+              "text": "Only the delete list"
+            },
+            {
+              "text": "The goal replaces it"
+            }
+          ],
+          "explain": "Remove the deletes, then add the adds."
+        },
+        {
+          "id": "m2.1-f3",
+          "type": "quiz",
+          "taughtOn": "a-world-of-facts",
+          "prompt": "In STRIPS, what does a fact not in the state mean?",
+          "options": [
+            {
+              "text": "It is false",
+              "correct": true
+            },
+            {
+              "text": "It is unknown"
+            },
+            {
+              "text": "It is true"
+            },
+            {
+              "text": "It is an error"
+            }
+          ],
+          "explain": "Only true facts are listed."
+        },
+        {
+          "id": "m2.1-f4",
+          "type": "predict",
+          "taughtOn": "plan-through-states",
+          "prompt": "Kit in 3 places, 2 parcels each in 4 spots: how many states?",
+          "answer": "3 x 4 x 4 = 48."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "STRIPS",
+          "text": "STRIPS was developed by Richard Fikes and Nils Nilsson in 1971 at SRI International. Its way of writing problems is the base for most planning languages used today.",
+          "source": {
+            "title": "Wikipedia: STRIPS",
+            "url": "https://en.wikipedia.org/wiki/Stanford_Research_Institute_Problem_Solver"
+          }
+        },
+        {
+          "title": "Actions in STRIPS",
+          "text": "Each STRIPS action lists what must be true before it runs and what it makes true and false afterwards.",
+          "source": {
+            "title": "Wikipedia: STRIPS",
+            "url": "https://en.wikipedia.org/wiki/Stanford_Research_Institute_Problem_Solver"
+          }
+        },
+        {
+          "title": "Blocks world",
+          "text": "The blocks world is a planning domain from artificial intelligence research, and it is a standard example of a toy problem: a simple setting for testing ideas.",
+          "source": {
+            "title": "Wikipedia: Blocks world",
+            "url": "https://en.wikipedia.org/wiki/Blocks_world"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You described a world as a set of facts, wrote actions with preconditions, an add list and a delete list, and followed an 8-action plan through the states.",
+          "Rowan checks the list. \"Every move written down, nothing hidden.\" Kit nods. \"Now I can hand this to a program, if I write it in its language.\""
+        ],
+        "mistake": {
+          "title": "Forgetting the delete list",
+          "text": "An action that only adds facts leaves old ones behind, so Kit would stand at the Cabin and the Bridge at once. The delete list removes what is no longer true."
+        }
+      }
+    },
+    {
+      "id": "2.2",
+      "title": "Write the Domain",
+      "story": "Rowan pins two sheets of paper to a tree. \"This one says how any delivery world works,\" says Rowan. \"This one says what is in the wood today.\" Kit reads them side by side. \"The rules, and the setup.\"",
+      "everyday": {
+        "scene": "A board game has a rule book that works for every game you play, and a setup card that shows where the pieces start today.",
+        "question": "How do you write a planning problem so that any planner can read it?",
+        "answer": "You split it into a domain, the rules of the world, and a problem, today's objects, starting facts and goal, written in a shared language such as PDDL."
+      },
+      "lessons": [
+        {
+          "id": "two-files",
+          "title": "Two files",
+          "text": [
+            "PDDL, the Planning Domain Definition Language, writes a planning task as two files. The domain file holds what stays the same: the kinds of facts and the actions. The problem file holds one situation: the objects, the starting facts and the goal.",
+            "Think of a board game. The rule book works for every game, and the setup card shows where the pieces start today. Many planners read PDDL, so one description can be handed to different planners."
+          ],
+          "terms": [
+            {
+              "term": "Domain",
+              "meaning": "The rules: facts and actions that work for any problem in this kind of world."
+            },
+            {
+              "term": "Problem",
+              "meaning": "One situation: objects, starting facts and goal."
+            }
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Planning Domain Definition Language",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language"
+            },
+            {
+              "title": "Wikipedia: STRIPS",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Stanford_Research_Institute_Problem_Solver"
+            }
+          ]
+        },
+        {
+          "id": "reading-an-action",
+          "title": "Reading an action",
+          "text": [
+            "A PDDL action has a name, parameters, a precondition and an effect. A word that starts with a question mark, like ?from, is a variable that gets filled in. In the effect, a plain fact is added and a fact wrapped in not is deleted.",
+            "Our move action needs a road between the two places and Kit at the starting place. The facts about roads never change, but writing them as preconditions keeps meaningless moves from ever running."
+          ],
+          "table": {
+            "head": [
+              "Line of the domain file",
+              "What it says"
+            ],
+            "rows": [
+              [
+                "(:action move",
+                "The action is called move"
+              ],
+              [
+                ":parameters (?from ?to)",
+                "Two blanks to fill with places"
+              ],
+              [
+                ":precondition (and (road ?from ?to) (kit-at ?from))",
+                "Needs a road, and Kit at the starting place"
+              ],
+              [
+                ":effect (and (kit-at ?to) (not (kit-at ?from))))",
+                "Adds Kit at the new place, deletes Kit at the old one"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Planning Domain Definition Language",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language"
+            },
+            {
+              "title": "Wikipedia: STRIPS",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Stanford_Research_Institute_Problem_Solver"
+            }
+          ]
+        },
+        {
+          "id": "the-problem-file",
+          "title": "The problem file",
+          "text": [
+            "The problem file names its domain, lists the objects that exist today, gives the facts that are true at the start, and states the goal. Change the objects, facts or goal, and you have a new problem in the same world.",
+            "Adding a third parcel r would change only this file, because the domain's pick and drop actions work for any parcel."
+          ],
+          "table": {
+            "head": [
+              "Line of the problem file",
+              "What it says"
+            ],
+            "rows": [
+              [
+                "(:objects cabin bridge dock p q)",
+                "The things that exist today"
+              ],
+              [
+                "(:init (kit-at cabin) (at p cabin) (at q dock) (road cabin bridge) ...)",
+                "Facts true at the start"
+              ],
+              [
+                "(:goal (and (at p dock) (at q cabin)))",
+                "Facts the plan must make true"
+              ]
+            ]
+          },
+          "deeper": {
+            "title": "Who wrote PDDL",
+            "text": [
+              "PDDL was first developed by Drew McDermott and colleagues in 1998, mainly to make the International Planning Competition possible, and it has grown with each competition."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Planning Domain Definition Language",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "pddl-words",
+          "type": "match",
+          "taughtOn": "reading-an-action",
+          "prompt": "Match each PDDL word to its job.",
+          "pairs": [
+            {
+              "left": ":precondition",
+              "right": "What must be true before the action runs"
+            },
+            {
+              "left": ":effect",
+              "right": "What the action adds and deletes"
+            },
+            {
+              "left": ":init",
+              "right": "The facts true at the start"
+            },
+            {
+              "left": ":goal",
+              "right": "The facts the plan must make true"
+            }
+          ],
+          "hints": [
+            "Two of them belong to an action.",
+            "The other two belong to a problem."
+          ],
+          "explain": ":precondition and :effect belong to an action. :init and :goal belong to a problem."
+        },
+        {
+          "id": "which-file",
+          "type": "buckets",
+          "taughtOn": "two-files",
+          "prompt": "Does each item go in the domain file or the problem file?",
+          "buckets": [
+            "Domain file",
+            "Problem file"
+          ],
+          "items": [
+            {
+              "text": "The move action",
+              "bucket": "Domain file"
+            },
+            {
+              "text": "The list of objects that exist today",
+              "bucket": "Problem file"
+            },
+            {
+              "text": "The pick action",
+              "bucket": "Domain file"
+            },
+            {
+              "text": "The goal: p at the Dock",
+              "bucket": "Problem file"
+            },
+            {
+              "text": "The starting facts",
+              "bucket": "Problem file"
+            },
+            {
+              "text": "The meaning of the kit-at fact",
+              "bucket": "Domain file"
+            }
+          ],
+          "hints": [
+            "The domain is the rule book.",
+            "The problem is the setup card."
+          ],
+          "explain": "Actions and the kinds of fact belong in the domain. Objects, starting facts and the goal belong in the problem."
+        },
+        {
+          "id": "ground-sim",
+          "type": "stepsim",
+          "taughtOn": "reading-an-action",
+          "mode": "predict",
+          "prompt": "Watch a PDDL action get its blanks filled in.",
+          "explain": "Variables like ?from and ?to are replaced by objects. The preconditions are checked, then the effect adds and deletes facts.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "?from"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "?to"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "(road ?from ?to)"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "(kit-at ?from)"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "The move action, filled in"
+                },
+                "say": "This is the action 'move' with two blanks, ?from and ?to. Each blank is a variable. Fill both in and it becomes one real action."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "cabin",
+                      "mark": "current",
+                      "tag": "?from"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "?to"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "(road ?from ?to)"
+                    },
+                    {
+                      "value": "kit-at cabin",
+                      "mark": null,
+                      "tag": "(kit-at ?from)"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "The move action, filled in"
+                },
+                "say": "Fill ?from with cabin. Now (kit-at ?from) reads (kit-at cabin)."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "cabin",
+                      "mark": null,
+                      "tag": "?from"
+                    },
+                    {
+                      "value": "bridge",
+                      "mark": "current",
+                      "tag": "?to"
+                    },
+                    {
+                      "value": "road cabin bridge",
+                      "mark": null,
+                      "tag": "(road ?from ?to)"
+                    },
+                    {
+                      "value": "kit-at cabin",
+                      "mark": null,
+                      "tag": "(kit-at ?from)"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "The move action, filled in"
+                },
+                "say": "Fill ?to with bridge. Now (road ?from ?to) reads (road cabin bridge).",
+                "predict": {
+                  "prompt": "Would (move cabin dock) be a useful action in this world?",
+                  "options": [
+                    {
+                      "text": "No: there is no road straight from cabin to dock",
+                      "correct": true
+                    },
+                    {
+                      "text": "Yes, any two places will do",
+                      "correct": false
+                    },
+                    {
+                      "text": "Yes, if Kit is at the cabin",
+                      "correct": false
+                    },
+                    {
+                      "text": "No, because dock is not a place",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Which roads does the world have?",
+                    "The roads are Cabin to Bridge and Bridge to Dock, in both directions."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "cabin",
+                      "mark": null,
+                      "tag": "?from"
+                    },
+                    {
+                      "value": "bridge",
+                      "mark": null,
+                      "tag": "?to"
+                    },
+                    {
+                      "value": "true",
+                      "mark": "best",
+                      "tag": "(road ?from ?to)"
+                    },
+                    {
+                      "value": "true",
+                      "mark": "best",
+                      "tag": "(kit-at ?from)"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "The move action, filled in"
+                },
+                "say": "Check the preconditions. The road exists, and Kit is at the cabin. Both are true, so (move cabin bridge) can run."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "cabin",
+                      "mark": null,
+                      "tag": "?from"
+                    },
+                    {
+                      "value": "bridge",
+                      "mark": null,
+                      "tag": "?to"
+                    },
+                    {
+                      "value": "kit-at bridge added",
+                      "mark": "new",
+                      "tag": "(road ?from ?to)"
+                    },
+                    {
+                      "value": "kit-at cabin deleted",
+                      "mark": "new",
+                      "tag": "(kit-at ?from)"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "The move action, filled in"
+                },
+                "say": "Apply the effect. (kit-at bridge) is added, and (not (kit-at cabin)) deletes the old fact. One action definition, many possible actions."
+              }
+            ]
+          }
+        },
+        {
+          "id": "not-meaning",
+          "type": "choice",
+          "taughtOn": "reading-an-action",
+          "prompt": "In an :effect, what does (not (kit-at ?from)) do?",
+          "options": [
+            {
+              "text": "It deletes the fact: Kit is no longer at that place",
+              "correct": true
+            },
+            {
+              "text": "It adds the fact"
+            },
+            {
+              "text": "It checks that Kit is not there"
+            },
+            {
+              "text": "It cancels the whole action"
+            }
+          ],
+          "hints": [
+            "Remember the delete list.",
+            "In an effect, not removes a fact."
+          ],
+          "explain": "In an effect, a plain fact is added and a fact in not is deleted."
+        },
+        {
+          "id": "variable",
+          "type": "choice",
+          "taughtOn": "reading-an-action",
+          "prompt": "What is ?from in the move action?",
+          "options": [
+            {
+              "text": "A blank to be filled with a place",
+              "correct": true
+            },
+            {
+              "text": "The name of the goal"
+            },
+            {
+              "text": "A comment for readers"
+            },
+            {
+              "text": "A cost"
+            }
+          ],
+          "hints": [
+            "It starts with a question mark.",
+            "Planners replace it with an object."
+          ],
+          "explain": "A word starting with ? is a variable, filled in with an object such as cabin."
+        },
+        {
+          "id": "move-count",
+          "type": "numeric",
+          "taughtOn": "reading-an-action",
+          "prompt": "Roads join Cabin to Bridge and Bridge to Dock, each usable in both directions. How many different move actions can ever run?",
+          "answer": 4,
+          "calculator": false,
+          "hints": [
+            "List each direction of each road.",
+            "Cabin to Bridge, Bridge to Cabin, Bridge to Dock, Dock to Bridge."
+          ],
+          "explain": "Two roads, each in two directions, make 4 move actions."
+        },
+        {
+          "id": "pddl-parts",
+          "type": "order",
+          "taughtOn": "reading-an-action",
+          "prompt": "Put the parts of an action definition in order.",
+          "items": [
+            "The action's name",
+            "The parameters (the blanks)",
+            "The precondition",
+            "The effect"
+          ],
+          "hints": [
+            "The blanks must be named before they are used.",
+            "What is needed comes before what changes."
+          ],
+          "explain": "Name, parameters, precondition, then effect."
+        },
+        {
+          "id": "pick-count",
+          "type": "numeric",
+          "taughtOn": "the-problem-file",
+          "prompt": "Challenge: there are 2 parcels and 3 places. How many different 'pick' actions make sense (one parcel at one place)?",
+          "answer": 6,
+          "calculator": false,
+          "hints": [
+            "Multiply the parcels by the places.",
+            "2 x 3."
+          ],
+          "explain": "2 x 3 = 6 pick actions.",
+          "challenge": true
+        },
+        {
+          "id": "third-parcel",
+          "type": "choice",
+          "taughtOn": "the-problem-file",
+          "prompt": "Challenge: a third parcel r is added to the world. Which file must change?",
+          "options": [
+            {
+              "text": "Only the problem file: objects, starting facts and goal",
+              "correct": true
+            },
+            {
+              "text": "Only the domain file"
+            },
+            {
+              "text": "Both files, completely"
+            },
+            {
+              "text": "Neither file"
+            }
+          ],
+          "hints": [
+            "The pick and drop actions work for any parcel.",
+            "The domain is the rule book."
+          ],
+          "explain": "The domain's actions work for any parcel, so only the problem's objects, facts and goal change.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m2.2-f1",
+          "type": "quiz",
+          "taughtOn": "two-files",
+          "prompt": "What does a PDDL domain file hold?",
+          "options": [
+            {
+              "text": "The facts and actions that work for any problem in that world",
+              "correct": true
+            },
+            {
+              "text": "One starting situation"
+            },
+            {
+              "text": "The goal only"
+            },
+            {
+              "text": "The plan"
+            }
+          ],
+          "explain": "The domain is the rule book."
+        },
+        {
+          "id": "m2.2-f2",
+          "type": "why",
+          "taughtOn": "two-files",
+          "prompt": "What does the problem file hold?",
+          "options": [
+            {
+              "text": "Objects, starting facts and the goal",
+              "correct": true
+            },
+            {
+              "text": "The actions"
+            },
+            {
+              "text": "The final plan"
+            },
+            {
+              "text": "The planner's code"
+            }
+          ],
+          "explain": "The problem is one situation."
+        },
+        {
+          "id": "m2.2-f3",
+          "type": "quiz",
+          "taughtOn": "reading-an-action",
+          "prompt": "What does a word starting with ? mean in PDDL?",
+          "options": [
+            {
+              "text": "A variable to fill in",
+              "correct": true
+            },
+            {
+              "text": "A comment"
+            },
+            {
+              "text": "A cost"
+            },
+            {
+              "text": "A goal"
+            }
+          ],
+          "explain": "Planners replace variables with objects."
+        },
+        {
+          "id": "m2.2-f4",
+          "type": "predict",
+          "taughtOn": "reading-an-action",
+          "prompt": "5 places in a line, roads both ways: how many move actions?",
+          "answer": "8, because 4 roads x 2 directions."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "PDDL",
+          "text": "PDDL is an attempt to standardise AI planning languages. It was first developed by Drew McDermott and colleagues in 1998 for the International Planning Competition.",
+          "source": {
+            "title": "Wikipedia: Planning Domain Definition Language",
+            "url": "https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language"
+          }
+        },
+        {
+          "title": "Domain and problem",
+          "text": "PDDL describes a domain, with its actions, and a problem that gives a concrete instance. The planner produces a sequence of actions as output.",
+          "source": {
+            "title": "Wikipedia: Planning Domain Definition Language",
+            "url": "https://en.wikipedia.org/wiki/Planning_Domain_Definition_Language"
+          }
+        },
+        {
+          "title": "From STRIPS to PDDL",
+          "text": "STRIPS was the base for most of the languages used to express planning problems today, PDDL among them.",
+          "source": {
+            "title": "Wikipedia: STRIPS",
+            "url": "https://en.wikipedia.org/wiki/Stanford_Research_Institute_Problem_Solver"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You split a task into a domain file and a problem file, read a move action line by line, watched its blanks get filled in, and saw what the problem file adds.",
+          "Rowan hangs the sheets on a hook. \"Now any planner can pick them up.\" Kit rings the bell. \"Even one I have never met.\""
+        ],
+        "mistake": {
+          "title": "Mixing up the two files",
+          "text": "Rules that work everywhere belong in the domain. Anything that describes one situation, like the goal, belongs in the problem."
+        }
+      }
+    }
+  ]
+}

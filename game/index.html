@@ -1,0 +1,25 @@
+<!doctype html>
+<!-- index.html: the single page that loads Courier's Atlas. Everything else is drawn by js/main.js. -->
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Courier's Atlas</title>
+  <meta name="description" content="Cozy pixel puzzles for learning, or re-learning, how computers really work: internet technologies, algorithms and more.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📮</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Pixelify+Sans:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#app">Skip to the game</a>
+  <a class="back-to-hub" href="../">CS Notes &amp; Games</a>
+  <div id="app" tabindex="-1">
+    <p class="loading">Loading…</p>
+    <noscript><p class="loading">Courier's Atlas needs JavaScript turned on.</p></noscript>
+  </div>
+  <div id="announcer" class="visually-hidden" aria-live="polite"></div>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

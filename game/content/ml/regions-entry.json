@@ -1,0 +1,10 @@
+{
+  "id": "ml",
+  "name": "Learning Fields",
+  "subject": "Machine Learning",
+  "description": "Help a farm learn from samples: how a computer finds patterns in examples, sorts by neighbours, trees and odds, fits lines and margins, and checks honestly that its predictions work.",
+  "bigFact": "A checker that never flags anything can still score 95 percent accuracy, if only 1 item in 20 is a problem. It also catches none of them.",
+  "sprite": "house",
+  "world": "ml/world.json",
+  "dir": "ml/"
+}

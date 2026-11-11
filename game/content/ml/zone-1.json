@@ -1,0 +1,788 @@
+{
+  "zone": 1,
+  "levels": [
+    {
+      "id": "1.1",
+      "title": "Ask Your Neighbours",
+      "story": "A crate of unlabelled fruit has turned up at Fenn's stall. \"Plum or apricot?\" Fenn asks. \"Don't ask me. Ask the fruit next door. If the three most like it are apricots, it is probably an apricot too.\"",
+      "everyday": {
+        "scene": "A new family moves into your street. Without knowing anything else, you might guess how they vote or what they like from their neighbours.",
+        "question": "How could a computer guess something about a new item using only the items already known?",
+        "answer": "It can look up the most similar known items and let them vote. That is the whole idea of k-nearest neighbours."
+      },
+      "lessons": [
+        {
+          "id": "nearest-vote",
+          "title": "Let the neighbours vote",
+          "text": [
+            "k-nearest neighbours has no real training step. It keeps every example. To label a new item it measures how far the item is from each stored example, picks the k closest, and takes a vote.",
+            "The table lists eight stored fruit by how far each is from a new fruit with width 6 and height 4. The closest ones decide."
+          ],
+          "terms": [
+            {
+              "term": "k",
+              "meaning": "How many neighbours get a vote."
+            },
+            {
+              "term": "Distance",
+              "meaning": "How far apart two items are, measured on their features."
+            }
+          ],
+          "table": {
+            "head": [
+              "Distance",
+              "Class",
+              "Width, height"
+            ],
+            "rows": [
+              [
+                "1.00",
+                "Plum",
+                "6, 5"
+              ],
+              [
+                "2.00",
+                "Apricot",
+                "8, 4"
+              ],
+              [
+                "2.24",
+                "Apricot",
+                "7, 2"
+              ],
+              [
+                "3.61",
+                "Apricot",
+                "9, 2"
+              ],
+              [
+                "4.24",
+                "Plum",
+                "3, 7"
+              ],
+              [
+                "4.47",
+                "Plum",
+                "4, 0"
+              ],
+              [
+                "5.00",
+                "Apricot",
+                "9, 8"
+              ],
+              [
+                "5.10",
+                "Plum",
+                "1, 3"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: k-nearest neighbors algorithm",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm"
+            },
+            {
+              "title": "scikit-learn user guide: Nearest Neighbors",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/neighbors.html"
+            }
+          ]
+        },
+        {
+          "id": "choosing-k",
+          "title": "Choosing k",
+          "text": [
+            "With k = 1 the answer comes from one neighbour, which could be a strange one. With a large k the vote becomes smooth but may include far-off items that are not really similar.",
+            "With two classes, an odd k avoids tied votes. There is no best k for everything, so k is tried out on data kept back for testing."
+          ],
+          "predict": {
+            "prompt": "In the table, the nearest fruit is a Plum, but the next two are Apricots. What does k = 3 say?",
+            "answer": "Apricot, by 2 votes to 1."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: k-nearest neighbors algorithm",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm"
+            },
+            {
+              "title": "scikit-learn user guide: Nearest Neighbors",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/neighbors.html"
+            }
+          ]
+        },
+        {
+          "id": "distance-and-scale",
+          "title": "Distance and scale",
+          "text": [
+            "The usual distance is Euclidean: take the gap on each feature, square each gap, add them up and take the square root. For (2, 3) and (5, 7), the gaps are 3 and 4, so the distance is 5.",
+            "Features on big scales swamp the rest. A fruit's weight in grams would drown its sweetness score from 1 to 10. Squeezing each feature into a range from 0 to 1 first makes each feature count fairly."
+          ],
+          "table": {
+            "head": [
+              "Fruit",
+              "Weight (g)",
+              "Sweetness",
+              "Scaled weight",
+              "Scaled sweetness"
+            ],
+            "rows": [
+              [
+                "New",
+                "200",
+                "8",
+                "0.5",
+                "0.78"
+              ],
+              [
+                "A",
+                "190",
+                "2",
+                "0.45",
+                "0.11"
+              ],
+              [
+                "B",
+                "260",
+                "8",
+                "0.8",
+                "0.78"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: k-nearest neighbors algorithm",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm"
+            },
+            {
+              "title": "scikit-learn user guide: Preprocessing data",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/preprocessing.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "one-distance",
+          "type": "numeric",
+          "taughtOn": "distance-and-scale",
+          "prompt": "How far apart are the points (2, 3) and (5, 7)? Use the straight-line distance.",
+          "answer": 5,
+          "calculator": false,
+          "hints": [
+            "The gaps are 3 across and 4 up.",
+            "Square root of (9 + 16)."
+          ],
+          "explain": "The gaps are 3 and 4. 9 + 16 = 25, and the square root of 25 is 5."
+        },
+        {
+          "id": "neighbour-sim",
+          "type": "stepsim",
+          "taughtOn": "nearest-vote",
+          "mode": "predict",
+          "prompt": "Follow the votes as k grows.",
+          "explain": "k changes the answer. k = 1 says Plum, while k = 3 and k = 5 say Apricot. Looking at several neighbours is steadier than trusting one.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "1.00",
+                      "mark": null,
+                      "tag": "Plum"
+                    },
+                    {
+                      "value": "2.00",
+                      "mark": null,
+                      "tag": "Apricot"
+                    },
+                    {
+                      "value": "2.24",
+                      "mark": null,
+                      "tag": "Apricot"
+                    },
+                    {
+                      "value": "3.61",
+                      "mark": null,
+                      "tag": "Apricot"
+                    },
+                    {
+                      "value": "4.24",
+                      "mark": null,
+                      "tag": "Plum"
+                    },
+                    {
+                      "value": "4.47",
+                      "mark": null,
+                      "tag": "Plum"
+                    },
+                    {
+                      "value": "5.00",
+                      "mark": null,
+                      "tag": "Apricot"
+                    },
+                    {
+                      "value": "5.10",
+                      "mark": null,
+                      "tag": "Plum"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Stored fruit, nearest first"
+                },
+                "say": "A new fruit has arrived and its class is unknown. Each box is one stored fruit, showing its distance from the new one and its class. They are sorted nearest first."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "1.00",
+                      "mark": "best",
+                      "tag": "Plum"
+                    },
+                    {
+                      "value": "2.00",
+                      "mark": null,
+                      "tag": "Apricot"
+                    },
+                    {
+                      "value": "2.24",
+                      "mark": null,
+                      "tag": "Apricot"
+                    },
+                    {
+                      "value": "3.61",
+                      "mark": null,
+                      "tag": "Apricot"
+                    },
+                    {
+                      "value": "4.24",
+                      "mark": null,
+                      "tag": "Plum"
+                    },
+                    {
+                      "value": "4.47",
+                      "mark": null,
+                      "tag": "Plum"
+                    },
+                    {
+                      "value": "5.00",
+                      "mark": null,
+                      "tag": "Apricot"
+                    },
+                    {
+                      "value": "5.10",
+                      "mark": null,
+                      "tag": "Plum"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "k = 1"
+                  },
+                  "label": "Stored fruit, nearest first"
+                },
+                "say": "With k = 1, only the single nearest fruit gets a vote.",
+                "predict": {
+                  "prompt": "With k = 1, what does the nearest fruit say the new fruit is?",
+                  "options": [
+                    {
+                      "text": "Plum",
+                      "correct": true
+                    },
+                    {
+                      "text": "Apricot",
+                      "correct": false
+                    },
+                    {
+                      "text": "A tie",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Look at the first box.",
+                    "The nearest is 1.00 away."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "1.00",
+                      "mark": "best",
+                      "tag": "Plum"
+                    },
+                    {
+                      "value": "2.00",
+                      "mark": "best",
+                      "tag": "Apricot"
+                    },
+                    {
+                      "value": "2.24",
+                      "mark": "best",
+                      "tag": "Apricot"
+                    },
+                    {
+                      "value": "3.61",
+                      "mark": null,
+                      "tag": "Apricot"
+                    },
+                    {
+                      "value": "4.24",
+                      "mark": null,
+                      "tag": "Plum"
+                    },
+                    {
+                      "value": "4.47",
+                      "mark": null,
+                      "tag": "Plum"
+                    },
+                    {
+                      "value": "5.00",
+                      "mark": null,
+                      "tag": "Apricot"
+                    },
+                    {
+                      "value": "5.10",
+                      "mark": null,
+                      "tag": "Plum"
+                    }
+                  ],
+                  "pointers": {
+                    "2": "k = 3"
+                  },
+                  "label": "Stored fruit, nearest first"
+                },
+                "say": "With k = 3, the three nearest vote: Plum, Apricot, Apricot.",
+                "predict": {
+                  "prompt": "With k = 3, which class wins the vote?",
+                  "options": [
+                    {
+                      "text": "Apricot, 2 votes to 1",
+                      "correct": true
+                    },
+                    {
+                      "text": "Plum, 2 votes to 1",
+                      "correct": false
+                    },
+                    {
+                      "text": "A tie",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Count the classes in the first three boxes.",
+                    "There are two Apricots and one Plum."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "1.00",
+                      "mark": "best",
+                      "tag": "Plum"
+                    },
+                    {
+                      "value": "2.00",
+                      "mark": "best",
+                      "tag": "Apricot"
+                    },
+                    {
+                      "value": "2.24",
+                      "mark": "best",
+                      "tag": "Apricot"
+                    },
+                    {
+                      "value": "3.61",
+                      "mark": "best",
+                      "tag": "Apricot"
+                    },
+                    {
+                      "value": "4.24",
+                      "mark": "best",
+                      "tag": "Plum"
+                    },
+                    {
+                      "value": "4.47",
+                      "mark": null,
+                      "tag": "Plum"
+                    },
+                    {
+                      "value": "5.00",
+                      "mark": null,
+                      "tag": "Apricot"
+                    },
+                    {
+                      "value": "5.10",
+                      "mark": null,
+                      "tag": "Plum"
+                    }
+                  ],
+                  "pointers": {
+                    "4": "k = 5"
+                  },
+                  "label": "Stored fruit, nearest first"
+                },
+                "say": "With k = 5, the votes are 3 Apricot and 2 Plum. Apricot still wins.",
+                "predict": {
+                  "prompt": "With k = 5, how many votes does the winning class get?",
+                  "options": [
+                    {
+                      "text": "3",
+                      "correct": true
+                    },
+                    {
+                      "text": "2",
+                      "correct": false
+                    },
+                    {
+                      "text": "4",
+                      "correct": false
+                    },
+                    {
+                      "text": "5",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Count the Apricots in the first five boxes.",
+                    "The first five are Plum, Apricot, Apricot, Apricot, Plum."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "1.00",
+                      "mark": "best",
+                      "tag": "Plum"
+                    },
+                    {
+                      "value": "2.00",
+                      "mark": "best",
+                      "tag": "Apricot"
+                    },
+                    {
+                      "value": "2.24",
+                      "mark": "best",
+                      "tag": "Apricot"
+                    },
+                    {
+                      "value": "3.61",
+                      "mark": null,
+                      "tag": "Apricot"
+                    },
+                    {
+                      "value": "4.24",
+                      "mark": null,
+                      "tag": "Plum"
+                    },
+                    {
+                      "value": "4.47",
+                      "mark": null,
+                      "tag": "Plum"
+                    },
+                    {
+                      "value": "5.00",
+                      "mark": null,
+                      "tag": "Apricot"
+                    },
+                    {
+                      "value": "5.10",
+                      "mark": null,
+                      "tag": "Plum"
+                    }
+                  ],
+                  "pointers": {
+                    "2": "chosen: k = 3"
+                  },
+                  "label": "Stored fruit, nearest first"
+                },
+                "say": "Changing k changed the answer once, from Plum to Apricot. A single close neighbour can be an odd one out, so Kit trusts the larger vote."
+              }
+            ]
+          }
+        },
+        {
+          "id": "knn-facts",
+          "type": "buckets",
+          "taughtOn": "nearest-vote",
+          "prompt": "Is each statement about k-nearest neighbours true or false?",
+          "buckets": [
+            "True",
+            "False"
+          ],
+          "items": [
+            {
+              "text": "It keeps all the training examples",
+              "bucket": "True"
+            },
+            {
+              "text": "It builds a formula before it sees a new item",
+              "bucket": "False"
+            },
+            {
+              "text": "A new item is labelled by a vote of its closest examples",
+              "bucket": "True"
+            },
+            {
+              "text": "k is the number of features",
+              "bucket": "False"
+            },
+            {
+              "text": "An odd k avoids ties with two classes",
+              "bucket": "True"
+            }
+          ],
+          "hints": [
+            "The method does its work when a new item arrives.",
+            "k counts neighbours, not features."
+          ],
+          "explain": "k-nearest neighbours stores examples and votes at prediction time. k is the number of neighbours, and an odd k avoids ties between two classes."
+        },
+        {
+          "id": "winning-votes",
+          "type": "numeric",
+          "taughtOn": "choosing-k",
+          "prompt": "With k = 5 in the table, how many of the five nearest are Apricots?",
+          "answer": 3,
+          "calculator": false,
+          "hints": [
+            "Count the Apricots in the first five rows of the table.",
+            "Rows 2, 3 and 4 are Apricots."
+          ],
+          "explain": "The five nearest are Plum, Apricot, Apricot, Apricot and Plum. That is 3 Apricots."
+        },
+        {
+          "id": "k1-risk",
+          "type": "choice",
+          "taughtOn": "choosing-k",
+          "prompt": "Why can k = 1 be risky?",
+          "options": [
+            {
+              "text": "One unusual neighbour decides the answer",
+              "correct": true
+            },
+            {
+              "text": "It needs the most memory"
+            },
+            {
+              "text": "It cannot give a class"
+            },
+            {
+              "text": "It uses distance in the wrong units"
+            }
+          ],
+          "hints": [
+            "How many items vote when k = 1?",
+            "A single odd example then decides alone."
+          ],
+          "explain": "With k = 1 a single odd or mislabelled example decides the answer. More neighbours smooth that out."
+        },
+        {
+          "id": "knn-steps",
+          "type": "order",
+          "taughtOn": "nearest-vote",
+          "prompt": "Put the steps for labelling a new fruit in order.",
+          "items": [
+            "Measure the distance to every stored fruit",
+            "Sort the stored fruit by distance",
+            "Pick the k nearest",
+            "Take a vote and give the winning class"
+          ],
+          "hints": [
+            "You need the distances before you can sort.",
+            "The vote comes last."
+          ],
+          "explain": "Measure, sort, pick the k nearest, and vote."
+        },
+        {
+          "id": "distance-terms",
+          "type": "match",
+          "taughtOn": "distance-and-scale",
+          "prompt": "Match each idea to what it does.",
+          "pairs": [
+            {
+              "left": "Euclidean distance",
+              "right": "Straight-line distance between two items"
+            },
+            {
+              "left": "Scaling",
+              "right": "Putting features on a similar range"
+            },
+            {
+              "left": "k",
+              "right": "How many neighbours vote"
+            },
+            {
+              "left": "Neighbour",
+              "right": "A stored example close to the new item"
+            }
+          ],
+          "hints": [
+            "Scaling happens to the features before measuring.",
+            "k counts the voters."
+          ],
+          "explain": "Scaling evens out features, distance measures closeness, and k sets how many close items vote."
+        },
+        {
+          "id": "why-scale",
+          "type": "choice",
+          "taughtOn": "distance-and-scale",
+          "prompt": "In the table, why is B really closer to the new fruit than A, even though A's raw distance is smaller?",
+          "options": [
+            {
+              "text": "A's raw distance is mostly weight, and B matches the sweetness",
+              "correct": true
+            },
+            {
+              "text": "B is heavier"
+            },
+            {
+              "text": "A has a higher sweetness"
+            },
+            {
+              "text": "Scaling removes the weight"
+            }
+          ],
+          "hints": [
+            "Compare the scaled values: A is 0.67 away and B is 0.3.",
+            "The new fruit has sweetness 8, and so does B."
+          ],
+          "explain": "Unscaled, A is 11.66 away and B is 60.0 because weight is on a big scale. After scaling, A is 0.67 away and B is 0.3, so B is the true neighbour.",
+          "challenge": true
+        },
+        {
+          "id": "scaled-weight",
+          "type": "numeric",
+          "taughtOn": "distance-and-scale",
+          "prompt": "Challenge: weights run from 100 g to 300 g. Squeezed into a range from 0 to 1, where does a 200 g fruit land?",
+          "answer": 0.5,
+          "tolerance": 0.001,
+          "calculator": false,
+          "hints": [
+            "Subtract the smallest, then divide by the full range.",
+            "(200 - 100) / (300 - 100)"
+          ],
+          "explain": "(200 - 100) divided by (300 - 100) is 100 / 200 = 0.5. It sits exactly in the middle.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m1.1-f1",
+          "type": "quiz",
+          "taughtOn": "nearest-vote",
+          "prompt": "How does k-nearest neighbours label a new item?",
+          "options": [
+            {
+              "text": "A vote among its k closest stored examples",
+              "correct": true
+            },
+            {
+              "text": "It uses a formula built in training"
+            },
+            {
+              "text": "It picks a random class"
+            },
+            {
+              "text": "It copies the first example"
+            }
+          ],
+          "explain": "It finds the closest stored examples and votes."
+        },
+        {
+          "id": "m1.1-f2",
+          "type": "quiz",
+          "taughtOn": "choosing-k",
+          "prompt": "With two classes, why pick an odd k?",
+          "options": [
+            {
+              "text": "To avoid tied votes",
+              "correct": true
+            },
+            {
+              "text": "To be faster"
+            },
+            {
+              "text": "To use less memory"
+            },
+            {
+              "text": "To ignore distance"
+            }
+          ],
+          "explain": "An odd number of voters cannot tie between two classes."
+        },
+        {
+          "id": "m1.1-f3",
+          "type": "why",
+          "taughtOn": "distance-and-scale",
+          "prompt": "Why scale features before measuring distance?",
+          "options": [
+            {
+              "text": "So a big-scale feature does not swamp the others",
+              "correct": true
+            },
+            {
+              "text": "So all distances become zero"
+            },
+            {
+              "text": "So labels turn into numbers"
+            },
+            {
+              "text": "So k becomes odd"
+            }
+          ],
+          "explain": "Without scaling, the biggest numbers decide the distance."
+        },
+        {
+          "id": "m1.1-f4",
+          "type": "predict",
+          "taughtOn": "distance-and-scale",
+          "prompt": "What is the straight-line distance between (0, 0) and (6, 8)?",
+          "answer": "10. The gaps are 6 and 8, and 36 + 64 = 100."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "No real training",
+          "text": "k-nearest neighbours does not build a general model first. All of its computation is deferred until a prediction is requested.",
+          "source": {
+            "title": "Wikipedia: k-nearest neighbors algorithm",
+            "url": "https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm"
+          },
+          "verify": false
+        },
+        {
+          "title": "Scale matters",
+          "text": "If features come in vastly different scales, normalising the training data can greatly improve the accuracy of k-nearest neighbours.",
+          "source": {
+            "title": "Wikipedia: k-nearest neighbors algorithm",
+            "url": "https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You let the nearest stored fruit vote, saw k change the answer from Plum to Apricot, and learned why features must be scaled before distances are measured.",
+          "Fenn tags the crate. \"Good neighbours make good guesses.\""
+        ],
+        "mistake": {
+          "title": "Trusting the nearest single example",
+          "text": "One close example can be an odd one out. Using several neighbours, and keeping the features on a similar scale, gives steadier answers."
+        }
+      }
+    }
+  ]
+}

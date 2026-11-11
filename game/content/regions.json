@@ -1,0 +1,84 @@
+{
+  "regions": [
+    {
+      "id": "net",
+      "name": "Packet Valley",
+      "subject": "Internet Technologies",
+      "description": "Follow one letter across a valley and see how the internet carries it: layers, wires, frames, addresses, routes, ports, web requests and security.",
+      "bigFact": "Nearly all data between continents travels through undersea cables, not satellites.",
+      "sprite": "house",
+      "world": "net/world.json",
+      "dir": "net/"
+    },
+    {
+      "id": "algo",
+      "name": "Algo Archipelago",
+      "subject": "Algorithms and Complexity",
+      "description": "Island-hop through the ideas behind fast programs: how to organise data, count the cost of a method, and pick a smarter way to solve a problem.",
+      "bigFact": "Fold a sheet of paper in half 42 times and it would be thick enough to reach the Moon.",
+      "sprite": "boat",
+      "world": "algo/world.json",
+      "dir": "algo/"
+    },
+    {
+      "id": "db",
+      "name": "Ledger Library",
+      "subject": "Databases",
+      "description": "Work the front desk of a grand library: how data is stored in tables, how keys link them, how to keep them tidy, and how SQL asks them questions.",
+      "bigFact": "Join a table of 1,000 members to a table of 1,000 loans with no matching rule and you get a million rows of nonsense.",
+      "sprite": "castle",
+      "world": "db/world.json",
+      "dir": "db/"
+    },
+    {
+      "id": "java",
+      "name": "Blueprint Borough",
+      "subject": "Java",
+      "description": "Walk through a town of blueprints: how a Java program runs, how it stores values, makes decisions, repeats steps, and builds objects from classes.",
+      "bigFact": "In Java, 7 / 2 is 3, not 3.5, when both numbers are whole. The fraction is thrown away.",
+      "sprite": "hut",
+      "world": "java/world.json",
+      "dir": "java/"
+    },
+    {
+      "id": "adb",
+      "name": "Vault Harbour",
+      "subject": "Advanced Databases",
+      "description": "Work the docks of a busy harbour: how a database uses disks and memory, how a query is planned and costed, how indexes find rows fast, and how transactions keep the ledger right.",
+      "bigFact": "If every node in an index tree points to 100 children, a tree only four steps deep can reach 100 million nodes.",
+      "sprite": "lighthouse",
+      "world": "adb/world.json",
+      "dir": "adb/"
+    },
+    {
+      "id": "ml",
+      "name": "Learning Fields",
+      "subject": "Machine Learning",
+      "description": "Help a farm learn from samples: how a computer finds patterns in examples, sorts by neighbours, trees and odds, fits lines and margins, and checks honestly that its predictions work.",
+      "bigFact": "A checker that never flags anything can still score 95 percent accuracy, if only 1 item in 20 is a problem. It also catches none of them.",
+      "sprite": "house",
+      "world": "ml/world.json",
+      "dir": "ml/"
+    },
+    {
+      "id": "nlp",
+      "name": "Wordwood",
+      "subject": "Natural Language Processing",
+      "description": "Wander a wood where the trees are words and the paths are sentences: how computers split and tidy text, count what comes next, sort and tag it, remember context, give words a place on a map and weigh every word against the rest.",
+      "bigFact": "Standard attention in a transformer compares every word with every other word, so doubling the length of a text makes that work grow four times.",
+      "sprite": "house",
+      "world": "nlp/world.json",
+      "dir": "nlp/"
+    },
+    {
+      "id": "plan",
+      "name": "Waypoint Woods",
+      "subject": "AI Planning",
+      "description": "Walk forest trails where Kit plans each step to a goal: how a program searches for a route, writes a problem down, guesses the distance left, ignores what actions undo, and keeps only states with something new.",
+      "bigFact": "A world described by just 100 yes-or-no facts can be in up to about 10 to the power 30 different states, yet a width-1 search keeps at most 100 of them.",
+      "sprite": "tree",
+      "world": "plan/world.json",
+      "dir": "plan/"
+    }
+  ]
+}

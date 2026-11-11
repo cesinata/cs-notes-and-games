@@ -1,0 +1,1322 @@
+{
+  "zone": 1,
+  "levels": [
+    {
+      "id": "1.1",
+      "title": "Delay Dash",
+      "story": "Weaver Wren strings long wires between the trees of Wire Woods. Before Kit's letter can cross, Kit needs to know how long a parcel takes to get across a wire. Wren sets up a race to find out.",
+      "everyday": {
+        "scene": "You send a big video to a friend and the progress bar crawls. A moment later you send a one-word text to a friend on the other side of the world and it arrives almost instantly.",
+        "question": "Why can a big file to the next town feel slow, while a tiny message across the world feels instant?",
+        "answer": "Because there are two different delays. Pushing a big file onto the wire takes a long time, because there are so many bits to push. Travelling along the wire takes time too, but only a little, and it depends on distance, not on size. A tiny message has almost nothing to push, so it's mostly travel time, which is short."
+      },
+      "lessons": [
+        {
+          "id": "two-delays",
+          "title": "Two kinds of waiting",
+          "text": [
+            "Wren's first rule: a parcel waits twice. First, every bit has to be pushed onto the wire, one after another. That takes size ÷ rate, and we call it the transmission delay.",
+            "Second, each bit has to travel along the wire. That takes distance ÷ speed, and we call it the propagation delay.",
+            "Add the two together and you get the latency: the time for a message to get across one link."
+          ],
+          "terms": [
+            {
+              "term": "Bit rate",
+              "meaning": "How many bits the wire can push out each second."
+            },
+            {
+              "term": "Transmission delay",
+              "meaning": "The time to push all of a message's bits onto the wire."
+            },
+            {
+              "term": "Propagation delay",
+              "meaning": "The time for a bit to travel along the wire."
+            },
+            {
+              "term": "Latency",
+              "meaning": "Transmission delay plus propagation delay."
+            }
+          ],
+          "table": {
+            "head": [
+              "Delay",
+              "What it depends on",
+              "Sum to work out"
+            ],
+            "rows": [
+              [
+                "Transmission",
+                "Message size and bit rate",
+                "size ÷ rate"
+              ],
+              [
+                "Propagation",
+                "Distance and signal speed",
+                "distance ÷ speed"
+              ]
+            ]
+          },
+          "diagramCaption": "Pushing and travelling are separate jobs.",
+          "predict": {
+            "prompt": "If you double the bit rate, does each bit travel along the wire faster?",
+            "answer": "No. A faster bit rate pushes bits onto the wire faster, but once they're on it they all travel at the wire's speed."
+          },
+          "references": [
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, section 1.5 Performance",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/foundation/performance.html"
+            },
+            {
+              "title": "Wikipedia: Propagation delay",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Propagation_delay"
+            }
+          ]
+        },
+        {
+          "id": "worked-example",
+          "title": "A worked example",
+          "text": [
+            "Kit sends a parcel of 4,000,000 bits down a wire that pushes 8,000,000 bits per second. Pushing takes 4,000,000 ÷ 8,000,000 = 0.5 seconds.",
+            "Signals in cable and fibre travel at about 200,000 km each second. For a 3,000 km wire that's 3,000 ÷ 200,000 = 0.015 seconds, or 15 milliseconds.",
+            "Latency = 0.5 s + 0.015 s = 0.515 s. Pushing took most of the time, because the parcel was big."
+          ],
+          "terms": [
+            {
+              "term": "Millisecond (ms)",
+              "meaning": "One thousandth of a second. 1 second = 1,000 ms."
+            }
+          ],
+          "predict": {
+            "prompt": "A parcel of only 8,000 bits goes down the same wire. Is the push time longer or shorter than the 3,000 km travel time?",
+            "answer": "Shorter. 8,000 ÷ 8,000,000 = 0.001 s, which is 1 ms. Travel still takes 15 ms, so now travelling takes most of the time."
+          },
+          "deeper": {
+            "title": "Bits in flight",
+            "text": [
+              "The bandwidth-delay product is bit rate × propagation delay. It tells you how many bits are on the wire at once. For 8,000,000 bits per second and 15 ms (0.015 s), that's 8,000,000 × 0.015 = 120,000 bits travelling at the same moment."
+            ]
+          },
+          "references": [
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, section 1.5 Performance",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/foundation/performance.html"
+            },
+            {
+              "title": "Wikipedia: Bandwidth-delay product",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Bandwidth-delay_product"
+            }
+          ]
+        },
+        {
+          "id": "bandwidth-not-speed",
+          "title": "Bandwidth is not speed",
+          "text": [
+            "People say \"fast internet\" for a high bit rate, but a high bit rate doesn't make bits travel faster. Think of a wider road: more cars can leave each second, but each car goes the same speed.",
+            "A faster bit rate shrinks the push time, which matters for big files. Only a shorter wire shrinks the travel time, which matters for tiny messages."
+          ],
+          "table": {
+            "head": [
+              "Change",
+              "Push time",
+              "Travel time"
+            ],
+            "rows": [
+              [
+                "Faster bit rate",
+                "Shorter",
+                "Same"
+              ],
+              [
+                "Shorter wire",
+                "Same",
+                "Shorter"
+              ],
+              [
+                "Bigger file",
+                "Longer",
+                "Same"
+              ]
+            ]
+          },
+          "diagramCaption": "Each change affects only one of the two delays.",
+          "predict": {
+            "prompt": "You upgrade from a slow plan to a fast one and send a one-word text across the world. Do you notice?",
+            "answer": "Hardly at all. The text has almost no bits to push, so what you wait for is the travel time, and the plan doesn't change that."
+          },
+          "references": [
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, section 1.5 Performance",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/foundation/performance.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "speed-vs-rate",
+          "type": "choice",
+          "taughtOn": "bandwidth-not-speed",
+          "prompt": "You upgrade to a much higher bit rate and send a big file. Which time gets shorter?",
+          "options": [
+            {
+              "text": "The time to push the bits onto the wire",
+              "correct": true
+            },
+            {
+              "text": "The time for a bit to travel along the wire"
+            },
+            {
+              "text": "Both times"
+            },
+            {
+              "text": "Neither time"
+            }
+          ],
+          "hints": [
+            "Think about what a wider road changes.",
+            "A higher bit rate pushes bits out faster. Travel speed is set by the wire."
+          ],
+          "explain": "A higher bit rate shortens the transmission delay. The propagation delay stays the same."
+        },
+        {
+          "id": "push-time",
+          "type": "numeric",
+          "taughtOn": "worked-example",
+          "prompt": "A parcel has 6,000,000 bits. The wire pushes 2,000,000 bits each second. How many seconds does it take to push all the bits?",
+          "answer": 3,
+          "unit": "seconds",
+          "hints": [
+            "Divide the size by the rate.",
+            "6,000,000 ÷ 2,000,000."
+          ],
+          "explain": "6,000,000 ÷ 2,000,000 = 3 seconds."
+        },
+        {
+          "id": "travel-time",
+          "type": "numeric",
+          "taughtOn": "worked-example",
+          "prompt": "A signal travels 200,000 km each second. How many milliseconds does it take to cross a 4,000 km wire?",
+          "answer": 20,
+          "unit": "ms",
+          "hints": [
+            "First find the time in seconds: distance ÷ speed. Then turn seconds into milliseconds.",
+            "4,000 ÷ 200,000 = 0.02 seconds, and 1 second is 1,000 ms."
+          ],
+          "explain": "4,000 ÷ 200,000 = 0.02 s, which is 20 ms."
+        },
+        {
+          "id": "delay-terms",
+          "type": "match",
+          "taughtOn": "two-delays",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Transmission delay",
+              "right": "The time to push every bit onto the wire"
+            },
+            {
+              "left": "Propagation delay",
+              "right": "The time for a bit to travel along the wire"
+            },
+            {
+              "left": "Latency",
+              "right": "Push time plus travel time"
+            }
+          ],
+          "hints": [
+            "Push and travel are the two parts.",
+            "Latency is the total."
+          ],
+          "explain": "Transmission is pushing, propagation is travelling, and latency adds them."
+        },
+        {
+          "id": "which-delay",
+          "type": "buckets",
+          "taughtOn": "bandwidth-not-speed",
+          "prompt": "Which delay does each change affect?",
+          "buckets": [
+            "Transmission delay",
+            "Propagation delay"
+          ],
+          "items": [
+            {
+              "text": "Sending a bigger file",
+              "bucket": "Transmission delay"
+            },
+            {
+              "text": "Moving the server to a farther city",
+              "bucket": "Propagation delay"
+            },
+            {
+              "text": "Upgrading to a higher bit rate",
+              "bucket": "Transmission delay"
+            },
+            {
+              "text": "Using a longer cable",
+              "bucket": "Propagation delay"
+            },
+            {
+              "text": "Compressing a video before sending it",
+              "bucket": "Transmission delay"
+            }
+          ],
+          "hints": [
+            "Ask: does this change how many bits to push, or how far they go?",
+            "Size and rate affect pushing. Distance affects travelling."
+          ],
+          "explain": "Size and bit rate change the push time. Distance changes the travel time."
+        },
+        {
+          "id": "latency-total",
+          "type": "numeric",
+          "taughtOn": "worked-example",
+          "prompt": "A message of 1,000,000 bits crosses a 6,000 km wire. The wire pushes 10,000,000 bits each second, and signals travel 200,000 km each second. What is the latency in milliseconds?",
+          "answer": 130,
+          "unit": "ms",
+          "hints": [
+            "Work out the push time and the travel time separately, then add them.",
+            "Push: 1,000,000 ÷ 10,000,000 = 0.1 s = 100 ms. Travel: 6,000 ÷ 200,000 = 0.03 s = 30 ms."
+          ],
+          "explain": "100 ms to push plus 30 ms to travel makes 130 ms."
+        },
+        {
+          "id": "watch-delays",
+          "type": "stepsim",
+          "taughtOn": "worked-example",
+          "mode": "watch",
+          "prompt": "Watch a parcel's two delays add up.",
+          "script": {
+            "view": "bars",
+            "steps": [
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Push time (ms)",
+                      "value": 0
+                    },
+                    {
+                      "label": "Travel time (ms)",
+                      "value": 0
+                    }
+                  ]
+                },
+                "say": "Kit's 4,000,000-bit parcel is ready to go on an 8 Mbps wire that is 3,000 km long."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Push time (ms)",
+                      "value": 500
+                    },
+                    {
+                      "label": "Travel time (ms)",
+                      "value": 0
+                    }
+                  ]
+                },
+                "say": "First the bits are pushed onto the wire: 4,000,000 ÷ 8,000,000 = 0.5 s = 500 ms."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Push time (ms)",
+                      "value": 500
+                    },
+                    {
+                      "label": "Travel time (ms)",
+                      "value": 15
+                    }
+                  ]
+                },
+                "say": "Then the last bit travels the 3,000 km: 15 ms."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Latency so far (ms)",
+                      "value": 515
+                    }
+                  ]
+                },
+                "say": "Latency = 500 + 15 = 515 ms. For a big parcel, pushing dominates."
+              }
+            ]
+          },
+          "hints": [],
+          "explain": "Watch a parcel's two delays add up."
+        },
+        {
+          "id": "flight-bits",
+          "type": "numeric",
+          "taughtOn": "worked-example",
+          "prompt": "Challenge: a wire pushes 5,000,000 bits each second and a bit takes 40 ms (0.04 s) to travel along it. How many bits are on the wire at once?",
+          "answer": 200000,
+          "unit": "bits",
+          "hints": [
+            "Multiply the bit rate by the travel time in seconds.",
+            "5,000,000 × 0.04."
+          ],
+          "explain": "5,000,000 × 0.04 = 200,000 bits in flight.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "1.1-f1",
+          "type": "quiz",
+          "taughtOn": "two-delays",
+          "prompt": "Latency over one link is…",
+          "options": [
+            {
+              "text": "Transmission delay plus propagation delay",
+              "correct": true
+            },
+            {
+              "text": "Transmission delay times propagation delay"
+            },
+            {
+              "text": "Only the propagation delay"
+            },
+            {
+              "text": "The bit rate divided by the distance"
+            }
+          ],
+          "explain": "Latency adds the push time and the travel time."
+        },
+        {
+          "id": "1.1-f2",
+          "type": "predict",
+          "taughtOn": "bandwidth-not-speed",
+          "prompt": "You double the bit rate of a link. What happens to the propagation delay?",
+          "answer": "Nothing. The travel time depends on distance and the wire's signal speed, not on the bit rate."
+        },
+        {
+          "id": "1.1-f3",
+          "type": "why",
+          "taughtOn": "worked-example",
+          "prompt": "Why does a tiny message across the world still take tens of milliseconds?",
+          "options": [
+            {
+              "text": "Travel time depends on distance, not on message size",
+              "correct": true
+            },
+            {
+              "text": "Tiny messages are pushed slowly"
+            },
+            {
+              "text": "The bit rate is always low across the world"
+            },
+            {
+              "text": "Small messages have to wait for big ones"
+            }
+          ],
+          "explain": "Pushing a tiny message takes almost no time, so what's left is the travel time, set by distance."
+        },
+        {
+          "id": "1.1-f4",
+          "type": "quiz",
+          "taughtOn": "worked-example",
+          "prompt": "A 2,000,000-bit file goes onto a wire that pushes 1,000,000 bits each second. How long is the transmission delay?",
+          "options": [
+            {
+              "text": "2 seconds",
+              "correct": true
+            },
+            {
+              "text": "0.5 seconds"
+            },
+            {
+              "text": "2 milliseconds"
+            },
+            {
+              "text": "1 second"
+            }
+          ],
+          "explain": "2,000,000 ÷ 1,000,000 = 2 seconds."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Why distance still matters",
+          "text": "Light in fibre travels at about 200,000 km each second. Sydney and London are roughly 17,000 km apart in a straight line. Even in a perfect fibre cable, a round trip takes at least 2 × 17,000 ÷ 200,000 = 0.17 seconds. No upgrade can beat that, because it's the speed of light in glass.",
+          "source": {
+            "title": "Wikipedia: Latency (engineering)",
+            "url": "https://en.wikipedia.org/wiki/Latency_(engineering)"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You split a parcel's wait into pushing time and travel time, added them to get latency, and saw that a faster bit rate only helps with pushing.",
+          "Wren nods at her stopwatch. \"Now you know why 'fast internet' isn't one thing,\" she says."
+        ],
+        "mistake": {
+          "title": "Confusing bandwidth with speed of travel",
+          "text": "A higher bit rate (often called bandwidth) lets more bits leave each second, like a wider road. It doesn't make any bit travel faster. Travel time depends on distance and on the wire, not on the bit rate."
+        }
+      }
+    },
+    {
+      "id": "1.3",
+      "title": "Signal Studio",
+      "story": "Deep in Wire Woods, Weaver Wren talks to far-off trees with a lantern: bright or dim, fast or slow blinks, steady or flipped. Kit has to learn her lantern language to read where the letter goes next.",
+      "everyday": {
+        "scene": "You hum a quiet note, then a loud one, then a high one. A friend across the room can tell all three apart without seeing you.",
+        "question": "How can a wave carry a message made of 1s and 0s?",
+        "answer": "By changing something about the wave in a way the receiver can spot: its height, its pitch, or its timing. The sender agrees with the receiver that one change means 1 and another means 0. Changing a wave to carry bits is called modulation."
+      },
+      "lessons": [
+        {
+          "id": "wave-basics",
+          "title": "A wave you can change",
+          "text": [
+            "A signal travelling down a wire or through the air is a wave: a smooth up and down wiggle. Wren points out three things about it that you can change.",
+            "Its height is the amplitude. How many wiggles it makes each second is the frequency, which sounds like pitch. And where in its wiggle it starts is the phase.",
+            "Changing one of these to stand for bits is called modulation."
+          ],
+          "terms": [
+            {
+              "term": "Amplitude",
+              "meaning": "How tall the wave is."
+            },
+            {
+              "term": "Frequency",
+              "meaning": "How many wiggles the wave makes each second. Higher frequency sounds like a higher note."
+            },
+            {
+              "term": "Phase",
+              "meaning": "Where in its up-and-down cycle the wave starts."
+            },
+            {
+              "term": "Modulation",
+              "meaning": "Changing a wave so that it carries bits."
+            }
+          ],
+          "wave": {
+            "bits": "1011",
+            "kind": "ask"
+          },
+          "diagramCaption": "A wave where a tall wiggle means 1 and a flat line means 0.",
+          "predict": {
+            "prompt": "Look at the picture. How does the wave show a 0?",
+            "answer": "As a flat line: no wiggle at all. The wiggle is only there for 1s."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Modulation",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Modulation"
+            }
+          ]
+        },
+        {
+          "id": "three-ways",
+          "title": "Three ways to write a bit",
+          "text": [
+            "Wren's lantern code has three versions. ASK changes the height: a tall wave is 1 and a flat one is 0. FSK changes the pitch: fast wiggles are 1 and slow wiggles are 0.",
+            "PSK flips the wave: one bit starts the wave normally, and the other starts it upside down. The height and the pitch stay the same.",
+            "Each version has a simple clue: look at what changes from one bit to the next."
+          ],
+          "terms": [
+            {
+              "term": "ASK",
+              "meaning": "Amplitude-shift keying: the height of the wave changes."
+            },
+            {
+              "term": "FSK",
+              "meaning": "Frequency-shift keying: the pitch changes."
+            },
+            {
+              "term": "PSK",
+              "meaning": "Phase-shift keying: the wave flips."
+            }
+          ],
+          "table": {
+            "head": [
+              "Name",
+              "What changes",
+              "Clue in the picture"
+            ],
+            "rows": [
+              [
+                "ASK",
+                "Height",
+                "Some bits are tall, some are flat"
+              ],
+              [
+                "FSK",
+                "Pitch",
+                "Some bits wiggle fast, some slowly"
+              ],
+              [
+                "PSK",
+                "Phase",
+                "Same height and pitch, but flipped"
+              ]
+            ]
+          },
+          "diagramCaption": "Look for what changes between bits.",
+          "predict": {
+            "prompt": "A wave has the same height and the same wiggle speed all the way along, but some bits are upside down. Which kind is it?",
+            "answer": "PSK. Only the phase changes."
+          },
+          "deeper": {
+            "title": "Why not just use ASK?",
+            "text": [
+              "Height is easy to damage: noise and distance make a wave weaker or taller by accident. That's why many real systems prefer changing the frequency or phase, or combine height and phase (called QAM)."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Amplitude-shift keying",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Amplitude-shift_keying"
+            },
+            {
+              "title": "Wikipedia: Frequency-shift keying",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Frequency-shift_keying"
+            },
+            {
+              "title": "Wikipedia: Phase-shift keying",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Phase-shift_keying"
+            }
+          ]
+        },
+        {
+          "id": "bits-per-symbol",
+          "title": "More bits per symbol",
+          "text": [
+            "One chunk of signal, with its own height, pitch or phase, is called a symbol. If a symbol can take 2 shapes, it carries 1 bit. With 4 shapes it carries 2 bits (00, 01, 10, 11). With 8 shapes, 3 bits.",
+            "Every doubling of shapes adds one bit. The bit rate is the symbol rate times the bits in each symbol. 1,000 symbols each second at 3 bits each gives 3,000 bits each second."
+          ],
+          "terms": [
+            {
+              "term": "Symbol",
+              "meaning": "One chunk of signal with its own shape."
+            },
+            {
+              "term": "Symbol rate (baud)",
+              "meaning": "How many symbols are sent each second."
+            }
+          ],
+          "table": {
+            "head": [
+              "Shapes",
+              "Bits per symbol"
+            ],
+            "rows": [
+              [
+                "2",
+                "1"
+              ],
+              [
+                "4",
+                "2"
+              ],
+              [
+                "8",
+                "3"
+              ],
+              [
+                "16",
+                "4"
+              ]
+            ]
+          },
+          "diagramCaption": "Each doubling of shapes adds one bit.",
+          "predict": {
+            "prompt": "How many shapes would you need for 5 bits per symbol?",
+            "answer": "32. Start at 2 shapes for 1 bit and double four more times: 4, 8, 16, 32."
+          },
+          "deeper": {
+            "title": "The formula",
+            "text": [
+              "Bits per symbol = log₂ of the number of shapes. So 32 shapes give log₂ 32 = 5 bits. The reverse is 2⁵ = 32."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Symbol rate",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Symbol_rate"
+            },
+            {
+              "title": "Wikipedia: Quadrature amplitude modulation",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Quadrature_amplitude_modulation"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "spot-ask",
+          "type": "choice",
+          "taughtOn": "three-ways",
+          "prompt": "Which kind of modulation made wave 1 of 3?",
+          "options": [
+            {
+              "text": "ASK: the height changes",
+              "correct": true
+            },
+            {
+              "text": "FSK: the pitch changes"
+            },
+            {
+              "text": "PSK: the wave flips"
+            },
+            {
+              "text": "None: the wave never changes"
+            }
+          ],
+          "hints": [
+            "Some bits are tall and some are flat.",
+            "Height changing is ASK."
+          ],
+          "explain": "Tall wiggles and flat bits: the height changes, so it's ASK.",
+          "wave": {
+            "bits": "1101",
+            "kind": "ask"
+          }
+        },
+        {
+          "id": "spot-fsk",
+          "type": "choice",
+          "taughtOn": "three-ways",
+          "prompt": "Which kind of modulation made wave 2 of 3?",
+          "options": [
+            {
+              "text": "FSK: the pitch changes",
+              "correct": true
+            },
+            {
+              "text": "ASK: the height changes"
+            },
+            {
+              "text": "PSK: the wave flips"
+            },
+            {
+              "text": "None: the wave never changes"
+            }
+          ],
+          "hints": [
+            "The height is the same everywhere. What differs from bit to bit?",
+            "Fast wiggles for some bits, slow for others."
+          ],
+          "explain": "The height stays the same but the wiggle speed changes, so it's FSK.",
+          "wave": {
+            "bits": "0110",
+            "kind": "fsk"
+          }
+        },
+        {
+          "id": "spot-psk",
+          "type": "choice",
+          "taughtOn": "three-ways",
+          "prompt": "Which kind of modulation made wave 3 of 3?",
+          "options": [
+            {
+              "text": "PSK: the wave flips",
+              "correct": true
+            },
+            {
+              "text": "ASK: the height changes"
+            },
+            {
+              "text": "FSK: the pitch changes"
+            },
+            {
+              "text": "None: the wave never changes"
+            }
+          ],
+          "hints": [
+            "The height and the wiggle speed match in every bit.",
+            "Some bits start upside down."
+          ],
+          "explain": "Same height and speed, but some bits are flipped upside down: PSK.",
+          "wave": {
+            "bits": "1001",
+            "kind": "psk"
+          }
+        },
+        {
+          "id": "what-changes",
+          "type": "match",
+          "taughtOn": "three-ways",
+          "prompt": "Match each kind to what it changes.",
+          "pairs": [
+            {
+              "left": "ASK",
+              "right": "The height of the wave"
+            },
+            {
+              "left": "FSK",
+              "right": "How many wiggles each second"
+            },
+            {
+              "left": "PSK",
+              "right": "Whether the wave starts flipped"
+            }
+          ],
+          "hints": [
+            "Amplitude, frequency and phase are the three things.",
+            "A is for amplitude, F for frequency and P for phase."
+          ],
+          "explain": "ASK is amplitude (height), FSK is frequency (pitch) and PSK is phase (flip)."
+        },
+        {
+          "id": "bits-for-8",
+          "type": "numeric",
+          "taughtOn": "bits-per-symbol",
+          "prompt": "A symbol can take 8 different shapes. How many bits does one symbol carry?",
+          "answer": 3,
+          "unit": "bits",
+          "hints": [
+            "2 shapes carry 1 bit, 4 carry 2 bits. Keep doubling.",
+            "8 is 2 doubled three times."
+          ],
+          "explain": "2 → 1 bit, 4 → 2 bits, 8 → 3 bits."
+        },
+        {
+          "id": "bit-rate",
+          "type": "numeric",
+          "taughtOn": "bits-per-symbol",
+          "prompt": "A link sends 2,400 symbols each second, and each symbol carries 4 bits. What's the bit rate in bits per second?",
+          "answer": 9600,
+          "unit": "bits per second",
+          "hints": [
+            "Bit rate = symbols per second × bits per symbol.",
+            "2,400 × 4."
+          ],
+          "explain": "2,400 × 4 = 9,600 bits per second."
+        },
+        {
+          "id": "two-ways-faster",
+          "type": "choice",
+          "taughtOn": "bits-per-symbol",
+          "prompt": "Which two changes can both raise the bit rate?",
+          "options": [
+            {
+              "text": "Send more symbols each second, or put more bits in each symbol",
+              "correct": true
+            },
+            {
+              "text": "Make the wave taller, or make it flatter"
+            },
+            {
+              "text": "Shorten the wire, or make it thinner"
+            },
+            {
+              "text": "Use only ASK, or use only FSK"
+            }
+          ],
+          "hints": [
+            "The bit rate is made from two numbers multiplied.",
+            "Symbols per second and bits per symbol."
+          ],
+          "explain": "Bit rate = symbol rate × bits per symbol, so raising either one raises the bit rate."
+        },
+        {
+          "id": "shapes-for-5",
+          "type": "numeric",
+          "taughtOn": "bits-per-symbol",
+          "prompt": "Challenge: how many different shapes does a symbol need to carry 5 bits?",
+          "answer": 32,
+          "unit": "shapes",
+          "hints": [
+            "Each extra bit doubles the number of shapes.",
+            "2 × 2 × 2 × 2 × 2, or 2 to the power 5."
+          ],
+          "explain": "2⁵ = 32 shapes.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "1.3-f1",
+          "type": "quiz",
+          "taughtOn": "three-ways",
+          "prompt": "Which modulation changes how many wiggles a wave makes each second?",
+          "options": [
+            {
+              "text": "FSK",
+              "correct": true
+            },
+            {
+              "text": "ASK"
+            },
+            {
+              "text": "PSK"
+            },
+            {
+              "text": "None of them"
+            }
+          ],
+          "explain": "FSK changes the frequency, which is the number of wiggles each second."
+        },
+        {
+          "id": "1.3-f2",
+          "type": "predict",
+          "taughtOn": "bits-per-symbol",
+          "prompt": "A symbol can take 16 different shapes. How many bits does it carry?",
+          "answer": "4 bits. 2 → 1, 4 → 2, 8 → 3, 16 → 4."
+        },
+        {
+          "id": "1.3-f3",
+          "type": "quiz",
+          "taughtOn": "bits-per-symbol",
+          "prompt": "A link sends 1,000 symbols each second at 3 bits each. What's its bit rate?",
+          "options": [
+            {
+              "text": "3,000 bits per second",
+              "correct": true
+            },
+            {
+              "text": "1,003 bits per second"
+            },
+            {
+              "text": "333 bits per second"
+            },
+            {
+              "text": "1,000 bits per second"
+            }
+          ],
+          "explain": "Bit rate = symbol rate × bits per symbol = 1,000 × 3."
+        },
+        {
+          "id": "1.3-f4",
+          "type": "why",
+          "taughtOn": "wave-basics",
+          "prompt": "What do we call changing a wave so that it carries bits?",
+          "options": [
+            {
+              "text": "Modulation",
+              "correct": true
+            },
+            {
+              "text": "Attenuation"
+            },
+            {
+              "text": "Framing"
+            },
+            {
+              "text": "Latency"
+            }
+          ],
+          "explain": "Modulation changes a wave's height, pitch or phase to stand for bits."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Wi-Fi squeezes in more bits",
+          "text": "Modern Wi-Fi uses a version of QAM, which changes both height and phase, with many shapes per symbol. The newest versions use 1,024 or even 4,096 shapes, which means 10 or 12 bits in every symbol. The catch is that the receiver must tell the shapes apart, so it only works when the signal is strong and clean.",
+          "source": {
+            "title": "Wikipedia: Wi-Fi 7",
+            "url": "https://en.wikipedia.org/wiki/Wi-Fi_7"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You read three kinds of wave, ASK, FSK and PSK, and worked out how many bits one symbol can carry.",
+          "Wren holds up her lantern and grins. \"You can read the woods now,\" she says."
+        ],
+        "mistake": {
+          "title": "Mixing up symbols and bits",
+          "text": "A symbol is one chunk of signal. It can carry more than one bit. If a link sends 1,000 symbols a second with 3 bits each, the symbol rate is 1,000 but the bit rate is 3,000."
+        }
+      }
+    },
+    {
+      "id": "1.4",
+      "title": "Channel Limits",
+      "story": "At the far end of Wire Woods, a signal inspector measures every wire. Before the letter can go on, Kit has to find the top speed each wire can carry.",
+      "everyday": {
+        "scene": "Two friends use the same Wi-Fi router. One sits beside it and gets a speedy connection. The other is in the far room and gets a slow one, even though they pay for the same plan.",
+        "question": "What sets the top speed of a connection?",
+        "answer": "Three things: how wide a slice of frequencies the channel has (its bandwidth), how many different signal levels the receiver can tell apart, and how much noise is mixed in. The far room has more noise compared with the signal, so fewer levels can be told apart, and the top speed drops."
+      },
+      "lessons": [
+        {
+          "id": "nyquist",
+          "title": "Limit one: how fast can you change?",
+          "text": [
+            "Every channel has a bandwidth, measured in hertz (Hz): how wide a slice of frequencies it can carry. On a perfectly quiet channel, you can change the signal at most 2 × bandwidth times each second.",
+            "If each change can be one of several levels, it carries several bits. Max bit rate = 2 × bandwidth × bits per symbol.",
+            "Worked example: a 3,000 Hz channel with 4 levels (2 bits each) can carry 2 × 3,000 × 2 = 12,000 bits per second."
+          ],
+          "terms": [
+            {
+              "term": "Bandwidth (in Hz)",
+              "meaning": "The width of the slice of frequencies a channel carries."
+            },
+            {
+              "term": "Level",
+              "meaning": "One of the heights the signal can take."
+            },
+            {
+              "term": "Noise",
+              "meaning": "Unwanted random signal mixed in with the real one."
+            }
+          ],
+          "predict": {
+            "prompt": "A quiet channel has 5,000 Hz of bandwidth and 2 levels (1 bit per symbol). What's the most it can carry?",
+            "answer": "2 × 5,000 × 1 = 10,000 bits per second."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Nyquist–Shannon sampling theorem",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Nyquist%E2%80%93Shannon_sampling_theorem"
+            },
+            {
+              "title": "Wikipedia: Bit rate",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Bit_rate"
+            }
+          ]
+        },
+        {
+          "id": "shannon",
+          "title": "Limit two: noise gets in the way",
+          "text": [
+            "Real channels have noise. The signal-to-noise ratio, S/N, says how many times stronger the signal is than the noise. More noise means fewer levels the receiver can tell apart.",
+            "Shannon's limit is: max bit rate = bandwidth × log₂(1 + S/N). What's log₂? It's how many times you can halve a number to reach 1. Halve 16 four times to reach 1, so log₂ 16 = 4.",
+            "Worked example: 1,000 Hz and S/N = 15 gives 1,000 × log₂(16) = 1,000 × 4 = 4,000 bits per second."
+          ],
+          "terms": [
+            {
+              "term": "Signal-to-noise ratio (S/N)",
+              "meaning": "How many times stronger the signal is than the noise."
+            },
+            {
+              "term": "log₂",
+              "meaning": "How many times you halve a number to reach 1. log₂ 8 = 3."
+            }
+          ],
+          "predict": {
+            "prompt": "A channel has 2,000 Hz and S/N = 7. What's Shannon's limit?",
+            "answer": "2,000 × log₂(8) = 2,000 × 3 = 6,000 bits per second."
+          },
+          "deeper": {
+            "title": "Decibels",
+            "text": [
+              "Engineers often write S/N in decibels (dB). The ratio is 10 raised to (dB ÷ 10). So 30 dB means a ratio of 10³ = 1,000, and 20 dB means 100."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Shannon–Hartley theorem",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Shannon%E2%80%93Hartley_theorem"
+            },
+            {
+              "title": "Wikipedia: Signal-to-noise ratio",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Signal-to-noise_ratio"
+            }
+          ]
+        },
+        {
+          "id": "lower-limit",
+          "title": "The lower limit wins",
+          "text": [
+            "Both limits apply to a real channel, so the real top speed is the smaller of the two.",
+            "Worked example: a 2,000 Hz channel with 8 levels (3 bits) and S/N = 7. Limit one: 2 × 2,000 × 3 = 12,000. Limit two: 2,000 × log₂ 8 = 6,000. The lower is 6,000, so noise is the problem.",
+            "Adding more levels won't help here, because the receiver can't tell them apart through the noise."
+          ],
+          "table": {
+            "head": [
+              "Limit",
+              "Blocks you when…"
+            ],
+            "rows": [
+              [
+                "Nyquist (levels and bandwidth)",
+                "The channel is quiet but narrow, or has few levels"
+              ],
+              [
+                "Shannon (noise)",
+                "The channel is noisy"
+              ]
+            ]
+          },
+          "diagramCaption": "Find both limits, then take the lower.",
+          "predict": {
+            "prompt": "Nyquist says 20,000 bits per second and Shannon says 9,000. Which sets the real limit?",
+            "answer": "Shannon's 9,000, because the real limit is the lower one."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Shannon–Hartley theorem",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Shannon%E2%80%93Hartley_theorem"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "nyq-binary",
+          "type": "numeric",
+          "taughtOn": "nyquist",
+          "prompt": "A quiet channel has 4,000 Hz of bandwidth and 2 levels (1 bit per symbol). What's the maximum bit rate in bits per second?",
+          "answer": 8000,
+          "unit": "bits per second",
+          "hints": [
+            "Use 2 × bandwidth × bits per symbol.",
+            "2 × 4,000 × 1."
+          ],
+          "explain": "2 × 4,000 × 1 = 8,000 bits per second."
+        },
+        {
+          "id": "nyq-16",
+          "type": "numeric",
+          "taughtOn": "nyquist",
+          "prompt": "A quiet channel has 3,000 Hz of bandwidth and 16 levels. How many bits per second can it carry at most?",
+          "answer": 24000,
+          "unit": "bits per second",
+          "hints": [
+            "16 levels carry 4 bits per symbol (2 → 1, 4 → 2, 8 → 3, 16 → 4).",
+            "2 × 3,000 × 4."
+          ],
+          "explain": "16 levels is 4 bits, so 2 × 3,000 × 4 = 24,000 bits per second."
+        },
+        {
+          "id": "shan-31",
+          "type": "numeric",
+          "taughtOn": "shannon",
+          "prompt": "A noisy channel has 2,000 Hz of bandwidth and S/N = 31. What's Shannon's limit in bits per second?",
+          "answer": 10000,
+          "unit": "bits per second",
+          "hints": [
+            "Work out 1 + S/N first, then log₂ of it.",
+            "1 + 31 = 32, and 32 halved five times gives 1, so log₂ 32 = 5."
+          ],
+          "explain": "2,000 × log₂(32) = 2,000 × 5 = 10,000 bits per second."
+        },
+        {
+          "id": "real-cap",
+          "type": "numeric",
+          "taughtOn": "lower-limit",
+          "prompt": "A channel has 2,000 Hz of bandwidth, 8 levels and S/N = 7. What's the real maximum bit rate?",
+          "answer": 6000,
+          "unit": "bits per second",
+          "hints": [
+            "Work out both limits and take the smaller one.",
+            "Nyquist: 2 × 2,000 × 3 = 12,000. Shannon: 2,000 × log₂ 8 = 6,000."
+          ],
+          "explain": "Nyquist gives 12,000 and Shannon gives 6,000, so the real limit is 6,000 bits per second."
+        },
+        {
+          "id": "which-limit",
+          "type": "buckets",
+          "taughtOn": "lower-limit",
+          "prompt": "Which limit does each situation run into?",
+          "buckets": [
+            "Nyquist (levels and bandwidth)",
+            "Shannon (noise)"
+          ],
+          "items": [
+            {
+              "text": "A perfect lab cable with no noise at all",
+              "bucket": "Nyquist (levels and bandwidth)"
+            },
+            {
+              "text": "Wi-Fi in a crowded flat full of other signals",
+              "bucket": "Shannon (noise)"
+            },
+            {
+              "text": "Adding more signal levels no longer helps a noisy channel",
+              "bucket": "Shannon (noise)"
+            },
+            {
+              "text": "Doubling the bandwidth on a noiseless line doubles the top speed",
+              "bucket": "Nyquist (levels and bandwidth)"
+            }
+          ],
+          "hints": [
+            "Ask: is noise the problem here?",
+            "Noise points to Shannon. A quiet channel points to Nyquist."
+          ],
+          "explain": "A quiet channel is limited by its bandwidth and levels. A noisy one is limited by Shannon's formula."
+        },
+        {
+          "id": "noise-effect",
+          "type": "choice",
+          "taughtOn": "shannon",
+          "prompt": "What does more noise do to a channel?",
+          "options": [
+            {
+              "text": "Fewer signal levels can be told apart, so the top speed falls",
+              "correct": true
+            },
+            {
+              "text": "It makes signals travel faster"
+            },
+            {
+              "text": "It makes the bandwidth larger"
+            },
+            {
+              "text": "It has no effect on speed"
+            }
+          ],
+          "hints": [
+            "Think about the receiver trying to tell levels apart.",
+            "Noise blurs the difference between levels."
+          ],
+          "explain": "More noise blurs the levels together, so the receiver can use fewer of them and the speed drops."
+        },
+        {
+          "id": "channel-words",
+          "type": "match",
+          "taughtOn": "nyquist",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Bandwidth",
+              "right": "The width of the slice of frequencies a channel carries"
+            },
+            {
+              "left": "S/N",
+              "right": "How many times stronger the signal is than the noise"
+            },
+            {
+              "left": "Noise",
+              "right": "Unwanted random signal mixed in"
+            }
+          ],
+          "hints": [
+            "Bandwidth is measured in hertz.",
+            "S/N is a ratio of signal to noise."
+          ],
+          "explain": "Bandwidth is the width, S/N compares signal with noise, and noise is the unwanted part."
+        },
+        {
+          "id": "shan-db",
+          "type": "numeric",
+          "taughtOn": "shannon",
+          "prompt": "Challenge: a channel has 1,000 Hz of bandwidth and S/N of 30 dB. What's Shannon's limit in bits per second? (Give it to the nearest 10.)",
+          "answer": 9970,
+          "tolerance": 10,
+          "unit": "bits per second",
+          "hints": [
+            "30 dB means a ratio of 10³ = 1,000. Use the calculator for log₂(1 + 1,000).",
+            "1,000 × log₂(1,001) is about 9,967."
+          ],
+          "explain": "S/N is 1,000, so 1,000 × log₂(1,001) ≈ 9,967 bits per second.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "1.4-f1",
+          "type": "quiz",
+          "taughtOn": "lower-limit",
+          "prompt": "Nyquist says 12,000 bits per second and Shannon says 6,000. What's the real top speed?",
+          "options": [
+            {
+              "text": "6,000 bits per second",
+              "correct": true
+            },
+            {
+              "text": "12,000 bits per second"
+            },
+            {
+              "text": "18,000 bits per second"
+            },
+            {
+              "text": "9,000 bits per second"
+            }
+          ],
+          "explain": "The real limit is the lower of the two."
+        },
+        {
+          "id": "1.4-f2",
+          "type": "predict",
+          "taughtOn": "nyquist",
+          "prompt": "A quiet channel has 1,000 Hz and 4 levels. What's the Nyquist limit?",
+          "answer": "2 × 1,000 × 2 = 4,000 bits per second. 4 levels carry 2 bits."
+        },
+        {
+          "id": "1.4-f3",
+          "type": "why",
+          "taughtOn": "shannon",
+          "prompt": "In Shannon's formula, what does more noise do?",
+          "options": [
+            {
+              "text": "Lowers the top speed",
+              "correct": true
+            },
+            {
+              "text": "Raises the top speed"
+            },
+            {
+              "text": "Changes nothing"
+            },
+            {
+              "text": "Doubles the bandwidth"
+            }
+          ],
+          "explain": "More noise means a lower S/N, so the limit falls."
+        },
+        {
+          "id": "1.4-f4",
+          "type": "quiz",
+          "taughtOn": "shannon",
+          "prompt": "What does log₂ 16 equal?",
+          "options": [
+            {
+              "text": "4",
+              "correct": true
+            },
+            {
+              "text": "2"
+            },
+            {
+              "text": "8"
+            },
+            {
+              "text": "16"
+            }
+          ],
+          "explain": "Halve 16 four times to reach 1: 16 → 8 → 4 → 2 → 1."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Shannon's big idea",
+          "text": "In 1948 Claude Shannon showed that every noisy channel has a top speed, and that clever coding could get close to it without errors. Engineers have been chasing that limit ever since. Modern codes, such as turbo and LDPC codes, come much closer to it than older ones, at the cost of more computing.",
+          "source": {
+            "title": "Wikipedia: Noisy-channel coding theorem",
+            "url": "https://en.wikipedia.org/wiki/Noisy-channel_coding_theorem"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You worked out two speed limits, one from levels and one from noise, and found that the real limit is the lower one.",
+          "Kit packs the notebook and rings the bicycle bell. The signal reaches the end of Wire Woods, but when Kit opens the letter, one letter on the page is wrong. Something flipped a bit on the way. Frame Farm is next."
+        ],
+        "mistake": {
+          "title": "Forgetting to take the lower limit",
+          "text": "Two limits apply at once, and the channel can't beat either. Always work out both, then take the smaller. A noisy channel can't be rescued by adding more levels."
+        }
+      }
+    }
+  ]
+}

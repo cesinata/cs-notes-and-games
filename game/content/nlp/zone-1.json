@@ -1,0 +1,610 @@
+{
+  "zone": 1,
+  "levels": [
+    {
+      "id": "1.1",
+      "title": "What Comes Next?",
+      "story": "Wren reads four notes aloud on the bridge, then stops mid-sentence. \"The owl sat on the ... \" Kit guesses 'branch' or 'log' straight away. \"How did you know?\" asks Wren. \"Practice,\" says Kit. \"A computer can get it by counting.\"",
+      "everyday": {
+        "scene": "When you type 'see you', your phone offers 'soon' or 'later'. It has not understood your plans. It has seen which words usually follow.",
+        "question": "How can a program guess the next word by counting?",
+        "answer": "It counts how often each word follows the one before, and turns the counts into chances. That is a language model, and the simplest kind is the bigram model."
+      },
+      "lessons": [
+        {
+          "id": "counting-next-words",
+          "title": "Counting what follows",
+          "text": [
+            "A language model gives a chance to each possible next word. The simplest kind, a bigram model, looks only at the one word before. It counts how often a pair appears and divides by how often the first word appears.",
+            "From the four notes, 'the' appeared 8 times and 'owl' followed it 3 times. So the chance of 'owl' after 'the' is 3 out of 8, which is 0.375."
+          ],
+          "terms": [
+            {
+              "term": "Bigram",
+              "meaning": "A pair of words that sit next to each other."
+            },
+            {
+              "term": "n-gram",
+              "meaning": "A run of n words in a row."
+            }
+          ],
+          "table": {
+            "head": [
+              "Pair",
+              "Times seen",
+              "Times the first word appeared"
+            ],
+            "rows": [
+              [
+                "the owl",
+                "3",
+                "8"
+              ],
+              [
+                "the fox",
+                "2",
+                "8"
+              ],
+              [
+                "the log",
+                "2",
+                "8"
+              ],
+              [
+                "owl sat",
+                "2",
+                "3"
+              ],
+              [
+                "sat on",
+                "3",
+                "3"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Language model",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Language_model"
+            },
+            {
+              "title": "Wikipedia: N-gram",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/N-gram"
+            }
+          ]
+        },
+        {
+          "id": "chaining-chances",
+          "title": "Chaining the chances",
+          "text": [
+            "To score a whole phrase, multiply the chance of each step. For 'the owl sat on': the chance of owl after the is 0.375, of sat after owl is 2 out of 3, and of on after sat is 1. Multiplying gives 0.25.",
+            {
+              "text": "A model can also write text: pick a likely next word, then another, and so on. Each step only looks one word back. Wikipedia's example of text drawn at random from a word-pair model reads as phrases that do not hold together.",
+              "verify": false
+            }
+          ],
+          "predict": {
+            "prompt": "The chance of 'sat' after 'owl' is 2 out of 3, and of 'on' after 'sat' is 1. What is the chance of 'owl sat on' once 'owl' is given?",
+            "answer": "2 out of 3 times 1, which is about 0.67."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Language model",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Language_model"
+            },
+            {
+              "title": "Wikipedia: N-gram",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/N-gram"
+            }
+          ]
+        },
+        {
+          "id": "the-zero-problem",
+          "title": "The zero problem",
+          "text": [
+            "Counting has a flaw. A pair that never appeared gets a chance of zero, and multiplying by zero wipes out the whole phrase. 'Owl on' never appeared in the notes, yet it is a perfectly good pair.",
+            "Smoothing fixes this by pretending every pair was seen once more than it was. With add-one smoothing the chance is the pair count plus 1, over the first word's count plus the number of different words. Here that is (0 + 1) over (3 + 8), or 1 out of 11."
+          ],
+          "deeper": {
+            "title": "Longer memory",
+            "text": [
+              "A trigram model looks two words back, so it can tell 'owl sat' from 'fox sat'. More context helps, but the number of possible word runs grows fast and most never appear in any text, so the zero problem gets worse."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Additive smoothing",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Additive_smoothing"
+            },
+            {
+              "title": "Wikipedia: Language model",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Language_model"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "the-count",
+          "type": "numeric",
+          "taughtOn": "counting-next-words",
+          "prompt": "In the four notes, how many times does 'the' appear? (Every one is followed by a word.)",
+          "answer": 8,
+          "calculator": false,
+          "hints": [
+            "Count 'the' in each note and add up.",
+            "Each note has 'the' twice, and there are four notes."
+          ],
+          "explain": "Each of the four notes has 'the' twice, so it appears 8 times."
+        },
+        {
+          "id": "next-sim",
+          "type": "stepsim",
+          "taughtOn": "counting-next-words",
+          "mode": "predict",
+          "prompt": "See which words follow 'the'.",
+          "explain": "Counts become chances: 3 out of 8 for 'owl', 2 out of 8 for each of 'fox' and 'log', and 1 out of 8 for 'branch'.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "3",
+                      "mark": null,
+                      "tag": "owl"
+                    },
+                    {
+                      "value": "2",
+                      "mark": null,
+                      "tag": "fox"
+                    },
+                    {
+                      "value": "2",
+                      "mark": null,
+                      "tag": "log"
+                    },
+                    {
+                      "value": "1",
+                      "mark": null,
+                      "tag": "branch"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Words that followed 'the'"
+                },
+                "say": "The four notes are: the owl sat on the branch, the owl saw the fox, the fox sat on the log, and the owl sat on the log. Each box shows how many times a word came straight after 'the'."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "3",
+                      "mark": "current",
+                      "tag": "owl"
+                    },
+                    {
+                      "value": "2",
+                      "mark": "current",
+                      "tag": "fox"
+                    },
+                    {
+                      "value": "2",
+                      "mark": "current",
+                      "tag": "log"
+                    },
+                    {
+                      "value": "1",
+                      "mark": "current",
+                      "tag": "branch"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "after 'the'"
+                  },
+                  "label": "Words that followed 'the'"
+                },
+                "say": "'The' appears eight times, and every time a word follows it. The counts 3, 2, 2 and 1 add up to 8.",
+                "predict": {
+                  "prompt": "How many times does 'the' appear in all four notes?",
+                  "options": [
+                    {
+                      "text": "8",
+                      "correct": true
+                    },
+                    {
+                      "text": "4",
+                      "correct": false
+                    },
+                    {
+                      "text": "3",
+                      "correct": false
+                    },
+                    {
+                      "text": "6",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Add up the four counts.",
+                    "3 + 2 + 2 + 1."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "3",
+                      "mark": "best",
+                      "tag": "owl"
+                    },
+                    {
+                      "value": "2",
+                      "mark": null,
+                      "tag": "fox"
+                    },
+                    {
+                      "value": "2",
+                      "mark": null,
+                      "tag": "log"
+                    },
+                    {
+                      "value": "1",
+                      "mark": null,
+                      "tag": "branch"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "most likely"
+                  },
+                  "label": "Words that followed 'the'"
+                },
+                "say": "'Owl' followed 'the' 3 times out of 8, so the chance of 'owl' after 'the' is 3 out of 8.",
+                "predict": {
+                  "prompt": "What is the chance that the next word after 'the' is 'owl'?",
+                  "options": [
+                    {
+                      "text": "3 out of 8, or 0.375",
+                      "correct": true
+                    },
+                    {
+                      "text": "3 out of 4, or 0.75",
+                      "correct": false
+                    },
+                    {
+                      "text": "1 out of 4, or 0.25",
+                      "correct": false
+                    },
+                    {
+                      "text": "3 out of 9",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Divide the count for 'owl' by the total after 'the'.",
+                    "3 divided by 8."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "3",
+                      "mark": "best",
+                      "tag": "owl"
+                    },
+                    {
+                      "value": "2",
+                      "mark": null,
+                      "tag": "fox"
+                    },
+                    {
+                      "value": "2",
+                      "mark": null,
+                      "tag": "log"
+                    },
+                    {
+                      "value": "1",
+                      "mark": null,
+                      "tag": "branch"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "pick this"
+                  },
+                  "label": "Words that followed 'the'"
+                },
+                "say": "A simple model picks the word with the biggest chance. Here that is 'owl'. Notice it is only a guess: 'fox' and 'log' each followed 'the' 2 times, so they were close behind."
+              }
+            ]
+          }
+        },
+        {
+          "id": "p-owl",
+          "type": "numeric",
+          "taughtOn": "counting-next-words",
+          "prompt": "What is the chance that 'owl' comes straight after 'the', as a percentage?",
+          "answer": 37.5,
+          "tolerance": 0.1,
+          "calculator": false,
+          "hints": [
+            "Divide 3 by 8, then multiply by 100.",
+            "3 / 8 = 0.375."
+          ],
+          "explain": "'Owl' came after 'the' 3 times out of 8, so 0.375, or 37.5 percent."
+        },
+        {
+          "id": "p-sat",
+          "type": "numeric",
+          "taughtOn": "counting-next-words",
+          "prompt": "'Owl' appears 3 times, and 2 of those are followed by 'sat'. What is the chance of 'sat' after 'owl'? Give it as a number from 0 to 1.",
+          "answer": 0.67,
+          "tolerance": 0.01,
+          "calculator": false,
+          "hints": [
+            "Divide the pair count by the count of the first word.",
+            "2 / 3."
+          ],
+          "explain": "2 out of 3 is about 0.67."
+        },
+        {
+          "id": "bigram-steps",
+          "type": "order",
+          "taughtOn": "counting-next-words",
+          "prompt": "Put the steps in order for the chance of a next word.",
+          "items": [
+            "Count how often the first word appears",
+            "Count how often the pair appears",
+            "Divide the pair count by the first word's count",
+            "Use the result as the chance"
+          ],
+          "hints": [
+            "You need both counts before dividing.",
+            "The result comes last."
+          ],
+          "explain": "Count both numbers, divide the pair count by the first word's count, and the result is the chance."
+        },
+        {
+          "id": "chain",
+          "type": "numeric",
+          "taughtOn": "chaining-chances",
+          "prompt": "Multiply the chances for 'the owl sat on': 0.375, then 2 out of 3, then 1. What is the result?",
+          "answer": 0.25,
+          "tolerance": 0.005,
+          "calculator": false,
+          "hints": [
+            "Multiply the three numbers.",
+            "0.375 x 0.667 x 1."
+          ],
+          "explain": "0.375 x (2/3) x 1 = 0.25. Chances along a chain multiply."
+        },
+        {
+          "id": "ngram-facts",
+          "type": "buckets",
+          "taughtOn": "counting-next-words",
+          "prompt": "Is each statement about a bigram model true or false?",
+          "buckets": [
+            "True",
+            "False"
+          ],
+          "items": [
+            {
+              "text": "It looks at one word before the next",
+              "bucket": "True"
+            },
+            {
+              "text": "It understands what the words mean",
+              "bucket": "False"
+            },
+            {
+              "text": "It works from counts of word pairs",
+              "bucket": "True"
+            },
+            {
+              "text": "It can see the whole sentence at once",
+              "bucket": "False"
+            },
+            {
+              "text": "A pair it has never seen gets chance zero, unless it is smoothed",
+              "bucket": "True"
+            }
+          ],
+          "hints": [
+            "The model only counts pairs.",
+            "Counting is not understanding."
+          ],
+          "explain": "A bigram model counts pairs and looks one word back. It does not understand meaning, and it gives unseen pairs zero unless smoothed."
+        },
+        {
+          "id": "zero-why",
+          "type": "choice",
+          "taughtOn": "the-zero-problem",
+          "prompt": "Why is a chance of zero for 'owl on' a problem?",
+          "options": [
+            {
+              "text": "Multiplying by zero wipes out the whole phrase, though the pair is reasonable",
+              "correct": true
+            },
+            {
+              "text": "Zero is not a number"
+            },
+            {
+              "text": "It makes the model run slower"
+            },
+            {
+              "text": "It means the pair is in the notes"
+            }
+          ],
+          "hints": [
+            "Think about multiplying a chain of chances.",
+            "One zero makes the product zero."
+          ],
+          "explain": "One unseen pair makes the whole phrase score zero, even when the phrase is sensible. Smoothing avoids that."
+        },
+        {
+          "id": "smoothed",
+          "type": "numeric",
+          "taughtOn": "the-zero-problem",
+          "prompt": "Challenge: 'owl' appears 3 times, 'owl on' never, and there are 8 different words. Using add-one smoothing, what is the chance of 'on' after 'owl'? Give it as a number from 0 to 1, to 3 places.",
+          "answer": 0.091,
+          "tolerance": 0.002,
+          "calculator": false,
+          "hints": [
+            "Use (pair count + 1) over (first word count + number of different words).",
+            "(0 + 1) / (3 + 8)."
+          ],
+          "explain": "(0 + 1) / (3 + 8) = 1/11, about 0.091.",
+          "challenge": true
+        },
+        {
+          "id": "long-memory",
+          "type": "choice",
+          "taughtOn": "the-zero-problem",
+          "prompt": "Challenge: why not simply look 20 words back instead of 1?",
+          "options": [
+            {
+              "text": "Almost no 20-word run appears twice, so there is little to count",
+              "correct": true
+            },
+            {
+              "text": "Computers cannot count that far"
+            },
+            {
+              "text": "It always lowers the chance of every word"
+            },
+            {
+              "text": "Short runs are never useful"
+            }
+          ],
+          "hints": [
+            "How often would the same 20 words repeat?",
+            "A pair needs to appear to have a count."
+          ],
+          "explain": "Longer histories give more context but are rarely repeated in any text, so counts become empty. That is why n-gram models stay short.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m1.1-f1",
+          "type": "quiz",
+          "taughtOn": "counting-next-words",
+          "prompt": "What does a bigram model look at?",
+          "options": [
+            {
+              "text": "The one word before",
+              "correct": true
+            },
+            {
+              "text": "The whole sentence"
+            },
+            {
+              "text": "The next word only"
+            },
+            {
+              "text": "The meaning of the words"
+            }
+          ],
+          "explain": "It only counts pairs of neighbouring words."
+        },
+        {
+          "id": "m1.1-f2",
+          "type": "why",
+          "taughtOn": "the-zero-problem",
+          "prompt": "What does smoothing do?",
+          "options": [
+            {
+              "text": "Gives unseen pairs a small chance instead of zero",
+              "correct": true
+            },
+            {
+              "text": "Removes rare words"
+            },
+            {
+              "text": "Sorts the notes"
+            },
+            {
+              "text": "Makes the text lower case"
+            }
+          ],
+          "explain": "A zero count would wipe out a whole phrase."
+        },
+        {
+          "id": "m1.1-f3",
+          "type": "quiz",
+          "taughtOn": "chaining-chances",
+          "prompt": "How do you score a whole phrase?",
+          "options": [
+            {
+              "text": "Multiply the chance of each step",
+              "correct": true
+            },
+            {
+              "text": "Add the chances"
+            },
+            {
+              "text": "Pick the biggest one"
+            },
+            {
+              "text": "Average them"
+            }
+          ],
+          "explain": "Chances along a chain multiply."
+        },
+        {
+          "id": "m1.1-f4",
+          "type": "predict",
+          "taughtOn": "counting-next-words",
+          "prompt": "'Owl' follows 'the' 3 times and 'the' appears 8 times. What is the chance?",
+          "answer": "3 out of 8, or 0.375."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Language models",
+          "text": "A word n-gram language model calculates the chance of the next word from a fixed-size window of previous words. With one previous word it is a bigram model.",
+          "source": {
+            "title": "Wikipedia: Language model",
+            "url": "https://en.wikipedia.org/wiki/Language_model"
+          }
+        },
+        {
+          "title": "Smoothing",
+          "text": "Additive smoothing, also called Laplace smoothing, adds a small count to every possibility so none of them has a chance of zero.",
+          "source": {
+            "title": "Wikipedia: Additive smoothing",
+            "url": "https://en.wikipedia.org/wiki/Additive_smoothing"
+          }
+        },
+        {
+          "title": "Windows of previous words",
+          "text": "A word n-gram language model works out the probability of the next word from a fixed-size window of previous words. With one previous word, it is a bigram model.",
+          "source": {
+            "title": "Wikipedia: Language model",
+            "url": "https://en.wikipedia.org/wiki/Language_model"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You counted word pairs, turned counts into chances, multiplied chances along a phrase, and used smoothing to stop one unseen pair from zeroing everything.",
+          "Wren finishes the sentence. \"The owl sat on the branch.\" Kit nods. \"Or the log. It was nearly a tie.\""
+        ],
+        "mistake": {
+          "title": "Trusting a count of zero",
+          "text": "A pair that never appeared is not impossible, only unseen. Smoothing gives it a small chance so one gap does not wipe out a whole sentence."
+        }
+      }
+    }
+  ]
+}

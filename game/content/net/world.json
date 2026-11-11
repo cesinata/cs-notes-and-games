@@ -1,0 +1,380 @@
+{
+  "title": "Packet Valley",
+  "tagline": "Carry one letter across the valley, and learn every layer of the internet on the way.",
+  "funFacts": [
+    { "text": "The vast majority of international internet data travels through cables lying on the seabed." },
+    { "text": "The first message ever sent over the ARPANET, the internet's ancestor, was meant to be \"LOGIN\" in 1969. The system crashed after two letters, so the first message was just \"LO\"." },
+    { "text": "A web page is chopped into small packets before it travels. Packets of the same page can take different routes and get put back in order at the end." },
+    { "text": "IPv4, the addressing system most of the internet still leans on, has only about 4.3 billion addresses. That's fewer than the number of people on Earth." },
+    { "text": "Light is fast, but not instant. Even in a perfect fibre cable, a round trip to the opposite side of the planet takes at least about 0.2 seconds." }
+  ],
+  "starRules": "3 stars: no mistakes and no hints. 2 stars: up to 2 mistakes. 1 star: you finished.",
+  "journal": {
+    "title": "Field Journal",
+    "intro": "Every level unlocks Field Notes: where the idea shows up in the apps and networks you use today. Finish a level to read its notes.",
+    "lockedText": "Finish {level} to read this note.",
+    "hubText": "{count} of {total} Field Notes collected"
+  },
+  "feed": {
+    "title": "Daily Feed",
+    "intro": "Bite-size cards from the levels you've finished. About 10 cards, then you're done for today.",
+    "hubReady": "{count} cards ready",
+    "hubDone": "Done for today. More cards tomorrow.",
+    "hubCaughtUp": "All caught up",
+    "hubEmpty": "Finish a level to fill your feed.",
+    "streak": "{days}-day streak",
+    "start": "Start today's feed",
+    "empty": "Your feed is empty for now. Finish a level in Town Square and its cards will show up here.",
+    "caughtUp": "Cards you know well wait a few days before coming back. That gap is what makes them stick.",
+    "labels": {
+      "quiz": "Quick question",
+      "predict": "Predict, then flip",
+      "why": "Why?",
+      "note": "Field Note"
+    },
+    "flip": "Flip the card",
+    "selfCheck": "Was your answer close?",
+    "gotIt": "Yes, I got it",
+    "notYet": "Not quite",
+    "next": "Next card",
+    "swipeTip": "On a phone, you can also swipe left.",
+    "comesBack": "This card will come back later so it sticks.",
+    "doneTitle": "Done for today",
+    "doneText": "You got {right} of {total} right. Cards you missed will come back soon. The rest will wait a few days, so they stick.",
+    "doneTextPerfect": "You got all {total} right. These cards will now wait a few days before coming back, so they stick.",
+    "streakFirst": "That's day 1. Come back tomorrow for day 2.",
+    "streakMore": "{days} days in a row.",
+    "backToMap": "Back to map",
+    "emptyButton": "Go to Town Square"
+  },
+  "sim": {
+    "next": "Next step",
+    "back": "Back",
+    "stepOf": "Step {i} of {n}",
+    "runToEnd": "Run to the end",
+    "finish": "Continue",
+    "counted": "You predicted {guess}. It took {actual}.",
+    "revealed": "Here's what happens:",
+    "counter": "{name} so far: {value}"
+  },
+  "zones": [
+    {
+      "id": 0,
+      "name": "Town Square",
+      "topic": "Foundations: layers, services and reference models",
+      "file": "zone-0.json",
+      "map": {
+        "x": 42,
+        "y": 160,
+        "sprite": "house",
+        "roof": "#B5523B"
+      },
+      "levels": [
+        {
+          "id": "0.1",
+          "title": "Layer Cake",
+          "core": true
+        },
+        {
+          "id": "0.2",
+          "title": "Encapsulation Express",
+          "core": true
+        },
+        {
+          "id": "0.3",
+          "title": "Service Counter",
+          "core": false
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "Wire Woods",
+      "topic": "Physical layer",
+      "file": "zone-1.json",
+      "map": {
+        "x": 80,
+        "y": 104,
+        "sprite": "house",
+        "roof": "#3E7039"
+      },
+      "levels": [
+        {
+          "id": "1.1",
+          "title": "Delay Dash",
+          "core": true
+        },
+        {
+          "id": "1.2",
+          "title": "Media Market",
+          "core": false
+        },
+        {
+          "id": "1.3",
+          "title": "Signal Studio",
+          "core": true
+        },
+        {
+          "id": "1.4",
+          "title": "Channel Limits",
+          "core": true
+        },
+        {
+          "id": "1.5",
+          "title": "Shared Road",
+          "core": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Frame Farm",
+      "topic": "Data link layer",
+      "file": "zone-2.json",
+      "map": {
+        "x": 40,
+        "y": 54,
+        "sprite": "house",
+        "roof": "#C9802F"
+      },
+      "levels": [
+        {
+          "id": "2.1",
+          "title": "Frame Fences",
+          "core": true
+        },
+        {
+          "id": "2.2",
+          "title": "Bug Detectives",
+          "core": true
+        },
+        {
+          "id": "2.3",
+          "title": "CRC Mill",
+          "core": true
+        },
+        {
+          "id": "2.4",
+          "title": "Hamming Fixer",
+          "core": false
+        },
+        {
+          "id": "2.5",
+          "title": "Window Waltz",
+          "core": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Crowded Plaza",
+      "topic": "MAC sub-layer",
+      "file": "zone-3.json",
+      "map": {
+        "x": 114,
+        "y": 40,
+        "sprite": "house",
+        "roof": "#7D5A9E"
+      },
+      "levels": [
+        {
+          "id": "3.1",
+          "title": "ALOHA Party",
+          "core": true
+        },
+        {
+          "id": "3.2",
+          "title": "Listen Before You Talk",
+          "core": true
+        },
+        {
+          "id": "3.3",
+          "title": "Polite Turn-Taking",
+          "core": false
+        },
+        {
+          "id": "3.4",
+          "title": "Hidden Hills",
+          "core": true
+        },
+        {
+          "id": "3.5",
+          "title": "Ethernet Station",
+          "core": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Router Ranch",
+      "topic": "Network layer",
+      "file": "zone-4.json",
+      "map": {
+        "x": 198,
+        "y": 78,
+        "sprite": "hut",
+        "roof": "#9C6B3F"
+      },
+      "levels": [
+        {
+          "id": "4.1",
+          "title": "Two Kinds of Post",
+          "core": true
+        },
+        {
+          "id": "4.2",
+          "title": "Address Orchard",
+          "core": true
+        },
+        {
+          "id": "4.3",
+          "title": "Too Big to Fit",
+          "core": false
+        },
+        {
+          "id": "4.4",
+          "title": "Shortest Trail",
+          "core": true
+        },
+        {
+          "id": "4.5",
+          "title": "Rumour Mill",
+          "core": true
+        },
+        {
+          "id": "4.6",
+          "title": "Town Crier",
+          "core": false
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Harbour of Ports",
+      "topic": "Transport layer",
+      "file": "zone-5.json",
+      "map": {
+        "x": 228,
+        "y": 156,
+        "sprite": "house",
+        "roof": "#3D6B95"
+      },
+      "levels": [
+        {
+          "id": "5.1",
+          "title": "Dock Numbers",
+          "core": true
+        },
+        {
+          "id": "5.2",
+          "title": "The Handshake",
+          "core": true
+        },
+        {
+          "id": "5.3",
+          "title": "TCP Inspector",
+          "core": false
+        },
+        {
+          "id": "5.4",
+          "title": "Window & Timers",
+          "core": false
+        },
+        {
+          "id": "5.5",
+          "title": "Traffic Jam",
+          "core": true
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Market Street",
+      "topic": "Application layer",
+      "file": "zone-6.json",
+      "map": {
+        "x": 266,
+        "y": 104,
+        "sprite": "house",
+        "roof": "#D69A2D"
+      },
+      "levels": [
+        {
+          "id": "6.1",
+          "title": "Name Finder",
+          "core": true
+        },
+        {
+          "id": "6.2",
+          "title": "Web Waiter",
+          "core": true
+        },
+        {
+          "id": "6.3",
+          "title": "Cookie Jar & Cache Shed",
+          "core": false
+        },
+        {
+          "id": "6.4",
+          "title": "Mail Route",
+          "core": false
+        },
+        {
+          "id": "6.5",
+          "title": "Stream Smoothie",
+          "core": false
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Castle Keep",
+      "topic": "Network security",
+      "file": "zone-7.json",
+      "map": {
+        "x": 226,
+        "y": 40,
+        "sprite": "castle",
+        "roof": "#6C7472"
+      },
+      "levels": [
+        {
+          "id": "7.1",
+          "title": "Secret Notes",
+          "core": true
+        },
+        {
+          "id": "7.2",
+          "title": "Block Party",
+          "core": false
+        },
+        {
+          "id": "7.3",
+          "title": "Key Pairs",
+          "core": true
+        },
+        {
+          "id": "7.4",
+          "title": "Seal of Approval",
+          "core": true
+        },
+        {
+          "id": "7.5",
+          "title": "Gatekeepers",
+          "core": false
+        }
+      ]
+    }
+  ],
+  "finale": {
+    "name": "The Grand Delivery",
+    "topic": "Load a web page from start to finish",
+    "map": {
+      "x": 270,
+      "y": 52,
+      "sprite": "tower",
+      "roof": "#F2B84B"
+    }
+  },
+  "listHeading": "Districts"
+}

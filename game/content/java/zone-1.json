@@ -1,0 +1,1588 @@
+{
+  "zone": 1,
+  "levels": [
+    {
+      "id": "1.1",
+      "title": "Pick a Path",
+      "story": "At the crossroads a signpost has three arrows and no words. Bram hands Kit a paintbrush. \"A program needs signposts too: if this, go there; otherwise, go here.\"",
+      "everyday": {
+        "scene": "At the ticket booth the rule is: under 5 is free, under 13 is half price, everyone else pays full. The clerk looks at your age, checks the rules from the top, and stops at the first one that fits.",
+        "question": "How would a program make the same choice?",
+        "answer": "With if, else if and else. The program tests a condition, and only the block under the first true test runs."
+      },
+      "lessons": [
+        {
+          "id": "if-else",
+          "title": "if and else",
+          "text": [
+            "A program decides with if. The test goes in brackets and must come out true or false. When it is true, the block in curly brackets runs. An optional else block runs when the test is false.",
+            "Exactly one of the two blocks runs, never both and never neither. Everything after the closing bracket carries on as normal."
+          ],
+          "table": {
+            "head": [
+              "Line",
+              "Code"
+            ],
+            "rows": [
+              [
+                "1",
+                "if (age < 13) {"
+              ],
+              [
+                "2",
+                "    System.out.println(\"child ticket\");"
+              ],
+              [
+                "3",
+                "} else {"
+              ],
+              [
+                "4",
+                "    System.out.println(\"full ticket\");"
+              ],
+              [
+                "5",
+                "}"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "If age holds 9, which line is printed?",
+            "answer": "child ticket, because 9 < 13 is true."
+          },
+          "references": [
+            {
+              "title": "Dev.java: Controlling the Flow of Your Programs",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/constructs/basics/controlling-flow/"
+            },
+            {
+              "title": "Java Language Specification (SE 21), chapter 14: Blocks, Statements, and Patterns",
+              "source": "Java specification (linked, not copied)",
+              "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html"
+            }
+          ]
+        },
+        {
+          "id": "tests",
+          "title": "Tests that give true or false",
+          "text": [
+            "Comparisons give true or false: == means equal, != means not equal, and < <= > >= compare size. A single = stores a value and is not a test. Writing = where you meant == is a classic slip. With whole numbers the compiler catches it.",
+            "Join tests with && (and: both must be true), || (or: at least one must be true), and ! (not: flips true and false)."
+          ],
+          "terms": [
+            {
+              "term": "Condition",
+              "meaning": "A test that gives true or false."
+            },
+            {
+              "term": "&&",
+              "meaning": "And: true only when both sides are true."
+            }
+          ],
+          "deeper": {
+            "title": "Comparing text",
+            "text": [
+              "Use equals to compare Strings, as in name.equals(\"Kit\"). The == symbol asks whether two names point at the very same object, which is not the same as having the same letters."
+            ]
+          },
+          "references": [
+            {
+              "title": "Dev.java: Using Operators",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/constructs/basics/using-operators/"
+            },
+            {
+              "title": "Java Language Specification (SE 21), chapter 15: Expressions",
+              "source": "Java specification (linked, not copied)",
+              "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html"
+            }
+          ]
+        },
+        {
+          "id": "else-if",
+          "title": "Else-if chains",
+          "text": [
+            "Sometimes there are more than two paths. Chain them: if, then else if as many times as you like, then a final else. Java checks the tests from the top, and the first true one wins. Every other branch is skipped.",
+            "So order matters. Put the most demanding test first. If the 60-or-more test came first, a score of 95 would stop there and never reach the 90 test."
+          ],
+          "table": {
+            "head": [
+              "Line",
+              "Code"
+            ],
+            "rows": [
+              [
+                "1",
+                "if (score >= 90) {"
+              ],
+              [
+                "2",
+                "    grade = 'A';"
+              ],
+              [
+                "3",
+                "} else if (score >= 75) {"
+              ],
+              [
+                "4",
+                "    grade = 'B';"
+              ],
+              [
+                "5",
+                "} else {"
+              ],
+              [
+                "6",
+                "    grade = 'C';"
+              ],
+              [
+                "7",
+                "}"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Dev.java: Controlling the Flow of Your Programs",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/constructs/basics/controlling-flow/"
+            },
+            {
+              "title": "Java Language Specification (SE 21), chapter 14: Blocks, Statements, and Patterns",
+              "source": "Java specification (linked, not copied)",
+              "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "which-block",
+          "type": "choice",
+          "taughtOn": "if-else",
+          "prompt": "The code is: if (age < 13) print child ticket; else print full ticket. The variable age holds 20. Which line is printed?",
+          "options": [
+            {
+              "text": "full ticket",
+              "correct": true
+            },
+            {
+              "text": "child ticket"
+            },
+            {
+              "text": "Both lines"
+            },
+            {
+              "text": "Neither line"
+            }
+          ],
+          "hints": [
+            "Is 20 < 13 true or false?",
+            "When the test is false, the else block runs."
+          ],
+          "explain": "20 < 13 is false, so the if block is skipped and the else block runs. Exactly one of the two blocks always runs."
+        },
+        {
+          "id": "equal-test",
+          "type": "choice",
+          "taughtOn": "tests",
+          "prompt": "Which test asks whether score is equal to 10?",
+          "options": [
+            {
+              "text": "score == 10",
+              "correct": true
+            },
+            {
+              "text": "score = 10"
+            },
+            {
+              "text": "score := 10"
+            },
+            {
+              "text": "score => 10"
+            }
+          ],
+          "hints": [
+            "One of these stores a value instead of asking a question.",
+            "Equal to is written with two equals signs."
+          ],
+          "explain": "Two equals signs compare. One equals sign stores a value. The other two are not Java."
+        },
+        {
+          "id": "ticket-12",
+          "type": "numeric",
+          "taughtOn": "else-if",
+          "prompt": "Under 5 pays 0, under 13 pays 5, under 65 pays 12, and anyone older pays 15. The chain checks them in that order. What does an age of 12 pay?",
+          "answer": 5,
+          "calculator": false,
+          "hints": [
+            "Start at the top and stop at the first true test.",
+            "12 is not under 5, but it is under 13."
+          ],
+          "explain": "12 fails age < 5, then passes age < 13, so the price is 5 and the other branches are skipped."
+        },
+        {
+          "id": "ticket-64",
+          "type": "numeric",
+          "taughtOn": "else-if",
+          "prompt": "Same chain: under 5 pays 0, under 13 pays 5, under 65 pays 12, older pays 15. What does an age of 64 pay?",
+          "answer": 12,
+          "calculator": false,
+          "hints": [
+            "It fails the first two tests.",
+            "It passes under 65."
+          ],
+          "explain": "64 fails age < 5 and age < 13, then passes age < 65, so the price is 12."
+        },
+        {
+          "id": "true-or-false",
+          "type": "buckets",
+          "taughtOn": "tests",
+          "prompt": "Say x holds 8. Is each test true or false?",
+          "buckets": [
+            "True",
+            "False"
+          ],
+          "items": [
+            {
+              "text": "x > 5",
+              "bucket": "True"
+            },
+            {
+              "text": "x == 8",
+              "bucket": "True"
+            },
+            {
+              "text": "x < 3 || x > 7",
+              "bucket": "True"
+            },
+            {
+              "text": "x < 3",
+              "bucket": "False"
+            },
+            {
+              "text": "x != 8",
+              "bucket": "False"
+            },
+            {
+              "text": "x > 5 && x < 7",
+              "bucket": "False"
+            }
+          ],
+          "hints": [
+            "Put 8 in place of x and read each test aloud.",
+            "For and (&&), both sides must be true. For or (||), one side is enough."
+          ],
+          "explain": "x > 5, x == 8 and x < 3 || x > 7 are true. x < 3, x != 8 and x > 5 && x < 7 are false. The last one fails because 8 is not under 7."
+        },
+        {
+          "id": "op-meaning",
+          "type": "match",
+          "taughtOn": "tests",
+          "prompt": "Match each symbol to its meaning.",
+          "pairs": [
+            {
+              "left": "==",
+              "right": "Is equal to"
+            },
+            {
+              "left": "!=",
+              "right": "Is not equal to"
+            },
+            {
+              "left": ">=",
+              "right": "Is greater than or equal to"
+            },
+            {
+              "left": "&&",
+              "right": "And: both must be true"
+            },
+            {
+              "left": "||",
+              "right": "Or: at least one must be true"
+            },
+            {
+              "left": "!",
+              "right": "Not: flips true and false"
+            }
+          ],
+          "hints": [
+            "Two of them join whole tests together.",
+            "! sits in front of a test and flips it."
+          ],
+          "explain": "== and != compare, >= compares size, && and || join tests, and ! flips a test."
+        },
+        {
+          "id": "grade-order",
+          "type": "order",
+          "taughtOn": "else-if",
+          "prompt": "A score of 95 should earn an A, 75 or more a B, 60 or more a C, and the rest a D. Put the checks in an order that gives every score the right grade.",
+          "items": [
+            "if (score >= 90) A",
+            "else if (score >= 75) B",
+            "else if (score >= 60) C",
+            "else D"
+          ],
+          "hints": [
+            "The first true test wins, so a loose test would swallow the strict ones.",
+            "Start with the highest mark and work down."
+          ],
+          "explain": "With the highest mark first, 95 gets an A. If the 60 test came first, 95 would get a C, because 95 >= 60 is true and the chain would stop there."
+        },
+        {
+          "id": "equals-trap",
+          "type": "choice",
+          "taughtOn": "tests",
+          "prompt": "A learner writes: int x = 8; if (x = 5) { ... } What does the compiler say?",
+          "options": [
+            {
+              "text": "It refuses: an int cannot be used as a true-or-false test",
+              "correct": true
+            },
+            {
+              "text": "It runs and the block is skipped"
+            },
+            {
+              "text": "It runs and the block runs"
+            },
+            {
+              "text": "It prints 5"
+            }
+          ],
+          "hints": [
+            "Look at the single equals sign inside the brackets.",
+            "if needs true or false. x = 5 stores a whole number."
+          ],
+          "explain": "x = 5 stores 5 in x and gives back the number 5. An if wants true or false, so the compiler stops with an incompatible types error.",
+          "challenge": true
+        },
+        {
+          "id": "lines-printed",
+          "type": "numeric",
+          "taughtOn": "else-if",
+          "prompt": "int x = 8; then three separate ifs in a row: if (x > 5) print big; if (x > 2) print medium; if (x > 0) print small. How many lines are printed?",
+          "answer": 3,
+          "calculator": false,
+          "hints": [
+            "Separate ifs do not know about each other. Each one is tested on its own.",
+            "8 is bigger than 5, 2 and 0."
+          ],
+          "explain": "Each separate if is tested on its own, and all three pass, so three lines print. As a single else-if chain, only the first would print, so one line.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d1.1-f1",
+          "type": "quiz",
+          "taughtOn": "tests",
+          "prompt": "In Java, which symbol compares two values for equality?",
+          "options": [
+            {
+              "text": "==",
+              "correct": true
+            },
+            {
+              "text": "="
+            },
+            {
+              "text": "=>"
+            },
+            {
+              "text": ":="
+            }
+          ],
+          "explain": "A single = stores a value. Two equals signs ask whether two values are equal."
+        },
+        {
+          "id": "d1.1-f2",
+          "type": "quiz",
+          "taughtOn": "else-if",
+          "prompt": "In an else-if chain, how many branches run?",
+          "options": [
+            {
+              "text": "At most one: the first with a true test",
+              "correct": true
+            },
+            {
+              "text": "All of them"
+            },
+            {
+              "text": "The last one"
+            },
+            {
+              "text": "Every branch with a true test"
+            }
+          ],
+          "explain": "The first true test wins and the rest are skipped."
+        },
+        {
+          "id": "d1.1-f3",
+          "type": "why",
+          "taughtOn": "else-if",
+          "prompt": "Why put the strictest test first in a chain?",
+          "options": [
+            {
+              "text": "Otherwise a looser test can catch it first and stop the chain",
+              "correct": true
+            },
+            {
+              "text": "It makes the program shorter"
+            },
+            {
+              "text": "Java insists on it"
+            },
+            {
+              "text": "It runs faster"
+            }
+          ],
+          "explain": "The chain stops at the first true test, so a loose test placed early can swallow cases meant for a stricter one."
+        },
+        {
+          "id": "d1.1-f4",
+          "type": "predict",
+          "taughtOn": "tests",
+          "prompt": "x holds 8. What is x > 5 && x < 7?",
+          "answer": "false. The first part is true, but 8 is not under 7, and and needs both."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Decisions are everywhere",
+          "text": "An if-then statement runs a section of code only if a test is true. Dev.java's example lets a bicycle's brakes slow it down only if it is already moving.",
+          "source": {
+            "title": "Dev.java: Controlling the Flow",
+            "url": "https://dev.java/learn/language/constructs/basics/controlling-flow/"
+          }
+        },
+        {
+          "title": "Short-circuit tests",
+          "text": "With && Java evaluates the right side only if the left side is true. If the left side is false, the whole test can no longer be true, so the right side is skipped.",
+          "source": {
+            "title": "Java Language Specification, section 15.23",
+            "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You made decisions with if, else and else-if, and used tests built from ==, && and ||.",
+          "Kit paints the last arrow. \"First true test wins. Put the strict one first.\""
+        ],
+        "mistake": {
+          "title": "Using = when you mean ==",
+          "text": "One equals sign stores a value and two compare. With whole numbers Java's compiler catches the slip inside an if. With true-or-false values it can slip through and give wrong answers."
+        }
+      }
+    },
+    {
+      "id": "1.2",
+      "title": "Round and Round",
+      "story": "A water wheel turns outside the workshop, the same motion over and over. \"Machines are good at repeating,\" says Bram. \"You only have to say when to stop.\"",
+      "everyday": {
+        "scene": "You are stirring a pot and the recipe says: keep stirring until the sauce coats the spoon. You do not write out each stir. You stir, check, and stir again.",
+        "question": "How would a program repeat a step without writing it out hundreds of times?",
+        "answer": "With a loop. The program does a block of steps, checks a test, and goes round again until the test says stop."
+      },
+      "lessons": [
+        {
+          "id": "while-loop",
+          "title": "while: repeat while the test is true",
+          "text": [
+            "A while loop checks its test first. If the test is true, it runs the block, then checks again. It stops when the test is false. In the example the test n > 0 is true for 3, 2 and 1, so the block runs three times.",
+            "Something inside the loop must change what the test sees. Here n = n - 1 does that. Forget it and the test stays true forever, and the loop never stops."
+          ],
+          "table": {
+            "head": [
+              "Line",
+              "Code"
+            ],
+            "rows": [
+              [
+                "1",
+                "int n = 3;"
+              ],
+              [
+                "2",
+                "while (n > 0) {"
+              ],
+              [
+                "3",
+                "    System.out.println(n);"
+              ],
+              [
+                "4",
+                "    n = n - 1;"
+              ],
+              [
+                "5",
+                "}"
+              ],
+              [
+                "6",
+                "System.out.println(\"go\");"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "What does this program print?",
+            "answer": "3, then 2, then 1, then go, each on its own line."
+          },
+          "references": [
+            {
+              "title": "Dev.java: Controlling the Flow of Your Programs",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/constructs/basics/controlling-flow/"
+            },
+            {
+              "title": "Java Language Specification (SE 21), chapter 14: Blocks, Statements, and Patterns",
+              "source": "Java specification (linked, not copied)",
+              "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html"
+            }
+          ]
+        },
+        {
+          "id": "for-loop",
+          "title": "for: the counting loop",
+          "text": [
+            "A for loop puts three jobs in one line. The first part runs once at the start. The second is the test, checked before every pass. The third runs after every pass. In for (int i = 0; i < 5; i++), i starts at 0, the loop continues while i is under 5, and i++ adds one each time.",
+            "So this loop runs five times, with i equal to 0, 1, 2, 3 and 4. Counting from 0 and stopping with < is the usual pattern."
+          ],
+          "terms": [
+            {
+              "term": "Loop",
+              "meaning": "A block of steps that repeats."
+            },
+            {
+              "term": "Iteration",
+              "meaning": "One trip round a loop."
+            }
+          ],
+          "table": {
+            "head": [
+              "Line",
+              "Code"
+            ],
+            "rows": [
+              [
+                "1",
+                "for (int i = 0; i < 5; i++) {"
+              ],
+              [
+                "2",
+                "    System.out.println(i);"
+              ],
+              [
+                "3",
+                "}"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Dev.java: Controlling the Flow of Your Programs",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/constructs/basics/controlling-flow/"
+            },
+            {
+              "title": "Java Language Specification (SE 21), chapter 14: Blocks, Statements, and Patterns",
+              "source": "Java specification (linked, not copied)",
+              "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html"
+            }
+          ]
+        },
+        {
+          "id": "trace-loop",
+          "title": "Tracing a loop",
+          "text": [
+            "To understand a loop, play computer. Write down each variable after every pass. This is called tracing. It shows exactly when the test turns false.",
+            "Off-by-one slips are the most common loop bug. With i < 5 the loop stops before 5, and with i <= 5 it includes 5, so it runs one more time. Always ask: what is the first value, and what is the last?"
+          ],
+          "deeper": {
+            "title": "Do-while",
+            "text": [
+              "A do-while loop checks its test after the block, so it always runs at least once. With int n = 5; do { print n } while (n < 3); the program prints 5 once, even though the test is false from the start."
+            ]
+          },
+          "references": [
+            {
+              "title": "Dev.java: Controlling the Flow of Your Programs",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/constructs/basics/controlling-flow/"
+            },
+            {
+              "title": "Java Language Specification (SE 21), chapter 14: Blocks, Statements, and Patterns",
+              "source": "Java specification (linked, not copied)",
+              "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "trace-total",
+          "type": "stepsim",
+          "taughtOn": "trace-loop",
+          "mode": "predict",
+          "prompt": "Trace the loop that adds 1 + 2 + 3 + 4, and predict total each time round.",
+          "explain": "Each pass adds the current i to total. The loop ran four times because the test i <= 4 became false once i reached 5, and total ended at 10.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 1,
+                      "mark": null,
+                      "tag": "i"
+                    },
+                    {
+                      "value": 0,
+                      "mark": null,
+                      "tag": "total"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "i and total after each step"
+                },
+                "say": "The code is: int total = 0; for (int i = 1; i <= 4; i++) { total = total + i; }. The crates show i and total. Before the first pass, total is 0."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 1,
+                      "mark": "compare",
+                      "tag": "i"
+                    },
+                    {
+                      "value": 0,
+                      "mark": null,
+                      "tag": "total"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "test"
+                  },
+                  "label": "i and total after each step"
+                },
+                "say": "Start: i is 1. The test i <= 4 is true, so the body runs."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 1,
+                      "mark": null,
+                      "tag": "i"
+                    },
+                    {
+                      "value": 1,
+                      "mark": "new",
+                      "tag": "total"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "body"
+                  },
+                  "label": "i and total after each step"
+                },
+                "say": "Pass 1: total = 0 + 1, so total is 1. Then i++ makes i equal 2."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 2,
+                      "mark": "compare",
+                      "tag": "i"
+                    },
+                    {
+                      "value": 1,
+                      "mark": null,
+                      "tag": "total"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "test"
+                  },
+                  "label": "i and total after each step"
+                },
+                "say": "Now i is 2. The test 2 <= 4 is true, so the body runs again. total is 1.",
+                "predict": {
+                  "prompt": "Pass 2: i is 2 and total is 1. What does total become?",
+                  "options": [
+                    {
+                      "text": "3",
+                      "correct": true
+                    },
+                    {
+                      "text": "2",
+                      "correct": false
+                    },
+                    {
+                      "text": "4",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "total = total + i.",
+                    "Add the current i, 2, to the current total, 1."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 2,
+                      "mark": null,
+                      "tag": "i"
+                    },
+                    {
+                      "value": 3,
+                      "mark": "new",
+                      "tag": "total"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "body"
+                  },
+                  "label": "i and total after each step"
+                },
+                "say": "Pass 2: total = 1 + 2, which is 3. Then i becomes 3."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 3,
+                      "mark": "compare",
+                      "tag": "i"
+                    },
+                    {
+                      "value": 3,
+                      "mark": null,
+                      "tag": "total"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "test"
+                  },
+                  "label": "i and total after each step"
+                },
+                "say": "Now i is 3 and the test 3 <= 4 is true. total is 3.",
+                "predict": {
+                  "prompt": "Pass 3: i is 3 and total is 3. What does total become?",
+                  "options": [
+                    {
+                      "text": "6",
+                      "correct": true
+                    },
+                    {
+                      "text": "5",
+                      "correct": false
+                    },
+                    {
+                      "text": "9",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Add i to total.",
+                    "3 + 3."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 3,
+                      "mark": null,
+                      "tag": "i"
+                    },
+                    {
+                      "value": 6,
+                      "mark": "new",
+                      "tag": "total"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "body"
+                  },
+                  "label": "i and total after each step"
+                },
+                "say": "Pass 3: total = 3 + 3, which is 6. Then i becomes 4."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 4,
+                      "mark": "compare",
+                      "tag": "i"
+                    },
+                    {
+                      "value": 6,
+                      "mark": null,
+                      "tag": "total"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "test"
+                  },
+                  "label": "i and total after each step"
+                },
+                "say": "Now i is 4. The test 4 <= 4 is still true, because <= includes 4. total is 6.",
+                "predict": {
+                  "prompt": "Pass 4: i is 4 and total is 6. What does total become?",
+                  "options": [
+                    {
+                      "text": "10",
+                      "correct": true
+                    },
+                    {
+                      "text": "8",
+                      "correct": false
+                    },
+                    {
+                      "text": "4",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Add i to total once more.",
+                    "6 + 4."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 4,
+                      "mark": null,
+                      "tag": "i"
+                    },
+                    {
+                      "value": 10,
+                      "mark": "new",
+                      "tag": "total"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "body"
+                  },
+                  "label": "i and total after each step"
+                },
+                "say": "Pass 4: total = 6 + 4, which is 10. Then i becomes 5."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": 5,
+                      "mark": "compare",
+                      "tag": "i"
+                    },
+                    {
+                      "value": 10,
+                      "mark": "best",
+                      "tag": "total"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "test"
+                  },
+                  "label": "i and total after each step"
+                },
+                "say": "Now i is 5. The test 5 <= 4 is false, so the loop ends. total is 10 after 4 passes."
+              }
+            ]
+          }
+        },
+        {
+          "id": "count-passes",
+          "type": "numeric",
+          "taughtOn": "for-loop",
+          "prompt": "How many times does for (int i = 0; i < 6; i++) { ... } run its body?",
+          "answer": 6,
+          "calculator": false,
+          "hints": [
+            "i takes the values 0, 1, 2 and so on, while i < 6.",
+            "List the values of i: 0, 1, 2, 3, 4, 5."
+          ],
+          "explain": "i runs through 0, 1, 2, 3, 4 and 5, which is six values. When i reaches 6, the test i < 6 is false."
+        },
+        {
+          "id": "count-steps",
+          "type": "numeric",
+          "taughtOn": "for-loop",
+          "prompt": "How many times does for (int i = 2; i <= 10; i += 4) { ... } run its body? (i += 4 adds 4 each time.)",
+          "answer": 3,
+          "calculator": false,
+          "hints": [
+            "List i: it starts at 2 and grows by 4.",
+            "i is 2, 6, 10, and the next would be 14."
+          ],
+          "explain": "i is 2, then 6, then 10. The next value is 14, which fails i <= 10. Three passes."
+        },
+        {
+          "id": "one-to-five",
+          "type": "choice",
+          "taughtOn": "trace-loop",
+          "prompt": "Which loop header prints 1, 2, 3, 4, 5?",
+          "options": [
+            {
+              "text": "for (int i = 1; i <= 5; i++)",
+              "correct": true
+            },
+            {
+              "text": "for (int i = 1; i < 5; i++)"
+            },
+            {
+              "text": "for (int i = 0; i < 5; i++)"
+            },
+            {
+              "text": "for (int i = 1; i <= 6; i++)"
+            }
+          ],
+          "hints": [
+            "Check the first value and the last value each header gives.",
+            "To include 5, the test must still be true at 5."
+          ],
+          "explain": "Start at 1 and keep going while i <= 5. With i < 5 the loop stops at 4. Starting at 0 prints 0 to 4. Using <= 6 prints 1 to 6."
+        },
+        {
+          "id": "for-parts",
+          "type": "match",
+          "taughtOn": "for-loop",
+          "prompt": "Match each part of a for loop to its job.",
+          "pairs": [
+            {
+              "left": "int i = 0",
+              "right": "Start: runs once, before the first pass"
+            },
+            {
+              "left": "i < 5",
+              "right": "Test: checked before every pass"
+            },
+            {
+              "left": "i++",
+              "right": "Update: runs after every pass"
+            },
+            {
+              "left": "The block in curly brackets",
+              "right": "Body: the steps that repeat"
+            }
+          ],
+          "hints": [
+            "Two parts run on every pass, one only at the start.",
+            "The test decides whether the body runs at all."
+          ],
+          "explain": "The start runs once, the test is checked each time before the body, and the update runs after the body."
+        },
+        {
+          "id": "loop-fate",
+          "type": "buckets",
+          "taughtOn": "while-loop",
+          "prompt": "What does each loop do?",
+          "buckets": [
+            "Runs a few times",
+            "Never runs",
+            "Never stops"
+          ],
+          "items": [
+            {
+              "text": "for (int i = 0; i < 3; i++) { }",
+              "bucket": "Runs a few times"
+            },
+            {
+              "text": "int n = 10; while (n > 0) { n = n - 3; }",
+              "bucket": "Runs a few times"
+            },
+            {
+              "text": "int n = 5; while (n < 3) { n++; }",
+              "bucket": "Never runs"
+            },
+            {
+              "text": "for (int i = 4; i < 4; i++) { }",
+              "bucket": "Never runs"
+            },
+            {
+              "text": "int i = 0; while (i < 3) { }",
+              "bucket": "Never stops"
+            },
+            {
+              "text": "while (true) { }",
+              "bucket": "Never stops"
+            }
+          ],
+          "hints": [
+            "Check the test before the first pass, then check that something changes.",
+            "A test that is false at the start means the body never runs."
+          ],
+          "explain": "The first two end after 3 and 4 passes. The next two fail their test straight away. The last two never change anything the test depends on, so they run forever."
+        },
+        {
+          "id": "nested",
+          "type": "numeric",
+          "taughtOn": "trace-loop",
+          "prompt": "int c = 0; for (int i = 0; i < 3; i++) { for (int j = 0; j < 4; j++) { c++; } } What does c hold at the end?",
+          "answer": 12,
+          "calculator": false,
+          "hints": [
+            "The inner loop runs completely for each pass of the outer loop.",
+            "3 passes of the outer loop, each with 4 passes of the inner one."
+          ],
+          "explain": "The inner body runs 4 times for each of the 3 outer passes. 3 x 4 is 12.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d1.2-f1",
+          "type": "quiz",
+          "taughtOn": "for-loop",
+          "prompt": "How many times does for (int i = 0; i < 5; i++) run its body?",
+          "options": [
+            {
+              "text": "5",
+              "correct": true
+            },
+            {
+              "text": "4"
+            },
+            {
+              "text": "6"
+            },
+            {
+              "text": "It never stops"
+            }
+          ],
+          "explain": "i is 0, 1, 2, 3 and 4."
+        },
+        {
+          "id": "d1.2-f2",
+          "type": "why",
+          "taughtOn": "while-loop",
+          "prompt": "Why can a while loop run forever?",
+          "options": [
+            {
+              "text": "Nothing inside it changes the test",
+              "correct": true
+            },
+            {
+              "text": "Loops always run forever"
+            },
+            {
+              "text": "Java forgets to stop it"
+            },
+            {
+              "text": "The test is written in capitals"
+            }
+          ],
+          "explain": "If the test never turns false, the loop never ends."
+        },
+        {
+          "id": "d1.2-f3",
+          "type": "quiz",
+          "taughtOn": "trace-loop",
+          "prompt": "What is tracing a loop?",
+          "options": [
+            {
+              "text": "Writing down each variable after every pass",
+              "correct": true
+            },
+            {
+              "text": "Counting the lines"
+            },
+            {
+              "text": "Running it faster"
+            },
+            {
+              "text": "Deleting the loop"
+            }
+          ],
+          "explain": "Tracing means playing computer by hand."
+        },
+        {
+          "id": "d1.2-f4",
+          "type": "predict",
+          "taughtOn": "trace-loop",
+          "prompt": "What does a do-while loop do that a while loop does not?",
+          "answer": "It always runs the body at least once, because it checks the test after the body."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Loops hide inside everything",
+          "text": "A while statement keeps running a block of statements while its test is true. A for statement repeats until its test is no longer true.",
+          "source": {
+            "title": "Dev.java: Controlling the Flow",
+            "url": "https://dev.java/learn/language/constructs/basics/controlling-flow/"
+          }
+        },
+        {
+          "title": "Counting from zero",
+          "text": "Each pass checks the test first, so starting at 0 and using i < n runs the body exactly n times. Dev.java's arrays page numbers array elements from 0, so the same pattern walks an array.",
+          "source": {
+            "title": "Java Language Specification, section 14.14.1",
+            "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You repeated steps with while and for, traced a loop by hand, and met the off-by-one slip.",
+          "The wheel keeps turning. \"Say when to stop,\" says Bram, \"and the machine will do the rest.\""
+        ],
+        "mistake": {
+          "title": "Off by one",
+          "text": "Using <= where you meant <, or starting at 1 instead of 0, makes a loop run one time too many or too few. Trace the first and last pass to check."
+        }
+      }
+    },
+    {
+      "id": "1.3",
+      "title": "Recipe Cards",
+      "story": "On Bram's wall hang cards with a title and a few steps each: Paint a Door, Sand a Plank. \"Write the steps once,\" he says. \"Then just call the card by name.\"",
+      "everyday": {
+        "scene": "A cookbook says: make the sauce (see page 4). It does not repeat the sauce steps in every recipe. You flip to page 4, follow them, and come back.",
+        "question": "How does a program reuse a set of steps without copying them out each time?",
+        "answer": "By putting them in a method, which is a named recipe card. The program calls the method by name whenever it needs those steps."
+      },
+      "lessons": [
+        {
+          "id": "method-idea",
+          "title": "A method is a recipe card",
+          "text": [
+            "A method is a named block of statements. You write it once, then call it by name whenever you want it to run. Calling greet(\"Kit\") runs the steps inside greet, then the program carries on from the line after the call.",
+            "This saves copying, and it gives one place to fix a mistake. For now, write static before the return type. A later level explains why."
+          ],
+          "terms": [
+            {
+              "term": "Method",
+              "meaning": "A named block of statements you can call."
+            },
+            {
+              "term": "Call",
+              "meaning": "Running a method by writing its name and brackets."
+            }
+          ],
+          "table": {
+            "head": [
+              "Line",
+              "Code"
+            ],
+            "rows": [
+              [
+                "1",
+                "static void greet(String name) {"
+              ],
+              [
+                "2",
+                "    System.out.println(\"Hello, \" + name);"
+              ],
+              [
+                "3",
+                "}"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Dev.java: Defining Methods",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/oop/classes-objects/defining-methods/"
+            },
+            {
+              "title": "Java Language Specification (SE 21), chapter 8: Classes",
+              "source": "Java specification (linked, not copied)",
+              "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html"
+            }
+          ]
+        },
+        {
+          "id": "params-return",
+          "title": "Values in, a value out",
+          "text": [
+            "A method can take values in and send a value back. The values it needs go in brackets with types, called parameters. The type before the name says what comes back. return sends the result back and ends the method. A method that gives nothing back says void.",
+            "In the example, add needs two ints and gives back an int. The call add(3, 4) is replaced by the value 7 wherever it appears, so you can print it or use it inside another call."
+          ],
+          "terms": [
+            {
+              "term": "Parameter",
+              "meaning": "A named input listed in the method's brackets."
+            },
+            {
+              "term": "Argument",
+              "meaning": "The actual value you give when you call it."
+            },
+            {
+              "term": "void",
+              "meaning": "The method gives nothing back."
+            }
+          ],
+          "table": {
+            "head": [
+              "Line",
+              "Code"
+            ],
+            "rows": [
+              [
+                "1",
+                "static int add(int a, int b) {"
+              ],
+              [
+                "2",
+                "    return a + b;"
+              ],
+              [
+                "3",
+                "}"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "What does System.out.println(add(2, 5)); print?",
+            "answer": "7. The call add(2, 5) becomes 7, and 7 is printed."
+          },
+          "references": [
+            {
+              "title": "Dev.java: Defining Methods",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/oop/classes-objects/defining-methods/"
+            },
+            {
+              "title": "Java Language Specification (SE 21), chapter 8: Classes",
+              "source": "Java specification (linked, not copied)",
+              "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html"
+            }
+          ]
+        },
+        {
+          "id": "copies",
+          "title": "What is copied, and where it lives",
+          "text": [
+            "Methods are written inside the class, outside any other method. main calls them. When you call a method with a simple value such as an int, the method gets a copy. Changing the parameter inside the method does not change the caller's variable.",
+            "The call must match the header: the right number of arguments, in the right order, with the right types. A mismatch is a compile error."
+          ],
+          "deeper": {
+            "title": "Why a copy?",
+            "text": [
+              {
+                "text": "Java hands each method a copy of the value, so a method working on an int cannot change the caller's int. Objects behave a little differently, and you meet that in the classes district."
+              }
+            ]
+          },
+          "references": [
+            {
+              "title": "Dev.java: Defining Methods",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/oop/classes-objects/defining-methods/"
+            },
+            {
+              "title": "Java Language Specification (SE 21), chapter 8: Classes",
+              "source": "Java specification (linked, not copied)",
+              "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "header-parts",
+          "type": "match",
+          "taughtOn": "params-return",
+          "prompt": "Look at: static int add(int a, int b). Match each piece to its job.",
+          "pairs": [
+            {
+              "left": "int (before add)",
+              "right": "Return type: the kind of value that comes back"
+            },
+            {
+              "left": "add",
+              "right": "The method's name"
+            },
+            {
+              "left": "int a, int b",
+              "right": "Parameters: the values the method needs"
+            },
+            {
+              "left": "return a + b;",
+              "right": "Sends the result back to the caller"
+            },
+            {
+              "left": "The block in curly brackets",
+              "right": "The body: the steps the method runs"
+            }
+          ],
+          "hints": [
+            "One piece tells you what comes out, another what goes in.",
+            "return is the step that hands the result back."
+          ],
+          "explain": "The return type says what comes back, the name says what to call, the parameters say what goes in, and return hands the result back."
+        },
+        {
+          "id": "square-sum",
+          "type": "numeric",
+          "taughtOn": "params-return",
+          "prompt": "static int square(int n) { return n * n; } What does square(5) + square(3) give?",
+          "answer": 34,
+          "calculator": false,
+          "hints": [
+            "Work out each call first.",
+            "square(5) is 25 and square(3) is 9."
+          ],
+          "explain": "square(5) is 25 and square(3) is 9. Added together, they make 34."
+        },
+        {
+          "id": "nested-call",
+          "type": "numeric",
+          "taughtOn": "params-return",
+          "prompt": "static int add(int a, int b) { return a + b; } What does add(add(2, 3), 4) give?",
+          "answer": 9,
+          "calculator": false,
+          "hints": [
+            "The inner call happens first.",
+            "add(2, 3) becomes 5. Then add(5, 4)."
+          ],
+          "explain": "The inner call add(2, 3) becomes 5, so the outer call is add(5, 4), which is 9."
+        },
+        {
+          "id": "void-meaning",
+          "type": "choice",
+          "taughtOn": "params-return",
+          "prompt": "A method is declared void. What does it give back to the caller?",
+          "options": [
+            {
+              "text": "Nothing",
+              "correct": true
+            },
+            {
+              "text": "Zero"
+            },
+            {
+              "text": "The word void"
+            },
+            {
+              "text": "An error message"
+            }
+          ],
+          "hints": [
+            "Void means empty.",
+            "You cannot use its call as a value, such as inside another call."
+          ],
+          "explain": "A void method does its work but hands nothing back. Zero is a number, so that is not the same as nothing."
+        },
+        {
+          "id": "good-call",
+          "type": "buckets",
+          "taughtOn": "copies",
+          "prompt": "The method is static int add(int a, int b). Is each call valid?",
+          "buckets": [
+            "Valid call",
+            "Compile error"
+          ],
+          "items": [
+            {
+              "text": "add(1, 2);",
+              "bucket": "Valid call"
+            },
+            {
+              "text": "int r = add(3, 4);",
+              "bucket": "Valid call"
+            },
+            {
+              "text": "System.out.println(add(2, 5));",
+              "bucket": "Valid call"
+            },
+            {
+              "text": "add(1);",
+              "bucket": "Compile error"
+            },
+            {
+              "text": "add(\"a\", 2);",
+              "bucket": "Compile error"
+            },
+            {
+              "text": "add(1, 2, 3);",
+              "bucket": "Compile error"
+            }
+          ],
+          "hints": [
+            "Count the arguments, then check each type.",
+            "add needs exactly two ints."
+          ],
+          "explain": "Calls must match the header. One argument, three arguments, or a String in place of an int are all refused by the compiler."
+        },
+        {
+          "id": "call-steps",
+          "type": "order",
+          "taughtOn": "copies",
+          "prompt": "When the program reaches the call square(5), what happens? Put the steps in order.",
+          "items": [
+            "The call square(5) is reached",
+            "The argument 5 is copied into the parameter n",
+            "The body runs: n * n gives 25",
+            "return sends 25 back",
+            "The call is replaced by the value 25"
+          ],
+          "hints": [
+            "The input has to arrive before the body can use it.",
+            "The value comes back last, and replaces the call."
+          ],
+          "explain": "The argument is copied in, the body runs, return sends the result back, and the call is replaced by that value."
+        },
+        {
+          "id": "copy-check",
+          "type": "choice",
+          "taughtOn": "copies",
+          "prompt": "static void bump(int x) { x = x + 10; print x; } Then: int n = 5; bump(n); print n. What does the second print show?",
+          "options": [
+            {
+              "text": "5",
+              "correct": true
+            },
+            {
+              "text": "15"
+            },
+            {
+              "text": "10"
+            },
+            {
+              "text": "It will not compile"
+            }
+          ],
+          "hints": [
+            "The method got its own copy of n.",
+            "Only the copy named x changed, and n was not touched."
+          ],
+          "explain": "bump prints 15, but its x was a copy. The caller's n is still 5, so the second print shows 5.",
+          "challenge": true
+        },
+        {
+          "id": "triple-twice",
+          "type": "numeric",
+          "taughtOn": "params-return",
+          "prompt": "static int twice(int n) { return n * 2; } What does twice(twice(twice(3))) give?",
+          "answer": 24,
+          "calculator": false,
+          "hints": [
+            "Start from the innermost call.",
+            "twice(3) is 6. Then twice(6). Then twice again."
+          ],
+          "explain": "twice(3) is 6, then twice(6) is 12, then twice(12) is 24.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d1.3-f1",
+          "type": "quiz",
+          "taughtOn": "params-return",
+          "prompt": "What does the word void say about a method?",
+          "options": [
+            {
+              "text": "It gives nothing back",
+              "correct": true
+            },
+            {
+              "text": "It has no name"
+            },
+            {
+              "text": "It cannot be called"
+            },
+            {
+              "text": "It returns zero"
+            }
+          ],
+          "explain": "void means the method returns no value."
+        },
+        {
+          "id": "d1.3-f2",
+          "type": "quiz",
+          "taughtOn": "copies",
+          "prompt": "A method changes its int parameter. What happens to the caller's variable?",
+          "options": [
+            {
+              "text": "Nothing, because the method got a copy",
+              "correct": true
+            },
+            {
+              "text": "It changes too"
+            },
+            {
+              "text": "It becomes zero"
+            },
+            {
+              "text": "The program stops"
+            }
+          ],
+          "explain": "A simple value is copied into the parameter."
+        },
+        {
+          "id": "d1.3-f3",
+          "type": "why",
+          "taughtOn": "method-idea",
+          "prompt": "Why write a method instead of copying the steps each time?",
+          "options": [
+            {
+              "text": "One place to write it, and one place to fix it",
+              "correct": true
+            },
+            {
+              "text": "It runs faster by magic"
+            },
+            {
+              "text": "Java forbids copying"
+            },
+            {
+              "text": "It makes the code longer"
+            }
+          ],
+          "explain": "A method is written once, so a fix in one place fixes every call."
+        },
+        {
+          "id": "d1.3-f4",
+          "type": "predict",
+          "taughtOn": "params-return",
+          "prompt": "In add(add(2, 3), 4), which call runs first?",
+          "answer": "The inner call, add(2, 3). It becomes 5, and then add(5, 4) runs."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Small pieces, big programs",
+          "text": "A method declares executable code that can be invoked, passing in a fixed number of values as arguments.",
+          "source": {
+            "title": "Java Language Specification, section 8.4",
+            "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html"
+          }
+        },
+        {
+          "title": "Methods you already used",
+          "text": "System.out.println is a method that someone else wrote. You call it with an argument, and it runs the steps inside.",
+          "source": {
+            "title": "Java SE 21 API: PrintStream",
+            "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/PrintStream.html"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You wrote reusable steps as methods, passed values in, and got a value back.",
+          "Bram pins a new card to the wall. \"Write once. Call often.\""
+        ],
+        "mistake": {
+          "title": "Expecting a method to change the caller's number",
+          "text": "With a simple value like an int, the method works on a copy. To get a changed value back, use return and store the result in a variable."
+        }
+      }
+    }
+  ]
+}

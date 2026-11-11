@@ -1,0 +1,649 @@
+{
+  "zone": 4,
+  "levels": [
+    {
+      "id": "4.1",
+      "title": "Ignore the Deletes",
+      "story": "Rowan gives Kit a magic rule for the afternoon: nothing Kit does can undo anything. Kit steps onto the Bridge and finds that the Cabin is still there too. \"Handy,\" says Kit. \"Can I plan like this?\"",
+      "everyday": {
+        "scene": "When you imagine tidying a room without ever having to put anything away, you guess how long it will take much faster. The guess is rough, but it takes no effort.",
+        "question": "How can a planner estimate the work left without solving the whole problem?",
+        "answer": "It solves an easier copy of the problem in which no action undoes a fact, and uses the length of that plan as its guess."
+      },
+      "lessons": [
+        {
+          "id": "world-without-deletes",
+          "title": "A world without deletes",
+          "text": [
+            "Delete relaxation makes an easier copy of the problem by ignoring every delete list. Once a fact is true, it stays true. In the relaxed world Kit can stand at the Cabin and the Bridge at once, and keep a parcel while it also lies where it was.",
+            {
+              "text": "Delete relaxation keeps every action's preconditions and add effects, and drops only the delete effects. So any real plan still works in the relaxed world, and a shortest relaxed plan is never longer than a shortest real plan."
+            }
+          ],
+          "terms": [
+            {
+              "term": "Relaxation",
+              "meaning": "A simpler copy of a problem that is easier to solve."
+            },
+            {
+              "term": "Relaxed plan",
+              "meaning": "A plan that works when delete lists are ignored."
+            }
+          ],
+          "references": [
+            {
+              "title": "The FF Planning System: Fast Plan Generation Through Heuristic Search (arXiv:1106.0675)",
+              "source": "Research paper on arXiv (linked, not copied)",
+              "url": "https://arxiv.org/abs/1106.0675"
+            },
+            {
+              "title": "Wikipedia: STRIPS",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Stanford_Research_Institute_Problem_Solver"
+            }
+          ]
+        },
+        {
+          "id": "layer-by-layer",
+          "title": "Layer by layer",
+          "text": [
+            "Start with the facts true now. In each round, add every fact that an applicable action would add, and keep all the earlier facts. Stop when every goal fact has appeared. In Kit's world that takes 4 rounds.",
+            "Tracing back from the goals shows which actions were needed. Here a relaxed plan has 6 actions: pick p, two moves, drop p at the Dock, pick q, and drop q at the Cabin."
+          ],
+          "table": {
+            "head": [
+              "Round",
+              "New facts that appear"
+            ],
+            "rows": [
+              [
+                "1",
+                "Kit at Bridge, Kit has p"
+              ],
+              [
+                "2",
+                "Kit at Dock, p at Bridge"
+              ],
+              [
+                "3",
+                "Kit has q, p at Dock"
+              ],
+              [
+                "4",
+                "q at Bridge, q at Cabin"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "The FF Planning System: Fast Plan Generation Through Heuristic Search (arXiv:1106.0675)",
+              "source": "Research paper on arXiv (linked, not copied)",
+              "url": "https://arxiv.org/abs/1106.0675"
+            }
+          ]
+        },
+        {
+          "id": "cheap-not-exact",
+          "title": "Cheap but not exact",
+          "text": [
+            "The length of a relaxed plan makes a guess for the search. In Kit's world it says 6 at the start, while the real shortest plan needs 8. The relaxed Kit never has to walk back, because Kit at the Cabin is never deleted.",
+            "Finding the very shortest relaxed plan is itself hard (NP-hard), so planners such as FF build a good relaxed plan quickly instead of the best one."
+          ],
+          "deeper": {
+            "title": "A guess that can be high",
+            "text": [
+              {
+                "text": "Because FF's relaxed plan is not guaranteed to be the shortest one, its length is not guaranteed to be an admissible guess, and can sometimes be above the true cost. The perfectly shortest relaxed plan would make an admissible guess."
+              }
+            ]
+          },
+          "references": [
+            {
+              "title": "The FF Planning System: Fast Plan Generation Through Heuristic Search (arXiv:1106.0675)",
+              "source": "Research paper on arXiv (linked, not copied)",
+              "url": "https://arxiv.org/abs/1106.0675"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "rounds",
+          "type": "numeric",
+          "taughtOn": "layer-by-layer",
+          "prompt": "In Kit's relaxed world, how many rounds until both goal facts have appeared?",
+          "answer": 4,
+          "calculator": false,
+          "hints": [
+            "Look at when 'q at Cabin' first shows up.",
+            "'p at Dock' appears in round 3, 'q at Cabin' in round 4."
+          ],
+          "explain": "'q at Cabin' appears in round 4, the last goal fact, so the answer is 4."
+        },
+        {
+          "id": "relaxed-sim",
+          "type": "stepsim",
+          "taughtOn": "layer-by-layer",
+          "mode": "predict",
+          "prompt": "Watch the relaxed world grow, round by round.",
+          "explain": "Facts are only added. After 4 rounds both goal facts are in, and tracing back gives a relaxed plan of 6 actions.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "Kit at Cabin",
+                      "mark": null
+                    },
+                    {
+                      "value": "p at Cabin",
+                      "mark": null
+                    },
+                    {
+                      "value": "q at Dock",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Facts true so far in the relaxed world (new ones outlined)"
+                },
+                "say": "The relaxed world starts with the facts true now: Kit at Cabin, p at Cabin and q at Dock. From here, facts are only ever added, never deleted. We grow the list round by round until both goal facts appear."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "Kit at Bridge",
+                      "mark": "new"
+                    },
+                    {
+                      "value": "Kit at Cabin",
+                      "mark": null
+                    },
+                    {
+                      "value": "Kit has p",
+                      "mark": "new"
+                    },
+                    {
+                      "value": "p at Cabin",
+                      "mark": null
+                    },
+                    {
+                      "value": "q at Dock",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Facts true so far in the relaxed world (new ones outlined)"
+                },
+                "say": "Round 1. Actions that can run and add something new: move Cabin to Bridge, pick p at Cabin. New facts: Kit at Bridge, Kit has p. Every earlier fact stays.",
+                "predict": {
+                  "prompt": "Kit moves to the Bridge in the relaxed world. Is 'Kit at Cabin' still true?",
+                  "options": [
+                    {
+                      "text": "Yes: nothing is ever deleted",
+                      "correct": true
+                    },
+                    {
+                      "text": "No: Kit left the Cabin",
+                      "correct": false
+                    },
+                    {
+                      "text": "Only if Kit goes back",
+                      "correct": false
+                    },
+                    {
+                      "text": "It depends on the parcel",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Remember what relaxing the problem means.",
+                    "The delete list is ignored."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "Kit at Bridge",
+                      "mark": null
+                    },
+                    {
+                      "value": "Kit at Cabin",
+                      "mark": null
+                    },
+                    {
+                      "value": "Kit at Dock",
+                      "mark": "new"
+                    },
+                    {
+                      "value": "Kit has p",
+                      "mark": null
+                    },
+                    {
+                      "value": "p at Bridge",
+                      "mark": "new"
+                    },
+                    {
+                      "value": "p at Cabin",
+                      "mark": null
+                    },
+                    {
+                      "value": "q at Dock",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Facts true so far in the relaxed world (new ones outlined)"
+                },
+                "say": "Round 2. Actions that can run and add something new: move Bridge to Dock, drop p at Bridge. New facts: Kit at Dock, p at Bridge. Every earlier fact stays."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "Kit at Bridge",
+                      "mark": null
+                    },
+                    {
+                      "value": "Kit at Cabin",
+                      "mark": null
+                    },
+                    {
+                      "value": "Kit at Dock",
+                      "mark": null
+                    },
+                    {
+                      "value": "Kit has p",
+                      "mark": null
+                    },
+                    {
+                      "value": "p at Bridge",
+                      "mark": null
+                    },
+                    {
+                      "value": "p at Cabin",
+                      "mark": null
+                    },
+                    {
+                      "value": "p at Dock",
+                      "mark": "new"
+                    },
+                    {
+                      "value": "Kit has q",
+                      "mark": "new"
+                    },
+                    {
+                      "value": "q at Dock",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Facts true so far in the relaxed world (new ones outlined)"
+                },
+                "say": "Round 3. Actions that can run and add something new: drop p at Dock, pick q at Dock. New facts: Kit has q, p at Dock. Every earlier fact stays. 'p at Dock' is a goal fact, and it has just appeared."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "Kit at Bridge",
+                      "mark": null
+                    },
+                    {
+                      "value": "Kit at Cabin",
+                      "mark": null
+                    },
+                    {
+                      "value": "Kit at Dock",
+                      "mark": null
+                    },
+                    {
+                      "value": "Kit has p",
+                      "mark": null
+                    },
+                    {
+                      "value": "p at Bridge",
+                      "mark": null
+                    },
+                    {
+                      "value": "p at Cabin",
+                      "mark": null
+                    },
+                    {
+                      "value": "p at Dock",
+                      "mark": null
+                    },
+                    {
+                      "value": "Kit has q",
+                      "mark": null
+                    },
+                    {
+                      "value": "q at Bridge",
+                      "mark": "new"
+                    },
+                    {
+                      "value": "q at Cabin",
+                      "mark": "new"
+                    },
+                    {
+                      "value": "q at Dock",
+                      "mark": null
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Facts true so far in the relaxed world (new ones outlined)"
+                },
+                "say": "Round 4. Actions that can run and add something new: drop q at Cabin, drop q at Bridge. New facts: q at Bridge, q at Cabin. Every earlier fact stays. 'q at Cabin' is the other goal fact. Both goals are in, after 4 rounds."
+              }
+            ]
+          }
+        },
+        {
+          "id": "kit-both",
+          "type": "choice",
+          "taughtOn": "world-without-deletes",
+          "prompt": "In the relaxed world, Kit picks up p at the Cabin. Is 'p at Cabin' still true afterwards?",
+          "options": [
+            {
+              "text": "Yes, because deletes are ignored",
+              "correct": true
+            },
+            {
+              "text": "No, Kit now holds it"
+            },
+            {
+              "text": "Only until Kit moves"
+            },
+            {
+              "text": "Only for parcel q"
+            }
+          ],
+          "hints": [
+            "Relaxing means ignoring the delete list.",
+            "Pick's delete list holds 'p at Cabin'."
+          ],
+          "explain": "Pick's delete list is ignored, so 'p at Cabin' stays true next to 'Kit has p'."
+        },
+        {
+          "id": "gap",
+          "type": "numeric",
+          "taughtOn": "cheap-not-exact",
+          "prompt": "A shortest relaxed plan has 6 actions. The real shortest plan has 8. How many fewer actions does the relaxed plan need?",
+          "answer": 2,
+          "calculator": false,
+          "hints": [
+            "Subtract 6 from 8.",
+            "8 - 6."
+          ],
+          "explain": "8 - 6 = 2 fewer actions, because the relaxed Kit never walks back."
+        },
+        {
+          "id": "relaxed-steps",
+          "type": "order",
+          "taughtOn": "layer-by-layer",
+          "prompt": "Put the steps for a relaxed-plan guess in order.",
+          "items": [
+            "Ignore every delete list",
+            "Grow the fact list round by round until the goals appear",
+            "Trace back which actions were needed",
+            "Count the actions to get the guess"
+          ],
+          "hints": [
+            "You need the relaxed problem before you can solve it.",
+            "You count only after tracing back."
+          ],
+          "explain": "Relax the problem, grow the facts, trace back a relaxed plan, and count its actions."
+        },
+        {
+          "id": "relaxed-true-false",
+          "type": "buckets",
+          "taughtOn": "world-without-deletes",
+          "prompt": "Is each statement about the relaxed world true or false?",
+          "buckets": [
+            "True",
+            "False"
+          ],
+          "items": [
+            {
+              "text": "Once a fact is true, it stays true",
+              "bucket": "True"
+            },
+            {
+              "text": "Kit can be at two places at once",
+              "bucket": "True"
+            },
+            {
+              "text": "Any real plan also works in the relaxed world",
+              "bucket": "True"
+            },
+            {
+              "text": "It always gives the exact length of the real plan",
+              "bucket": "False"
+            },
+            {
+              "text": "The preconditions are changed to be easier",
+              "bucket": "False"
+            }
+          ],
+          "hints": [
+            "Only the delete lists are ignored.",
+            "The relaxed guess can be lower than the truth."
+          ],
+          "explain": "Deletes are ignored, so facts stay and every real plan still works. Preconditions are unchanged, and the guess can be lower than the truth."
+        },
+        {
+          "id": "relax-words",
+          "type": "match",
+          "taughtOn": "world-without-deletes",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Delete list",
+              "right": "Facts an action makes false"
+            },
+            {
+              "left": "Relaxation",
+              "right": "An easier copy of the problem"
+            },
+            {
+              "left": "Relaxed plan",
+              "right": "A plan that works when deletes are ignored"
+            },
+            {
+              "left": "Round",
+              "right": "One step of adding every fact that can be added"
+            }
+          ],
+          "hints": [
+            "The relaxation ignores the first one.",
+            "A round grows the list of facts."
+          ],
+          "explain": "Relaxation ignores delete lists. A relaxed plan solves the easier copy, and each round adds new facts."
+        },
+        {
+          "id": "why-not-above",
+          "type": "choice",
+          "taughtOn": "world-without-deletes",
+          "prompt": "Why is a shortest relaxed plan never longer than a shortest real plan?",
+          "options": [
+            {
+              "text": "Every real plan also works in the relaxed world",
+              "correct": true
+            },
+            {
+              "text": "The relaxed world has fewer facts"
+            },
+            {
+              "text": "Relaxed actions are faster"
+            },
+            {
+              "text": "Real plans are always shorter"
+            }
+          ],
+          "hints": [
+            "Think about what ignoring deletes can only make easier.",
+            "Is a real plan still valid in the relaxed world?"
+          ],
+          "explain": "Ignoring deletes can only help, so every real plan is also a relaxed plan, and the shortest relaxed one is at most as long."
+        },
+        {
+          "id": "h-after-pick",
+          "type": "numeric",
+          "taughtOn": "layer-by-layer",
+          "prompt": "Challenge: Kit has just picked up p at the Cabin (Kit at Cabin, Kit has p, q at Dock). How many actions does a shortest relaxed plan need from here?",
+          "answer": 5,
+          "calculator": false,
+          "hints": [
+            "Move to the Bridge, then the Dock, drop p, pick q, then drop q.",
+            "The relaxed Kit never walks back."
+          ],
+          "explain": "Two moves, drop p at the Dock, pick q at the Dock, and drop q at the Cabin make 5. The real plan needs 7.",
+          "challenge": true
+        },
+        {
+          "id": "why-not-optimal",
+          "type": "choice",
+          "taughtOn": "cheap-not-exact",
+          "prompt": "Challenge: why do planners not always use the very shortest relaxed plan as their guess?",
+          "options": [
+            {
+              "text": "Finding it is itself hard, so they settle for a good one built quickly",
+              "correct": true
+            },
+            {
+              "text": "It is always the same as the real plan"
+            },
+            {
+              "text": "It is too short to help"
+            },
+            {
+              "text": "It cannot be written down"
+            }
+          ],
+          "hints": [
+            "Think about the cost of computing the guess itself.",
+            "The shortest relaxed plan is NP-hard to find."
+          ],
+          "explain": "Computing the shortest relaxed plan is itself NP-hard, so planners such as FF build a good relaxed plan quickly.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m4.1-f1",
+          "type": "quiz",
+          "taughtOn": "world-without-deletes",
+          "prompt": "What does delete relaxation ignore?",
+          "options": [
+            {
+              "text": "The delete lists of every action",
+              "correct": true
+            },
+            {
+              "text": "The preconditions"
+            },
+            {
+              "text": "The goal"
+            },
+            {
+              "text": "The add lists"
+            }
+          ],
+          "explain": "Facts, once true, stay true."
+        },
+        {
+          "id": "m4.1-f2",
+          "type": "why",
+          "taughtOn": "world-without-deletes",
+          "prompt": "Why does a relaxed plan never need more actions than a real plan?",
+          "options": [
+            {
+              "text": "Every real plan also works in the relaxed world",
+              "correct": true
+            },
+            {
+              "text": "Relaxed actions are cheaper"
+            },
+            {
+              "text": "Relaxation adds actions"
+            },
+            {
+              "text": "Real plans are random"
+            }
+          ],
+          "explain": "Ignoring deletes can only make things easier."
+        },
+        {
+          "id": "m4.1-f3",
+          "type": "quiz",
+          "taughtOn": "cheap-not-exact",
+          "prompt": "Is finding the very shortest relaxed plan easy?",
+          "options": [
+            {
+              "text": "No, it is NP-hard",
+              "correct": true
+            },
+            {
+              "text": "Yes, always instant"
+            },
+            {
+              "text": "It is impossible"
+            },
+            {
+              "text": "Only for small worlds"
+            }
+          ],
+          "explain": "So planners build a good relaxed plan quickly."
+        },
+        {
+          "id": "m4.1-f4",
+          "type": "predict",
+          "taughtOn": "layer-by-layer",
+          "prompt": "How many rounds did Kit's relaxed world need to show both goals?",
+          "answer": "4 rounds."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "FF heuristic",
+          "text": "The FF planner searches forward and uses a heuristic that estimates goal distance by ignoring delete lists.",
+          "source": {
+            "title": "The FF Planning System (arXiv:1106.0675)",
+            "url": "https://arxiv.org/abs/1106.0675"
+          }
+        },
+        {
+          "title": "FF at the competition",
+          "text": "FF was the most successful automatic planner at the AIPS-2000 planning competition.",
+          "source": {
+            "title": "The FF Planning System (arXiv:1106.0675)",
+            "url": "https://arxiv.org/abs/1106.0675"
+          }
+        },
+        {
+          "title": "Cost of the best guess",
+          "text": "Computing the exact length of an optimal relaxed solution, which would make an admissible heuristic, is NP-hard.",
+          "source": {
+            "title": "The FF Planning System (arXiv:1106.0675)",
+            "url": "https://arxiv.org/abs/1106.0675"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You ignored delete lists to make an easier problem, grew the facts round by round, traced back a relaxed plan of 6 actions, and saw why that guess is usually below the real 8.",
+          "Rowan tips an imaginary hat. \"The magic wore off at dusk.\" Kit grins. \"But the guess it gave me was good enough to start with.\""
+        ],
+        "mistake": {
+          "title": "Treating a relaxed plan as a real plan",
+          "text": "A relaxed plan can use facts that the real world would have deleted, like standing at the Cabin after leaving it. It is only a guess, not something Kit can follow."
+        }
+      }
+    }
+  ]
+}

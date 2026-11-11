@@ -1,0 +1,211 @@
+{
+  "title": "Vault Harbour",
+  "tagline": "Work the docks of a busy harbour where cargo, ledgers and clerks must stay in step, and learn what happens inside a database.",
+  "funFacts": [
+    {
+      "text": "A hard disk spinning at 7,200 rpm needs about 8.33 milliseconds for one full turn, so on average its data is half a turn away from the read head."
+    },
+    {
+      "text": "If every node in an index tree points to 100 children, a tree only four steps deep can reach 100 million nodes."
+    },
+    {
+      "text": "PostgreSQL's planner scores a page read out of order as four times as costly as a page read in order, using its default settings."
+    },
+    {
+      "text": "Two clerks adding 30 and 50 to a balance of 100 can leave 150 instead of 180, if both read the balance before either writes."
+    }
+  ],
+  "listHeading": "Quays",
+  "mapStyle": "islands",
+  "starRules": "3 stars: no mistakes and no hints. 2 stars: up to 2 mistakes. 1 star: you finished.",
+  "journal": {
+    "title": "Field Journal",
+    "intro": "Every level unlocks Field Notes: where the idea shows up in the apps and systems you use today. Finish a level to read its notes.",
+    "lockedText": "Finish {level} to read this note.",
+    "hubText": "{count} of {total} Field Notes collected"
+  },
+  "feed": {
+    "title": "Daily Feed",
+    "intro": "Bite-size cards from the quays you've finished. About 10 cards, then you're done for today.",
+    "hubReady": "{count} cards ready",
+    "hubDone": "Done for today. More cards tomorrow.",
+    "hubCaughtUp": "All caught up",
+    "hubEmpty": "Finish a level to fill your feed.",
+    "streak": "{days}-day streak",
+    "start": "Start today's feed",
+    "empty": "Your feed is empty for now. Finish a level at Cargo Docks and its cards will show up here.",
+    "caughtUp": "Cards you know well wait a few days before coming back. That gap is what makes them stick.",
+    "labels": {
+      "quiz": "Quick question",
+      "predict": "Predict, then flip",
+      "why": "Why?",
+      "note": "Field Note"
+    },
+    "flip": "Flip the card",
+    "selfCheck": "Was your answer close?",
+    "gotIt": "Yes, I got it",
+    "notYet": "Not quite",
+    "next": "Next card",
+    "swipeTip": "On a phone, you can also swipe left.",
+    "comesBack": "This card will come back later so it sticks.",
+    "doneTitle": "Done for today",
+    "doneText": "You got {right} of {total} right. Cards you missed will come back soon. The rest will wait a few days, so they stick.",
+    "doneTextPerfect": "You got all {total} right. These cards will now wait a few days before coming back, so they stick.",
+    "streakFirst": "That's day 1. Come back tomorrow for day 2.",
+    "streakMore": "{days} days in a row.",
+    "backToMap": "Back to map",
+    "emptyButton": "Go to Cargo Docks"
+  },
+  "sim": {
+    "next": "Next step",
+    "back": "Back",
+    "stepOf": "Step {i} of {n}",
+    "runToEnd": "Run to the end",
+    "finish": "Continue",
+    "counted": "You predicted {guess}. It took {actual}.",
+    "revealed": "Here's what happens:",
+    "counter": "{name} so far: {value}"
+  },
+  "zones": [
+    {
+      "id": 0,
+      "name": "Cargo Docks",
+      "topic": "Disks, memory, kinds of database and architectures",
+      "file": "zone-0.json",
+      "map": {
+        "x": 36,
+        "y": 150,
+        "sprite": "house",
+        "roof": "#B5523B"
+      },
+      "levels": [
+        {
+          "id": "0.1",
+          "title": "Slow Docks, Fast Docks",
+          "core": true
+        },
+        {
+          "id": "0.2",
+          "title": "Many Kinds of Warehouse",
+          "core": true
+        },
+        {
+          "id": "0.3",
+          "title": "Near and Far Harbours",
+          "core": false
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "Route Office",
+      "topic": "How a query runs and what it costs",
+      "file": "zone-1.json",
+      "map": {
+        "x": 92,
+        "y": 98,
+        "sprite": "house",
+        "roof": "#C9802F"
+      },
+      "levels": [
+        {
+          "id": "1.1",
+          "title": "Plan the Route",
+          "core": true
+        },
+        {
+          "id": "1.2",
+          "title": "Cost of a Crossing",
+          "core": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Index Quay",
+      "topic": "B+ trees, hash and bitmap indexes, and spatial indexes",
+      "file": "zone-2.json",
+      "map": {
+        "x": 148,
+        "y": 140,
+        "sprite": "house",
+        "roof": "#3D6B95"
+      },
+      "levels": [
+        {
+          "id": "2.1",
+          "title": "Climbing the Tree",
+          "core": true
+        },
+        {
+          "id": "2.2",
+          "title": "Pigeonholes",
+          "core": true
+        },
+        {
+          "id": "2.3",
+          "title": "Pins on a Map",
+          "core": false
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Ledger Hall",
+      "topic": "Transactions and what goes wrong when clerks overlap",
+      "file": "zone-3.json",
+      "map": {
+        "x": 204,
+        "y": 82,
+        "sprite": "house",
+        "roof": "#7D5A9E"
+      },
+      "levels": [
+        {
+          "id": "3.1",
+          "title": "All or Nothing",
+          "core": true
+        },
+        {
+          "id": "3.2",
+          "title": "Two Clerks, One Ledger",
+          "core": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Far Quays",
+      "topic": "Locks, crash recovery and databases beyond one machine",
+      "file": null,
+      "map": {
+        "x": 246,
+        "y": 128,
+        "sprite": "house",
+        "roof": "#5E9A4B"
+      },
+      "levels": [
+        {
+          "id": "4.1",
+          "title": "Waiting in Line",
+          "core": true
+        },
+        {
+          "id": "4.2",
+          "title": "After the Blackout",
+          "core": false
+        }
+      ]
+    }
+  ],
+  "finale": {
+    "name": "The Grand Harbour",
+    "topic": "Follow one request from query to disk and back, with no labels to help",
+    "map": {
+      "x": 272,
+      "y": 44,
+      "sprite": "tower",
+      "roof": "#F2B84B"
+    }
+  }
+}

@@ -1,0 +1,655 @@
+{
+  "zone": 5,
+  "levels": [
+    {
+      "id": "5.1",
+      "title": "Few New Facts",
+      "story": "Rowan pins a fact sheet to the last tree. \"A state is only worth keeping if it teaches us something new,\" says Rowan. Kit crosses off every clearing that shows nothing the search has not seen before.",
+      "everyday": {
+        "scene": "When you skim the news, you skip a story if it holds no fact you have not already read. You keep only the pages that add something.",
+        "question": "How can a planner skip most states and still find a plan?",
+        "answer": "It keeps a state only if it makes some fact, or small set of facts, true for the first time. Everything else is dropped without being explored."
+      },
+      "lessons": [
+        {
+          "id": "novelty",
+          "title": "Novelty",
+          "text": [
+            "Novelty asks what is new about a state. A state has novelty 1 if it contains a fact that no earlier state had. It has novelty 2 if no single fact is new, but some pair of facts has not appeared together before. Otherwise its novelty is higher.",
+            "Say Kit has already seen the starting state, the Bridge state and the holding-p state. A new state with Kit at the Bridge holding p has no new single fact, but the pair 'Kit at Bridge' and 'Kit has p' is new. Its novelty is 2."
+          ],
+          "terms": [
+            {
+              "term": "Novelty",
+              "meaning": "The size of the smallest set of facts in a state that has never appeared together in an earlier state."
+            }
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Automated planning and scheduling",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Automated_planning_and_scheduling"
+            }
+          ]
+        },
+        {
+          "id": "iw-k",
+          "title": "IW(1) and IW(2)",
+          "text": [
+            "Iterated width, written IW(k), is breadth-first search that drops any state whose novelty is bigger than k. IW(1) keeps a state only if it brings a brand-new fact.",
+            {
+              "text": "So IW(1) keeps at most one state per fact, because each state it keeps must make some fact true for the first time. Kit's world has 11 facts, so at most 11 states. IW(2) also keeps states with a new pair, at most 11 + 55 = 66."
+            }
+          ],
+          "terms": [
+            {
+              "term": "IW(k)",
+              "meaning": "Breadth-first search that drops states with novelty above k."
+            }
+          ],
+          "table": {
+            "head": [
+              "Facts in the world",
+              "Most states IW(1) keeps",
+              "Most states IW(2) keeps"
+            ],
+            "rows": [
+              [
+                "11",
+                "11",
+                "66"
+              ],
+              [
+                "20",
+                "20",
+                "210"
+              ],
+              [
+                "100",
+                "100",
+                "5,050"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Breadth-first search",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Breadth-first_search"
+            }
+          ]
+        },
+        {
+          "id": "fast-but-incomplete",
+          "title": "Fast but incomplete",
+          "text": [
+            "Pruning is risky: IW(1) can drop a state the plan needs. In Kit's world it finds 'Kit at Dock' in 2 moves, but it cannot make 'p at Dock' true. Carrying p across the Bridge shows no new single fact, so the state is dropped.",
+            "IW(2) finds the 4-action plan for 'p at Dock'. Width-based planners run searches like these, and they work because many planning problems need only a small k."
+          ],
+          "deeper": {
+            "title": "Both goals together",
+            "text": [
+              "In Kit's world, IW(2) solves 'p at Dock' and 'q at Cabin' one at a time, but fails when both must be true together."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Automated planning and scheduling",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Automated_planning_and_scheduling"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "novelty-q",
+          "type": "choice",
+          "taughtOn": "novelty",
+          "prompt": "Kit's search has already generated: (1) Kit at Cabin, p at Cabin, q at Dock; (2) Kit at Bridge, p at Cabin, q at Dock; (3) Kit at Cabin, Kit has p, q at Dock. A new state is: Kit at Bridge, Kit has p, q at Dock. What is its novelty?",
+          "options": [
+            {
+              "text": "2: no single fact is new, but a pair of facts is",
+              "correct": true
+            },
+            {
+              "text": "1: it has a brand-new fact"
+            },
+            {
+              "text": "0: the state was seen before"
+            },
+            {
+              "text": "3: it has three new facts"
+            }
+          ],
+          "hints": [
+            "Check each single fact against the earlier states.",
+            "'Kit at Bridge' was in (2), 'Kit has p' was in (3), and 'q at Dock' was in all."
+          ],
+          "explain": "Every single fact has appeared before, but 'Kit at Bridge' and 'Kit has p' have never appeared together. So the novelty is 2."
+        },
+        {
+          "id": "iw-sim",
+          "type": "stepsim",
+          "taughtOn": "iw-k",
+          "mode": "predict",
+          "prompt": "Watch IW(1) search for 'p at Dock' and get stuck.",
+          "explain": "IW(1) kept only states with a brand-new fact. The state where Kit carried p across the Bridge had none, so it was dropped, and the search ran out of states before 'p at Dock' appeared.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": "best",
+                      "tag": "start"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "States generated by IW(1), in order"
+                },
+                "say": "IW(1) on the goal 'p at Dock'. It generates the start state first. Every fact in it is new, so its novelty is 1 and it is kept. Each box shows the novelty of a generated state and whether it is kept, with the action that made it underneath."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": null,
+                      "tag": "start"
+                    },
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": "best",
+                      "tag": "move Cabin to Bridge"
+                    },
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": "best",
+                      "tag": "pick p at Cabin"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "States generated by IW(1), in order"
+                },
+                "say": "Expand the start. It makes two new states: 'move Cabin to Bridge' (novelty 1: keep) and 'pick p at Cabin' (novelty 1: keep)."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": null,
+                      "tag": "start"
+                    },
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": null,
+                      "tag": "move Cabin to Bridge"
+                    },
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": null,
+                      "tag": "pick p at Cabin"
+                    },
+                    {
+                      "value": "seen: drop",
+                      "mark": "compare",
+                      "tag": "move Bridge to Cabin"
+                    },
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": "best",
+                      "tag": "move Bridge to Dock"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "States generated by IW(1), in order"
+                },
+                "say": "Expand the state where Kit is at the Bridge. It makes two new states: 'move Bridge to Cabin' (seen: drop) and 'move Bridge to Dock' (novelty 1: keep)."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": null,
+                      "tag": "start"
+                    },
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": null,
+                      "tag": "move Cabin to Bridge"
+                    },
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": null,
+                      "tag": "pick p at Cabin"
+                    },
+                    {
+                      "value": "seen: drop",
+                      "mark": null,
+                      "tag": "move Bridge to Cabin"
+                    },
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": null,
+                      "tag": "move Bridge to Dock"
+                    },
+                    {
+                      "value": "novelty 2: drop",
+                      "mark": "compare",
+                      "tag": "move Cabin to Bridge"
+                    },
+                    {
+                      "value": "seen: drop",
+                      "mark": "compare",
+                      "tag": "drop p at Cabin"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "States generated by IW(1), in order"
+                },
+                "say": "Expand the state where Kit holds p at the Cabin. It makes two new states: 'move Cabin to Bridge' (novelty 2: drop) and 'drop p at Cabin' (seen: drop). The Bridge-with-p state has no new single fact, though the pair 'Kit at Bridge' and 'Kit has p' is new. That is novelty 2, so IW(1) drops it.",
+                "predict": {
+                  "prompt": "Moving to the Bridge while holding p gives a state whose single facts have all been seen before. What does IW(1) do with it?",
+                  "options": [
+                    {
+                      "text": "Drops it: it has no new single fact",
+                      "correct": true
+                    },
+                    {
+                      "text": "Keeps it: it is a new state",
+                      "correct": false
+                    },
+                    {
+                      "text": "Keeps it: the goal is near",
+                      "correct": false
+                    },
+                    {
+                      "text": "Stops the whole search",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "IW(1) only keeps states with a brand-new fact.",
+                    "Check the single facts: Kit at Bridge, Kit has p and q at Dock were all seen."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": null,
+                      "tag": "start"
+                    },
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": null,
+                      "tag": "move Cabin to Bridge"
+                    },
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": null,
+                      "tag": "pick p at Cabin"
+                    },
+                    {
+                      "value": "seen: drop",
+                      "mark": null,
+                      "tag": "move Bridge to Cabin"
+                    },
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": null,
+                      "tag": "move Bridge to Dock"
+                    },
+                    {
+                      "value": "novelty 2: drop",
+                      "mark": null,
+                      "tag": "move Cabin to Bridge"
+                    },
+                    {
+                      "value": "seen: drop",
+                      "mark": null,
+                      "tag": "drop p at Cabin"
+                    },
+                    {
+                      "value": "seen: drop",
+                      "mark": "compare",
+                      "tag": "move Dock to Bridge"
+                    },
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": "best",
+                      "tag": "pick q at Dock"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "States generated by IW(1), in order"
+                },
+                "say": "Expand the state where Kit is at the Dock. It makes two new states: 'move Dock to Bridge' (seen: drop) and 'pick q at Dock' (novelty 1: keep)."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": null,
+                      "tag": "start"
+                    },
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": null,
+                      "tag": "move Cabin to Bridge"
+                    },
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": null,
+                      "tag": "pick p at Cabin"
+                    },
+                    {
+                      "value": "seen: drop",
+                      "mark": null,
+                      "tag": "move Bridge to Cabin"
+                    },
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": null,
+                      "tag": "move Bridge to Dock"
+                    },
+                    {
+                      "value": "novelty 2: drop",
+                      "mark": null,
+                      "tag": "move Cabin to Bridge"
+                    },
+                    {
+                      "value": "seen: drop",
+                      "mark": null,
+                      "tag": "drop p at Cabin"
+                    },
+                    {
+                      "value": "seen: drop",
+                      "mark": null,
+                      "tag": "move Dock to Bridge"
+                    },
+                    {
+                      "value": "novelty 1: keep",
+                      "mark": null,
+                      "tag": "pick q at Dock"
+                    },
+                    {
+                      "value": "novelty 2: drop",
+                      "mark": "compare",
+                      "tag": "move Dock to Bridge"
+                    },
+                    {
+                      "value": "seen: drop",
+                      "mark": "compare",
+                      "tag": "drop q at Dock"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "States generated by IW(1), in order"
+                },
+                "say": "Expand the state where Kit holds q at the Dock. It makes two new states: 'move Dock to Bridge' (novelty 2: drop) and 'drop q at Dock' (seen: drop). Nothing is left on the frontier, and 'p at Dock' never appeared. IW(1) has failed on this goal. IW(2) also keeps states with a new pair, and it finds the 4-action plan."
+              }
+            ]
+          }
+        },
+        {
+          "id": "iw1-max",
+          "type": "numeric",
+          "taughtOn": "iw-k",
+          "prompt": "A world has 11 facts. At most how many states can IW(1) keep?",
+          "answer": 11,
+          "calculator": false,
+          "hints": [
+            "Each kept state must make some fact true for the first time.",
+            "A fact can be new only once."
+          ],
+          "explain": "Each fact can be new only once, so IW(1) keeps at most 11 states."
+        },
+        {
+          "id": "iw2-max",
+          "type": "numeric",
+          "taughtOn": "iw-k",
+          "prompt": "A world has 11 facts. At most how many states can IW(2) keep (new single facts plus new pairs)?",
+          "answer": 66,
+          "calculator": false,
+          "hints": [
+            "Count the single facts, then the pairs of facts.",
+            "11 + (11 x 10 / 2)."
+          ],
+          "explain": "11 single facts plus 55 pairs makes 66."
+        },
+        {
+          "id": "iw-facts",
+          "type": "buckets",
+          "taughtOn": "iw-k",
+          "prompt": "Is each statement about IW(k) true or false?",
+          "buckets": [
+            "True",
+            "False"
+          ],
+          "items": [
+            {
+              "text": "IW(1) keeps a state only if it has a brand-new fact",
+              "bucket": "True"
+            },
+            {
+              "text": "IW(k) is breadth-first search with pruning",
+              "bucket": "True"
+            },
+            {
+              "text": "IW(1) always finds a plan if one exists",
+              "bucket": "False"
+            },
+            {
+              "text": "IW(2) keeps more states than IW(1)",
+              "bucket": "True"
+            },
+            {
+              "text": "Pruned states are kept for later",
+              "bucket": "False"
+            }
+          ],
+          "hints": [
+            "IW(k) drops states, so it can miss plans.",
+            "A bigger k keeps more."
+          ],
+          "explain": "IW(k) is breadth-first search that drops low-novelty states. It is quick but can miss plans, and IW(2) keeps more than IW(1)."
+        },
+        {
+          "id": "width-words",
+          "type": "match",
+          "taughtOn": "novelty",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Novelty 1",
+              "right": "The state has a brand-new fact"
+            },
+            {
+              "left": "Novelty 2",
+              "right": "No new fact, but a new pair of facts"
+            },
+            {
+              "left": "IW(k)",
+              "right": "Breadth-first search that drops states with novelty above k"
+            },
+            {
+              "left": "Pruned",
+              "right": "Thrown away without being explored"
+            }
+          ],
+          "hints": [
+            "Novelty counts the size of the smallest new set.",
+            "Pruned means dropped."
+          ],
+          "explain": "Novelty 1 is a new fact, novelty 2 is a new pair, IW(k) drops states above k, and pruned states are not explored."
+        },
+        {
+          "id": "iw-steps",
+          "type": "order",
+          "taughtOn": "iw-k",
+          "prompt": "Put the steps of IW(1) in order.",
+          "items": [
+            "Put the start state on the frontier",
+            "Take the oldest state off the frontier",
+            "Make each state its actions lead to",
+            "Keep a new state only if it has a fact never seen before",
+            "Repeat until the goal appears or nothing is left"
+          ],
+          "hints": [
+            "It is breadth-first, so the oldest state goes first.",
+            "Pruning happens after a state is made."
+          ],
+          "explain": "IW(1) is breadth-first search that keeps only states with a brand-new fact."
+        },
+        {
+          "id": "why-fail",
+          "type": "choice",
+          "taughtOn": "fast-but-incomplete",
+          "prompt": "Why does IW(1) fail to make 'p at Dock' true in Kit's world?",
+          "options": [
+            {
+              "text": "Carrying p across the Bridge shows no new single fact, so those states are dropped",
+              "correct": true
+            },
+            {
+              "text": "The Dock is unreachable"
+            },
+            {
+              "text": "IW(1) cannot move Kit"
+            },
+            {
+              "text": "p is too heavy"
+            }
+          ],
+          "hints": [
+            "Look at the state where Kit holds p at the Bridge.",
+            "Its single facts have all been seen."
+          ],
+          "explain": "To reach the Dock with p, Kit passes through a state with no new single fact. IW(1) drops it, and the plan is lost."
+        },
+        {
+          "id": "digits",
+          "type": "numeric",
+          "taughtOn": "iw-k",
+          "prompt": "Challenge: a world with 100 yes-or-no facts has up to 2 to the power 100 states. Roughly how many digits does that number have?",
+          "answer": 31,
+          "calculator": false,
+          "hints": [
+            "2 to the power 100 is about 1.27 followed by 30 more digits.",
+            "It is about 1.27 x 10 to the power 30."
+          ],
+          "explain": "2^100 is 1,267,650,600,228,229,401,496,703,205,376, which has 31 digits. IW(1) keeps at most 100 of them.",
+          "challenge": true
+        },
+        {
+          "id": "iw2-twenty",
+          "type": "numeric",
+          "taughtOn": "iw-k",
+          "prompt": "Challenge: a world has 20 facts. At most how many states can IW(2) keep?",
+          "answer": 210,
+          "calculator": false,
+          "hints": [
+            "Singles plus pairs: 20 + (20 x 19 / 2).",
+            "20 + 190."
+          ],
+          "explain": "20 single facts plus 190 pairs makes 210.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m5.1-f1",
+          "type": "quiz",
+          "taughtOn": "novelty",
+          "prompt": "What does novelty 1 mean?",
+          "options": [
+            {
+              "text": "The state has a brand-new fact",
+              "correct": true
+            },
+            {
+              "text": "The state is the goal"
+            },
+            {
+              "text": "The state is short"
+            },
+            {
+              "text": "The state was seen before"
+            }
+          ],
+          "explain": "No earlier state had that fact."
+        },
+        {
+          "id": "m5.1-f2",
+          "type": "why",
+          "taughtOn": "iw-k",
+          "prompt": "What does IW(1) do with a state that has no new fact?",
+          "options": [
+            {
+              "text": "Drops it",
+              "correct": true
+            },
+            {
+              "text": "Keeps it"
+            },
+            {
+              "text": "Ends the search"
+            },
+            {
+              "text": "Doubles it"
+            }
+          ],
+          "explain": "IW(1) keeps only states with a brand-new fact."
+        },
+        {
+          "id": "m5.1-f3",
+          "type": "quiz",
+          "taughtOn": "fast-but-incomplete",
+          "prompt": "Does IW(1) always find a plan when one exists?",
+          "options": [
+            {
+              "text": "No, it can drop states the plan needs",
+              "correct": true
+            },
+            {
+              "text": "Yes, always"
+            },
+            {
+              "text": "Only in big worlds"
+            },
+            {
+              "text": "It never finds one"
+            }
+          ],
+          "explain": "It is fast but incomplete."
+        },
+        {
+          "id": "m5.1-f4",
+          "type": "predict",
+          "taughtOn": "iw-k",
+          "prompt": "A world has 20 facts. At most how many states can IW(1) keep?",
+          "answer": "20, one for each fact."
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You measured how novel a state is, saw IW(1) and IW(2) drop states with too little that is new, and watched IW(1) get stuck when a plan needed a state with no new single fact.",
+          "Rowan folds the fact sheet. \"Fast, but not always right.\" Kit adds it to the notebook. \"Like a guess I have to double check.\""
+        ],
+        "mistake": {
+          "title": "Thinking pruning is free",
+          "text": "Dropping states makes a search fast, but a dropped state may be the one the plan needs. IW(1) is quick but incomplete, so planners try larger k when it fails."
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "adb",
+  "name": "Vault Harbour",
+  "subject": "Advanced Databases",
+  "description": "Work the docks of a busy harbour: how a database uses disks and memory, how a query is planned and costed, how indexes find rows fast, and how transactions keep the ledger right.",
+  "bigFact": "If every node in an index tree points to 100 children, a tree only four steps deep can reach 100 million nodes.",
+  "sprite": "lighthouse",
+  "world": "adb/world.json",
+  "dir": "adb/"
+}

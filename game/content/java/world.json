@@ -1,0 +1,201 @@
+{
+  "title": "Blueprint Borough",
+  "tagline": "Walk through a small town where every building starts as a blueprint, and learn how Java programs are written.",
+  "funFacts": [
+    {
+      "text": "In Java, 7 / 2 gives 3, not 3.5, when both numbers are whole. Java throws the fraction away unless one of the numbers has a decimal point."
+    },
+    {
+      "text": "Counting in a Java array starts at 0, so the first locker is number 0 and a row of five lockers ends at number 4."
+    },
+    {
+      "text": "Since Java 11 you can run a small program straight from its source file with one command, java Hello.java, and skip the separate compile step."
+    },
+    {
+      "text": "Java programs are compiled to bytecode, and the Java Virtual Machine runs that bytecode, so the same compiled program can run on many kinds of computer."
+    }
+  ],
+  "listHeading": "Streets",
+  "mapStyle": "islands",
+  "starRules": "3 stars: no mistakes and no hints. 2 stars: up to 2 mistakes. 1 star: you finished.",
+  "journal": {
+    "title": "Field Journal",
+    "intro": "Every level unlocks Field Notes: where the idea shows up in the apps and systems you use today. Finish a level to read its notes.",
+    "lockedText": "Finish {level} to read this note.",
+    "hubText": "{count} of {total} Field Notes collected"
+  },
+  "feed": {
+    "title": "Daily Feed",
+    "intro": "Bite-size cards from the streets you've finished. About 10 cards, then you're done for today.",
+    "hubReady": "{count} cards ready",
+    "hubDone": "Done for today. More cards tomorrow.",
+    "hubCaughtUp": "All caught up",
+    "hubEmpty": "Finish a level to fill your feed.",
+    "streak": "{days}-day streak",
+    "start": "Start today's feed",
+    "empty": "Your feed is empty for now. Finish a level in Workshop Row and its cards will show up here.",
+    "caughtUp": "Cards you know well wait a few days before coming back. That gap is what makes them stick.",
+    "labels": {
+      "quiz": "Quick question",
+      "predict": "Predict, then flip",
+      "why": "Why?",
+      "note": "Field Note"
+    },
+    "flip": "Flip the card",
+    "selfCheck": "Was your answer close?",
+    "gotIt": "Yes, I got it",
+    "notYet": "Not quite",
+    "next": "Next card",
+    "swipeTip": "On a phone, you can also swipe left.",
+    "comesBack": "This card will come back later so it sticks.",
+    "doneTitle": "Done for today",
+    "doneText": "You got {right} of {total} right. Cards you missed will come back soon. The rest will wait a few days, so they stick.",
+    "doneTextPerfect": "You got all {total} right. These cards will now wait a few days before coming back, so they stick.",
+    "streakFirst": "That's day 1. Come back tomorrow for day 2.",
+    "streakMore": "{days} days in a row.",
+    "backToMap": "Back to map",
+    "emptyButton": "Go to Workshop Row"
+  },
+  "sim": {
+    "next": "Next step",
+    "back": "Back",
+    "stepOf": "Step {i} of {n}",
+    "runToEnd": "Run to the end",
+    "finish": "Continue",
+    "counted": "You predicted {guess}. It took {actual}.",
+    "revealed": "Here's what happens:",
+    "counter": "{name} so far: {value}"
+  },
+  "zones": [
+    {
+      "id": 0,
+      "name": "Workshop Row",
+      "topic": "Your first program and your first variables",
+      "file": "zone-0.json",
+      "map": {
+        "x": 36,
+        "y": 150,
+        "sprite": "house",
+        "roof": "#B5523B"
+      },
+      "levels": [
+        {
+          "id": "0.1",
+          "title": "Hello, Workshop",
+          "core": true
+        },
+        {
+          "id": "0.2",
+          "title": "Labelled Boxes",
+          "core": true
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "Crossroads",
+      "topic": "Decisions, loops and methods",
+      "file": "zone-1.json",
+      "map": {
+        "x": 92,
+        "y": 98,
+        "sprite": "house",
+        "roof": "#C9802F"
+      },
+      "levels": [
+        {
+          "id": "1.1",
+          "title": "Pick a Path",
+          "core": true
+        },
+        {
+          "id": "1.2",
+          "title": "Round and Round",
+          "core": true
+        },
+        {
+          "id": "1.3",
+          "title": "Recipe Cards",
+          "core": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Locker Hall",
+      "topic": "Arrays: a numbered row of values",
+      "file": "zone-2.json",
+      "map": {
+        "x": 148,
+        "y": 140,
+        "sprite": "house",
+        "roof": "#3D6B95"
+      },
+      "levels": [
+        {
+          "id": "2.1",
+          "title": "Numbered Lockers",
+          "core": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Blueprint Office",
+      "topic": "Classes, objects, constructors and hiding data",
+      "file": "zone-3.json",
+      "map": {
+        "x": 204,
+        "y": 82,
+        "sprite": "house",
+        "roof": "#7D5A9E"
+      },
+      "levels": [
+        {
+          "id": "3.1",
+          "title": "Blueprint and House",
+          "core": true
+        },
+        {
+          "id": "3.2",
+          "title": "The Front Door",
+          "core": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Family Street",
+      "topic": "Inheritance and polymorphism",
+      "file": null,
+      "map": {
+        "x": 246,
+        "y": 128,
+        "sprite": "house",
+        "roof": "#5E9A4B"
+      },
+      "levels": [
+        {
+          "id": "4.1",
+          "title": "Family Traits",
+          "core": true
+        },
+        {
+          "id": "4.2",
+          "title": "Many Shapes",
+          "core": false
+        }
+      ]
+    }
+  ],
+  "finale": {
+    "name": "The Grand Build",
+    "topic": "Read real code and say what it does, with no labels to help",
+    "map": {
+      "x": 272,
+      "y": 44,
+      "sprite": "tower",
+      "roof": "#F2B84B"
+    }
+  }
+}

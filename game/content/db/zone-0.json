@@ -1,0 +1,809 @@
+{
+  "zone": 0,
+  "levels": [
+    {
+      "id": "0.1",
+      "title": "Shelves and Cards",
+      "story": "Head Librarian Odile hands Kit a library card and a stamp. The first job at the front desk is to understand what the library keeps, and what looks after it.",
+      "everyday": {
+        "scene": "You type a song name into a music app and the result shows up before you finish typing. There are millions of songs, and the app clearly does not read through them one by one.",
+        "question": "Where is all that information kept, and what finds the right bit so fast?",
+        "answer": "In a database, looked after by a database management system. The app asks a question and the system finds the answer, using clever structures you will meet later in this region."
+      },
+      "lessons": [
+        {
+          "id": "data-and-database",
+          "title": "Data in an organised home",
+          "text": [
+            "Data is a collection of facts, like a book's title or a member's name. A database is data kept in an organised way, so it can be found, changed and shared. A library catalogue is a database. So is the list of orders at an online shop.",
+            "The software that looks after a database is called a database management system, or DBMS. Apps do not rummage through the data themselves. They ask the DBMS, which stores, finds and protects it. PostgreSQL, MySQL and SQLite are all DBMSs."
+          ],
+          "terms": [
+            {
+              "term": "Database",
+              "meaning": "Data kept in an organised way."
+            },
+            {
+              "term": "DBMS",
+              "meaning": "Database management system: the software that looks after a database."
+            }
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Database",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Database"
+            },
+            {
+              "title": "PostgreSQL documentation: What is PostgreSQL?",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/intro-whatis.html"
+            }
+          ]
+        },
+        {
+          "id": "why-dbms",
+          "title": "Why not a pile of files?",
+          "text": [
+            "Imagine the library keeps every loan in one spreadsheet that all desks open. Two people save at once and one change is lost. Finding one loan means reading the whole file. Nothing stops a typo, like a loan for a book that does not exist.",
+            "A DBMS is built to prevent these problems. Many people can work at once without overwriting each other. Searches can use shortcuts. Rules reject bad data. A crash does not leave half-finished changes."
+          ],
+          "predict": {
+            "prompt": "Name one thing that could go wrong if two desks edit the same file at the same moment.",
+            "answer": "One desk's change can overwrite the other's, so a loan disappears."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Database",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Database"
+            },
+            {
+              "title": "PostgreSQL documentation: What is PostgreSQL?",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/intro-whatis.html"
+            }
+          ]
+        },
+        {
+          "id": "tables",
+          "title": "Tables, rows and columns",
+          "text": [
+            "Most databases you will meet are relational, which means the data lives in tables. A table is a grid. Each column is one kind of fact, like a title or a year. Each row is one thing described, like one book.",
+            "The table's name says what its rows are: books, members, loans. The grid is only how we picture the data. How the DBMS stores it on disk is its own business."
+          ],
+          "terms": [
+            {
+              "term": "Table",
+              "meaning": "A grid of data about one kind of thing."
+            },
+            {
+              "term": "Row",
+              "meaning": "One thing described, such as one book."
+            },
+            {
+              "term": "Column",
+              "meaning": "One kind of fact, such as a title."
+            }
+          ],
+          "table": {
+            "head": [
+              "book_id",
+              "title",
+              "genre",
+              "year"
+            ],
+            "rows": [
+              [
+                "1",
+                "Tide Tables",
+                "Reference",
+                "1998"
+              ],
+              [
+                "2",
+                "The Lost Lantern",
+                "Mystery",
+                "2008"
+              ],
+              [
+                "3",
+                "Salt and Starlight",
+                "Fantasy",
+                "2015"
+              ],
+              [
+                "4",
+                "Quiet Harbour",
+                "Mystery",
+                "2012"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Relational model",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Relational_model"
+            },
+            {
+              "title": "PostgreSQL documentation: Creating a new table",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/tutorial-table.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "which-word",
+          "type": "match",
+          "taughtOn": "tables",
+          "prompt": "Match each word to what it means.",
+          "pairs": [
+            {
+              "left": "Database",
+              "right": "Data kept in an organised way so it can be found and shared"
+            },
+            {
+              "left": "DBMS",
+              "right": "Software that stores, finds and protects the data"
+            },
+            {
+              "left": "Table",
+              "right": "A grid of data about one kind of thing"
+            },
+            {
+              "left": "Row",
+              "right": "One thing described, such as one book"
+            },
+            {
+              "left": "Column",
+              "right": "One kind of fact, such as a title"
+            }
+          ],
+          "hints": [
+            "The table is the grid. Rows run across it and columns run down it.",
+            "A row describes one book. A column holds one kind of fact for every book."
+          ],
+          "explain": "A database holds the data, the DBMS looks after it, and inside a table rows are things and columns are facts."
+        },
+        {
+          "id": "data-or-software",
+          "type": "buckets",
+          "taughtOn": "data-and-database",
+          "prompt": "Sort each item: is it the data, or part of the DBMS?",
+          "buckets": [
+            "The data",
+            "The DBMS"
+          ],
+          "items": [
+            {
+              "text": "The list of every loan",
+              "bucket": "The data"
+            },
+            {
+              "text": "Member names and suburbs",
+              "bucket": "The data"
+            },
+            {
+              "text": "Book titles and years",
+              "bucket": "The data"
+            },
+            {
+              "text": "PostgreSQL",
+              "bucket": "The DBMS"
+            },
+            {
+              "text": "MySQL",
+              "bucket": "The DBMS"
+            },
+            {
+              "text": "The program that checks a new loan against the rules",
+              "bucket": "The DBMS"
+            }
+          ],
+          "hints": [
+            "The data is the facts themselves. The DBMS is software.",
+            "PostgreSQL and MySQL are named programs."
+          ],
+          "explain": "Facts like loans, names and titles are data. PostgreSQL, MySQL and the rule-checking program are DBMS software."
+        },
+        {
+          "id": "why-not-files",
+          "type": "choice",
+          "taughtOn": "why-dbms",
+          "prompt": "Two desks save the same loans spreadsheet a second apart. Which problem is a DBMS built to prevent?",
+          "options": [
+            {
+              "text": "One desk's change silently overwriting the other's",
+              "correct": true
+            },
+            {
+              "text": "Member names being stored in capital letters"
+            },
+            {
+              "text": "The library running out of shelves"
+            },
+            {
+              "text": "Both desks seeing the same screen size"
+            }
+          ],
+          "hints": [
+            "Think about two people changing the same record at once.",
+            "Only one of these is about changes getting lost."
+          ],
+          "explain": "Letting many people change shared data at once without losing anyone's work is one of the main reasons databases exist."
+        },
+        {
+          "id": "count-values",
+          "type": "numeric",
+          "taughtOn": "tables",
+          "prompt": "A books table has 250 rows and 5 columns, with no gaps. How many separate values does it hold?",
+          "answer": 1250,
+          "unit": "values",
+          "calculator": false,
+          "hints": [
+            "Every row has one value in every column.",
+            "Multiply the number of rows by the number of columns."
+          ],
+          "explain": "250 rows × 5 columns = 1,250 values."
+        },
+        {
+          "id": "ask-flow",
+          "type": "order",
+          "taughtOn": "data-and-database",
+          "prompt": "Put these steps in order for a desk screen that shows whether a book is in.",
+          "items": [
+            "The desk app sends a question to the DBMS",
+            "The DBMS finds the matching row",
+            "The DBMS sends the row back to the app",
+            "The app shows the answer on screen"
+          ],
+          "hints": [
+            "The question has to be asked before anything can be found.",
+            "The app talks to the DBMS, and only then shows the result."
+          ],
+          "explain": "The app asks, the DBMS finds and replies, and the app displays the answer."
+        },
+        {
+          "id": "db-vs-sheet",
+          "type": "choice",
+          "taughtOn": "why-dbms",
+          "prompt": "A friend says, \"A database is just a spreadsheet.\" Which reply is fairest?",
+          "options": [
+            {
+              "text": "A spreadsheet can hold a table, but a database system adds sharing, rules, fast search and crash safety",
+              "correct": true
+            },
+            {
+              "text": "They are exactly the same thing"
+            },
+            {
+              "text": "A database can only hold numbers"
+            },
+            {
+              "text": "A spreadsheet cannot have rows"
+            }
+          ],
+          "hints": [
+            "Think about what the DBMS does beyond holding a grid.",
+            "Sharing, rules, search and safety are what the DBMS adds."
+          ],
+          "explain": "Both can show rows and columns. The DBMS is what makes shared, checked, fast and safe use possible.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d0.1-f1",
+          "type": "quiz",
+          "taughtOn": "data-and-database",
+          "prompt": "A DBMS is...",
+          "options": [
+            {
+              "text": "Software that stores, finds and protects a database",
+              "correct": true
+            },
+            {
+              "text": "The data itself"
+            },
+            {
+              "text": "A kind of spreadsheet file"
+            },
+            {
+              "text": "A web browser"
+            }
+          ],
+          "explain": "The DBMS is the software. The database is the data it looks after."
+        },
+        {
+          "id": "d0.1-f2",
+          "type": "quiz",
+          "taughtOn": "tables",
+          "prompt": "In a books table, one row is...",
+          "options": [
+            {
+              "text": "One book",
+              "correct": true
+            },
+            {
+              "text": "One kind of fact"
+            },
+            {
+              "text": "The whole table"
+            },
+            {
+              "text": "The DBMS"
+            }
+          ],
+          "explain": "Rows are things, columns are kinds of fact."
+        },
+        {
+          "id": "d0.1-f3",
+          "type": "why",
+          "taughtOn": "why-dbms",
+          "prompt": "Why not let every app read the data file itself?",
+          "options": [
+            {
+              "text": "Changes could clash, and nothing would check or protect the data",
+              "correct": true
+            },
+            {
+              "text": "Files cannot hold words"
+            },
+            {
+              "text": "Apps cannot read files"
+            },
+            {
+              "text": "It would use too much paint"
+            }
+          ],
+          "explain": "A DBMS handles sharing, rules and safety in one place."
+        },
+        {
+          "id": "d0.1-f4",
+          "type": "predict",
+          "taughtOn": "data-and-database",
+          "prompt": "In your own words: what is the difference between a database and a DBMS?",
+          "answer": "The database is the organised data. The DBMS is the software that looks after it."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "A database inside an app",
+          "text": "SQLite is a small DBMS that runs inside a program instead of as a separate server. Its makers say it is likely one of the most widely deployed software components, found in every Android device and every iPhone.",
+          "source": {
+            "title": "SQLite: Most widely deployed",
+            "url": "https://www.sqlite.org/mostdeployed.html"
+          },
+          "verify": false
+        },
+        {
+          "title": "A relation is a table",
+          "text": "A relation, the core idea of the relational model, can be pictured as a table with columns and rows. A database organised this way is called a relational database.",
+          "source": {
+            "title": "Wikipedia: Relational model",
+            "url": "https://en.wikipedia.org/wiki/Relational_model"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You met the difference between data, a database and the DBMS that looks after it, and saw why shared data needs a manager.",
+          "Odile stamps your card. \"Good. Now you can tell the books from the librarian.\""
+        ],
+        "mistake": {
+          "title": "Calling the database and the DBMS the same thing",
+          "text": "The database is the organised data. The DBMS is the software that looks after it. People often say \"database\" for both, but keeping the two apart makes later topics easier."
+        }
+      }
+    },
+    {
+      "id": "0.2",
+      "title": "Who Knows Whom",
+      "story": "Odile wants a plan before a single book moves. Kit sketches the things the library cares about, and how they connect.",
+      "everyday": {
+        "scene": "A school club has members, events, and a list of who is coming to which event. Before anyone builds an app, you sketch a circle for each kind of thing and a line between those that connect.",
+        "question": "What do you write on the lines?",
+        "answer": "The name of the link, plus how many on each side: one member can join many events, and one event has many members. That sketch is called an ER diagram."
+      },
+      "lessons": [
+        {
+          "id": "things-and-facts",
+          "title": "Things and facts",
+          "text": [
+            "An entity is a kind of thing the database must remember, such as a Member or a Book. An attribute is one fact about it, like a member's name or a book's year.",
+            "Draw each entity as a box with its attributes listed inside. Later, each entity usually becomes a table and each attribute a column. So a good sketch is already half of a table design."
+          ],
+          "terms": [
+            {
+              "term": "Entity",
+              "meaning": "A kind of thing to remember."
+            },
+            {
+              "term": "Attribute",
+              "meaning": "One fact about an entity."
+            }
+          ],
+          "table": {
+            "head": [
+              "Entity",
+              "Example attributes"
+            ],
+            "rows": [
+              [
+                "Member",
+                "name, suburb, join date"
+              ],
+              [
+                "Book",
+                "title, genre, year"
+              ],
+              [
+                "Author",
+                "name, country"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Entity–relationship model",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model"
+            },
+            {
+              "title": "SQLBolt: interactive SQL lessons",
+              "source": "SQLBolt (linked only)",
+              "url": "https://sqlbolt.com/"
+            }
+          ]
+        },
+        {
+          "id": "links",
+          "title": "Links and how many",
+          "text": [
+            "A relationship is a link between entities, named with a verb: a Member borrows a Book. At each end you note how many can take part.",
+            "A library card belongs to one member, and each member has one card: one-to-one. A member makes many loans, but each loan has one member: one-to-many. A book can have several authors, and an author several books: many-to-many."
+          ],
+          "terms": [
+            {
+              "term": "Relationship",
+              "meaning": "A named link between entities."
+            },
+            {
+              "term": "Cardinality",
+              "meaning": "How many on each side of a relationship: one-to-one, one-to-many or many-to-many."
+            }
+          ],
+          "table": {
+            "head": [
+              "Pair",
+              "Kind",
+              "In words"
+            ],
+            "rows": [
+              [
+                "Member and card",
+                "one-to-one",
+                "One card per member"
+              ],
+              [
+                "Member and loans",
+                "one-to-many",
+                "Many loans, one member each"
+              ],
+              [
+                "Books and authors",
+                "many-to-many",
+                "Several each way"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "One author writes many books, and every book has just one author. What kind is that?",
+            "answer": "One-to-many, from author to books."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Entity–relationship model",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model"
+            },
+            {
+              "title": "Wikipedia: Cardinality (data modelling)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Cardinality_(data_modeling)"
+            }
+          ]
+        },
+        {
+          "id": "reading-diagrams",
+          "title": "Reading and checking a sketch",
+          "text": [
+            "To check a diagram, say every line aloud in both directions: \"One member borrows many books. One book is borrowed by many members over time.\" If a sentence sounds wrong, so is the line.",
+            "A relationship can carry facts too. The date a loan began belongs to neither the member nor the book. It belongs to the borrowing between them."
+          ],
+          "deeper": {
+            "title": "Different drawing styles",
+            "text": [
+              "Diagram styles differ in how they draw the \"many\" end. One common style uses a three-pronged mark that looks like a bird's foot. Always check the key in whatever style you are reading."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Entity–relationship model",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model"
+            },
+            {
+              "title": "SQLBolt: interactive SQL lessons",
+              "source": "SQLBolt (linked only)",
+              "url": "https://sqlbolt.com/"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "what-is-what",
+          "type": "buckets",
+          "taughtOn": "things-and-facts",
+          "prompt": "Sort each item: is it an entity, an attribute or a relationship?",
+          "buckets": [
+            "Entity",
+            "Attribute",
+            "Relationship"
+          ],
+          "items": [
+            {
+              "text": "Member",
+              "bucket": "Entity"
+            },
+            {
+              "text": "Book",
+              "bucket": "Entity"
+            },
+            {
+              "text": "Year a book was published",
+              "bucket": "Attribute"
+            },
+            {
+              "text": "A member's name",
+              "bucket": "Attribute"
+            },
+            {
+              "text": "borrows",
+              "bucket": "Relationship"
+            },
+            {
+              "text": "writes",
+              "bucket": "Relationship"
+            }
+          ],
+          "hints": [
+            "Entities are nouns for kinds of thing. Relationships are verbs.",
+            "An attribute is a fact about one entity, like a year or a name."
+          ],
+          "explain": "Member and Book are things, year and name are facts about them, and borrows and writes are the links."
+        },
+        {
+          "id": "how-many",
+          "type": "match",
+          "taughtOn": "links",
+          "prompt": "Match each situation to its kind of relationship.",
+          "pairs": [
+            {
+              "left": "Each member has exactly one library card, and each card belongs to one member",
+              "right": "One-to-one"
+            },
+            {
+              "left": "A member makes many loans, and each loan is made by one member",
+              "right": "One-to-many"
+            },
+            {
+              "left": "A book can have many authors, and an author can write many books",
+              "right": "Many-to-many"
+            }
+          ],
+          "hints": [
+            "Count how many can be on each side.",
+            "If both sides can have many, it is many-to-many."
+          ],
+          "explain": "Check each side separately: one and one, one and many, or many and many."
+        },
+        {
+          "id": "where-date",
+          "type": "choice",
+          "taughtOn": "reading-diagrams",
+          "prompt": "In \"Member borrows Book\", where does \"date borrowed\" fit best?",
+          "options": [
+            {
+              "text": "On the borrowing relationship itself, since it describes the pairing",
+              "correct": true
+            },
+            {
+              "text": "On Member only"
+            },
+            {
+              "text": "On Book only"
+            },
+            {
+              "text": "Nowhere, because dates are not data"
+            }
+          ],
+          "hints": [
+            "Does the date belong to the member alone, or the book alone?",
+            "It is a fact about one member borrowing one book."
+          ],
+          "explain": "A member borrows many times and a book is borrowed many times, so the date describes each borrowing."
+        },
+        {
+          "id": "count-pairs",
+          "type": "numeric",
+          "taughtOn": "links",
+          "prompt": "Any of 4 members could borrow any of 6 books. How many different member and book pairings are possible?",
+          "answer": 24,
+          "unit": "pairings",
+          "calculator": false,
+          "hints": [
+            "Each member can be paired with every book.",
+            "Multiply the number of members by the number of books."
+          ],
+          "explain": "4 members × 6 books = 24 possible pairings. That is why a many-to-many link can grow large."
+        },
+        {
+          "id": "draw-steps",
+          "type": "order",
+          "taughtOn": "reading-diagrams",
+          "prompt": "Put the steps of sketching an ER diagram in order.",
+          "items": [
+            "List the kinds of things to remember (entities)",
+            "Write the facts about each one (attributes)",
+            "Join entities with named relationships",
+            "Mark how many on each side",
+            "Read every line aloud both ways to check it"
+          ],
+          "hints": [
+            "You need the things before you can describe or link them.",
+            "Checking comes last, once the lines exist."
+          ],
+          "explain": "Things, then facts, then links, then how many, then a read-through."
+        },
+        {
+          "id": "club-kind",
+          "type": "choice",
+          "taughtOn": "links",
+          "prompt": "A club records which members attend which events. Member to Event is...",
+          "options": [
+            {
+              "text": "Many-to-many",
+              "correct": true
+            },
+            {
+              "text": "One-to-one"
+            },
+            {
+              "text": "One-to-many, from event to member only"
+            },
+            {
+              "text": "Not a relationship at all"
+            }
+          ],
+          "hints": [
+            "Can one member attend several events? Can one event have several members?",
+            "Both answers are yes."
+          ],
+          "explain": "Members attend many events and events have many members, so it is many-to-many.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d0.2-f1",
+          "type": "quiz",
+          "taughtOn": "things-and-facts",
+          "prompt": "An attribute is...",
+          "options": [
+            {
+              "text": "One fact about an entity",
+              "correct": true
+            },
+            {
+              "text": "A kind of thing"
+            },
+            {
+              "text": "A link between things"
+            },
+            {
+              "text": "A database program"
+            }
+          ],
+          "explain": "Entities are things, attributes are facts about them."
+        },
+        {
+          "id": "d0.2-f2",
+          "type": "quiz",
+          "taughtOn": "links",
+          "prompt": "A member makes many loans, and each loan belongs to one member. This is...",
+          "options": [
+            {
+              "text": "One-to-many",
+              "correct": true
+            },
+            {
+              "text": "One-to-one"
+            },
+            {
+              "text": "Many-to-many"
+            },
+            {
+              "text": "Zero-to-zero"
+            }
+          ],
+          "explain": "One on the member side, many on the loan side."
+        },
+        {
+          "id": "d0.2-f3",
+          "type": "why",
+          "taughtOn": "reading-diagrams",
+          "prompt": "Why read each relationship line aloud both ways?",
+          "options": [
+            {
+              "text": "A line can look right from one end and wrong from the other",
+              "correct": true
+            },
+            {
+              "text": "It makes the diagram load faster"
+            },
+            {
+              "text": "The computer needs the sound"
+            },
+            {
+              "text": "Lines are only drawn one way"
+            }
+          ],
+          "explain": "The how-many at each end can differ, so check both."
+        },
+        {
+          "id": "d0.2-f4",
+          "type": "predict",
+          "taughtOn": "things-and-facts",
+          "prompt": "Name one entity and two attributes for an online shop.",
+          "answer": "For example Product with a name and a price."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Sketch first, build later",
+          "text": "Entity–relationship models are used early in the design of an information system, during requirements analysis, to describe what information needs to be stored.",
+          "source": {
+            "title": "Wikipedia: Entity–relationship model",
+            "url": "https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model"
+          },
+          "verify": false
+        },
+        {
+          "title": "Many-to-many",
+          "text": "Authors and books are many-to-many: an author can write several books, and a book can have several authors. You will see in a later level how a database stores that.",
+          "source": {
+            "title": "Wikipedia: Many-to-many (data model)",
+            "url": "https://en.wikipedia.org/wiki/Many-to-many_(data_model)"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You told entities, attributes and relationships apart, matched the three kinds of how-many, and saw that facts about a pairing belong to the pairing.",
+          "Odile smiles at the sketch. \"A good plan. Now to turn it into tables.\""
+        ],
+        "mistake": {
+          "title": "One giant box",
+          "text": "A common first try is one entity holding every fact about members, books and loans together. That repeats facts again and again. Splitting into entities and relationships is the first step to a tidy design."
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,617 @@
+{
+  "zone": 5,
+  "levels": [
+    {
+      "id": "5.1",
+      "title": "Words as Points",
+      "story": "Wren has pinned a thousand words to a big board, and no two are close together unless they should be. \"Owl near hawk. Bread near cake. Nowhere near each other. That's the whole trick.\"",
+      "everyday": {
+        "scene": "A search for 'cheap flights' also shows 'low-cost airfares'. The search has not matched letters. It has matched meanings.",
+        "question": "How can a computer tell that two different words mean nearly the same thing?",
+        "answer": "It gives each word a list of numbers, so words that are used in similar ways get similar lists. Words close together in that number space tend to be close in meaning."
+      },
+      "lessons": [
+        {
+          "id": "words-as-vectors",
+          "title": "A list of numbers per word",
+          "text": [
+            "A word embedding gives each word a list of numbers, called a vector. Words that are close together in this number space are expected to be close in meaning. Real vectors have hundreds of numbers. Our toy ones have two.",
+            "The table gives toy vectors, made up for this level. Real embeddings are learned from text, and their individual numbers have no simple meaning like size or colour."
+          ],
+          "table": {
+            "head": [
+              "Word",
+              "Number 1",
+              "Number 2"
+            ],
+            "rows": [
+              [
+                "owl",
+                "5",
+                "2"
+              ],
+              [
+                "hawk",
+                "4",
+                "1.5"
+              ],
+              [
+                "fox",
+                "6",
+                "3"
+              ],
+              [
+                "bread",
+                "1",
+                "6"
+              ],
+              [
+                "cake",
+                "2",
+                "6"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Word embedding",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Word_embedding"
+            },
+            {
+              "title": "Wikipedia: Word2vec",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Word2vec"
+            }
+          ]
+        },
+        {
+          "id": "measuring-closeness",
+          "title": "Measuring closeness",
+          "text": [
+            "Cosine similarity measures the angle between two vectors. It is the dot product divided by the product of the lengths. The result is 1 for the same direction, 0 for a right angle and -1 for opposite directions.",
+            "It ignores length. (2, 2) and (6, 6) point the same way, so their cosine is 1. For (3, 4) and (4, 3), the dot product is 24 and each length is 5, so the cosine is 24 divided by 25, which is 0.96."
+          ],
+          "predict": {
+            "prompt": "The vectors (3, 4) and (4, 3) have a dot product of 24 and each has length 5. What is their cosine similarity?",
+            "answer": "24 divided by 25, which is 0.96."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Cosine similarity",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Cosine_similarity"
+            },
+            {
+              "title": "Wikipedia: Word embedding",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Word_embedding"
+            }
+          ]
+        },
+        {
+          "id": "learned-from-text",
+          "title": "Learned from text",
+          "text": [
+            "Embeddings are learned from large amounts of text. The method called word2vec was introduced in 2013 by researchers at Google. Its models learn word vectors by looking at the words around each word.",
+            {
+              "text": "A limit of simple, fixed embeddings is that each word gets one vector, so a word with several meanings, like 'bank', is blended into a single point. Newer embeddings such as ELMo and BERT give each occurrence of a word its own vector, so the same word can get different vectors in different sentences.",
+              "verify": false
+            }
+          ],
+          "deeper": {
+            "title": "Why angles?",
+            "text": [
+              "Using the angle rather than plain distance means that two vectors of different lengths but the same direction still count as alike. In text, vector length can depend on things like how common a word is, and the direction usually matters more."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Word2vec",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Word2vec"
+            },
+            {
+              "title": "Wikipedia: Word embedding",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Word_embedding"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "dot",
+          "type": "numeric",
+          "taughtOn": "measuring-closeness",
+          "prompt": "What is the dot product of (3, 4) and (4, 3)? Multiply matching numbers, then add.",
+          "answer": 24,
+          "calculator": false,
+          "hints": [
+            "3 x 4, then 4 x 3.",
+            "12 + 12."
+          ],
+          "explain": "3 x 4 = 12 and 4 x 3 = 12, so the dot product is 24."
+        },
+        {
+          "id": "cos96",
+          "type": "numeric",
+          "taughtOn": "measuring-closeness",
+          "prompt": "The dot product is 24 and each vector has length 5. What is the cosine similarity?",
+          "answer": 0.96,
+          "tolerance": 0.001,
+          "calculator": false,
+          "hints": [
+            "Divide the dot product by the product of the lengths.",
+            "24 / (5 x 5)."
+          ],
+          "explain": "24 divided by 25 is 0.96, so the two vectors point in nearly the same direction."
+        },
+        {
+          "id": "embed-sim",
+          "type": "stepsim",
+          "taughtOn": "words-as-vectors",
+          "mode": "predict",
+          "prompt": "See which words sit close to 'owl'.",
+          "explain": "Words with similar vectors point the same way. 'Hawk' and 'fox' are close to 'owl', and 'bread' and 'cake' are far.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "hawk"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "fox"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "cake"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "bread"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Cosine similarity to 'owl'"
+                },
+                "say": "In this toy picture each word is a pair of numbers: owl (5, 2), hawk (4, 1.5), fox (6, 3), bread (1, 6) and cake (2, 6). Each box will show how close a word is to 'owl', using cosine similarity. Closer to 1 means more alike."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "1.000",
+                      "mark": "best",
+                      "tag": "hawk"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "fox"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "cake"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "bread"
+                    }
+                  ],
+                  "pointers": {
+                    "0": "hawk"
+                  },
+                  "label": "Cosine similarity to 'owl'"
+                },
+                "say": "'Hawk' points almost exactly the same way as 'owl', so its cosine similarity is about 1.000.",
+                "predict": {
+                  "prompt": "Which word is nearest to 'owl' by cosine similarity?",
+                  "options": [
+                    {
+                      "text": "hawk",
+                      "correct": true
+                    },
+                    {
+                      "text": "fox",
+                      "correct": false
+                    },
+                    {
+                      "text": "bread",
+                      "correct": false
+                    },
+                    {
+                      "text": "cake",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Look for the word pointing the same way as (5, 2).",
+                    "(4, 1.5) is almost in line with (5, 2)."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "1.000",
+                      "mark": "best",
+                      "tag": "hawk"
+                    },
+                    {
+                      "value": "0.997",
+                      "mark": null,
+                      "tag": "fox"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "cake"
+                    },
+                    {
+                      "value": "?",
+                      "mark": null,
+                      "tag": "bread"
+                    }
+                  ],
+                  "pointers": {
+                    "1": "fox"
+                  },
+                  "label": "Cosine similarity to 'owl'"
+                },
+                "say": "'Fox' is a little further round, at 0.997. Still very close."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "1.000",
+                      "mark": "best",
+                      "tag": "hawk"
+                    },
+                    {
+                      "value": "0.997",
+                      "mark": null,
+                      "tag": "fox"
+                    },
+                    {
+                      "value": "0.646",
+                      "mark": null,
+                      "tag": "cake"
+                    },
+                    {
+                      "value": "0.519",
+                      "mark": null,
+                      "tag": "bread"
+                    }
+                  ],
+                  "pointers": {
+                    "2": "cake",
+                    "3": "bread"
+                  },
+                  "label": "Cosine similarity to 'owl'"
+                },
+                "say": "'Cake' scores 0.646 and 'bread' 0.519. They point in quite different directions to 'owl', so they are not alike.",
+                "predict": {
+                  "prompt": "Which is further from 'owl': 'fox' at 0.997 or 'bread' at 0.519?",
+                  "options": [
+                    {
+                      "text": "bread",
+                      "correct": true
+                    },
+                    {
+                      "text": "fox",
+                      "correct": false
+                    },
+                    {
+                      "text": "They are equally far",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Smaller cosine means less alike.",
+                    "0.519 is smaller than 0.997."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "1.000",
+                      "mark": "best",
+                      "tag": "hawk"
+                    },
+                    {
+                      "value": "0.997",
+                      "mark": null,
+                      "tag": "fox"
+                    },
+                    {
+                      "value": "0.646",
+                      "mark": null,
+                      "tag": "cake"
+                    },
+                    {
+                      "value": "0.519",
+                      "mark": null,
+                      "tag": "bread"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Cosine similarity to 'owl'"
+                },
+                "say": "Words used in similar ways end up with similar vectors, so similar words sit close together. Here the animals cluster, and the foods cluster."
+              }
+            ]
+          }
+        },
+        {
+          "id": "ignore-size",
+          "type": "choice",
+          "taughtOn": "measuring-closeness",
+          "prompt": "The vectors (2, 2) and (6, 6) point the same way but one is three times as long. What is their cosine similarity?",
+          "options": [
+            {
+              "text": "1, since cosine ignores length",
+              "correct": true
+            },
+            {
+              "text": "0.33, because one is three times longer"
+            },
+            {
+              "text": "0, because they differ"
+            },
+            {
+              "text": "6, the bigger length"
+            }
+          ],
+          "hints": [
+            "Cosine depends on the angle only.",
+            "Same direction means the angle is zero."
+          ],
+          "explain": "Cosine similarity depends only on the angle. The same direction gives 1, whatever the lengths."
+        },
+        {
+          "id": "near-owl",
+          "type": "buckets",
+          "taughtOn": "words-as-vectors",
+          "prompt": "In the toy picture, is each word close to 'owl' or far from it?",
+          "buckets": [
+            "Close to owl",
+            "Far from owl"
+          ],
+          "items": [
+            {
+              "text": "hawk",
+              "bucket": "Close to owl"
+            },
+            {
+              "text": "fox",
+              "bucket": "Close to owl"
+            },
+            {
+              "text": "bread",
+              "bucket": "Far from owl"
+            },
+            {
+              "text": "cake",
+              "bucket": "Far from owl"
+            }
+          ],
+          "hints": [
+            "Look at the cosine scores in the sim.",
+            "Hawk and fox are above 0.99."
+          ],
+          "explain": "Hawk and fox have cosines near 1 with owl. Bread and cake have much smaller ones."
+        },
+        {
+          "id": "embed-words",
+          "type": "match",
+          "taughtOn": "words-as-vectors",
+          "prompt": "Match each term to its meaning.",
+          "pairs": [
+            {
+              "left": "Vector",
+              "right": "A list of numbers"
+            },
+            {
+              "left": "Embedding",
+              "right": "A word represented as a vector"
+            },
+            {
+              "left": "Cosine similarity",
+              "right": "A score from the angle between two vectors"
+            },
+            {
+              "left": "word2vec",
+              "right": "A 2013 method for learning word vectors from text"
+            }
+          ],
+          "hints": [
+            "An embedding is a vector for a word.",
+            "Cosine is about angles."
+          ],
+          "explain": "A vector is a list of numbers, an embedding is a word's vector, cosine similarity scores the angle and word2vec is a method for learning vectors."
+        },
+        {
+          "id": "bank-problem",
+          "type": "choice",
+          "taughtOn": "learned-from-text",
+          "prompt": "A simple embedding gives the word 'bank' one vector. What goes wrong?",
+          "options": [
+            {
+              "text": "A river bank and a money bank are blended into one point",
+              "correct": true
+            },
+            {
+              "text": "The word cannot be written"
+            },
+            {
+              "text": "The vector is empty"
+            },
+            {
+              "text": "It is always treated as a verb"
+            }
+          ],
+          "hints": [
+            "How many meanings does 'bank' have?",
+            "One vector has to cover all of them."
+          ],
+          "explain": "A single vector cannot capture two different meanings, so they get mixed together."
+        },
+        {
+          "id": "table-size",
+          "type": "numeric",
+          "taughtOn": "learned-from-text",
+          "prompt": "Challenge: an embedding table covers 50,000 words with 300 numbers each. How many numbers is that in total?",
+          "answer": 15000000,
+          "calculator": false,
+          "hints": [
+            "Multiply the two numbers.",
+            "50,000 x 300."
+          ],
+          "explain": "50,000 x 300 = 15,000,000 numbers.",
+          "challenge": true
+        },
+        {
+          "id": "cos-right-angle",
+          "type": "numeric",
+          "taughtOn": "measuring-closeness",
+          "prompt": "Challenge: the vectors (1, 0) and (0, 1) point at a right angle. What is their cosine similarity?",
+          "answer": 0,
+          "calculator": false,
+          "hints": [
+            "A right angle has cosine 0.",
+            "The dot product is 1 x 0 + 0 x 1."
+          ],
+          "explain": "The dot product is 0, so the cosine is 0. They are unrelated in direction.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m5.1-f1",
+          "type": "quiz",
+          "taughtOn": "words-as-vectors",
+          "prompt": "What is a word embedding?",
+          "options": [
+            {
+              "text": "A list of numbers that stands for a word",
+              "correct": true
+            },
+            {
+              "text": "A spelling rule"
+            },
+            {
+              "text": "A dictionary entry"
+            },
+            {
+              "text": "A kind of font"
+            }
+          ],
+          "explain": "Similar words get similar lists."
+        },
+        {
+          "id": "m5.1-f2",
+          "type": "why",
+          "taughtOn": "measuring-closeness",
+          "prompt": "What does cosine similarity measure?",
+          "options": [
+            {
+              "text": "The angle between two vectors",
+              "correct": true
+            },
+            {
+              "text": "The length of a word"
+            },
+            {
+              "text": "How many letters match"
+            },
+            {
+              "text": "How common a word is"
+            }
+          ],
+          "explain": "1 means the same direction."
+        },
+        {
+          "id": "m5.1-f3",
+          "type": "quiz",
+          "taughtOn": "learned-from-text",
+          "prompt": "What is a limit of a single vector per word?",
+          "options": [
+            {
+              "text": "Words with several meanings get blended",
+              "correct": true
+            },
+            {
+              "text": "It cannot store verbs"
+            },
+            {
+              "text": "It needs no text"
+            },
+            {
+              "text": "It only works for names"
+            }
+          ],
+          "explain": "'Bank' is a classic example."
+        },
+        {
+          "id": "m5.1-f4",
+          "type": "predict",
+          "taughtOn": "measuring-closeness",
+          "prompt": "What is the cosine similarity of two vectors that point the same way?",
+          "answer": "1."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Embeddings",
+          "text": "A word embedding is typically a real-valued vector that encodes the meaning of the word, so that words closer together in the vector space are expected to be similar in meaning.",
+          "source": {
+            "title": "Wikipedia: Word embedding",
+            "url": "https://en.wikipedia.org/wiki/Word_embedding"
+          }
+        },
+        {
+          "title": "word2vec",
+          "text": "Word2vec was developed by researchers at Google and presented in 2013. It made it practical to learn word embeddings from very large amounts of text.",
+          "source": {
+            "title": "Wikipedia: Word2vec",
+            "url": "https://en.wikipedia.org/wiki/Word2vec"
+          }
+        },
+        {
+          "title": "Cosine similarity",
+          "text": "Cosine similarity does not depend on the lengths of the vectors, only on the angle between them.",
+          "source": {
+            "title": "Wikipedia: Cosine similarity",
+            "url": "https://en.wikipedia.org/wiki/Cosine_similarity"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You gave words vectors, measured how alike two words are using cosine similarity, and saw why a single vector per word struggles with words that have several meanings.",
+          "Wren steps back from the board. \"Owl by hawk. Bread by cake. The board knew before I did.\""
+        ],
+        "mistake": {
+          "title": "Reading meaning into single numbers",
+          "text": "A real embedding's individual numbers do not stand for things like size or colour. Meaning lives in how the whole vector sits next to other vectors."
+        }
+      }
+    }
+  ]
+}

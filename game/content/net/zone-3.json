@@ -1,0 +1,1766 @@
+{
+  "zone": 3,
+  "levels": [
+    {
+      "id": "3.1",
+      "title": "ALOHA Party",
+      "story": "In Crowded Plaza, villagers shout their announcements all at once. If two shout together, nobody understands either. Mayor Moss asks Kit to find a fair way to share the plaza without anyone in charge.",
+      "everyday": {
+        "scene": "In a group voice chat, two friends start talking at exactly the same moment. Both stop, both start again, and it happens twice more before someone says \"you go first\".",
+        "question": "When nobody is in charge, how can a crowd share one channel without constantly talking over each other?",
+        "answer": "With simple rules. In ALOHA, you just send, and if your frame collides, you wait a random time and try again. A cleverer version, slotted ALOHA, agrees on beats so that stations can only start at the start of a slot, which halves the chance of an overlap."
+      },
+      "lessons": [
+        {
+          "id": "shared-channel",
+          "title": "One plaza, many voices",
+          "text": [
+            "Some networks are shared: all stations use the same channel, like a plaza where everyone's voice carries. If two frames overlap, that's a collision, and both are lost.",
+            "A part of the data link layer, the MAC sub-layer, decides who may send next.",
+            "Fixed turns (static allocation) are simple, but waste time when stations are quiet. Letting stations send when they have something to say (dynamic allocation) is more efficient, but needs rules to handle collisions."
+          ],
+          "terms": [
+            {
+              "term": "Shared channel",
+              "meaning": "One channel that many stations send on."
+            },
+            {
+              "term": "Collision",
+              "meaning": "Two frames overlap, so both are lost."
+            },
+            {
+              "term": "MAC",
+              "meaning": "Medium access control: the rules for who sends when on a shared channel."
+            }
+          ],
+          "table": {
+            "head": [
+              "Approach",
+              "Idea",
+              "Weakness"
+            ],
+            "rows": [
+              [
+                "Static",
+                "Every station gets a fixed turn",
+                "Wastes time when a station has nothing to send"
+              ],
+              [
+                "Dynamic",
+                "Stations send when they need to",
+                "Needs rules for collisions"
+              ]
+            ]
+          },
+          "diagramCaption": "Two ways to share a channel.",
+          "predict": {
+            "prompt": "Two stations send frames that overlap for just a tiny moment. What happens to the frames?",
+            "answer": "Both are lost. Even a small overlap spoils both."
+          },
+          "references": [
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, section 2.6 Multi-access networks (Ethernet)",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/direct/ethernet.html"
+            },
+            {
+              "title": "Wikipedia: Medium access control",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Medium_access_control"
+            }
+          ]
+        },
+        {
+          "id": "pure-aloha",
+          "title": "Pure ALOHA: just talk",
+          "text": [
+            "In pure ALOHA a station sends whenever it likes. If no ACK comes back, it waits a random time and sends again. Waiting a random time matters: two stations that collided won't both retry at the same instant.",
+            "A frame is in danger if another one starts within one frame time before it or one frame time after. That danger window is the vulnerable period: two frame times.",
+            "Example: a frame takes 10 ms to send. Anyone who starts within 10 ms before or 10 ms after wrecks it: a 20 ms window."
+          ],
+          "terms": [
+            {
+              "term": "Frame time",
+              "meaning": "How long it takes to send one frame."
+            },
+            {
+              "term": "Vulnerable period",
+              "meaning": "The window of time in which another frame would collide with yours."
+            },
+            {
+              "term": "Random wait",
+              "meaning": "Each station picks its own delay, so they don't clash again."
+            }
+          ],
+          "predict": {
+            "prompt": "A frame takes 4 ms to send. How long is its vulnerable period in pure ALOHA?",
+            "answer": "8 ms: 4 ms before plus 4 ms after."
+          },
+          "deeper": {
+            "title": "The formula",
+            "text": [
+              "If G is the average number of frames offered per frame time, pure ALOHA's throughput is S = G × e^(−2G), where e is about 2.718. It peaks at G = 0.5, where S is about 18.4%."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: ALOHAnet",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/ALOHAnet"
+            }
+          ]
+        },
+        {
+          "id": "slotted-aloha",
+          "title": "Slotted ALOHA: talk on the beat",
+          "text": [
+            "Slotted ALOHA cuts time into slots, each exactly one frame long. A station may only start at the beginning of a slot. Frames now either overlap completely or not at all.",
+            "The vulnerable period halves to one frame time, and the best throughput roughly doubles. Throughput is the share of time the channel carries good frames.",
+            "Look at the table. Both methods get worse if too much traffic is offered, because more frames mean more collisions."
+          ],
+          "terms": [
+            {
+              "term": "Slot",
+              "meaning": "A fixed window of time, one frame long, when a station may start sending."
+            },
+            {
+              "term": "Offered load (G)",
+              "meaning": "Frames the stations try to send, per frame time."
+            },
+            {
+              "term": "Throughput",
+              "meaning": "The share of time that carries good frames (not collisions)."
+            }
+          ],
+          "table": {
+            "head": [
+              "Offered load G",
+              "Pure ALOHA",
+              "Slotted ALOHA"
+            ],
+            "rows": [
+              [
+                "0.25",
+                "15.2%",
+                "19.5%"
+              ],
+              [
+                "0.5",
+                "18.4%",
+                "30.3%"
+              ],
+              [
+                "1",
+                "13.5%",
+                "36.8%"
+              ],
+              [
+                "2",
+                "3.7%",
+                "27.1%"
+              ]
+            ]
+          },
+          "diagramCaption": "Throughput for both methods. Each peaks and then falls.",
+          "predict": {
+            "prompt": "Look at the table. At which offered load does slotted ALOHA do best?",
+            "answer": "G = 1, with about 36.8%."
+          },
+          "deeper": {
+            "title": "The formula",
+            "text": [
+              "Slotted ALOHA's throughput is S = G × e^(−G), which peaks at G = 1 with S = 1 ÷ e, about 36.8%."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: ALOHAnet",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/ALOHAnet"
+            },
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, section 2.6 Multi-access networks (Ethernet)",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/direct/ethernet.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "collide",
+          "type": "choice",
+          "taughtOn": "shared-channel",
+          "prompt": "Two stations send frames that overlap by only a tiny bit. What happens?",
+          "options": [
+            {
+              "text": "Both frames are lost",
+              "correct": true
+            },
+            {
+              "text": "Only the later frame is lost"
+            },
+            {
+              "text": "Both frames arrive fine"
+            },
+            {
+              "text": "Only the longer frame is lost"
+            }
+          ],
+          "hints": [
+            "Can the receiver separate two overlapping signals?",
+            "An overlap spoils both."
+          ],
+          "explain": "Even a small overlap garbles both frames, so both are lost."
+        },
+        {
+          "id": "aloha-terms",
+          "type": "match",
+          "taughtOn": "shared-channel",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Collision",
+              "right": "Two frames overlap and both are lost"
+            },
+            {
+              "left": "Vulnerable period",
+              "right": "The time when another frame starting would wreck yours"
+            },
+            {
+              "left": "Slot",
+              "right": "A fixed window of time, one frame long"
+            }
+          ],
+          "hints": [
+            "Collision, vulnerable period and slot are three separate ideas.",
+            "A slot is a window you may start sending in."
+          ],
+          "explain": "A collision is the overlap, the vulnerable period is the danger window, and a slot is a fixed start window."
+        },
+        {
+          "id": "vulnerable",
+          "type": "numeric",
+          "taughtOn": "pure-aloha",
+          "prompt": "A frame takes 6 ms to send. What is its vulnerable period in pure ALOHA, in milliseconds?",
+          "answer": 12,
+          "unit": "ms",
+          "calculator": false,
+          "hints": [
+            "Another frame is dangerous if it starts up to one frame time before or one frame time after.",
+            "6 + 6."
+          ],
+          "explain": "6 ms before plus 6 ms after: 12 ms."
+        },
+        {
+          "id": "slotted-vulnerable",
+          "type": "numeric",
+          "taughtOn": "slotted-aloha",
+          "prompt": "The same 6 ms frame is sent in slotted ALOHA. What is its vulnerable period in milliseconds?",
+          "answer": 6,
+          "unit": "ms",
+          "calculator": false,
+          "hints": [
+            "In slotted ALOHA, frames only collide if they start in the same slot.",
+            "The vulnerable period is one frame time."
+          ],
+          "explain": "Only frames that start in the same slot can collide: one frame time, 6 ms."
+        },
+        {
+          "id": "watch-throughput",
+          "type": "stepsim",
+          "taughtOn": "slotted-aloha",
+          "mode": "predict",
+          "prompt": "Compare how much good traffic each method carries as the plaza gets busier.",
+          "script": {
+            "view": "bars",
+            "steps": [
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Pure ALOHA (% of time carrying good frames)",
+                      "value": 0
+                    },
+                    {
+                      "label": "Slotted ALOHA (% of time carrying good frames)",
+                      "value": 0
+                    }
+                  ]
+                },
+                "say": "Both methods are about to try carrying traffic. G is how much traffic the stations try to send, measured in frames per frame time."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Pure ALOHA (% of time carrying good frames)",
+                      "value": 15.2
+                    },
+                    {
+                      "label": "Slotted ALOHA (% of time carrying good frames)",
+                      "value": 19.5
+                    }
+                  ]
+                },
+                "say": "At G = 0.25 (a quiet plaza), pure ALOHA carries 15.2% and slotted carries 19.5%."
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Pure ALOHA (% of time carrying good frames)",
+                      "value": 18.4
+                    },
+                    {
+                      "label": "Slotted ALOHA (% of time carrying good frames)",
+                      "value": 30.3
+                    }
+                  ]
+                },
+                "say": "At G = 0.5, pure ALOHA reaches its best, 18.4%. Slotted ALOHA is already at 30.3%.",
+                "predict": {
+                  "prompt": "At G = 0.5 (half a frame offered per frame time), which method carries more good frames?",
+                  "options": [
+                    {
+                      "text": "Slotted ALOHA",
+                      "correct": true
+                    },
+                    {
+                      "text": "Pure ALOHA"
+                    },
+                    {
+                      "text": "They carry exactly the same"
+                    },
+                    {
+                      "text": "Neither: they both carry nothing"
+                    }
+                  ],
+                  "hints": [
+                    "Slotted ALOHA halves the danger window.",
+                    "A shorter vulnerable period means fewer collisions."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Pure ALOHA (% of time carrying good frames)",
+                      "value": 13.5
+                    },
+                    {
+                      "label": "Slotted ALOHA (% of time carrying good frames)",
+                      "value": 36.8
+                    }
+                  ]
+                },
+                "say": "At G = 1, pure ALOHA drops to 13.5% because collisions pile up, while slotted ALOHA reaches its best, 36.8%.",
+                "predict": {
+                  "prompt": "The plaza gets busier: G goes up from 0.5 to 1. What happens to pure ALOHA?",
+                  "options": [
+                    {
+                      "text": "It carries less than before",
+                      "correct": true
+                    },
+                    {
+                      "text": "It carries more"
+                    },
+                    {
+                      "text": "It stays the same"
+                    },
+                    {
+                      "text": "It carries all the traffic"
+                    }
+                  ],
+                  "hints": [
+                    "More traffic means more overlaps.",
+                    "Pure ALOHA's best point was at G = 0.5."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "bars": [
+                    {
+                      "label": "Pure ALOHA (% of time carrying good frames)",
+                      "value": 3.7
+                    },
+                    {
+                      "label": "Slotted ALOHA (% of time carrying good frames)",
+                      "value": 27.1
+                    }
+                  ]
+                },
+                "say": "At G = 2, pure ALOHA carries only 3.7%. Pushing in more traffic made things worse for both."
+              }
+            ]
+          },
+          "hints": [],
+          "explain": "Compare how much good traffic each method carries as the plaza gets busier."
+        },
+        {
+          "id": "pure-or-slotted",
+          "type": "buckets",
+          "taughtOn": "slotted-aloha",
+          "prompt": "Which method does each clue fit?",
+          "buckets": [
+            "Pure ALOHA",
+            "Slotted ALOHA"
+          ],
+          "items": [
+            {
+              "text": "Stations can start sending at any moment",
+              "bucket": "Pure ALOHA"
+            },
+            {
+              "text": "Stations must wait for the start of a slot",
+              "bucket": "Slotted ALOHA"
+            },
+            {
+              "text": "The vulnerable period is two frame times",
+              "bucket": "Pure ALOHA"
+            },
+            {
+              "text": "The vulnerable period is one frame time",
+              "bucket": "Slotted ALOHA"
+            },
+            {
+              "text": "The best throughput is about 18%",
+              "bucket": "Pure ALOHA"
+            },
+            {
+              "text": "The best throughput is about 37%",
+              "bucket": "Slotted ALOHA"
+            }
+          ],
+          "hints": [
+            "Check the table on the last lesson page.",
+            "Slotted ALOHA's trick is the beat."
+          ],
+          "explain": "Pure ALOHA starts anywhere with a 2-frame danger window. Slotted starts on the beat with a 1-frame window."
+        },
+        {
+          "id": "too-busy",
+          "type": "choice",
+          "taughtOn": "slotted-aloha",
+          "prompt": "The plaza gets much busier than the best point. What happens to ALOHA's throughput?",
+          "options": [
+            {
+              "text": "It falls, because collisions waste more and more of the channel",
+              "correct": true
+            },
+            {
+              "text": "It keeps rising"
+            },
+            {
+              "text": "It stays at its best value"
+            },
+            {
+              "text": "It jumps to 100%"
+            }
+          ],
+          "hints": [
+            "Look at the G = 2 row of the table.",
+            "More traffic means more collisions."
+          ],
+          "explain": "Past its peak, extra traffic mostly makes extra collisions, so throughput falls."
+        },
+        {
+          "id": "slotted-g1",
+          "type": "numeric",
+          "taughtOn": "slotted-aloha",
+          "prompt": "Challenge: slotted ALOHA's throughput is S = G × e^(−G). For G = 1, what percent of the time carries good frames? (Nearest whole percent. The calculator has an e key.)",
+          "answer": 37,
+          "tolerance": 0.6,
+          "unit": "%",
+          "hints": [
+            "Work out e^(−1) first, then multiply by G = 1.",
+            "e^(−1) is about 0.368."
+          ],
+          "explain": "1 × e^(−1) ≈ 0.368, which is about 37%.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "3.1-f1",
+          "type": "quiz",
+          "taughtOn": "pure-aloha",
+          "prompt": "How long is the vulnerable period in pure ALOHA?",
+          "options": [
+            {
+              "text": "Two frame times",
+              "correct": true
+            },
+            {
+              "text": "One frame time"
+            },
+            {
+              "text": "Half a frame time"
+            },
+            {
+              "text": "Four frame times"
+            }
+          ],
+          "explain": "Another frame starting up to one frame time before or after yours collides with it."
+        },
+        {
+          "id": "3.1-f2",
+          "type": "predict",
+          "taughtOn": "slotted-aloha",
+          "prompt": "What do slots change in slotted ALOHA?",
+          "answer": "Stations can only start at the beginning of a slot, which halves the vulnerable period to one frame time and roughly doubles the best throughput."
+        },
+        {
+          "id": "3.1-f3",
+          "type": "why",
+          "taughtOn": "pure-aloha",
+          "prompt": "Why does a station wait a random time after a collision?",
+          "options": [
+            {
+              "text": "So the stations that collided don't all retry at the same moment",
+              "correct": true
+            },
+            {
+              "text": "To save power"
+            },
+            {
+              "text": "To make the frame shorter"
+            },
+            {
+              "text": "To check the data"
+            }
+          ],
+          "explain": "If they all waited the same time, they'd collide again."
+        },
+        {
+          "id": "3.1-f4",
+          "type": "quiz",
+          "taughtOn": "slotted-aloha",
+          "prompt": "Roughly what is the best throughput of slotted ALOHA?",
+          "options": [
+            {
+              "text": "37%",
+              "correct": true
+            },
+            {
+              "text": "18%"
+            },
+            {
+              "text": "50%"
+            },
+            {
+              "text": "100%"
+            }
+          ],
+          "explain": "It peaks at G = 1 with about 36.8%."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "A radio network across the islands",
+          "text": "ALOHA grew out of ALOHAnet, a radio network that became operational in 1971 to connect users on the Hawaiian islands to a central computer. Its idea, \"just send, and retry after a random wait if it fails\", was later used in Ethernet.",
+          "source": {
+            "title": "Wikipedia: ALOHAnet",
+            "url": "https://en.wikipedia.org/wiki/ALOHAnet"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You saw why overlapping frames are lost, why pure ALOHA has a two-frame danger window, and how slotted ALOHA halves it by agreeing on a beat.",
+          "Mayor Moss claps. \"Much better than shouting,\" he says. \"But can't we simply listen first?\""
+        ],
+        "mistake": {
+          "title": "Expecting more traffic to mean more throughput",
+          "text": "More offered load helps only up to a point. Past the peak, extra frames cause extra collisions and the channel carries less. The best load for slotted ALOHA is G = 1, and for pure ALOHA it's G = 0.5."
+        }
+      }
+    },
+    {
+      "id": "3.2",
+      "title": "Listen Before You Talk",
+      "story": "Mayor Moss has a better idea for the plaza: listen first, and speak only if nobody else is talking. Kit has to find out whether that is enough.",
+      "everyday": {
+        "scene": "At a dinner table you wait for a gap before you speak. Now and then two people start at the same instant, both stop, laugh, and try again.",
+        "question": "Is listening first enough to stop all collisions?",
+        "answer": "No. Two stations can start at the very same moment, and signals take time to travel, so a station may not yet hear that someone else has started. So stations also listen while they send, and stop as soon as they notice a collision. This is called CSMA/CD."
+      },
+      "lessons": [
+        {
+          "id": "csma-variants",
+          "title": "Listen first: CSMA",
+          "text": [
+            "CSMA stands for carrier sense multiple access, which just means listen before you send. If the channel is idle, send. If it's busy, there are three choices.",
+            "1-persistent: keep listening, and send the moment it's free. Non-persistent: wait a random time, then listen again. p-persistent: when it's free, send with probability p, otherwise wait a slot and check again.",
+            "Each has a trade-off, shown in the table."
+          ],
+          "terms": [
+            {
+              "term": "Carrier sense",
+              "meaning": "Listening to find out whether someone else is sending."
+            },
+            {
+              "term": "Persistent",
+              "meaning": "Keeps listening while the channel is busy."
+            }
+          ],
+          "table": {
+            "head": [
+              "Variant",
+              "When the channel is busy",
+              "Risk"
+            ],
+            "rows": [
+              [
+                "1-persistent",
+                "Keep listening, send when free",
+                "Everyone waiting sends at the same moment"
+              ],
+              [
+                "Non-persistent",
+                "Wait a random time, then listen",
+                "Wasted idle time"
+              ],
+              [
+                "p-persistent",
+                "When free, send with probability p",
+                "Needs a good choice of p"
+              ]
+            ]
+          },
+          "diagramCaption": "Three ways to handle a busy channel.",
+          "predict": {
+            "prompt": "A hundred stations all wait for one long frame to end. Which variant makes all of them send at once?",
+            "answer": "1-persistent. They all send the moment the channel becomes free."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Carrier-sense multiple access",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Carrier-sense_multiple_access"
+            },
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, section 2.6 Multi-access networks (Ethernet)",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/direct/ethernet.html"
+            }
+          ]
+        },
+        {
+          "id": "collision-detection",
+          "title": "Collisions still happen: CSMA/CD",
+          "text": [
+            "Signals take time to travel, so two far-apart stations may both think the channel is idle. CSMA/CD adds collision detection: while sending, the station keeps listening. If it hears a garbled mix, it stops and sends a short jam signal.",
+            "How long must a frame be? The sender must still be sending when the news of a collision returns. In the worst case that's a round trip: twice the one-way delay.",
+            "Example: a 1,000,000 bits per second cable with a 0.2 ms one-way delay has a 0.4 ms round trip. 1,000,000 × 0.0004 = 400 bits, so frames must be at least 400 bits long."
+          ],
+          "terms": [
+            {
+              "term": "CSMA/CD",
+              "meaning": "Carrier sense multiple access with collision detection."
+            },
+            {
+              "term": "Jam signal",
+              "meaning": "A short burst that tells everyone a collision happened."
+            },
+            {
+              "term": "Round trip",
+              "meaning": "The time for a signal to go to the far end and for news to come back."
+            }
+          ],
+          "predict": {
+            "prompt": "The one-way delay on a cable is 0.5 ms. How long must a sender keep sending so it can still hear a collision from the far end?",
+            "answer": "At least a round trip: 1 ms."
+          },
+          "deeper": {
+            "title": "Why Ethernet frames have a minimum size",
+            "text": [
+              "Classic Ethernet sets a minimum frame of 64 bytes for exactly this reason. If the cable were longer or the bit rate higher, the minimum frame would need to be longer too."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Carrier-sense multiple access with collision detection",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Carrier-sense_multiple_access_with_collision_detection"
+            },
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, section 2.6 Multi-access networks (Ethernet)",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/direct/ethernet.html"
+            }
+          ]
+        },
+        {
+          "id": "backoff",
+          "title": "Waiting a random time",
+          "text": [
+            "After a collision, every station involved waits a random time before trying again. If they all picked from the same tiny range they might clash again, so the range grows.",
+            "That's binary exponential backoff. After the 1st collision pick a random wait from 0 or 1 slots. After the 2nd, from 0 to 3. After the 3rd, from 0 to 7. The range doubles each time.",
+            "Busy networks spread out quickly, and quiet ones don't wait long."
+          ],
+          "terms": [
+            {
+              "term": "Backoff",
+              "meaning": "Waiting a random time after a collision."
+            },
+            {
+              "term": "Slot",
+              "meaning": "A short fixed time unit used for waiting."
+            }
+          ],
+          "table": {
+            "head": [
+              "After collision number",
+              "Pick a random wait from"
+            ],
+            "rows": [
+              [
+                "1",
+                "0 to 1 slots"
+              ],
+              [
+                "2",
+                "0 to 3 slots"
+              ],
+              [
+                "3",
+                "0 to 7 slots"
+              ],
+              [
+                "4",
+                "0 to 15 slots"
+              ]
+            ]
+          },
+          "diagramCaption": "The range of waits doubles each time.",
+          "predict": {
+            "prompt": "After the 5th collision, what range does a station pick from?",
+            "answer": "0 to 31 slots: 2⁵ − 1 = 31."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Exponential backoff",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Exponential_backoff"
+            },
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, section 2.6 Multi-access networks (Ethernet)",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/direct/ethernet.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "csma-types",
+          "type": "match",
+          "taughtOn": "csma-variants",
+          "prompt": "Match each CSMA variant to its behaviour.",
+          "pairs": [
+            {
+              "left": "1-persistent",
+              "right": "Keeps listening and sends the moment the channel is free"
+            },
+            {
+              "left": "Non-persistent",
+              "right": "If busy, waits a random time before listening again"
+            },
+            {
+              "left": "p-persistent",
+              "right": "When free, sends with probability p, otherwise waits a slot"
+            }
+          ],
+          "hints": [
+            "Persistent means keeps listening.",
+            "Non-persistent backs off."
+          ],
+          "explain": "1-persistent jumps in at once, non-persistent backs away, and p-persistent rolls the dice."
+        },
+        {
+          "id": "why-collide",
+          "type": "choice",
+          "taughtOn": "collision-detection",
+          "prompt": "Both stations listened first and heard silence, yet their frames collided. Why?",
+          "options": [
+            {
+              "text": "The signal takes time to travel, so each didn't yet hear the other",
+              "correct": true
+            },
+            {
+              "text": "Listening doesn't work on cables"
+            },
+            {
+              "text": "They sent at the wrong speed"
+            },
+            {
+              "text": "One of them was broken"
+            }
+          ],
+          "hints": [
+            "Think about how long a signal takes to cross the cable.",
+            "Neither heard the other's frame before starting."
+          ],
+          "explain": "If the stations are far apart, each starts before the other's signal has arrived."
+        },
+        {
+          "id": "min-frame",
+          "type": "numeric",
+          "taughtOn": "collision-detection",
+          "prompt": "A cable carries 1,000,000 bits each second and the one-way delay is 0.2 ms. What's the smallest frame, in bits, that lets the sender still be sending when a collision's news returns?",
+          "answer": 400,
+          "unit": "bits",
+          "hints": [
+            "The sender must keep sending for a whole round trip.",
+            "Round trip = 0.4 ms = 0.0004 s. Multiply by the bit rate."
+          ],
+          "explain": "0.4 ms is 0.0004 s, and 1,000,000 × 0.0004 = 400 bits."
+        },
+        {
+          "id": "cd-steps",
+          "type": "order",
+          "taughtOn": "collision-detection",
+          "prompt": "Put the CSMA/CD steps in order.",
+          "items": [
+            "Listen: is the channel idle?",
+            "Start sending the frame",
+            "Keep listening while sending",
+            "If a collision is heard, stop and send a short jam signal",
+            "Wait a random time, then try again"
+          ],
+          "hints": [
+            "Listening comes before sending.",
+            "The random wait comes last."
+          ],
+          "explain": "Listen, send, keep listening, react to a collision, back off."
+        },
+        {
+          "id": "backoff-range",
+          "type": "numeric",
+          "taughtOn": "backoff",
+          "prompt": "After the 3rd collision, a station picks a random wait from 0 up to how many slots?",
+          "answer": 7,
+          "unit": "slots",
+          "hints": [
+            "The range doubles each time: 1, 3, 7, ...",
+            "2³ − 1."
+          ],
+          "explain": "After the 3rd collision the range is 0 to 7."
+        },
+        {
+          "id": "which-helps",
+          "type": "buckets",
+          "taughtOn": "backoff",
+          "prompt": "Does each idea help to avoid, detect or recover from collisions?",
+          "buckets": [
+            "Avoid collisions",
+            "Detect collisions",
+            "Recover after collisions"
+          ],
+          "items": [
+            {
+              "text": "Listening before sending",
+              "bucket": "Avoid collisions"
+            },
+            {
+              "text": "Waiting a random time when the channel is busy",
+              "bucket": "Avoid collisions"
+            },
+            {
+              "text": "Listening while sending",
+              "bucket": "Detect collisions"
+            },
+            {
+              "text": "Noticing a garbled signal on the cable",
+              "bucket": "Detect collisions"
+            },
+            {
+              "text": "Waiting a random time after a collision",
+              "bucket": "Recover after collisions"
+            },
+            {
+              "text": "Doubling the range of the random wait each time",
+              "bucket": "Recover after collisions"
+            }
+          ],
+          "hints": [
+            "Ask: does this happen before, during or after a collision?",
+            "Listening first avoids; listening while sending detects; backoff recovers."
+          ],
+          "explain": "Listening first avoids collisions, listening during sending detects them, and backoff handles what's left."
+        },
+        {
+          "id": "min-frame-bytes",
+          "type": "numeric",
+          "taughtOn": "collision-detection",
+          "prompt": "Challenge: a cable carries 5,000,000 bits each second and the round trip takes 0.2 ms. What's the smallest frame, in bytes? (8 bits make a byte.)",
+          "answer": 125,
+          "unit": "bytes",
+          "hints": [
+            "Bits needed = bit rate × round trip in seconds. Then divide by 8.",
+            "5,000,000 × 0.0002 = 1,000 bits."
+          ],
+          "explain": "1,000 bits ÷ 8 = 125 bytes.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "3.2-f1",
+          "type": "quiz",
+          "taughtOn": "csma-variants",
+          "prompt": "What does CSMA tell a station to do?",
+          "options": [
+            {
+              "text": "Listen before sending",
+              "correct": true
+            },
+            {
+              "text": "Send at random"
+            },
+            {
+              "text": "Never send"
+            },
+            {
+              "text": "Send at the start of a slot"
+            }
+          ],
+          "explain": "CSMA stands for carrier sense multiple access: listen first."
+        },
+        {
+          "id": "3.2-f2",
+          "type": "predict",
+          "taughtOn": "collision-detection",
+          "prompt": "A cable has a one-way delay of 0.3 ms. How long must a frame last for the sender to catch a collision?",
+          "answer": "At least a round trip: 0.6 ms."
+        },
+        {
+          "id": "3.2-f3",
+          "type": "quiz",
+          "taughtOn": "backoff",
+          "prompt": "After the 4th collision, a station waits a random 0 to how many slots?",
+          "options": [
+            {
+              "text": "15",
+              "correct": true
+            },
+            {
+              "text": "4"
+            },
+            {
+              "text": "8"
+            },
+            {
+              "text": "31"
+            }
+          ],
+          "explain": "The range doubles each time: 1, 3, 7, 15."
+        },
+        {
+          "id": "3.2-f4",
+          "type": "why",
+          "taughtOn": "collision-detection",
+          "prompt": "What does a sender do when it hears a collision?",
+          "options": [
+            {
+              "text": "Stops and sends a short jam signal",
+              "correct": true
+            },
+            {
+              "text": "Keeps sending the whole frame"
+            },
+            {
+              "text": "Sends faster"
+            },
+            {
+              "text": "Ignores it"
+            }
+          ],
+          "explain": "CSMA/CD stops early to waste less time, and the jam signal makes sure everyone knows."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Why Wi-Fi can't listen while it talks",
+          "text": "On a cable, a station can listen while it sends. A radio can't effectively detect other transmissions while it is sending its own. So Wi-Fi uses collision avoidance (CSMA/CA) instead of collision detection: it tries hard not to collide in the first place.",
+          "source": {
+            "title": "Wikipedia: CSMA/CA",
+            "url": "https://en.wikipedia.org/wiki/Carrier-sense_multiple_access_with_collision_avoidance"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You listened before sending, saw why collisions still happen, worked out the minimum frame length, and used random backoff to recover.",
+          "Moss tips his hat. \"The plaza has never been so polite,\" he says."
+        ],
+        "mistake": {
+          "title": "Thinking listening first prevents every collision",
+          "text": "Listening reduces collisions but can't stop them all, because of the delay between a station starting to send and the others hearing it. That is why CSMA/CD also listens while sending and backs off afterwards."
+        }
+      }
+    },
+    {
+      "id": "3.4",
+      "title": "Hidden Hills",
+      "story": "Beyond the plaza, hills block the signals between the farms. Kit's wireless lantern can't see everyone, so listening first no longer works. Kit needs a way for stations to ask each other for permission.",
+      "everyday": {
+        "scene": "Two friends stand on opposite sides of a hill, and both text you at the same moment. They can't see or hear each other, but you're in the middle and get both messages at once, jumbled.",
+        "question": "How can two wireless stations collide when each checked that the channel was quiet?",
+        "answer": "Because they can't hear each other. This is the hidden terminal problem. The fix is to ask first: the sender sends a short request, and the receiver's reply is heard by everyone nearby, even stations the sender can't hear."
+      },
+      "lessons": [
+        {
+          "id": "hidden-terminal",
+          "title": "Hidden terminals",
+          "text": [
+            "Picture three stations in a row: A, B and C. A and C can both hear B, but a hill blocks them from hearing each other.",
+            "A listens: quiet. C listens: quiet. Both send to B at the same time. B hears a jumble. A and C are hidden from each other, even though they both reach B.",
+            "Listening before sending is useless here, because the sender can't hear the station that will cause the collision."
+          ],
+          "terms": [
+            {
+              "term": "Station",
+              "meaning": "A device that sends or receives, like a phone or laptop."
+            },
+            {
+              "term": "Range",
+              "meaning": "How far a station's signal reaches."
+            },
+            {
+              "term": "Hidden terminal",
+              "meaning": "A station that can't hear another sender but can still collide with it at the receiver."
+            }
+          ],
+          "table": {
+            "head": [
+              "Station",
+              "Can hear"
+            ],
+            "rows": [
+              [
+                "A",
+                "B only"
+              ],
+              [
+                "B",
+                "A and C"
+              ],
+              [
+                "C",
+                "B only"
+              ]
+            ]
+          },
+          "diagramCaption": "A and C are hidden from each other.",
+          "predict": {
+            "prompt": "A is sending to B. C listens first. Does C hear A?",
+            "answer": "No. The hill blocks the signal, so C thinks the channel is quiet."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Hidden node problem",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Hidden_node_problem"
+            },
+            {
+              "title": "Peterson & Davie, Computer Networks: A Systems Approach, section 2.7 Wireless",
+              "source": "Open textbook (CC BY 4.0)",
+              "url": "https://book.systemsapproach.org/direct/wireless.html"
+            }
+          ]
+        },
+        {
+          "id": "exposed-terminal",
+          "title": "Exposed terminals",
+          "text": [
+            "The opposite problem: B is sending to A. C hears B's signal, so it stays quiet. But C wanted to send to D, who is far from B and A. That transmission wouldn't have bothered anyone.",
+            "C is an exposed terminal: it waits for no good reason. Nothing is damaged, but capacity is wasted.",
+            "The two problems are mirror images: hidden terminals cause collisions, and exposed terminals cause needless waiting."
+          ],
+          "terms": [
+            {
+              "term": "Exposed terminal",
+              "meaning": "A station that stays quiet because it hears another sender, even though its own frame wouldn't hurt the receiver."
+            }
+          ],
+          "table": {
+            "head": [
+              "Problem",
+              "What goes wrong",
+              "Result"
+            ],
+            "rows": [
+              [
+                "Hidden terminal",
+                "Can't hear the sender who will collide at the receiver",
+                "Collisions"
+              ],
+              [
+                "Exposed terminal",
+                "Hears a sender that wouldn't interfere",
+                "Wasted waiting"
+              ]
+            ]
+          },
+          "diagramCaption": "Two mirror-image problems.",
+          "predict": {
+            "prompt": "B is sending to A. C hears B but wants to send to D, who is out of B's range. Is C hidden or exposed?",
+            "answer": "Exposed. C waits needlessly."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Exposed node problem",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Exposed_node_problem"
+            }
+          ]
+        },
+        {
+          "id": "rts-cts",
+          "title": "Ask first: RTS and CTS",
+          "text": [
+            "Before sending a long frame, the sender sends a very short RTS: request to send. The receiver replies with a CTS: clear to send.",
+            "The CTS is heard by every station near the receiver, including ones the sender can't hear. Any station that hears the CTS stays quiet for the whole transfer.",
+            "In the hill example, C hears B's CTS and waits. If two RTS messages collide, little is lost, because they're short."
+          ],
+          "terms": [
+            {
+              "term": "RTS",
+              "meaning": "Request to send: a short \"may I send?\" frame."
+            },
+            {
+              "term": "CTS",
+              "meaning": "Clear to send: the receiver's reply, heard by all its neighbours."
+            }
+          ],
+          "predict": {
+            "prompt": "Why is it useful that the receiver, not the sender, sends the CTS?",
+            "answer": "The receiver is the one in the middle, so its signal reaches the stations that would collide at it, including ones the sender can't hear."
+          },
+          "deeper": {
+            "title": "The cost of asking",
+            "text": [
+              "The RTS/CTS handshake takes time. For tiny frames it can cost more than a collision would, which is why Wi-Fi makes RTS/CTS optional and usually only uses it for large frames. The idea comes from a protocol called MACA."
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: RTS/CTS",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/RTS/CTS"
+            },
+            {
+              "title": "Wikipedia: MACA (Multiple Access with Collision Avoidance for Wireless)",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Multiple_Access_with_Collision_Avoidance_for_Wireless"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "watch-hills",
+          "type": "stepsim",
+          "taughtOn": "rts-cts",
+          "mode": "predict",
+          "prompt": "Follow A, B and C: first without RTS/CTS, then with it.",
+          "script": {
+            "view": "graph",
+            "steps": [
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 150,
+                      "y": 90,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 260,
+                      "y": 90,
+                      "label": "C"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C"
+                    }
+                  ],
+                  "legend": "Double ring = sending now. Dashed ring = waiting quietly. ✓ = finished. A line means two stations can hear each other. A and C are behind a hill, so there's no line between them."
+                },
+                "say": "Three stations: A, B and C. A can hear B, and C can hear B, but a hill hides A from C."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "B",
+                      "x": 150,
+                      "y": 90,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 260,
+                      "y": 90,
+                      "label": "C"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C"
+                    }
+                  ],
+                  "legend": "Double ring = sending now. Dashed ring = waiting quietly. ✓ = finished. A line means two stations can hear each other. A and C are behind a hill, so there's no line between them."
+                },
+                "say": "A listens, hears nothing, and starts sending to B."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "B",
+                      "x": 150,
+                      "y": 90,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 260,
+                      "y": 90,
+                      "label": "C",
+                      "mark": "current"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "Double ring = sending now. Dashed ring = waiting quietly. ✓ = finished. A line means two stations can hear each other. A and C are behind a hill, so there's no line between them."
+                },
+                "say": "C also wants to send to B. It listens, hears nothing (the hill hides A), and starts sending too. Both frames reach B at once: a collision.",
+                "predict": {
+                  "prompt": "C wants to send to B while A is already sending to B. C listens first. What does C hear?",
+                  "options": [
+                    {
+                      "text": "Nothing, because the hill hides A from C",
+                      "correct": true
+                    },
+                    {
+                      "text": "A's frame, loud and clear"
+                    },
+                    {
+                      "text": "A jam signal from B"
+                    },
+                    {
+                      "text": "B asking it to wait"
+                    }
+                  ],
+                  "hints": [
+                    "Look at the lines: is there one between A and C?",
+                    "C can only hear stations it has a line to."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A"
+                    },
+                    {
+                      "id": "B",
+                      "x": 150,
+                      "y": 90,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 260,
+                      "y": 90,
+                      "label": "C"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C"
+                    }
+                  ],
+                  "legend": "Double ring = sending now. Dashed ring = waiting quietly. ✓ = finished. A line means two stations can hear each other. A and C are behind a hill, so there's no line between them."
+                },
+                "say": "That was the hidden terminal problem. Now let's try again, with RTS and CTS."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "B",
+                      "x": 150,
+                      "y": 90,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 260,
+                      "y": 90,
+                      "label": "C"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C"
+                    }
+                  ],
+                  "legend": "Double ring = sending now. Dashed ring = waiting quietly. ✓ = finished. A line means two stations can hear each other. A and C are behind a hill, so there's no line between them."
+                },
+                "say": "A first sends a short RTS (\"may I send?\") to B."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 150,
+                      "y": 90,
+                      "label": "B",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "C",
+                      "x": 260,
+                      "y": 90,
+                      "label": "C",
+                      "mark": "queued"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B",
+                      "mark": "used"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C",
+                      "mark": "used"
+                    }
+                  ],
+                  "legend": "Double ring = sending now. Dashed ring = waiting quietly. ✓ = finished. A line means two stations can hear each other. A and C are behind a hill, so there's no line between them."
+                },
+                "say": "B replies with a CTS (\"go ahead, everyone else wait\"). Everyone B can hear, including C, hears it. C stays quiet.",
+                "predict": {
+                  "prompt": "B's CTS reaches both A and C. What should C do?",
+                  "options": [
+                    {
+                      "text": "Stay quiet until A's transfer is done",
+                      "correct": true
+                    },
+                    {
+                      "text": "Send its own frame to B at once"
+                    },
+                    {
+                      "text": "Send an RTS to A"
+                    },
+                    {
+                      "text": "Ignore it, because the hill hides A"
+                    }
+                  ],
+                  "hints": [
+                    "The CTS means B is about to receive something.",
+                    "C wasn't able to hear A, but it can hear B."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "current"
+                    },
+                    {
+                      "id": "B",
+                      "x": 150,
+                      "y": 90,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 260,
+                      "y": 90,
+                      "label": "C",
+                      "mark": "queued"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C"
+                    }
+                  ],
+                  "legend": "Double ring = sending now. Dashed ring = waiting quietly. ✓ = finished. A line means two stations can hear each other. A and C are behind a hill, so there's no line between them."
+                },
+                "say": "A sends its data. C waits. No collision."
+              },
+              {
+                "state": {
+                  "nodes": [
+                    {
+                      "id": "A",
+                      "x": 40,
+                      "y": 90,
+                      "label": "A",
+                      "mark": "visited"
+                    },
+                    {
+                      "id": "B",
+                      "x": 150,
+                      "y": 90,
+                      "label": "B"
+                    },
+                    {
+                      "id": "C",
+                      "x": 260,
+                      "y": 90,
+                      "label": "C",
+                      "mark": "visited"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "from": "A",
+                      "to": "B"
+                    },
+                    {
+                      "from": "B",
+                      "to": "C"
+                    }
+                  ],
+                  "legend": "Double ring = sending now. Dashed ring = waiting quietly. ✓ = finished. A line means two stations can hear each other. A and C are behind a hill, so there's no line between them."
+                },
+                "say": "A's data arrives safely, then C takes its turn. The short RTS and CTS cost a little time but saved the long frame."
+              }
+            ]
+          },
+          "hints": [],
+          "explain": "Follow A, B and C: first without RTS/CTS, then with it."
+        },
+        {
+          "id": "hidden-or-exposed",
+          "type": "buckets",
+          "taughtOn": "exposed-terminal",
+          "prompt": "Is each description a hidden or an exposed terminal?",
+          "buckets": [
+            "Hidden terminal",
+            "Exposed terminal"
+          ],
+          "items": [
+            {
+              "text": "Two stations on opposite sides of a hill both send to the one in the middle",
+              "bucket": "Hidden terminal"
+            },
+            {
+              "text": "A station stays quiet even though its frame wouldn't hurt anyone",
+              "bucket": "Exposed terminal"
+            },
+            {
+              "text": "Causes collisions",
+              "bucket": "Hidden terminal"
+            },
+            {
+              "text": "Causes wasted waiting",
+              "bucket": "Exposed terminal"
+            },
+            {
+              "text": "A station can't hear the sender that will collide with it at the receiver",
+              "bucket": "Hidden terminal"
+            },
+            {
+              "text": "A station hears a sender that isn't actually a problem",
+              "bucket": "Exposed terminal"
+            }
+          ],
+          "hints": [
+            "Hidden: can't hear. Exposed: hears too much.",
+            "Hidden causes collisions."
+          ],
+          "explain": "Hidden terminals cause collisions, and exposed terminals cause needless waiting."
+        },
+        {
+          "id": "cts-heard",
+          "type": "choice",
+          "taughtOn": "rts-cts",
+          "prompt": "Who hears the CTS that the receiver sends?",
+          "options": [
+            {
+              "text": "Every station within the receiver's range, including ones the sender can't hear",
+              "correct": true
+            },
+            {
+              "text": "Only the sender"
+            },
+            {
+              "text": "Only stations that heard the RTS"
+            },
+            {
+              "text": "Every station in the world"
+            }
+          ],
+          "hints": [
+            "The CTS comes from the receiver, not the sender.",
+            "It reaches everyone near the receiver."
+          ],
+          "explain": "The CTS reaches the receiver's neighbours, including stations hidden from the sender."
+        },
+        {
+          "id": "rts-steps",
+          "type": "order",
+          "taughtOn": "rts-cts",
+          "prompt": "Put the RTS/CTS steps in order.",
+          "items": [
+            "The sender sends a short RTS",
+            "The receiver replies with a CTS",
+            "Stations that hear the CTS stay quiet",
+            "The sender sends the data frame",
+            "The receiver sends an ACK"
+          ],
+          "hints": [
+            "The request comes before the reply.",
+            "The data goes last, after everyone has been told to wait."
+          ],
+          "explain": "Ask, reply, everyone nearby waits, then the data and its ACK."
+        },
+        {
+          "id": "hills-terms",
+          "type": "match",
+          "taughtOn": "rts-cts",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "RTS",
+              "right": "A short \"may I send?\" request"
+            },
+            {
+              "left": "CTS",
+              "right": "The receiver's \"go ahead, everyone else wait\" reply"
+            },
+            {
+              "left": "Hidden terminal",
+              "right": "A station that can't hear a sender but still collides with it"
+            }
+          ],
+          "hints": [
+            "RTS is the first message. CTS is the answer.",
+            "Hidden means can't hear."
+          ],
+          "explain": "RTS asks, CTS answers for everyone to hear, and a hidden terminal is out of earshot."
+        },
+        {
+          "id": "rts-cost",
+          "type": "choice",
+          "taughtOn": "rts-cts",
+          "prompt": "Challenge: why not use RTS/CTS for every tiny frame?",
+          "options": [
+            {
+              "text": "For tiny frames the handshake can cost more time than a collision would",
+              "correct": true
+            },
+            {
+              "text": "Tiny frames can't be sent with RTS/CTS"
+            },
+            {
+              "text": "RTS/CTS only works on cables"
+            },
+            {
+              "text": "It makes frames longer for no reason"
+            }
+          ],
+          "hints": [
+            "Compare the size of the handshake with the size of the frame.",
+            "The extra messages take time."
+          ],
+          "explain": "If a frame is as short as the handshake, a collision costs little and asking first isn't worth it.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "3.4-f1",
+          "type": "quiz",
+          "taughtOn": "hidden-terminal",
+          "prompt": "What is a hidden terminal?",
+          "options": [
+            {
+              "text": "A station that can't hear a sender but can still collide with it at the receiver",
+              "correct": true
+            },
+            {
+              "text": "A station that sends too slowly"
+            },
+            {
+              "text": "A station with its power off"
+            },
+            {
+              "text": "A station that is too loud"
+            }
+          ],
+          "explain": "The problem is that it can't hear the sender, so listening first doesn't help."
+        },
+        {
+          "id": "3.4-f2",
+          "type": "predict",
+          "taughtOn": "rts-cts",
+          "prompt": "Who sends the CTS, and why does that help?",
+          "answer": "The receiver sends it. Its neighbours, including stations the sender can't hear, hear it and stay quiet."
+        },
+        {
+          "id": "3.4-f3",
+          "type": "why",
+          "taughtOn": "exposed-terminal",
+          "prompt": "What does an exposed terminal waste?",
+          "options": [
+            {
+              "text": "Time: it waits even though its frame wouldn't interfere",
+              "correct": true
+            },
+            {
+              "text": "Power only"
+            },
+            {
+              "text": "Memory"
+            },
+            {
+              "text": "Bits in the frame"
+            }
+          ],
+          "explain": "It hears a sender that isn't a problem and holds back for no reason."
+        },
+        {
+          "id": "3.4-f4",
+          "type": "quiz",
+          "taughtOn": "rts-cts",
+          "prompt": "What do RTS and CTS stand for?",
+          "options": [
+            {
+              "text": "Request to send and clear to send",
+              "correct": true
+            },
+            {
+              "text": "Receive to send and clear to send"
+            },
+            {
+              "text": "Ready to send and cancel to send"
+            },
+            {
+              "text": "Request to start and confirm to start"
+            }
+          ],
+          "explain": "RTS asks for permission and CTS grants it."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "RTS/CTS in your Wi-Fi",
+          "text": "Wi-Fi's RTS/CTS handshake is optional. It reduces the collisions caused by hidden stations, but it is typically only used when a frame is bigger than a size threshold. On a crowded network with a lot of hidden stations, turning it on can help.",
+          "source": {
+            "title": "Wikipedia: IEEE 802.11 RTS/CTS",
+            "url": "https://en.wikipedia.org/wiki/IEEE_802.11_RTS/CTS"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You found out why listening first fails behind a hill, how hidden and exposed terminals differ, and how RTS and CTS make everyone nearby wait.",
+          "Kit climbs to the top of Hidden Hills and looks back. The plaza is calm at last. But the road from here leads out of the valley, towards the Router Ranch. The letter has a long way to go."
+        ],
+        "mistake": {
+          "title": "Thinking carrier sensing is enough on wireless",
+          "text": "Listening works only if you can hear every station that might collide with you. On wireless, hills and distance hide stations from each other, so stations ask first with RTS and CTS."
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,1313 @@
+{
+  "zone": 5,
+  "levels": [
+    {
+      "id": "5.1",
+      "title": "Widest Road",
+      "story": "Fenn needs a fence between the sheep field and the vegetable patch, and a track beside it for the tractor. \"Don't squeeze the fence next to the sheep,\" Fenn says. \"Put it where the track is widest. Then a few strays won't spoil it.\"",
+      "everyday": {
+        "scene": "A town planner draws a new road between two neighbourhoods. A road squeezed against one side would cause trouble, so she places it halfway, with the most room on each side.",
+        "question": "If many lines can separate two classes, which one should a computer choose?",
+        "answer": "The one with the widest gap to the nearest examples on each side. That is the idea behind a support vector machine."
+      },
+      "lessons": [
+        {
+          "id": "widest-gap",
+          "title": "Many lines, one best",
+          "text": [
+            "When two classes can be split by a straight line, many lines will do. A support vector machine picks the line with the widest margin: the biggest empty strip between the line and the closest points of both classes.",
+            "A wider margin leaves more room for a new point to land on the right side. On the number line, with A at 1, 2, 3 and B at 7, 8, 9, the best boundary is 5, with 2 to spare on each side."
+          ],
+          "terms": [
+            {
+              "term": "Margin",
+              "meaning": "The empty strip between the boundary and the closest points."
+            },
+            {
+              "term": "Boundary",
+              "meaning": "The line, or point, that separates the classes."
+            }
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Support vector machine",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Support_vector_machine"
+            },
+            {
+              "title": "scikit-learn user guide: Support Vector Machines",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/svm.html"
+            }
+          ]
+        },
+        {
+          "id": "support-vectors",
+          "title": "Only the edge points matter",
+          "text": [
+            "The points that touch the edge of the margin are called support vectors. Here they are 3 and 7. If you moved the point at 9 further out, or deleted the point at 1, the best boundary would not move at all.",
+            "That makes the model compact: it only needs the support vectors to make predictions. The table shows each point's distance from the boundary at 5."
+          ],
+          "table": {
+            "head": [
+              "Point",
+              "Class",
+              "Distance from 5"
+            ],
+            "rows": [
+              [
+                "1",
+                "A",
+                "4"
+              ],
+              [
+                "2",
+                "A",
+                "3"
+              ],
+              [
+                "3",
+                "A",
+                "2"
+              ],
+              [
+                "7",
+                "B",
+                "2"
+              ],
+              [
+                "8",
+                "B",
+                "3"
+              ],
+              [
+                "9",
+                "B",
+                "4"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Support vector machine",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Support_vector_machine"
+            },
+            {
+              "title": "scikit-learn user guide: Support Vector Machines",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/svm.html"
+            }
+          ]
+        },
+        {
+          "id": "distance-to-line",
+          "title": "Measuring the gap",
+          "text": [
+            "In two dimensions a boundary is a line, such as 3x + 4y - 12 = 0. The distance from a point to that line is |3x + 4y - 12| divided by 5, where 5 is the square root of 3 squared plus 4 squared.",
+            {
+              "text": "Real data often overlaps. A soft margin lets a few points sit inside the strip or on the wrong side, and a setting called C sets the trade-off between a wide road and keeping points on the correct side. A large C puts more weight on getting points right, and a small C puts more weight on a wide road.",
+              "verify": false
+            }
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Support vector machine",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Support_vector_machine"
+            },
+            {
+              "title": "scikit-learn user guide: Support Vector Machines",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/svm.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "boundary-mid",
+          "type": "numeric",
+          "taughtOn": "widest-gap",
+          "prompt": "Class A sits at 1, 2, 3 and class B at 7, 8, 9. Where is the widest-margin boundary?",
+          "answer": 5,
+          "calculator": false,
+          "hints": [
+            "It sits halfway between the nearest points of the two classes.",
+            "Halfway between 3 and 7."
+          ],
+          "explain": "Halfway between 3 and 7 is 5. Both classes then have 2 units of room."
+        },
+        {
+          "id": "margin-sim",
+          "type": "stepsim",
+          "taughtOn": "widest-gap",
+          "mode": "predict",
+          "prompt": "Compare three boundaries.",
+          "explain": "A boundary squeezed near one class leaves a small gap. The boundary halfway between the nearest points leaves the widest margin.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "1",
+                      "mark": null,
+                      "tag": "A"
+                    },
+                    {
+                      "value": "2",
+                      "mark": null,
+                      "tag": "A"
+                    },
+                    {
+                      "value": "3",
+                      "mark": null,
+                      "tag": "A"
+                    },
+                    {
+                      "value": "7",
+                      "mark": null,
+                      "tag": "B"
+                    },
+                    {
+                      "value": "8",
+                      "mark": null,
+                      "tag": "B"
+                    },
+                    {
+                      "value": "9",
+                      "mark": null,
+                      "tag": "B"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Two classes on a line"
+                },
+                "say": "Two classes on a number line: A at 1, 2 and 3, and B at 7, 8 and 9. Any boundary between 3 and 7 separates them, so many boundaries work. Which one is safest?"
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "1",
+                      "mark": null,
+                      "tag": "A"
+                    },
+                    {
+                      "value": "2",
+                      "mark": null,
+                      "tag": "A"
+                    },
+                    {
+                      "value": "3",
+                      "mark": "compare",
+                      "tag": "A"
+                    },
+                    {
+                      "value": "7",
+                      "mark": "current",
+                      "tag": "B"
+                    },
+                    {
+                      "value": "8",
+                      "mark": null,
+                      "tag": "B"
+                    },
+                    {
+                      "value": "9",
+                      "mark": null,
+                      "tag": "B"
+                    }
+                  ],
+                  "pointers": {
+                    "3": "boundary at 4"
+                  },
+                  "label": "Two classes on a line"
+                },
+                "say": "Put the boundary at 4. The nearest point on the left, 3, is only 1 away. The nearest on the right, 7, is 3 away. The boundary is squeezed against the A class.",
+                "predict": {
+                  "prompt": "With the boundary at 4, how far is the nearest point?",
+                  "options": [
+                    {
+                      "text": "1",
+                      "correct": true
+                    },
+                    {
+                      "text": "2",
+                      "correct": false
+                    },
+                    {
+                      "text": "3",
+                      "correct": false
+                    },
+                    {
+                      "text": "4",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Look at the A point at 3.",
+                    "4 - 3 = 1."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "1",
+                      "mark": null,
+                      "tag": "A"
+                    },
+                    {
+                      "value": "2",
+                      "mark": null,
+                      "tag": "A"
+                    },
+                    {
+                      "value": "3",
+                      "mark": "current",
+                      "tag": "A"
+                    },
+                    {
+                      "value": "7",
+                      "mark": "compare",
+                      "tag": "B"
+                    },
+                    {
+                      "value": "8",
+                      "mark": null,
+                      "tag": "B"
+                    },
+                    {
+                      "value": "9",
+                      "mark": null,
+                      "tag": "B"
+                    }
+                  ],
+                  "pointers": {
+                    "3": "boundary at 6"
+                  },
+                  "label": "Two classes on a line"
+                },
+                "say": "A boundary at 6 has the opposite problem. The 7 is only 1 away, and the 3 is 3 away."
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "1",
+                      "mark": null,
+                      "tag": "A"
+                    },
+                    {
+                      "value": "2",
+                      "mark": null,
+                      "tag": "A"
+                    },
+                    {
+                      "value": "3",
+                      "mark": "best",
+                      "tag": "A"
+                    },
+                    {
+                      "value": "7",
+                      "mark": "best",
+                      "tag": "B"
+                    },
+                    {
+                      "value": "8",
+                      "mark": null,
+                      "tag": "B"
+                    },
+                    {
+                      "value": "9",
+                      "mark": null,
+                      "tag": "B"
+                    }
+                  ],
+                  "pointers": {
+                    "3": "boundary at 5"
+                  },
+                  "label": "Two classes on a line"
+                },
+                "say": "At 5 the nearest points on each side, 3 and 7, are both 2 away. This is the widest road between the two classes: width 4. Those two points are the support vectors.",
+                "predict": {
+                  "prompt": "Which boundary leaves the widest gap to the nearest point on both sides?",
+                  "options": [
+                    {
+                      "text": "5",
+                      "correct": true
+                    },
+                    {
+                      "text": "4",
+                      "correct": false
+                    },
+                    {
+                      "text": "6",
+                      "correct": false
+                    },
+                    {
+                      "text": "3.5",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "The best boundary is equally far from the nearest points of each class.",
+                    "It is halfway between 3 and 7."
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "margin-width",
+          "type": "numeric",
+          "taughtOn": "widest-gap",
+          "prompt": "The nearest A point is 3 and the nearest B point is 7. How wide is the whole margin, from one to the other?",
+          "answer": 4,
+          "calculator": false,
+          "hints": [
+            "Subtract the two nearest points.",
+            "7 - 3"
+          ],
+          "explain": "7 - 3 = 4. The margin is 4 wide, with the boundary in the middle."
+        },
+        {
+          "id": "sv-or-not",
+          "type": "buckets",
+          "taughtOn": "support-vectors",
+          "prompt": "Is each point a support vector (touching the margin edge) or not?",
+          "buckets": [
+            "Support vector",
+            "Not a support vector"
+          ],
+          "items": [
+            {
+              "text": "The point at 3",
+              "bucket": "Support vector"
+            },
+            {
+              "text": "The point at 7",
+              "bucket": "Support vector"
+            },
+            {
+              "text": "The point at 1",
+              "bucket": "Not a support vector"
+            },
+            {
+              "text": "The point at 9",
+              "bucket": "Not a support vector"
+            },
+            {
+              "text": "The point at 8",
+              "bucket": "Not a support vector"
+            }
+          ],
+          "hints": [
+            "Which points are nearest to the boundary at 5?",
+            "Only the closest point of each class touches the edge."
+          ],
+          "explain": "The points at 3 and 7 are closest and define the margin. The others could move without changing the boundary."
+        },
+        {
+          "id": "move-far-point",
+          "type": "choice",
+          "taughtOn": "support-vectors",
+          "prompt": "What happens to the best boundary if the point at 9 moves further away, to 20?",
+          "options": [
+            {
+              "text": "Nothing, because 9 was not a support vector",
+              "correct": true
+            },
+            {
+              "text": "The boundary moves right"
+            },
+            {
+              "text": "The margin gets wider"
+            },
+            {
+              "text": "The point at 3 stops mattering"
+            }
+          ],
+          "hints": [
+            "Is 9 one of the nearest points?",
+            "Only the points touching the margin set the boundary."
+          ],
+          "explain": "Moving a point that is not a support vector does not change the boundary or the margin."
+        },
+        {
+          "id": "dist-to-line",
+          "type": "numeric",
+          "taughtOn": "distance-to-line",
+          "prompt": "A line is 3x + 4y - 12 = 0. How far is the point (4, 3) from it? Use |3x + 4y - 12| / 5.",
+          "answer": 2.4,
+          "tolerance": 0.01,
+          "calculator": false,
+          "hints": [
+            "Put 4 in for x and 3 in for y: 12 + 12 - 12.",
+            "12 / 5"
+          ],
+          "explain": "3 x 4 + 4 x 3 - 12 = 12, and 12 / 5 = 2.4."
+        },
+        {
+          "id": "svm-words",
+          "type": "match",
+          "taughtOn": "widest-gap",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Margin",
+              "right": "The empty strip around the boundary"
+            },
+            {
+              "left": "Support vector",
+              "right": "A point touching the edge of the margin"
+            },
+            {
+              "left": "Boundary",
+              "right": "What separates the two classes"
+            },
+            {
+              "left": "Soft margin",
+              "right": "Allows a few points inside the margin or on the wrong side"
+            }
+          ],
+          "hints": [
+            "The support vectors are the nearest points.",
+            "A soft margin forgives a few mistakes."
+          ],
+          "explain": "The margin is the strip, support vectors touch its edge, the boundary is the middle, and a soft margin forgives a few strays."
+        },
+        {
+          "id": "why-wide",
+          "type": "choice",
+          "taughtOn": "widest-gap",
+          "prompt": "Why prefer a wide margin?",
+          "options": [
+            {
+              "text": "A new point is more likely to land on the right side",
+              "correct": true
+            },
+            {
+              "text": "It uses fewer points"
+            },
+            {
+              "text": "It makes the classes closer"
+            },
+            {
+              "text": "It removes the need for labels"
+            }
+          ],
+          "hints": [
+            "Think of a road with room on both sides.",
+            "A new point near the boundary could easily land on the wrong side."
+          ],
+          "explain": "A wide margin leaves room for new points to fall on the correct side."
+        },
+        {
+          "id": "svm-steps",
+          "type": "order",
+          "taughtOn": "widest-gap",
+          "prompt": "Put the thinking in order for choosing a boundary.",
+          "items": [
+            "Find boundaries that separate the classes",
+            "Measure the gap to the nearest point on each side",
+            "Pick the boundary with the widest gap",
+            "Keep only the support vectors to predict"
+          ],
+          "hints": [
+            "Separate the classes first.",
+            "Choose after measuring."
+          ],
+          "explain": "Find the separating boundaries, measure the gaps, pick the widest, and keep the support vectors."
+        },
+        {
+          "id": "full-width",
+          "type": "numeric",
+          "taughtOn": "distance-to-line",
+          "prompt": "Challenge: the margin edges for the line 3x + 4y - 12 = 0 pass through (4, 3) and (0, 0). Both are 2.4 from the line. How wide is the whole margin?",
+          "answer": 4.8,
+          "tolerance": 0.01,
+          "calculator": false,
+          "hints": [
+            "The margin is the gap from one edge to the other.",
+            "2.4 + 2.4"
+          ],
+          "explain": "The line is in the middle, 2.4 from each edge, so the full margin is 2 x 2.4 = 4.8 wide.",
+          "challenge": true
+        },
+        {
+          "id": "soft-margin-why",
+          "type": "choice",
+          "taughtOn": "distance-to-line",
+          "prompt": "Challenge: two classes overlap a little, so no straight line separates them perfectly. What helps?",
+          "options": [
+            {
+              "text": "A soft margin that tolerates a few mistakes",
+              "correct": true
+            },
+            {
+              "text": "Deleting the labels"
+            },
+            {
+              "text": "Making the margin zero"
+            },
+            {
+              "text": "Using only the support vectors of one class"
+            }
+          ],
+          "hints": [
+            "Can a hard boundary keep every point on the correct side?",
+            "Allow some points to break the rule."
+          ],
+          "explain": "A soft margin accepts a few points on the wrong side so that a sensible boundary can still be found.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m5.1-f1",
+          "type": "quiz",
+          "taughtOn": "widest-gap",
+          "prompt": "What does a support vector machine try to maximise?",
+          "options": [
+            {
+              "text": "The margin around the boundary",
+              "correct": true
+            },
+            {
+              "text": "The number of points"
+            },
+            {
+              "text": "The slope"
+            },
+            {
+              "text": "The number of classes"
+            }
+          ],
+          "explain": "It picks the boundary with the widest margin."
+        },
+        {
+          "id": "m5.1-f2",
+          "type": "quiz",
+          "taughtOn": "support-vectors",
+          "prompt": "Which points are support vectors?",
+          "options": [
+            {
+              "text": "The points touching the edge of the margin",
+              "correct": true
+            },
+            {
+              "text": "All the points"
+            },
+            {
+              "text": "The points farthest away"
+            },
+            {
+              "text": "The labels"
+            }
+          ],
+          "explain": "Only the closest points define the margin."
+        },
+        {
+          "id": "m5.1-f3",
+          "type": "why",
+          "taughtOn": "widest-gap",
+          "prompt": "Why does a wide margin help?",
+          "options": [
+            {
+              "text": "New points are less likely to land on the wrong side",
+              "correct": true
+            },
+            {
+              "text": "It deletes noise"
+            },
+            {
+              "text": "It shrinks the data"
+            },
+            {
+              "text": "It makes labels unnecessary"
+            }
+          ],
+          "explain": "A wide margin leaves room for new points."
+        },
+        {
+          "id": "m5.1-f4",
+          "type": "predict",
+          "taughtOn": "widest-gap",
+          "prompt": "Class A is at 0 and 2, class B at 6 and 8. Where is the widest boundary?",
+          "answer": "At 4, halfway between 2 and 6."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Support vectors",
+          "text": "In a support vector machine, the samples that lie on the margin are called the support vectors.",
+          "source": {
+            "title": "Wikipedia: Support vector machine",
+            "url": "https://en.wikipedia.org/wiki/Support_vector_machine"
+          }
+        },
+        {
+          "title": "Memory friendly",
+          "text": "scikit-learn notes that support vector machines use a subset of the training points in the decision function, the support vectors, so they are also memory efficient.",
+          "source": {
+            "title": "scikit-learn: Support Vector Machines",
+            "url": "https://scikit-learn.org/stable/modules/svm.html"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You placed a boundary halfway between two classes, found that only the edge points matter, and measured a margin with a distance formula.",
+          "Fenn raps a post at the exact midpoint. \"Room for the sheep, room for the tractor.\""
+        ],
+        "mistake": {
+          "title": "Picking any line that separates the classes",
+          "text": "Many lines work on the training points. The widest-margin line is the safest for new points, and only the points at its edge decide it."
+        }
+      }
+    },
+    {
+      "id": "5.2",
+      "title": "Bend the Map",
+      "story": "Fenn has a new puzzle. The prize pumpkins grow in the middle of the field, and the ordinary ones grow around the edges, on both sides. \"No single fence line splits them,\" Fenn says. \"Unless I bend the field.\"",
+      "everyday": {
+        "scene": "A flat map of the world cuts the Pacific Ocean in two halves. Roll it into a globe and the two halves join up. Some problems that look impossible in one view become easy in another.",
+        "question": "What if no straight line can separate two classes?",
+        "answer": "Add a new feature, such as the square of a value. In the new view the classes may be separable by a straight line. Kernels do this cleverly."
+      },
+      "lessons": [
+        {
+          "id": "not-separable",
+          "title": "When a line fails",
+          "text": [
+            "Sometimes no straight cut can split the classes. On a number line, class A sits at -1, 0 and 1, and class B sits at -4, -3, 3 and 4, on both sides of A. Wherever you cut, B ends up on both sides.",
+            "The fix is not a smarter cut but a different view. A new feature can lift the points so that a straight cut works."
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Support vector machine",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Support_vector_machine"
+            },
+            {
+              "title": "Wikipedia: Kernel method",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Kernel_method"
+            }
+          ]
+        },
+        {
+          "id": "lift-features",
+          "title": "Lift the points",
+          "text": [
+            "Add a new feature by squaring each value. A becomes 1, 0 and 1. B becomes 16, 9, 9 and 16. Now one straight cut, at 5, splits them.",
+            "Going back to the original numbers, that cut at a squared value of 5 means the boundary sits at x = 2.236, the square root of 5, on each side. A straight line in the new view becomes a curved boundary in the old one."
+          ],
+          "table": {
+            "head": [
+              "x",
+              "x squared",
+              "Class"
+            ],
+            "rows": [
+              [
+                "-4",
+                "16",
+                "B"
+              ],
+              [
+                "-3",
+                "9",
+                "B"
+              ],
+              [
+                "-1",
+                "1",
+                "A"
+              ],
+              [
+                "0",
+                "0",
+                "A"
+              ],
+              [
+                "1",
+                "1",
+                "A"
+              ],
+              [
+                "3",
+                "9",
+                "B"
+              ],
+              [
+                "4",
+                "16",
+                "B"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Support vector machine",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Support_vector_machine"
+            },
+            {
+              "title": "scikit-learn user guide: Support Vector Machines",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/svm.html"
+            }
+          ]
+        },
+        {
+          "id": "kernel-trick",
+          "title": "The kernel trick",
+          "text": [
+            "Building new features can get huge. The kernel trick avoids that. A kernel is a function that gives the similarity two points would have in the lifted view, without ever building it. A support vector machine only needs those similarities.",
+            "One kernel is (x . z) squared. For x = (1, 2) and z = (3, 1), the dot product is 5, so the kernel is 25. Another popular choice is the RBF kernel, e to the power of minus gamma times the distance squared, which gives 1 for identical points and fades to 0 far away."
+          ],
+          "deeper": {
+            "title": "Why it works",
+            "text": [
+              {
+                "text": "The squared-dot-product kernel gives exactly the same number as lifting each point to three features (x1 squared, root 2 times x1 times x2, x2 squared) and taking the ordinary dot product. For the points above, both ways give 25.",
+                "verify": false
+              }
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Kernel method",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Kernel_method"
+            },
+            {
+              "title": "scikit-learn user guide: Support Vector Machines",
+              "source": "scikit-learn user guide (linked, not copied)",
+              "url": "https://scikit-learn.org/stable/modules/svm.html"
+            },
+            {
+              "title": "Wikipedia: Polynomial kernel",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Polynomial_kernel"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "lift-sim",
+          "type": "stepsim",
+          "taughtOn": "lift-features",
+          "mode": "predict",
+          "prompt": "Square the values and see the classes separate.",
+          "explain": "A straight cut cannot split the classes on the original line, but it can after squaring each value.",
+          "script": {
+            "view": "array",
+            "steps": [
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "-4",
+                      "mark": null,
+                      "tag": "B"
+                    },
+                    {
+                      "value": "-3",
+                      "mark": null,
+                      "tag": "B"
+                    },
+                    {
+                      "value": "-1",
+                      "mark": null,
+                      "tag": "A"
+                    },
+                    {
+                      "value": "0",
+                      "mark": null,
+                      "tag": "A"
+                    },
+                    {
+                      "value": "1",
+                      "mark": null,
+                      "tag": "A"
+                    },
+                    {
+                      "value": "3",
+                      "mark": null,
+                      "tag": "B"
+                    },
+                    {
+                      "value": "4",
+                      "mark": null,
+                      "tag": "B"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Points on a line, with a new feature"
+                },
+                "say": "Seven points on a number line, in order. Class A (inner) sits at -1, 0 and 1. Class B (outer) sits at -4, -3, 3 and 4. A and B are mixed together, with B on both sides.",
+                "predict": {
+                  "prompt": "Can one single cut on this number line put all of A on one side and all of B on the other?",
+                  "options": [
+                    {
+                      "text": "No, B is on both sides of A",
+                      "correct": true
+                    },
+                    {
+                      "text": "Yes, cut at 0",
+                      "correct": false
+                    },
+                    {
+                      "text": "Yes, cut at 2",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "Where is the A class? Between two groups of B.",
+                    "A cut at 2 leaves B points at -4 and -3 with the A points."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "16",
+                      "mark": null,
+                      "tag": "B"
+                    },
+                    {
+                      "value": "9",
+                      "mark": null,
+                      "tag": "B"
+                    },
+                    {
+                      "value": "1",
+                      "mark": null,
+                      "tag": "A"
+                    },
+                    {
+                      "value": "0",
+                      "mark": null,
+                      "tag": "A"
+                    },
+                    {
+                      "value": "1",
+                      "mark": null,
+                      "tag": "A"
+                    },
+                    {
+                      "value": "9",
+                      "mark": null,
+                      "tag": "B"
+                    },
+                    {
+                      "value": "16",
+                      "mark": null,
+                      "tag": "B"
+                    }
+                  ],
+                  "pointers": {},
+                  "label": "Points on a line, with a new feature"
+                },
+                "say": "Add a new feature: the square of each value. Now A has values 1, 0 and 1, while B has 16, 9, 9 and 16. The classes have come apart.",
+                "predict": {
+                  "prompt": "On the squared values, which cut separates A from B?",
+                  "options": [
+                    {
+                      "text": "5",
+                      "correct": true
+                    },
+                    {
+                      "text": "12",
+                      "correct": false
+                    },
+                    {
+                      "text": "0.5",
+                      "correct": false
+                    }
+                  ],
+                  "hints": [
+                    "All of A is 1 or below, and all of B is 9 or above.",
+                    "A cut at 5 sits between them, and 12 would put the B points at 9 on the A side."
+                  ]
+                }
+              },
+              {
+                "state": {
+                  "items": [
+                    {
+                      "value": "16",
+                      "mark": null,
+                      "tag": "B"
+                    },
+                    {
+                      "value": "9",
+                      "mark": "best",
+                      "tag": "B"
+                    },
+                    {
+                      "value": "1",
+                      "mark": "best",
+                      "tag": "A"
+                    },
+                    {
+                      "value": "0",
+                      "mark": null,
+                      "tag": "A"
+                    },
+                    {
+                      "value": "1",
+                      "mark": "best",
+                      "tag": "A"
+                    },
+                    {
+                      "value": "9",
+                      "mark": "best",
+                      "tag": "B"
+                    },
+                    {
+                      "value": "16",
+                      "mark": null,
+                      "tag": "B"
+                    }
+                  ],
+                  "pointers": {
+                    "3": "cut at 5"
+                  },
+                  "label": "Points on a line, with a new feature"
+                },
+                "say": "The widest cut sits halfway between 1 and 9, at 5. Squared values below 5 are class A. Going back to the original line, that means any x between about -2.24 and 2.24 is A."
+              }
+            ]
+          }
+        },
+        {
+          "id": "square-neg-four",
+          "type": "numeric",
+          "taughtOn": "lift-features",
+          "prompt": "What is the new feature (the square) for the point at x = -4?",
+          "answer": 16,
+          "calculator": false,
+          "hints": [
+            "Multiply the number by itself.",
+            "-4 times -4 is positive."
+          ],
+          "explain": "-4 x -4 = 16."
+        },
+        {
+          "id": "cut-position",
+          "type": "numeric",
+          "taughtOn": "lift-features",
+          "prompt": "After squaring, class A has values up to 1 and class B has values from 9. The widest cut sits halfway between. Where is it?",
+          "answer": 5,
+          "calculator": false,
+          "hints": [
+            "Halfway between 1 and 9.",
+            "(1 + 9) / 2"
+          ],
+          "explain": "(1 + 9) / 2 = 5."
+        },
+        {
+          "id": "why-lift",
+          "type": "choice",
+          "taughtOn": "not-separable",
+          "prompt": "Why does squaring the values help?",
+          "options": [
+            {
+              "text": "It pushes the outer class far from the inner class so one cut works",
+              "correct": true
+            },
+            {
+              "text": "It makes all values negative"
+            },
+            {
+              "text": "It removes class B"
+            },
+            {
+              "text": "It makes the margin zero"
+            }
+          ],
+          "hints": [
+            "What do squares of big numbers look like?",
+            "-4 and 4 both become 16."
+          ],
+          "explain": "Squaring makes the outer B points big (9 to 16) while the inner A points stay small (0 to 1)."
+        },
+        {
+          "id": "line-works",
+          "type": "buckets",
+          "taughtOn": "not-separable",
+          "prompt": "Could one straight cut on the number line separate the classes?",
+          "buckets": [
+            "Yes, one cut works",
+            "No, not in this view"
+          ],
+          "items": [
+            {
+              "text": "A at 1, 2, 3 and B at 7, 8, 9",
+              "bucket": "Yes, one cut works"
+            },
+            {
+              "text": "A at -1, 0, 1 and B at -4, -3, 3, 4",
+              "bucket": "No, not in this view"
+            },
+            {
+              "text": "A at 5 and B at 20, 21",
+              "bucket": "Yes, one cut works"
+            },
+            {
+              "text": "A at 10 with B at both 2 and 18",
+              "bucket": "No, not in this view"
+            }
+          ],
+          "hints": [
+            "Can you cut so all of one class is on one side?",
+            "A class stuck between two parts of the other cannot be cut off."
+          ],
+          "explain": "A single cut needs one class on each side. A class in the middle of the other cannot be separated that way."
+        },
+        {
+          "id": "kernel-value",
+          "type": "numeric",
+          "taughtOn": "kernel-trick",
+          "prompt": "For x = (1, 2) and z = (3, 1), the kernel is (x . z) squared. What is it?",
+          "answer": 25,
+          "calculator": false,
+          "hints": [
+            "First the dot product: 1 x 3 + 2 x 1.",
+            "The dot product is 5. Now square it."
+          ],
+          "explain": "The dot product is 3 + 2 = 5, and 5 squared is 25."
+        },
+        {
+          "id": "kernel-words",
+          "type": "match",
+          "taughtOn": "kernel-trick",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Kernel",
+              "right": "A function giving the similarity of two points in the lifted view"
+            },
+            {
+              "left": "Kernel trick",
+              "right": "Getting that similarity without building the new features"
+            },
+            {
+              "left": "RBF kernel",
+              "right": "Similarity that fades with distance"
+            },
+            {
+              "left": "New feature",
+              "right": "An extra value computed from the old ones"
+            }
+          ],
+          "hints": [
+            "The trick avoids building the features.",
+            "RBF stands for radial basis function, and similarity fades with distance."
+          ],
+          "explain": "A kernel gives similarity in the lifted view. The trick avoids building the features, and the RBF kernel fades with distance."
+        },
+        {
+          "id": "trick-point",
+          "type": "choice",
+          "taughtOn": "kernel-trick",
+          "prompt": "What is the point of the kernel trick?",
+          "options": [
+            {
+              "text": "It saves building a huge set of new features",
+              "correct": true
+            },
+            {
+              "text": "It deletes the support vectors"
+            },
+            {
+              "text": "It removes the labels"
+            },
+            {
+              "text": "It makes data linear in the original view"
+            }
+          ],
+          "hints": [
+            "Why avoid building the features?",
+            "There may be enormous numbers of them."
+          ],
+          "explain": "The kernel gives the same similarity numbers without ever building the lifted features."
+        },
+        {
+          "id": "lift-steps",
+          "type": "order",
+          "taughtOn": "lift-features",
+          "prompt": "Put the steps in order for separating classes that a line cannot split.",
+          "items": [
+            "Notice no straight cut separates the classes",
+            "Add a new feature, such as the square",
+            "Cut in the new view",
+            "Map the cut back to the original view"
+          ],
+          "hints": [
+            "Notice the problem first.",
+            "Map back last."
+          ],
+          "explain": "Spot the problem, add a feature, cut in the new view, and map the cut back."
+        },
+        {
+          "id": "rbf-value",
+          "type": "numeric",
+          "taughtOn": "kernel-trick",
+          "prompt": "Challenge: the RBF kernel is e to the power of minus gamma times d squared. With gamma = 0.5 and distance d = 2, what is e to the power of -2? (Round to two decimals.)",
+          "answer": 0.14,
+          "tolerance": 0.005,
+          "calculator": false,
+          "hints": [
+            "The exponent is -0.5 x 4.",
+            "e to the -2 is about 0.135."
+          ],
+          "explain": "-0.5 x 4 = -2, and e to the -2 is about 0.1353, so 0.14 to two decimals. The two points are not very similar.",
+          "challenge": true
+        },
+        {
+          "id": "boundary-shape",
+          "type": "choice",
+          "taughtOn": "lift-features",
+          "prompt": "Challenge: the cut at a squared value of 5 is a straight line in the new view. What does it look like on the original number line?",
+          "options": [
+            {
+              "text": "Two boundary points, at about -2.24 and 2.24",
+              "correct": true
+            },
+            {
+              "text": "One boundary point at 5"
+            },
+            {
+              "text": "No boundary at all"
+            },
+            {
+              "text": "A boundary at 0"
+            }
+          ],
+          "hints": [
+            "A squared value of 5 comes from two numbers.",
+            "The square root of 5 is about 2.24, and -2.24 also squares to 5."
+          ],
+          "explain": "x squared = 5 happens at x = 2.24 and x = -2.24, so the boundary has two points. Points between them are class A.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "m5.2-f1",
+          "type": "quiz",
+          "taughtOn": "not-separable",
+          "prompt": "What can you do when no straight line separates two classes?",
+          "options": [
+            {
+              "text": "Add a new feature and cut in the new view",
+              "correct": true
+            },
+            {
+              "text": "Delete the smaller class"
+            },
+            {
+              "text": "Remove the labels"
+            },
+            {
+              "text": "Make k bigger"
+            }
+          ],
+          "explain": "Lifting the points into a new view can make a straight cut possible."
+        },
+        {
+          "id": "m5.2-f2",
+          "type": "quiz",
+          "taughtOn": "kernel-trick",
+          "prompt": "What does a kernel give you?",
+          "options": [
+            {
+              "text": "The similarity of two points in the lifted view",
+              "correct": true
+            },
+            {
+              "text": "The label"
+            },
+            {
+              "text": "The margin width"
+            },
+            {
+              "text": "The number of classes"
+            }
+          ],
+          "explain": "A kernel computes similarity without building the new features."
+        },
+        {
+          "id": "m5.2-f3",
+          "type": "why",
+          "taughtOn": "kernel-trick",
+          "prompt": "Why use the kernel trick?",
+          "options": [
+            {
+              "text": "Building the lifted features can be enormous",
+              "correct": true
+            },
+            {
+              "text": "It makes classes smaller"
+            },
+            {
+              "text": "It needs no data"
+            },
+            {
+              "text": "It removes the margin"
+            }
+          ],
+          "explain": "The kernel skips the huge feature-building step."
+        },
+        {
+          "id": "m5.2-f4",
+          "type": "predict",
+          "taughtOn": "lift-features",
+          "prompt": "What is x squared for x = -3?",
+          "answer": "9."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Non-linear boundaries",
+          "text": "Support vector machines can perform non-linear classification using the kernel trick, which implicitly maps inputs into a higher-dimensional feature space.",
+          "source": {
+            "title": "Wikipedia: Support vector machine",
+            "url": "https://en.wikipedia.org/wiki/Support_vector_machine"
+          }
+        },
+        {
+          "title": "Common kernels",
+          "text": "scikit-learn's SVM classes support several kernels, including linear, polynomial, RBF and sigmoid, and you can also supply your own.",
+          "source": {
+            "title": "scikit-learn: Support Vector Machines",
+            "url": "https://scikit-learn.org/stable/modules/svm.html"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You saw that a straight cut can fail, lifted the points with a squared feature so that it worked, and met the kernel trick that saves building the new features.",
+          "Fenn paints a circle round the pumpkins. \"Straight in the new view. Round in the field.\""
+        ],
+        "mistake": {
+          "title": "Thinking a straight-line model can only draw straight boundaries",
+          "text": "In a lifted view the boundary can be a straight line and still look curved in the original view."
+        }
+      }
+    }
+  ]
+}

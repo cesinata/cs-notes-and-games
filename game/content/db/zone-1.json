@@ -1,0 +1,1252 @@
+{
+  "zone": 1,
+  "levels": [
+    {
+      "id": "1.1",
+      "title": "Unique Stamps",
+      "story": "Odile wants every card in the catalogue to carry a stamp that no other card shares. Kit learns what makes a good stamp.",
+      "everyday": {
+        "scene": "Two members at the library are both called Sam Lee. The librarian asks for your member number instead of your name.",
+        "question": "Why is a number better than a name?",
+        "answer": "A name can be shared, but a number given to only one person leads to exactly one record. In a database, that kind of identifier is called a key."
+      },
+      "lessons": [
+        {
+          "id": "relations",
+          "title": "The relational model",
+          "text": [
+            "In the relational model, data is held in relations, which everyday speech calls tables. A row is a tuple and a column is an attribute. Each column has a domain: the set of values allowed in it, like whole numbers for a year.",
+            {
+              "text": "Edgar Codd described this model in 1970. Most relational databases today use SQL, which Wikipedia calls an engineering approximation of it.",
+              "verify": false
+            }
+          ],
+          "terms": [
+            {
+              "term": "Relation",
+              "meaning": "A table, in the language of the model."
+            },
+            {
+              "term": "Tuple",
+              "meaning": "One row."
+            },
+            {
+              "term": "Domain",
+              "meaning": "The set of values a column may hold."
+            }
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Relational model",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Relational_model"
+            },
+            {
+              "title": "Wikipedia: Edgar F. Codd",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Edgar_F._Codd"
+            }
+          ]
+        },
+        {
+          "id": "keys",
+          "title": "Keys that pick out one row",
+          "text": [
+            "A key is a column, or a group of columns, whose values pick out exactly one row. A column can only be a key if no two rows can ever share a value, and it is never empty. Any column that qualifies is a candidate key.",
+            "The designer picks one candidate as the primary key. PostgreSQL's manual says a primary key needs values that are both unique and not null, and a table can have at most one."
+          ],
+          "terms": [
+            {
+              "term": "Candidate key",
+              "meaning": "Any column or group that could identify a row."
+            },
+            {
+              "term": "Primary key",
+              "meaning": "The candidate the designer picks."
+            }
+          ],
+          "table": {
+            "head": [
+              "member_id",
+              "name",
+              "suburb"
+            ],
+            "rows": [
+              [
+                "1",
+                "Ana",
+                "Carlton"
+              ],
+              [
+                "2",
+                "Ben",
+                "Fitzroy"
+              ],
+              [
+                "3",
+                "Chi",
+                "Carlton"
+              ],
+              [
+                "4",
+                "Dev",
+                "Brunswick"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "In this members table, could name be a key? Why not?",
+            "answer": "No. Two members could share a name, and a key must never repeat."
+          },
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Constraints",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/ddl-constraints.html"
+            },
+            {
+              "title": "Wikipedia: Primary key",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Primary_key"
+            }
+          ]
+        },
+        {
+          "id": "good-keys",
+          "title": "Choosing well",
+          "text": [
+            "A good key is unique, never empty and rarely changes. A suburb fails the first test, and a name does too. An email is unique, but people change it.",
+            "Many designers add a plain number the DBMS hands out, called a surrogate key. When no single column is unique, two or more can be combined into a composite key."
+          ],
+          "terms": [
+            {
+              "term": "Surrogate key",
+              "meaning": "A plain number added only to identify rows."
+            },
+            {
+              "term": "Composite key",
+              "meaning": "A key made of two or more columns together."
+            }
+          ],
+          "predict": {
+            "prompt": "A table records which member attended which workshop. Why can't member_id alone be the key?",
+            "answer": "A member can attend many workshops, so member_id would repeat. A pair, member and workshop together, can work."
+          },
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Constraints",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/ddl-constraints.html"
+            },
+            {
+              "title": "Wikipedia: Primary key",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Primary_key"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "best-key",
+          "type": "choice",
+          "taughtOn": "good-keys",
+          "prompt": "Which column makes the best primary key for the members table?",
+          "options": [
+            {
+              "text": "A member number the DBMS hands out",
+              "correct": true
+            },
+            {
+              "text": "The member's name"
+            },
+            {
+              "text": "The member's suburb"
+            },
+            {
+              "text": "The member's birth year"
+            }
+          ],
+          "hints": [
+            "Which choice can never be shared by two members?",
+            "Names, suburbs and birth years all repeat."
+          ],
+          "explain": "A plain number that is unique, never empty and never changes is the safest key."
+        },
+        {
+          "id": "key-quality",
+          "type": "buckets",
+          "taughtOn": "good-keys",
+          "prompt": "Sort each idea: would it make a good key or a poor one for a table of its own kind of thing?",
+          "buckets": [
+            "Good key",
+            "Poor key"
+          ],
+          "items": [
+            {
+              "text": "A member number the DBMS hands out",
+              "bucket": "Good key"
+            },
+            {
+              "text": "A barcode printed on each book copy",
+              "bucket": "Good key"
+            },
+            {
+              "text": "A member's surname",
+              "bucket": "Poor key"
+            },
+            {
+              "text": "A book's genre",
+              "bucket": "Poor key"
+            },
+            {
+              "text": "A suburb",
+              "bucket": "Poor key"
+            },
+            {
+              "text": "A date of birth",
+              "bucket": "Poor key"
+            }
+          ],
+          "hints": [
+            "Ask: could two rows ever share this value?",
+            "Numbers made to be unique are good. Everyday facts repeat."
+          ],
+          "explain": "Keys must be unique. Surnames, genres, suburbs and birth dates repeat, so they fail."
+        },
+        {
+          "id": "count-candidates",
+          "type": "numeric",
+          "taughtOn": "keys",
+          "prompt": "This members table has the columns member_id, name, email and suburb. Rows (member_id, name, email, suburb): (1, Sam, sam@a.example, Carlton); (2, Ana, ana@b.example, Carlton); (3, Sam, sam2@c.example, Fitzroy); (4, Ben, ben@d.example, Fitzroy); (5, Eli, eli@e.example, Carlton). How many columns could serve as a key, with no repeats and no gaps?",
+          "answer": 2,
+          "unit": "columns",
+          "calculator": false,
+          "hints": [
+            "Check each column for a repeated value.",
+            "Name repeats (Sam twice), and suburb repeats. Check the other two."
+          ],
+          "explain": "member_id and email are never repeated here, so both are candidate keys. The designer picks one as the primary key."
+        },
+        {
+          "id": "key-words",
+          "type": "match",
+          "taughtOn": "relations",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Relation",
+              "right": "A table"
+            },
+            {
+              "left": "Tuple",
+              "right": "A row"
+            },
+            {
+              "left": "Attribute",
+              "right": "A column"
+            },
+            {
+              "left": "Domain",
+              "right": "The set of values a column may hold"
+            },
+            {
+              "left": "Composite key",
+              "right": "A key made of two or more columns"
+            }
+          ],
+          "hints": [
+            "Rows are tuples, columns are attributes.",
+            "A composite key needs more than one column."
+          ],
+          "explain": "The relational model's words map onto tables: relation, tuple, attribute, domain."
+        },
+        {
+          "id": "key-rule",
+          "type": "choice",
+          "taughtOn": "keys",
+          "prompt": "Which rule must every primary key value follow?",
+          "options": [
+            {
+              "text": "Unique and never empty",
+              "correct": true
+            },
+            {
+              "text": "Short and easy to remember"
+            },
+            {
+              "text": "Always a word"
+            },
+            {
+              "text": "Different in every table"
+            }
+          ],
+          "hints": [
+            "Think of what a key is for: picking out exactly one row.",
+            "A repeated or missing value cannot pick out one row."
+          ],
+          "explain": "A primary key must be unique and not null, so it always leads to exactly one row."
+        },
+        {
+          "id": "composite",
+          "type": "choice",
+          "taughtOn": "good-keys",
+          "prompt": "A table records each member joining workshops, once per workshop. Members join many, and workshops have many members. What is the smallest key that works?",
+          "options": [
+            {
+              "text": "member_id and workshop_id together",
+              "correct": true
+            },
+            {
+              "text": "member_id alone"
+            },
+            {
+              "text": "workshop_id alone"
+            },
+            {
+              "text": "The member's name"
+            }
+          ],
+          "hints": [
+            "A single column repeats here. What about two?",
+            "Each member and workshop pair appears only once."
+          ],
+          "explain": "Neither column is unique alone, but each pair appears only once, so the two together form a composite key.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d1.1-f1",
+          "type": "quiz",
+          "taughtOn": "keys",
+          "prompt": "A primary key must be...",
+          "options": [
+            {
+              "text": "Unique and never empty",
+              "correct": true
+            },
+            {
+              "text": "Short"
+            },
+            {
+              "text": "A word"
+            },
+            {
+              "text": "Different each time"
+            }
+          ],
+          "explain": "A key picks out exactly one row."
+        },
+        {
+          "id": "d1.1-f2",
+          "type": "quiz",
+          "taughtOn": "relations",
+          "prompt": "In the relational model, a row is called a...",
+          "options": [
+            {
+              "text": "Tuple",
+              "correct": true
+            },
+            {
+              "text": "Domain"
+            },
+            {
+              "text": "Relation"
+            },
+            {
+              "text": "Attribute"
+            }
+          ],
+          "explain": "Relation = table, tuple = row, attribute = column."
+        },
+        {
+          "id": "d1.1-f3",
+          "type": "why",
+          "taughtOn": "good-keys",
+          "prompt": "Why do many designers add an id number instead of using an email as the key?",
+          "options": [
+            {
+              "text": "Emails can change, but an id never needs to",
+              "correct": true
+            },
+            {
+              "text": "Emails are too long to store"
+            },
+            {
+              "text": "Emails are not unique"
+            },
+            {
+              "text": "Ids are secret"
+            }
+          ],
+          "explain": "A key should rarely change."
+        },
+        {
+          "id": "d1.1-f4",
+          "type": "predict",
+          "taughtOn": "good-keys",
+          "prompt": "When do you need a composite key?",
+          "answer": "When no single column is unique, but two or more together are."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Keys in everyday life",
+          "text": "A national identification number is a key in everyday life: a code that is unique to one person, so it can pick out exactly one record.",
+          "source": {
+            "title": "Wikipedia: Primary key",
+            "url": "https://en.wikipedia.org/wiki/Primary_key"
+          },
+          "verify": false
+        },
+        {
+          "title": "A key also gets an index",
+          "text": "In PostgreSQL, declaring a primary key makes the DBMS build a lookup structure called an index, so duplicates are refused and rows can be found by key.",
+          "source": {
+            "title": "PostgreSQL docs: Constraints",
+            "url": "https://www.postgresql.org/docs/current/ddl-constraints.html"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You learned the words of the relational model, what makes a column a candidate key, and why a plain id often beats a name.",
+          "Odile stamps the first card with a number. \"No two alike.\""
+        ],
+        "mistake": {
+          "title": "Using a name as a key",
+          "text": "Names look unique until the day two people share one. A key must be unique for every row that could ever exist, so use a number made for the job."
+        }
+      }
+    },
+    {
+      "id": "1.2",
+      "title": "Matching Cards",
+      "story": "Cards in one drawer point at cards in another. Kit learns how those pointers are written, and how they are kept honest.",
+      "everyday": {
+        "scene": "A loan slip says \"Member 3, Book 7\". It does not copy the member's whole details and the book's whole details onto the slip.",
+        "question": "How does the slip still lead you to both?",
+        "answer": "It holds each one's id. A column of ids that point at another table's rows is called a foreign key."
+      },
+      "lessons": [
+        {
+          "id": "foreign-key",
+          "title": "A key that points",
+          "text": [
+            "A foreign key is a column whose values are primary key values from another table. In loans, member_id says which row in members the loan belongs to. It is just a copy of the key, so nothing else needs repeating.",
+            "The table holding the primary key is the parent. The table holding the foreign key is the child."
+          ],
+          "terms": [
+            {
+              "term": "Foreign key",
+              "meaning": "A column that points at another table's primary key."
+            },
+            {
+              "term": "Parent table",
+              "meaning": "The table being pointed at."
+            },
+            {
+              "term": "Child table",
+              "meaning": "The table holding the pointer."
+            }
+          ],
+          "table": {
+            "head": [
+              "loan_id",
+              "member_id",
+              "book_id"
+            ],
+            "rows": [
+              [
+                "1",
+                "1",
+                "2"
+              ],
+              [
+                "2",
+                "1",
+                "4"
+              ],
+              [
+                "3",
+                "2",
+                "2"
+              ],
+              [
+                "4",
+                "3",
+                "7"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Foreign keys",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/tutorial-fk.html"
+            },
+            {
+              "title": "Wikipedia: Foreign key",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Foreign_key"
+            }
+          ]
+        },
+        {
+          "id": "integrity",
+          "title": "Keeping pointers honest",
+          "text": [
+            "A DBMS can enforce referential integrity: a foreign key value must match a primary key in the parent table. A loan for member 99 is rejected if there is no member 99. PostgreSQL's tutorial uses this very idea.",
+            "Deleting a member who still has loans is blocked by default too. A designer can choose another rule, such as deleting those loans along with the member."
+          ],
+          "predict": {
+            "prompt": "What should happen if you delete member 3 while loans still point at them?",
+            "answer": "By default the DBMS refuses. The designer can choose a rule, like removing their loans too."
+          },
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Foreign keys",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/tutorial-fk.html"
+            },
+            {
+              "title": "Wikipedia: Foreign key",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Foreign_key"
+            }
+          ]
+        },
+        {
+          "id": "link-table",
+          "title": "Storing many-to-many",
+          "text": [
+            "A one-to-many link needs one foreign key, placed on the many side: loans carry member_id. A many-to-many link fits in neither table, so it gets its own linking table.",
+            "Loans does this for members and books. Each row is one pairing, with a foreign key for each side, and it can also hold facts about the pairing, like the date."
+          ],
+          "terms": [
+            {
+              "term": "Linking table",
+              "meaning": "A table holding pairings for a many-to-many link."
+            }
+          ],
+          "table": {
+            "head": [
+              "Column in loans",
+              "Role"
+            ],
+            "rows": [
+              [
+                "loan_id",
+                "primary key"
+              ],
+              [
+                "member_id",
+                "foreign key to members"
+              ],
+              [
+                "book_id",
+                "foreign key to books"
+              ],
+              [
+                "borrowed",
+                "a fact about the pairing"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "PostgreSQL documentation: Foreign keys",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/tutorial-fk.html"
+            },
+            {
+              "title": "Wikipedia: Foreign key",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Foreign_key"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "column-roles",
+          "type": "buckets",
+          "taughtOn": "foreign-key",
+          "prompt": "Sort each column: is it a primary key or a foreign key?",
+          "buckets": [
+            "Primary key",
+            "Foreign key"
+          ],
+          "items": [
+            {
+              "text": "members.member_id",
+              "bucket": "Primary key"
+            },
+            {
+              "text": "books.book_id",
+              "bucket": "Primary key"
+            },
+            {
+              "text": "loans.loan_id",
+              "bucket": "Primary key"
+            },
+            {
+              "text": "loans.member_id",
+              "bucket": "Foreign key"
+            },
+            {
+              "text": "loans.book_id",
+              "bucket": "Foreign key"
+            }
+          ],
+          "hints": [
+            "A table's own id is its primary key.",
+            "A column that holds another table's id is a foreign key."
+          ],
+          "explain": "Each table's own id is a primary key. loans.member_id and loans.book_id point elsewhere, so they are foreign keys."
+        },
+        {
+          "id": "where-fk",
+          "type": "choice",
+          "taughtOn": "foreign-key",
+          "prompt": "Each member makes many loans. Where does the foreign key go?",
+          "options": [
+            {
+              "text": "A member_id column in the loans table",
+              "correct": true
+            },
+            {
+              "text": "A loan_id column in the members table"
+            },
+            {
+              "text": "Both tables, with all loans listed in each member's row"
+            },
+            {
+              "text": "Nowhere; no key is needed"
+            }
+          ],
+          "hints": [
+            "The foreign key goes on the \"many\" side.",
+            "Many loans, one member each: loans point at members."
+          ],
+          "explain": "Each loan has one member, so loans carry member_id and point at members."
+        },
+        {
+          "id": "count-loans",
+          "type": "numeric",
+          "taughtOn": "foreign-key",
+          "prompt": "Loans as (loan_id, member_id): (1, 1); (2, 1); (3, 2); (4, 3); (5, 3); (6, 3); (7, 5); (8, 1); (9, 3). How many loans belong to member 3?",
+          "answer": 4,
+          "unit": "loans",
+          "calculator": false,
+          "hints": [
+            "Look at the second number in each pair.",
+            "Count the pairs where the member is 3."
+          ],
+          "explain": "Loans 4, 5, 6 and 9 all point at member 3, so there are 4."
+        },
+        {
+          "id": "reject-loan",
+          "type": "choice",
+          "taughtOn": "integrity",
+          "prompt": "Someone adds a loan for member 99, but members has no row 99. What does a DBMS enforcing referential integrity do?",
+          "options": [
+            {
+              "text": "Rejects the new loan",
+              "correct": true
+            },
+            {
+              "text": "Quietly creates a member 99"
+            },
+            {
+              "text": "Saves it and checks later"
+            },
+            {
+              "text": "Changes it to member 1"
+            }
+          ],
+          "hints": [
+            "The foreign key must match a real primary key.",
+            "Nothing in members matches 99."
+          ],
+          "explain": "Referential integrity refuses a pointer to a row that does not exist."
+        },
+        {
+          "id": "fk-words",
+          "type": "match",
+          "taughtOn": "link-table",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Parent table",
+              "right": "The table whose primary key is pointed at"
+            },
+            {
+              "left": "Child table",
+              "right": "The table that holds the foreign key"
+            },
+            {
+              "left": "Foreign key",
+              "right": "A column pointing at another table's primary key"
+            },
+            {
+              "left": "Linking table",
+              "right": "Holds the pairings of a many-to-many link"
+            }
+          ],
+          "hints": [
+            "Parents are pointed at. Children do the pointing.",
+            "A linking table has two foreign keys."
+          ],
+          "explain": "Children hold foreign keys that point at parents, and a linking table joins two parents."
+        },
+        {
+          "id": "club-link",
+          "type": "choice",
+          "taughtOn": "link-table",
+          "prompt": "Students join many clubs, and clubs have many students. How should a database store the joins?",
+          "options": [
+            {
+              "text": "A third table with student_id and club_id as foreign keys",
+              "correct": true
+            },
+            {
+              "text": "A list of club names inside each student's cell"
+            },
+            {
+              "text": "A club_id column in students only"
+            },
+            {
+              "text": "Two copies of each table"
+            }
+          ],
+          "hints": [
+            "A many-to-many link fits in neither table alone.",
+            "Each row of the third table is one pairing."
+          ],
+          "explain": "A linking table, one row per student and club pairing, is the standard answer.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d1.2-f1",
+          "type": "quiz",
+          "taughtOn": "foreign-key",
+          "prompt": "A foreign key is a column that...",
+          "options": [
+            {
+              "text": "Points at another table's primary key",
+              "correct": true
+            },
+            {
+              "text": "Is always unique"
+            },
+            {
+              "text": "Holds a password"
+            },
+            {
+              "text": "Names the table"
+            }
+          ],
+          "explain": "It is a copy of a key from the parent table."
+        },
+        {
+          "id": "d1.2-f2",
+          "type": "quiz",
+          "taughtOn": "integrity",
+          "prompt": "A loan for a member who does not exist is...",
+          "options": [
+            {
+              "text": "Rejected by referential integrity",
+              "correct": true
+            },
+            {
+              "text": "Saved anyway"
+            },
+            {
+              "text": "Fixed automatically"
+            },
+            {
+              "text": "Moved to another table"
+            }
+          ],
+          "explain": "A foreign key must match a real row."
+        },
+        {
+          "id": "d1.2-f3",
+          "type": "why",
+          "taughtOn": "link-table",
+          "prompt": "Why does a many-to-many link need its own table?",
+          "options": [
+            {
+              "text": "It fits in neither table without repeating or listing values",
+              "correct": true
+            },
+            {
+              "text": "Tables can only hold two columns"
+            },
+            {
+              "text": "It is faster to draw"
+            },
+            {
+              "text": "Databases forbid one-to-many"
+            }
+          ],
+          "explain": "One row per pairing keeps every cell a single value."
+        },
+        {
+          "id": "d1.2-f4",
+          "type": "predict",
+          "taughtOn": "foreign-key",
+          "prompt": "Which side of a one-to-many link holds the foreign key?",
+          "answer": "The many side."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Linking tables behind authors and books",
+          "text": "Authors and books are many-to-many. In a relational database this is usually stored in a linking table (also called a junction or join table) that holds an author id and a book id.",
+          "source": {
+            "title": "Wikipedia: Many-to-many (data model)",
+            "url": "https://en.wikipedia.org/wiki/Many-to-many_(data_model)"
+          },
+          "verify": false
+        },
+        {
+          "title": "Pointers that cannot dangle",
+          "text": "Databases enforce referential integrity so a pointer never leads nowhere. Programs often check this themselves, but the DBMS can check it every single time.",
+          "source": {
+            "title": "PostgreSQL docs: Foreign keys",
+            "url": "https://www.postgresql.org/docs/current/tutorial-fk.html"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You saw that foreign keys point at primary keys, that a DBMS can refuse pointers to nowhere, and that many-to-many links get a table of their own.",
+          "Odile slides the drawers shut. \"Every card now leads somewhere real.\""
+        ],
+        "mistake": {
+          "title": "Copying the whole record instead of its key",
+          "text": "It is tempting to copy a member's name and address onto every loan. Then the same facts repeat and can drift apart. Copy only the key and let the pointer do the work."
+        }
+      }
+    },
+    {
+      "id": "1.3",
+      "title": "Tidy Shelves",
+      "story": "Odile's old index cards repeat the same address on dozens of cards. When someone moves, half the cards are missed. Kit sets out to tidy them.",
+      "everyday": {
+        "scene": "A club's attendance sheet has each member's phone number written next to every event they went to. One member changes number.",
+        "question": "How many places must the secretary fix, and what if one is missed?",
+        "answer": "Every row for that member. Miss one and the sheet disagrees with itself. Normalisation is the habit of keeping each fact in one place."
+      },
+      "lessons": [
+        {
+          "id": "anomalies",
+          "title": "Facts that repeat",
+          "text": [
+            "Suppose each loan row also stores the member's suburb. A fact now repeats on every loan, and that causes three kinds of trouble, called anomalies.",
+            "Update: change the suburb in some rows but not others, and the data disagrees. Insertion: a new member with no loans has nowhere to go. Deletion: remove someone's only loan and their details vanish too."
+          ],
+          "terms": [
+            {
+              "term": "Redundancy",
+              "meaning": "The same fact stored in more than one place."
+            },
+            {
+              "term": "Anomaly",
+              "meaning": "A problem caused by repeated facts."
+            }
+          ],
+          "table": {
+            "head": [
+              "loan_id",
+              "member",
+              "suburb",
+              "book"
+            ],
+            "rows": [
+              [
+                "1",
+                "Ana",
+                "Carlton",
+                "The Lost Lantern"
+              ],
+              [
+                "2",
+                "Ana",
+                "Carlton",
+                "Quiet Harbour"
+              ],
+              [
+                "8",
+                "Ana",
+                "Carlton",
+                "The Last Ferry"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "Ana moves to Brunswick, but only one of her three rows is fixed. What does the data now say?",
+            "answer": "That Ana lives in two suburbs at once."
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Database normalization",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Database_normalization"
+            },
+            {
+              "title": "PostgreSQL documentation: Constraints",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/ddl-constraints.html"
+            }
+          ]
+        },
+        {
+          "id": "split",
+          "title": "The fix: split and link",
+          "text": [
+            "Normalisation means rearranging tables so each fact is stored once. Spot a fact that depends on something other than the loan itself, move it to its own table keyed by what it depends on, and link the tables with a foreign key.",
+            "The suburb depends on the member, so it moves into members. Loans keep only member_id."
+          ],
+          "references": [
+            {
+              "title": "Wikipedia: Database normalization",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Database_normalization"
+            },
+            {
+              "title": "PostgreSQL documentation: Foreign keys",
+              "source": "PostgreSQL docs (linked, not copied)",
+              "url": "https://www.postgresql.org/docs/current/tutorial-fk.html"
+            }
+          ]
+        },
+        {
+          "id": "normal-forms",
+          "title": "First, second and third",
+          "text": [
+            "Designers name how tidy a table is with normal forms. First: every cell holds a single value, never a list.",
+            {
+              "text": "Second: every non-key column depends on the whole key, which matters when the key has several columns. Third: non-key columns depend only on the key, not on each other.",
+              "verify": false
+            },
+            "Informally, a design is called normalised once it reaches third normal form."
+          ],
+          "terms": [
+            {
+              "term": "Normal form",
+              "meaning": "A named level of tidiness for a table design."
+            }
+          ],
+          "predict": {
+            "prompt": "A table has member_id, team and team_colour, and the colour depends on the team. Which form does that break?",
+            "answer": "Third. A non-key column (colour) depends on another non-key column (team)."
+          },
+          "deeper": {
+            "title": "Where the names come from",
+            "text": [
+              {
+                "text": "Codd defined first normal form in 1970, and second and third in 1971.",
+                "verify": false
+              }
+            ]
+          },
+          "references": [
+            {
+              "title": "Wikipedia: Database normalization",
+              "source": "Wikipedia (linked, not copied)",
+              "url": "https://en.wikipedia.org/wiki/Database_normalization"
+            },
+            {
+              "title": "SQLBolt: interactive SQL lessons",
+              "source": "SQLBolt (linked only)",
+              "url": "https://sqlbolt.com/"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "anomaly-kinds",
+          "type": "buckets",
+          "taughtOn": "anomalies",
+          "prompt": "Sort each problem by the kind of anomaly it is.",
+          "buckets": [
+            "Update",
+            "Insertion",
+            "Deletion"
+          ],
+          "items": [
+            {
+              "text": "Ana moves, but only 2 of her 3 loan rows are changed",
+              "bucket": "Update"
+            },
+            {
+              "text": "A book title is spelt two ways in different rows",
+              "bucket": "Update"
+            },
+            {
+              "text": "A new member who has not borrowed yet cannot be added",
+              "bucket": "Insertion"
+            },
+            {
+              "text": "A new book cannot be listed until someone borrows it",
+              "bucket": "Insertion"
+            },
+            {
+              "text": "Deleting a member's only loan also erases their suburb",
+              "bucket": "Deletion"
+            },
+            {
+              "text": "Removing a book's last loan makes the library forget the book",
+              "bucket": "Deletion"
+            }
+          ],
+          "hints": [
+            "Update = changing a repeated fact. Insertion = adding something new. Deletion = removing something.",
+            "Ask what action causes the trouble."
+          ],
+          "explain": "Repeated facts make updates disagree, block new rows and lose data on deletion."
+        },
+        {
+          "id": "rows-to-fix",
+          "type": "numeric",
+          "taughtOn": "anomalies",
+          "prompt": "One member has 40 loan rows, each with their suburb copied in. They move. How many rows must change?",
+          "answer": 40,
+          "unit": "rows",
+          "calculator": false,
+          "hints": [
+            "The suburb is copied into every one of their loans.",
+            "One row per loan, so as many as the loans."
+          ],
+          "explain": "All 40 rows must change, and missing one makes the data disagree."
+        },
+        {
+          "id": "rows-after-split",
+          "type": "numeric",
+          "taughtOn": "split",
+          "prompt": "After the split, the suburb is stored only in the members table. When that member moves, how many rows must change?",
+          "answer": 1,
+          "unit": "row",
+          "calculator": false,
+          "hints": [
+            "Where does the suburb live now?",
+            "It lives in exactly one row of members."
+          ],
+          "explain": "Just 1 row: their row in members. The loans do not store the suburb any more."
+        },
+        {
+          "id": "tidy-steps",
+          "type": "order",
+          "taughtOn": "split",
+          "prompt": "Put the steps for tidying a table in order.",
+          "items": [
+            "Find a fact repeated on many rows",
+            "Ask what that fact really depends on",
+            "Move it into its own table, keyed by that thing",
+            "Leave the key behind as a foreign key",
+            "Check each fact now lives in just one place"
+          ],
+          "hints": [
+            "You need to spot the problem before fixing it.",
+            "The key stays behind so the tables can still be joined."
+          ],
+          "explain": "Spot the repeat, find its owner, move it, link it, check it."
+        },
+        {
+          "id": "normal-form-words",
+          "type": "match",
+          "taughtOn": "normal-forms",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "First normal form",
+              "right": "Every cell holds one value, never a list"
+            },
+            {
+              "left": "Second normal form",
+              "right": "Every non-key column depends on the whole key"
+            },
+            {
+              "left": "Third normal form",
+              "right": "Non-key columns depend on the key, not on each other"
+            },
+            {
+              "left": "Anomaly",
+              "right": "A problem caused by repeated facts"
+            }
+          ],
+          "hints": [
+            "First is the simplest. Third asks the most.",
+            "Anomalies are the trouble that normal forms prevent."
+          ],
+          "explain": "Each form rules out a kind of repeated fact."
+        },
+        {
+          "id": "which-tidy",
+          "type": "choice",
+          "taughtOn": "split",
+          "prompt": "Which design keeps each member's suburb in just one place?",
+          "options": [
+            {
+              "text": "members(member_id, name, suburb) and loans(loan_id, member_id, book_id)",
+              "correct": true
+            },
+            {
+              "text": "loans(loan_id, member_name, suburb, book_title) on its own"
+            },
+            {
+              "text": "members(member_id, suburb) and loans(loan_id, member_id, suburb, book_id)"
+            },
+            {
+              "text": "Two copies of loans, one per desk"
+            }
+          ],
+          "hints": [
+            "Count how many tables mention suburb.",
+            "Only one table should."
+          ],
+          "explain": "Suburb lives in members only, and loans point at members by id."
+        },
+        {
+          "id": "team-colour",
+          "type": "choice",
+          "taughtOn": "normal-forms",
+          "prompt": "A table has member_id, team and team_colour, and the colour depends on the team. Which normal form does this break?",
+          "options": [
+            {
+              "text": "Third",
+              "correct": true
+            },
+            {
+              "text": "First"
+            },
+            {
+              "text": "Second"
+            },
+            {
+              "text": "None; it is fine"
+            }
+          ],
+          "hints": [
+            "Is team_colour about the member, or about the team?",
+            "A non-key column depends on another non-key column."
+          ],
+          "explain": "Colour depends on team, not on the member key, which is exactly what third normal form forbids.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d1.3-f1",
+          "type": "quiz",
+          "taughtOn": "anomalies",
+          "prompt": "Which is an update anomaly?",
+          "options": [
+            {
+              "text": "A repeated fact is changed in some rows but not others",
+              "correct": true
+            },
+            {
+              "text": "A new row is rejected"
+            },
+            {
+              "text": "A table has no key"
+            },
+            {
+              "text": "A column is empty"
+            }
+          ],
+          "explain": "Repeated facts drift apart."
+        },
+        {
+          "id": "d1.3-f2",
+          "type": "quiz",
+          "taughtOn": "split",
+          "prompt": "Where should a member's suburb be stored?",
+          "options": [
+            {
+              "text": "Once, in the members table",
+              "correct": true
+            },
+            {
+              "text": "On every loan"
+            },
+            {
+              "text": "In each book's row"
+            },
+            {
+              "text": "In a spreadsheet"
+            }
+          ],
+          "explain": "Each fact lives in one place."
+        },
+        {
+          "id": "d1.3-f3",
+          "type": "quiz",
+          "taughtOn": "normal-forms",
+          "prompt": "First normal form says every cell holds...",
+          "options": [
+            {
+              "text": "A single value",
+              "correct": true
+            },
+            {
+              "text": "A list"
+            },
+            {
+              "text": "A table"
+            },
+            {
+              "text": "A password"
+            }
+          ],
+          "explain": "No lists in cells."
+        },
+        {
+          "id": "d1.3-f4",
+          "type": "predict",
+          "taughtOn": "anomalies",
+          "prompt": "Name the three anomalies.",
+          "answer": "Update, insertion and deletion."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Repeated facts drift apart",
+          "text": "Normalisation aims to reduce repeated data. When the same fact sits on many rows, copies can fall out of step: Wikipedia's example is an employee shown with different addresses on different records.",
+          "source": {
+            "title": "Wikipedia: Database normalization",
+            "url": "https://en.wikipedia.org/wiki/Database_normalization"
+          },
+          "verify": false
+        },
+        {
+          "title": "Breaking the rules on purpose",
+          "text": "Some systems add repeated copies of data on purpose to make reads faster, because a query that joins many tables can be slow. This is called denormalisation, and it costs some write speed.",
+          "source": {
+            "title": "Wikipedia: Denormalization",
+            "url": "https://en.wikipedia.org/wiki/Denormalization"
+          },
+          "verify": false
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You saw how repeated facts cause update, insertion and deletion trouble, and how splitting tables and linking them with keys removes it.",
+          "Odile files the last card. \"One fact, one home.\""
+        ],
+        "mistake": {
+          "title": "Splitting without linking",
+          "text": "Moving a fact into its own table is only half the fix. Keep a key behind as a foreign key, or the two tables can no longer be put back together."
+        }
+      }
+    }
+  ]
+}

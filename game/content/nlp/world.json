@@ -1,0 +1,267 @@
+{
+  "title": "Wordwood",
+  "tagline": "Follow Warden Wren through a wood where the trees are words and the paths are sentences: how computers split, count, tag, remember and weigh language.",
+  "funFacts": [
+    {
+      "text": "The first published stemmer, a program that chops word endings, was written in 1968. A later one by Martin Porter, published in 1980, became the standard for English."
+    },
+    {
+      "text": "The Viterbi algorithm is named after Andrew Viterbi, who proposed it in 1967 to decode signals sent over noisy links. It is now also used to tag words in sentences."
+    },
+    {
+      "text": "The word2vec method for learning word vectors was presented in 2013 by researchers at Google."
+    },
+    {
+      "text": "The 2017 paper that introduced the transformer was called 'Attention Is All You Need'."
+    }
+  ],
+  "listHeading": "Clearings",
+  "mapStyle": "islands",
+  "starRules": "3 stars: no mistakes and no hints. 2 stars: up to 2 mistakes. 1 star: you finished.",
+  "journal": {
+    "title": "Field Journal",
+    "intro": "Every level unlocks Field Notes: where the idea shows up in the apps and systems you use today. Finish a level to read its notes.",
+    "lockedText": "Finish {level} to read this note.",
+    "hubText": "{count} of {total} Field Notes collected"
+  },
+  "feed": {
+    "title": "Daily Feed",
+    "intro": "Bite-size cards from the clearings you've finished. About 10 cards, then you're done for today.",
+    "hubReady": "{count} cards ready",
+    "hubDone": "Done for today. More cards tomorrow.",
+    "hubCaughtUp": "All caught up",
+    "hubEmpty": "Finish a level to fill your feed.",
+    "streak": "{days}-day streak",
+    "start": "Start today's feed",
+    "empty": "Your feed is empty for now. Finish a level in Seedling Glade and its cards will show up here.",
+    "caughtUp": "Cards you know well wait a few days before coming back. That gap is what makes them stick.",
+    "labels": {
+      "quiz": "Quick question",
+      "predict": "Predict, then flip",
+      "why": "Why?",
+      "note": "Field Note"
+    },
+    "flip": "Flip the card",
+    "selfCheck": "Was your answer close?",
+    "gotIt": "Yes, I got it",
+    "notYet": "Not quite",
+    "next": "Next card",
+    "swipeTip": "On a phone, you can also swipe left.",
+    "comesBack": "This card will come back later so it sticks.",
+    "doneTitle": "Done for today",
+    "doneText": "You got {right} of {total} right. Cards you missed will come back soon. The rest will wait a few days, so they stick.",
+    "doneTextPerfect": "You got all {total} right. These cards will now wait a few days before coming back, so they stick.",
+    "streakFirst": "That's day 1. Come back tomorrow for day 2.",
+    "streakMore": "{days} days in a row.",
+    "backToMap": "Back to map",
+    "emptyButton": "Go to Seedling Glade"
+  },
+  "sim": {
+    "next": "Next step",
+    "back": "Back",
+    "stepOf": "Step {i} of {n}",
+    "runToEnd": "Run to the end",
+    "finish": "Continue",
+    "counted": "You predicted {guess}. It took {actual}.",
+    "revealed": "Here's what happens:",
+    "counter": "{name} so far: {value}"
+  },
+  "zones": [
+    {
+      "id": 0,
+      "name": "Seedling Glade",
+      "topic": "What NLP is, and cleaning text",
+      "file": "zone-0.json",
+      "map": {
+        "x": 30,
+        "y": 150,
+        "sprite": "house",
+        "roof": "#B5523B"
+      },
+      "levels": [
+        {
+          "id": "0.1",
+          "title": "Letters to Words",
+          "core": true
+        },
+        {
+          "id": "0.2",
+          "title": "Chop and Tidy",
+          "core": true
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "Next-Word Path",
+      "topic": "Language models with n-grams",
+      "file": "zone-1.json",
+      "map": {
+        "x": 72,
+        "y": 112,
+        "sprite": "house",
+        "roof": "#C9802F"
+      },
+      "levels": [
+        {
+          "id": "1.1",
+          "title": "What Comes Next?",
+          "core": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Mailbox Oak",
+      "topic": "Text classification",
+      "file": "zone-2.json",
+      "map": {
+        "x": 40,
+        "y": 70,
+        "sprite": "house",
+        "roof": "#3E7039"
+      },
+      "levels": [
+        {
+          "id": "2.1",
+          "title": "Sort the Mail",
+          "core": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Tagger's Hollow",
+      "topic": "Part-of-speech tagging and hidden Markov models",
+      "file": "zone-3.json",
+      "map": {
+        "x": 88,
+        "y": 40,
+        "sprite": "house",
+        "roof": "#9C6B3F"
+      },
+      "levels": [
+        {
+          "id": "3.1",
+          "title": "Name the Parts",
+          "core": true
+        },
+        {
+          "id": "3.2",
+          "title": "Hidden Weather",
+          "core": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Echo Pond",
+      "topic": "Recurrent networks",
+      "file": "zone-4.json",
+      "map": {
+        "x": 140,
+        "y": 62,
+        "sprite": "house",
+        "roof": "#3D6B95"
+      },
+      "levels": [
+        {
+          "id": "4.1",
+          "title": "Remember the Last Word",
+          "core": true
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Pointboard Clearing",
+      "topic": "Word embeddings",
+      "file": "zone-5.json",
+      "map": {
+        "x": 126,
+        "y": 112,
+        "sprite": "house",
+        "roof": "#7D5A9E"
+      },
+      "levels": [
+        {
+          "id": "5.1",
+          "title": "Words as Points",
+          "core": true
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Lookout Canopy",
+      "topic": "Transformers and attention",
+      "file": "zone-6.json",
+      "map": {
+        "x": 176,
+        "y": 150,
+        "sprite": "house",
+        "roof": "#B5523B"
+      },
+      "levels": [
+        {
+          "id": "6.1",
+          "title": "Who Looks at Whom",
+          "core": true
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Old Archive",
+      "topic": "Pretrained models",
+      "file": "zone-7.json",
+      "map": {
+        "x": 212,
+        "y": 106,
+        "sprite": "house",
+        "roof": "#4E7C5A"
+      },
+      "levels": [
+        {
+          "id": "7.1",
+          "title": "Read First, Learn Later",
+          "core": true
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Far Canopy",
+      "topic": "Feedforward networks, large language models, prompting, fine-tuning and ethics",
+      "file": null,
+      "map": {
+        "x": 244,
+        "y": 60,
+        "sprite": "house",
+        "roof": "#5E9A4B"
+      },
+      "levels": [
+        {
+          "id": "8.1",
+          "title": "Layers of Neurons",
+          "core": true
+        },
+        {
+          "id": "8.2",
+          "title": "Giant Storytellers",
+          "core": false
+        }
+      ]
+    }
+  ],
+  "finale": {
+    "name": "The Storytelling Fire",
+    "topic": "Pick the right tool for each language problem, with no hints",
+    "map": {
+      "x": 282,
+      "y": 118,
+      "sprite": "tower",
+      "roof": "#F2B84B"
+    }
+  }
+}

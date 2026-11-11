@@ -1,0 +1,973 @@
+{
+  "zone": 3,
+  "levels": [
+    {
+      "id": "3.1",
+      "title": "Blueprint and House",
+      "story": "In the Blueprint Office a long roll of paper is pinned to the table. \"This is not a house,\" says Bram. \"You cannot live in it. But I can build a hundred houses from it.\"",
+      "everyday": {
+        "scene": "An architect draws one plan for a house with rooms and a colour. Builders can use that plan to put up as many houses as the street needs, and each house gets its own paint and its own number of rooms.",
+        "question": "How does a program describe a kind of thing once, and then make many of them?",
+        "answer": "With a class, which is the plan. Each thing built from it is an object, and each object keeps its own values."
+      },
+      "lessons": [
+        {
+          "id": "class-idea",
+          "title": "A class is a blueprint",
+          "text": [
+            "A class describes a kind of thing. It lists the fields, which are the facts each one holds, and the methods, which are what each one can do. The listing is a class called House with fields rooms and colour, and a method describe.",
+            "A class on its own builds nothing, just as a plan is not a house. It tells Java what a House looks like, so objects can be made from it."
+          ],
+          "terms": [
+            {
+              "term": "Class",
+              "meaning": "A blueprint for a kind of thing."
+            },
+            {
+              "term": "Field",
+              "meaning": "A variable that belongs to an object."
+            },
+            {
+              "term": "Object",
+              "meaning": "One thing built from a class."
+            }
+          ],
+          "table": {
+            "head": [
+              "Line",
+              "Code"
+            ],
+            "rows": [
+              [
+                "1",
+                "class House {"
+              ],
+              [
+                "2",
+                "    int rooms;"
+              ],
+              [
+                "3",
+                "    String colour;"
+              ],
+              [
+                "4",
+                "    void describe() {"
+              ],
+              [
+                "5",
+                "        System.out.println(colour + \" house with \" + rooms + \" rooms\");"
+              ],
+              [
+                "6",
+                "    }"
+              ],
+              [
+                "7",
+                "}"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Dev.java: Objects, Classes, Interfaces, Packages, and Inheritance",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/oop/classes/"
+            },
+            {
+              "title": "Java Language Specification (SE 21), chapter 8: Classes",
+              "source": "Java specification (linked, not copied)",
+              "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html"
+            }
+          ]
+        },
+        {
+          "id": "new-object",
+          "title": "Objects are built with new",
+          "text": [
+            "The word new builds an object from a class. House h = new House(); builds a house and gives it the name h. Each object has its own copy of every field. Reach a field or method with a dot, as in h.rooms or h.describe().",
+            "Fields you do not set start with default values, so a new House has 0 rooms and a colour of null, meaning no text yet. Build two houses and change one, and the other stays as it was."
+          ],
+          "table": {
+            "head": [
+              "Line",
+              "Code"
+            ],
+            "rows": [
+              [
+                "1",
+                "House h = new House();"
+              ],
+              [
+                "2",
+                "h.rooms = 4;"
+              ],
+              [
+                "3",
+                "h.colour = \"blue\";"
+              ],
+              [
+                "4",
+                "h.describe();"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "What does h.describe() print once the four lines have run?",
+            "answer": "blue house with 4 rooms."
+          },
+          "references": [
+            {
+              "title": "Dev.java: Creating and Using Objects",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/oop/classes-objects/creating-objects/"
+            },
+            {
+              "title": "Java Language Specification (SE 21), chapter 8: Classes",
+              "source": "Java specification (linked, not copied)",
+              "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html"
+            }
+          ]
+        },
+        {
+          "id": "references",
+          "title": "Variables hold references",
+          "text": [
+            "A variable for an object does not hold the house itself. It holds a reference, which says which house to find. Writing House b = a; copies the reference, not the house. Now a and b point at the same house.",
+            "So if you set b.rooms = 6, then a.rooms is 6 as well, because there is only one house. A fresh b = new House(); builds a different house and points b at it. The first house stays as it was."
+          ],
+          "deeper": {
+            "title": "Two names, one house",
+            "text": [
+              "Think of a house number on an envelope. Copying the number onto a second envelope does not build a second house. Both envelopes lead to the same door."
+            ]
+          },
+          "references": [
+            {
+              "title": "Dev.java: Creating and Using Objects",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/oop/classes-objects/creating-objects/"
+            },
+            {
+              "title": "Java Language Specification (SE 21), chapter 4: Types, Values, and Variables",
+              "source": "Java specification (linked, not copied)",
+              "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-4.html"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "class-words",
+          "type": "match",
+          "taughtOn": "class-idea",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "Class",
+              "right": "A blueprint describing fields and methods"
+            },
+            {
+              "left": "Object",
+              "right": "One thing built from a class"
+            },
+            {
+              "left": "Field",
+              "right": "A variable that belongs to an object"
+            },
+            {
+              "left": "new",
+              "right": "Builds a new object from a class"
+            },
+            {
+              "left": "The dot, as in h.rooms",
+              "right": "Reaches a field or method of an object"
+            }
+          ],
+          "hints": [
+            "One word is the plan and one is the thing built from it.",
+            "The dot sits between the object's name and the thing you want."
+          ],
+          "explain": "A class is the plan, an object is what new builds from it, a field is a fact it holds, and the dot reaches into it."
+        },
+        {
+          "id": "plan-or-house",
+          "type": "buckets",
+          "taughtOn": "class-idea",
+          "prompt": "Is each item part of the blueprint, or part of a built house?",
+          "buckets": [
+            "The blueprint (class)",
+            "A built house (object)"
+          ],
+          "items": [
+            {
+              "text": "The list of fields every House has",
+              "bucket": "The blueprint (class)"
+            },
+            {
+              "text": "The describe method, as written once",
+              "bucket": "The blueprint (class)"
+            },
+            {
+              "text": "The design called House",
+              "bucket": "The blueprint (class)"
+            },
+            {
+              "text": "The blue house with 4 rooms",
+              "bucket": "A built house (object)"
+            },
+            {
+              "text": "A second house with 9 rooms",
+              "bucket": "A built house (object)"
+            },
+            {
+              "text": "The values stored in one house's fields",
+              "bucket": "A built house (object)"
+            }
+          ],
+          "hints": [
+            "The blueprint says what a house has. A house has actual values.",
+            "If it is a particular value, such as 4 rooms, it belongs to a built house."
+          ],
+          "explain": "The class holds the design, the field list and the method code. Each object holds actual values, like 4 rooms and blue."
+        },
+        {
+          "id": "fresh-rooms",
+          "type": "numeric",
+          "taughtOn": "new-object",
+          "prompt": "A House is built with new House() and its rooms field is never set. What number does h.rooms hold?",
+          "answer": 0,
+          "calculator": false,
+          "hints": [
+            "Fields get a default value if you do not set them.",
+            "For int the default is the number that means empty."
+          ],
+          "explain": "A number field starts as 0. A text field such as colour starts as null, which means no text yet."
+        },
+        {
+          "id": "how-many",
+          "type": "numeric",
+          "taughtOn": "references",
+          "prompt": "House x = new House(); House y = new House(); House z = x; House w = new House(); How many houses exist now?",
+          "answer": 3,
+          "calculator": false,
+          "hints": [
+            "Only new builds a house.",
+            "Count the new words. Copying a name builds nothing."
+          ],
+          "explain": "new appears three times, so three houses are built. z = x copies a reference, so z points at the same house as x."
+        },
+        {
+          "id": "use-class",
+          "type": "order",
+          "taughtOn": "new-object",
+          "prompt": "Put the steps for using a class in order.",
+          "items": [
+            "Write the class",
+            "Build an object with new",
+            "Set its fields using the dot",
+            "Call a method on it"
+          ],
+          "hints": [
+            "The plan has to exist before anything is built.",
+            "You can only use an object after it has been built."
+          ],
+          "explain": "Write the plan, build an object with new, then use the dot to reach its fields and methods."
+        },
+        {
+          "id": "shared-house",
+          "type": "choice",
+          "taughtOn": "references",
+          "prompt": "House a = new House(); a.rooms = 4; House b = a; b.rooms = 6; What does a.rooms hold now?",
+          "options": [
+            {
+              "text": "6",
+              "correct": true
+            },
+            {
+              "text": "4"
+            },
+            {
+              "text": "10"
+            },
+            {
+              "text": "0"
+            }
+          ],
+          "hints": [
+            "b = a copies the reference, not the house.",
+            "Both names lead to the same house."
+          ],
+          "explain": "a and b point at the same house, so setting b.rooms to 6 changes the one house that both names reach. a.rooms is 6."
+        },
+        {
+          "id": "new-again",
+          "type": "choice",
+          "taughtOn": "references",
+          "prompt": "House a = new House(); a.rooms = 4; House b = a; b = new House(); b.rooms = 8; What does a.rooms hold?",
+          "options": [
+            {
+              "text": "4",
+              "correct": true
+            },
+            {
+              "text": "8"
+            },
+            {
+              "text": "12"
+            },
+            {
+              "text": "0"
+            }
+          ],
+          "hints": [
+            "The line b = new House() builds a second house.",
+            "After that, b points at the new house, and a still points at the first."
+          ],
+          "explain": "b = new House() builds a second house and points b at it. Setting its rooms to 8 does not touch the first house, so a.rooms is still 4.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d3.1-f1",
+          "type": "quiz",
+          "taughtOn": "class-idea",
+          "prompt": "In Java, a class is most like...",
+          "options": [
+            {
+              "text": "A blueprint",
+              "correct": true
+            },
+            {
+              "text": "A finished building"
+            },
+            {
+              "text": "A variable"
+            },
+            {
+              "text": "A loop"
+            }
+          ],
+          "explain": "A class is the plan. Objects are what get built from it."
+        },
+        {
+          "id": "d3.1-f2",
+          "type": "quiz",
+          "taughtOn": "new-object",
+          "prompt": "What does the word new do?",
+          "options": [
+            {
+              "text": "Builds a new object from a class",
+              "correct": true
+            },
+            {
+              "text": "Deletes an object"
+            },
+            {
+              "text": "Makes a comment"
+            },
+            {
+              "text": "Starts a loop"
+            }
+          ],
+          "explain": "new builds an object and returns a reference to it."
+        },
+        {
+          "id": "d3.1-f3",
+          "type": "why",
+          "taughtOn": "references",
+          "prompt": "Why does changing b change a after House b = a; ?",
+          "options": [
+            {
+              "text": "Both names refer to the same object",
+              "correct": true
+            },
+            {
+              "text": "Java copies it twice"
+            },
+            {
+              "text": "Names are linked by colour"
+            },
+            {
+              "text": "a and b are the same type of number"
+            }
+          ],
+          "explain": "Copying a variable copies the reference, so both names reach one object."
+        },
+        {
+          "id": "d3.1-f4",
+          "type": "predict",
+          "taughtOn": "new-object",
+          "prompt": "A new House has no values set. What do rooms and colour hold?",
+          "answer": "rooms is 0 and colour is null, which means no text yet."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Everything is built from classes",
+          "text": "Text in Java is made of objects too. Every string literal, such as \"abc\", is an instance of the class String.",
+          "source": {
+            "title": "Java SE 21 API: String",
+            "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html"
+          }
+        },
+        {
+          "title": "A name is not the object",
+          "text": "Because variables hold references, two names can point at one object. This is why changing an object through one name shows up through the other.",
+          "source": {
+            "title": "Dev.java: Creating Objects",
+            "url": "https://dev.java/learn/language/oop/classes-objects/creating-objects/"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You described a kind of thing with a class, built objects with new, and saw that names hold references.",
+          "Bram rolls up the plan. \"One blueprint, many houses. Each house keeps its own paint.\""
+        ],
+        "mistake": {
+          "title": "Thinking b = a makes a second house",
+          "text": "It only gives the same house a second name. To build another house you need new."
+        }
+      }
+    },
+    {
+      "id": "3.2",
+      "title": "The Front Door",
+      "story": "Bram stops at a house with a neat front door and a firm lock. \"Anyone can walk in through the door,\" he says. \"But nobody climbs through the walls. That is the point.\"",
+      "everyday": {
+        "scene": "A bank has a front desk. You can ask the clerk to deposit money or tell you your balance, but you cannot walk behind the counter and change the numbers yourself. The clerk checks every request.",
+        "question": "How can a program keep an object's data safe, and still let other code use it?",
+        "answer": "By hiding the fields behind private and offering public methods. The constructor sets the starting values, and the methods check the rules."
+      },
+      "lessons": [
+        {
+          "id": "constructors",
+          "title": "Constructors: set up on arrival",
+          "text": [
+            "A constructor sets up a new object. It looks like a method, but it has the same name as the class and no return type. It runs when you write new. The Room constructor takes two values and stores them.",
+            "Inside, this.width = width; means: the field called width of this object gets the value of the parameter called width. The word this refers to the object being set up."
+          ],
+          "terms": [
+            {
+              "term": "Constructor",
+              "meaning": "Code that sets up a new object, named after its class."
+            },
+            {
+              "term": "this",
+              "meaning": "The object whose method or constructor is running."
+            }
+          ],
+          "table": {
+            "head": [
+              "Line",
+              "Code"
+            ],
+            "rows": [
+              [
+                "1",
+                "class Room {"
+              ],
+              [
+                "2",
+                "    private int width;"
+              ],
+              [
+                "3",
+                "    private int length;"
+              ],
+              [
+                "4",
+                "    Room(int width, int length) {"
+              ],
+              [
+                "5",
+                "        this.width = width;"
+              ],
+              [
+                "6",
+                "        this.length = length;"
+              ],
+              [
+                "7",
+                "    }"
+              ],
+              [
+                "8",
+                "    int area() {"
+              ],
+              [
+                "9",
+                "        return width * length;"
+              ],
+              [
+                "10",
+                "    }"
+              ],
+              [
+                "11",
+                "}"
+              ]
+            ]
+          },
+          "predict": {
+            "prompt": "What does new Room(4, 3).area() give?",
+            "answer": "12, because the constructor stored 4 and 3, and area multiplies them."
+          },
+          "references": [
+            {
+              "title": "Dev.java: Providing Constructors for your Classes",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/oop/classes-objects/defining-constructors/"
+            },
+            {
+              "title": "Java Language Specification (SE 21), chapter 8: Classes",
+              "source": "Java specification (linked, not copied)",
+              "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html"
+            }
+          ]
+        },
+        {
+          "id": "private-public",
+          "title": "private fields, public methods",
+          "text": [
+            "The word private means only code inside the same class can touch it. The word public means code anywhere can use it. A common design makes the fields private and the methods public.",
+            "In Account, the balance is private. Other code cannot write acc.balance = 1000. It must call deposit, and deposit refuses amounts that are not above zero. Reading the balance goes through the getter, getBalance."
+          ],
+          "terms": [
+            {
+              "term": "private",
+              "meaning": "Usable only inside the same class."
+            },
+            {
+              "term": "public",
+              "meaning": "Usable from any class."
+            },
+            {
+              "term": "Getter",
+              "meaning": "A public method that returns a private field's value."
+            }
+          ],
+          "table": {
+            "head": [
+              "Line",
+              "Code"
+            ],
+            "rows": [
+              [
+                "1",
+                "class Account {"
+              ],
+              [
+                "2",
+                "    private int balance;"
+              ],
+              [
+                "3",
+                "    Account(int start) {"
+              ],
+              [
+                "4",
+                "        balance = start;"
+              ],
+              [
+                "5",
+                "    }"
+              ],
+              [
+                "6",
+                "    int getBalance() {"
+              ],
+              [
+                "7",
+                "        return balance;"
+              ],
+              [
+                "8",
+                "    }"
+              ],
+              [
+                "9",
+                "    void deposit(int amount) {"
+              ],
+              [
+                "10",
+                "        if (amount > 0) {"
+              ],
+              [
+                "11",
+                "            balance = balance + amount;"
+              ],
+              [
+                "12",
+                "        }"
+              ],
+              [
+                "13",
+                "    }"
+              ],
+              [
+                "14",
+                "}"
+              ]
+            ]
+          },
+          "references": [
+            {
+              "title": "Dev.java: More on Classes",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/oop/classes-objects/more-on-classes/"
+            },
+            {
+              "title": "Java Language Specification (SE 21), chapter 8: Classes",
+              "source": "Java specification (linked, not copied)",
+              "url": "https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html"
+            }
+          ]
+        },
+        {
+          "id": "why-hide",
+          "title": "Why hide anything?",
+          "text": [
+            "Hiding the fields keeps the rules in one place. Every change to the balance goes through deposit, so a negative deposit can never slip in. If the checking code changes later, nobody else's code needs to change.",
+            "This idea has a name: encapsulation, which means keeping data and the code that guards it together. Other code sees a small, safe set of public methods and nothing else."
+          ],
+          "deeper": {
+            "title": "No constructor written?",
+            "text": [
+              "If a class has no constructor, the compiler gives it a no-argument default one. That is why new House() worked in the last level, even though House had no constructor."
+            ]
+          },
+          "references": [
+            {
+              "title": "Dev.java: More on Classes",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/oop/classes-objects/more-on-classes/"
+            },
+            {
+              "title": "Dev.java: Providing Constructors for your Classes",
+              "source": "Dev.java (linked, not copied)",
+              "url": "https://dev.java/learn/language/oop/classes-objects/defining-constructors/"
+            }
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "id": "what-constructor",
+          "type": "choice",
+          "taughtOn": "constructors",
+          "prompt": "How do you spot a constructor in a class?",
+          "options": [
+            {
+              "text": "It has the same name as the class and no return type",
+              "correct": true
+            },
+            {
+              "text": "It starts with the word constructor"
+            },
+            {
+              "text": "It has the return type void"
+            },
+            {
+              "text": "Its name starts with new"
+            }
+          ],
+          "hints": [
+            "A method has a return type. A constructor does not.",
+            "Look at the name: it matches something else in the file."
+          ],
+          "explain": "A constructor is named after its class and has no return type, not even void."
+        },
+        {
+          "id": "room-area",
+          "type": "numeric",
+          "taughtOn": "constructors",
+          "prompt": "Room r = new Room(6, 5); What does r.area() give? (Room stores width and length, and area multiplies them.)",
+          "answer": 30,
+          "calculator": false,
+          "hints": [
+            "The constructor stores the two numbers you pass in.",
+            "Width 6, length 5. Multiply."
+          ],
+          "explain": "The constructor stores width 6 and length 5, and area returns width * length, which is 30."
+        },
+        {
+          "id": "account-total",
+          "type": "numeric",
+          "taughtOn": "private-public",
+          "prompt": "Account acc = new Account(20); acc.deposit(-5); acc.deposit(15); What does acc.getBalance() give? (deposit ignores amounts that are not above zero.)",
+          "answer": 35,
+          "calculator": false,
+          "hints": [
+            "Check whether each deposit is accepted.",
+            "-5 is refused. 15 is accepted, so 20 + 15."
+          ],
+          "explain": "The first deposit, -5, is not above zero, so deposit ignores it. The second adds 15 to 20, which makes 35."
+        },
+        {
+          "id": "who-sees",
+          "type": "buckets",
+          "taughtOn": "private-public",
+          "prompt": "Can code in other classes use it, or is it hidden inside the class?",
+          "buckets": [
+            "Visible from other classes",
+            "Hidden inside the class"
+          ],
+          "items": [
+            {
+              "text": "A public method deposit",
+              "bucket": "Visible from other classes"
+            },
+            {
+              "text": "A public getter getBalance",
+              "bucket": "Visible from other classes"
+            },
+            {
+              "text": "A public constructor",
+              "bucket": "Visible from other classes"
+            },
+            {
+              "text": "A private field balance",
+              "bucket": "Hidden inside the class"
+            },
+            {
+              "text": "A private field width",
+              "bucket": "Hidden inside the class"
+            },
+            {
+              "text": "A private helper method",
+              "bucket": "Hidden inside the class"
+            }
+          ],
+          "hints": [
+            "public means any class can use it. private means only its own class can.",
+            "The word at the front decides."
+          ],
+          "explain": "Public members are the front door that every class can use. Private fields and helpers stay inside the class."
+        },
+        {
+          "id": "lock-words",
+          "type": "match",
+          "taughtOn": "private-public",
+          "prompt": "Match each word to its meaning.",
+          "pairs": [
+            {
+              "left": "constructor",
+              "right": "Sets up a new object when new is used"
+            },
+            {
+              "left": "private",
+              "right": "Only code in the same class may use it"
+            },
+            {
+              "left": "public",
+              "right": "Code in any class may use it"
+            },
+            {
+              "left": "getter",
+              "right": "A public method that returns a private field's value"
+            },
+            {
+              "left": "this",
+              "right": "The object whose code is running"
+            }
+          ],
+          "hints": [
+            "Two of them are about who is allowed in.",
+            "A getter lets others read something without letting them change it."
+          ],
+          "explain": "A constructor sets up, private and public control access, a getter lets others read, and this points at the current object."
+        },
+        {
+          "id": "new-steps",
+          "type": "order",
+          "taughtOn": "constructors",
+          "prompt": "When the program runs new Account(50), what happens? Put the steps in order.",
+          "items": [
+            "Memory is set aside for the new object",
+            "Its fields are set to default values",
+            "The constructor runs with the arguments",
+            "A reference to the new object is handed back"
+          ],
+          "hints": [
+            "The object has to exist before its constructor can fill it in.",
+            "The reference is handed back last, ready to be stored in a variable."
+          ],
+          "explain": "Java makes room, sets default values, runs the constructor, and then returns a reference to the finished object."
+        },
+        {
+          "id": "why-private",
+          "type": "choice",
+          "taughtOn": "why-hide",
+          "prompt": "Why make the balance private?",
+          "options": [
+            {
+              "text": "So other code must use methods that can check the rules",
+              "correct": true
+            },
+            {
+              "text": "So the balance cannot be read at all"
+            },
+            {
+              "text": "So the program runs faster"
+            },
+            {
+              "text": "Because Java requires every field to be private"
+            }
+          ],
+          "hints": [
+            "Think about what the deposit method does that a direct assignment would not.",
+            "The rules live in one place."
+          ],
+          "explain": "With a private balance, every change goes through a method such as deposit, which can refuse bad values. The balance can still be read through the getter."
+        },
+        {
+          "id": "this-trap",
+          "type": "choice",
+          "taughtOn": "constructors",
+          "prompt": "class Pet { int age; Pet(int age) { age = age; } } Then: Pet p = new Pet(7); print p.age. What is printed?",
+          "options": [
+            {
+              "text": "0",
+              "correct": true
+            },
+            {
+              "text": "7"
+            },
+            {
+              "text": "null"
+            },
+            {
+              "text": "It will not compile"
+            }
+          ],
+          "hints": [
+            "Inside the constructor, the name age means the parameter.",
+            "age = age stores the parameter in itself, and the field is untouched."
+          ],
+          "explain": "Both ages are the parameter, so the line assigns the parameter to itself. The field keeps its default, 0. Writing this.age = age; fixes it.",
+          "challenge": true
+        },
+        {
+          "id": "account-rules",
+          "type": "numeric",
+          "taughtOn": "why-hide",
+          "prompt": "Account acc = new Account(100); then deposit(0), deposit(25), deposit(-25), deposit(5). What does getBalance() give?",
+          "answer": 130,
+          "calculator": false,
+          "hints": [
+            "Only amounts above zero are added.",
+            "0 and -25 are ignored. 25 and 5 are added to 100."
+          ],
+          "explain": "deposit(0) and deposit(-25) fail the check and change nothing. 25 and 5 are added, so 100 + 25 + 5 is 130.",
+          "challenge": true
+        }
+      ],
+      "feed": [
+        {
+          "id": "d3.2-f1",
+          "type": "quiz",
+          "taughtOn": "constructors",
+          "prompt": "What runs when you write new Account(50)?",
+          "options": [
+            {
+              "text": "The constructor",
+              "correct": true
+            },
+            {
+              "text": "The getter"
+            },
+            {
+              "text": "The compiler only"
+            },
+            {
+              "text": "Nothing"
+            }
+          ],
+          "explain": "new builds the object and runs its constructor to set it up."
+        },
+        {
+          "id": "d3.2-f2",
+          "type": "quiz",
+          "taughtOn": "private-public",
+          "prompt": "What does private mean for a field?",
+          "options": [
+            {
+              "text": "Only code inside the same class can use it",
+              "correct": true
+            },
+            {
+              "text": "It is secret from the compiler"
+            },
+            {
+              "text": "It cannot be read"
+            },
+            {
+              "text": "It is deleted"
+            }
+          ],
+          "explain": "private limits access to the class itself."
+        },
+        {
+          "id": "d3.2-f3",
+          "type": "why",
+          "taughtOn": "why-hide",
+          "prompt": "Why hide fields and offer methods instead?",
+          "options": [
+            {
+              "text": "The rules can be checked in one place",
+              "correct": true
+            },
+            {
+              "text": "Hidden code runs faster"
+            },
+            {
+              "text": "Java cannot read public fields"
+            },
+            {
+              "text": "It saves memory"
+            }
+          ],
+          "explain": "Every change goes through a method that can refuse bad values."
+        },
+        {
+          "id": "d3.2-f4",
+          "type": "predict",
+          "taughtOn": "constructors",
+          "prompt": "What does this refer to inside a constructor?",
+          "answer": "The object that is being set up."
+        }
+      ],
+      "fieldNotes": [
+        {
+          "title": "Why apps do not trust each other",
+          "text": "Access modifiers decide whether other classes can use a field or call a method. A private member can be used only by its own class, so a class can keep its data out of other code's reach.",
+          "source": {
+            "title": "Dev.java: More on Classes",
+            "url": "https://dev.java/learn/language/oop/classes-objects/more-on-classes/"
+          }
+        },
+        {
+          "title": "Access modifiers",
+          "text": "Java has four access levels for members: public, private, protected, and package-private when nothing is written. This level only uses the first two.",
+          "source": {
+            "title": "Dev.java: More on Classes",
+            "url": "https://dev.java/learn/language/oop/classes-objects/more-on-classes/"
+          }
+        }
+      ],
+      "debrief": {
+        "summary": [
+          "You set up objects with constructors, hid fields with private, and let others in through public methods.",
+          "Bram turns the key. \"Open to the right requests, locked to the rest.\""
+        ],
+        "mistake": {
+          "title": "Forgetting this",
+          "text": "In a constructor, writing age = age; assigns the parameter to itself and leaves the field alone. Write this.age = age; to store the value in the object."
+        }
+      }
+    }
+  ]
+}
